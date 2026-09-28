@@ -1,217 +1,9 @@
 <div class="module-container" id="company-master-module">
   
-  <style>
-    /* --- Master Company Module Styles --- */
-    .module-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+  <!-- Link to the revised standalone CSS -->
+  <link rel="stylesheet" href="css/company-module.css">
 
-    .app-card {
-      background: var(--surface, #ffffff);
-      border-radius: var(--radius-xl, 16px);
-      box-shadow: var(--shadow, 0 1px 2px rgba(0,0,0,0.15));
-      border: 1px solid var(--border, #E0E2E0);
-      padding: 24px;
-    }
-
-    /* Toolbar */
-    .module-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 20px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border, #E0E2E0);
-    }
-
-    .module-title {
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: var(--text-main, #1f1f1f);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .toolbar-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    /* Buttons */
-    .btn {
-      font-family: inherit;
-      font-weight: 500;
-      padding: 10px 20px;
-      border-radius: 50px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      transition: all 0.2s ease;
-      border: none;
-    }
-
-    .btn-primary {
-      background: var(--primary, #0B57D0);
-      color: #ffffff;
-    }
-    .btn-primary:hover:not(:disabled) { background: var(--primary-dark, #0842A0); }
-    
-    .btn-tonal {
-      background: var(--primary-light, #D3E3FD);
-      color: var(--primary-dark, #0842A0);
-    }
-    .btn-tonal:hover:not(:disabled) { filter: brightness(0.95); }
-
-    .btn-outlined {
-      background: transparent;
-      color: var(--text-main, #1f1f1f);
-      border: 1px solid var(--border-strong, #C4C7C5);
-    }
-    .btn-outlined:hover:not(:disabled) { background: var(--surface-soft, #F3F4F6); }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* Form Sections */
-    .form-section {
-      margin-bottom: 32px;
-    }
-    .form-section-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--primary, #0B57D0);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    /* Responsive Grid */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px 20px;
-    }
-
-    @media (min-width: 640px) {
-      .form-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 1024px) {
-      .form-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    /* Form Controls */
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .form-group label {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted, #444746);
-    }
-    .form-group label span.req { color: var(--danger, #B3261E); }
-
-    .form-control {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border-strong, #C4C7C5);
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      color: var(--text-main, #1f1f1f);
-      background: var(--surface, #ffffff);
-      transition: all 0.2s;
-    }
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary, #0B57D0);
-      box-shadow: 0 0 0 3px var(--primary-light, #D3E3FD);
-    }
-    .form-control:disabled {
-      background: var(--surface-soft, #F3F4F6);
-      color: var(--text-muted, #444746);
-      border-color: var(--border, #E0E2E0);
-      cursor: not-allowed;
-    }
-
-    /* System Info Grid (Read-only bottom area) */
-    .system-info-card {
-      background: var(--surface-soft, #F3F4F6);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 32px;
-      border: 1px dashed var(--border-strong, #C4C7C5);
-    }
-    .system-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    @media (min-width: 768px) {
-      .system-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    .sys-item {
-      display: flex;
-      flex-direction: column;
-    }
-    .sys-item span:first-child {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted, #444746);
-      font-weight: 600;
-    }
-    .sys-item span:last-child {
-      font-size: 0.85rem;
-      color: var(--text-main, #1f1f1f);
-      word-break: break-all;
-    }
-
-    /* Action Footer */
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border, #E0E2E0);
-    }
-
-    /* Utility */
-    .span-2 { grid-column: span 1; }
-    @media (min-width: 640px) { .span-2 { grid-column: span 2; } }
-    
-    .loading-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(2px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      border-radius: var(--radius-xl, 16px);
-      font-weight: 500;
-      color: var(--primary);
-    }
-  </style>
-
-  <div class="app-card" style="position: relative;">
+  <div class="app-card">
     
     <div id="compLoader" class="loading-overlay">
       <span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite; margin-right: 8px;">sync</span> Loading Data...
@@ -514,14 +306,14 @@
   const btnCancel = document.getElementById('btnCancel');
   const btnSave = document.getElementById('btnSave');
 
-  // Document Reference
+  // Document Reference for Single Master Profile
   const companyDocRef = doc(db, 'company_settings', 'master');
   
   let isEditing = false;
   let hasExistingData = false;
   let originalData = {};
 
-  // Form Field IDs
+  // All inputs to track
   const fields = [
     'cmp_name', 'cmp_legal_name', 'cmp_biz_type', 'cmp_email', 'cmp_phone', 'cmp_alt_phone', 'cmp_website',
     'cmp_reg_no', 'cmp_pan', 'cmp_gstin', 'cmp_cin',
@@ -531,14 +323,14 @@
     'cmp_logo', 'cmp_inv_logo', 'cmp_inv_header', 'cmp_date_format', 'cmp_timezone', 'cmp_terms', 'cmp_notes'
   ];
 
-  // Helper: Format Dates
+  // Helper: Format Dates safely
   const formatTimestamp = (ts) => {
     if (!ts) return '--';
     const date = ts.toDate ? ts.toDate() : new Date(ts);
     return date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
   };
 
-  // Helper: Toggle Edit Mode
+  // Helper: Toggle Form Read/Write Mode
   const toggleEditMode = (enable) => {
     isEditing = enable;
     fields.forEach(id => {
@@ -558,14 +350,13 @@
     }
   };
 
-  // Helper: Populate Form
+  // Helper: Fill Form with Firestore Data
   const populateForm = (data) => {
     fields.forEach(id => {
       const el = document.getElementById(id);
       if (el && data[id] !== undefined) el.value = data[id];
     });
 
-    // Populate System Info
     document.getElementById('sys_created_at').innerText = formatTimestamp(data.createdAt);
     document.getElementById('sys_created_by').innerText = data.createdBy || '--';
     document.getElementById('sys_created_email').innerText = data.createdByEmail || '--';
@@ -574,7 +365,7 @@
     document.getElementById('sys_updated_email').innerText = data.updatedByEmail || '--';
   };
 
-  // Load Data
+  // Load Master Company Record
   const loadCompanyData = async () => {
     loader.style.display = 'flex';
     try {
@@ -583,10 +374,10 @@
         hasExistingData = true;
         originalData = docSnap.data();
         populateForm(originalData);
-        toggleEditMode(false); // Read-only mode
+        toggleEditMode(false); // Make Read-only when it exists
       } else {
         hasExistingData = false;
-        toggleEditMode(true); // Open in edit mode if empty
+        toggleEditMode(true); // Open in Edit Mode so they can add the company
       }
     } catch (err) {
       console.error("Error loading company data:", err);
@@ -596,22 +387,22 @@
     }
   };
 
-  // Event Listeners
+  // Event Handlers
   if(btnEdit) btnEdit.addEventListener('click', () => toggleEditMode(true));
   if(btnRefresh) btnRefresh.addEventListener('click', loadCompanyData);
   
   if(btnCancel) {
     btnCancel.addEventListener('click', () => {
       if (hasExistingData) {
-        populateForm(originalData); // revert
+        populateForm(originalData); 
         toggleEditMode(false);
       } else {
-        form.reset(); // clear if nothing saved yet
+        form.reset(); 
       }
     });
   }
 
-  // Handle Form Save
+  // Handle Save
   if(form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -620,18 +411,15 @@
       const originalText = btnSave.innerHTML;
       btnSave.innerHTML = `<span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite;">sync</span> Saving...`;
 
-      // Get user context from global window object (if available)
       const userEmail = window.currentUser ? window.currentUser.email : "user@example.com";
       const userName = userEmail.split('@')[0];
 
-      // Collect Data
       const payload = {};
       fields.forEach(id => {
         const el = document.getElementById(id);
         if(el) payload[id] = el.value;
       });
 
-      // Append System Tracking Fields
       payload.updatedAt = serverTimestamp();
       payload.updatedByEmail = userEmail;
       payload.updatedBy = userName;
@@ -644,8 +432,7 @@
 
       try {
         await setDoc(companyDocRef, payload, { merge: true });
-        // Reload fresh data to capture server timestamps
-        await loadCompanyData();
+        await loadCompanyData(); // Reload to secure server timestamps
       } catch (err) {
         console.error("Error saving company details:", err);
         alert("Error saving data: " + err.message);
@@ -656,7 +443,6 @@
     });
   }
 
-  // Initialize
+  // Init Data fetch
   loadCompanyData();
-
 </script>
