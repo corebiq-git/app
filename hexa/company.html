@@ -1,0 +1,639 @@
+<div class="module-container" id="company-module"><!--
+  COMPANY SETTINGS MODULE
+  Loaded dynamically into #module-container / module container.
+  Main CSS is loaded by index.html -> style.css
+-->
+<div class="company-module">
+<!-- TOOLBAR -->
+<div class="comp-toolbar">
+<div class="comp-toolbar-left">
+<button class="comp-icon-btn" onclick="window.switchView('view-dashboard', null)" title="Back" type="button">
+<span class="material-symbols-rounded">arrow_back</span>
+</button>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">filter_list</span>
+                Filter
+            </button>
+<div class="comp-search">
+<span class="material-symbols-rounded">search</span>
+<input placeholder="Search settings..." type="text"/>
+</div>
+</div>
+<div class="comp-toolbar-right">
+<div class="date-range-group">
+<input title="From Date" type="date"/>
+<span>-</span>
+<input title="To Date" type="date"/>
+</div>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">analytics</span> Report
+            </button>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">download</span> CSV Sample
+            </button>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">publish</span> Import
+            </button>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">file_download</span> Export
+            </button>
+<button class="comp-action-btn primary" type="button">
+<span class="material-symbols-rounded">add</span> Add Option
+            </button>
+</div>
+</div>
+<!-- HEADER -->
+<div class="comp-header-banner">
+<h1>COREBIQ — COMPANY SETTINGS</h1>
+<p>(Read-only • Automatically generated)</p>
+<div class="comp-id">Company ID: COMIQ-001</div>
+</div>
+<form id="companySettingsForm">
+<!-- 1. COMPANY IDENTITY -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">domain</span>
+                1. COMPANY IDENTITY
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group">
+<input id="compName" placeholder=" " required="" type="text"/>
+<label for="compName">Company Name (Legal / Registered)</label>
+</div>
+<div class="g-input-group">
+<input id="compDisplayName" placeholder=" " required="" type="text"/>
+<label for="compDisplayName">Display Name</label>
+</div>
+<div class="g-input-group">
+<select id="compBusinessType" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="sole">Sole Proprietorship</option>
+<option value="partnership">Partnership</option>
+<option value="llp">Limited Liability Partnership (LLP)</option>
+<option value="pvt">Private Limited Company</option>
+<option value="pub">Public Limited Company</option>
+<option value="trust">Trust</option>
+<option value="society">Society</option>
+<option value="other">Other</option>
+</select>
+<label>Business Type</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select id="compIndustry" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="fin">Accounting &amp; Finance</option>
+<option value="health">Healthcare</option>
+<option value="travel">Travel &amp; Tourism</option>
+<option value="retail">Retail</option>
+<option value="edu">Education</option>
+<option value="it">IT &amp; Software</option>
+<option value="prof">Professional Services</option>
+<option value="mfg">Manufacturing</option>
+<option value="const">Construction</option>
+<option value="real">Real Estate</option>
+<option value="hosp">Hospitality</option>
+<option value="log">Logistics</option>
+<option value="other">Other</option>
+</select>
+<label>Industry</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select id="compStatus" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="Active">Active</option>
+<option value="Inactive">Inactive</option>
+</select>
+<label>Company Status</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<input id="compEstDate" placeholder=" " required="" type="date"/>
+<label for="compEstDate">Established Date</label>
+</div>
+</div>
+</div>
+<!-- 2. COMPANY LOGO & BRANDING -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">palette</span>
+                2. COMPANY LOGO &amp; BRANDING
+            </h2>
+<div class="comp-grid col-3">
+<div class="upload-box">
+<span class="material-symbols-rounded">cloud_upload</span>
+<strong>+ Upload Primary Logo</strong>
+<p>PNG / JPG / WEBP<br/>Rec. Size: 512 × 512 px</p>
+</div>
+<div class="upload-box">
+<span class="material-symbols-rounded">view_compact_alt</span>
+<strong>+ Upload Header Logo</strong>
+<p>PNG / JPG / WEBP<br/>Rec. Ratio: 1:4</p>
+</div>
+<div class="upload-box">
+<span class="material-symbols-rounded">web_asset</span>
+<strong>+ Upload Favicon</strong>
+<p>PNG / ICO<br/>Rec. Size: 32 × 32 px</p>
+</div>
+</div>
+<div class="comp-grid" style="margin-top:20px;">
+<div class="g-input-group">
+<input id="compBrandName" placeholder=" " type="text"/>
+<label for="compBrandName">Brand Name</label>
+</div>
+<div class="brand-color-row">
+<div class="g-input-group">
+<input id="compColor1" type="color" value="#0F4C81"/>
+<label>Primary Colour</label>
+</div>
+<div class="g-input-group">
+<input id="compColor2" type="color" value="#D4AF37"/>
+<label>Secondary Colour</label>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. CONTACT INFORMATION -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">contact_phone</span>
+                3. CONTACT INFORMATION
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group">
+<input id="compEmail" placeholder=" " required="" type="email"/>
+<label>Official Email</label>
+</div>
+<div class="g-input-group">
+<input id="compSupportEmail" placeholder=" " type="email"/>
+<label>Support Email</label>
+</div>
+<div class="g-input-group">
+<input id="compPhone" placeholder=" " required="" type="tel"/>
+<label>Phone Number</label>
+</div>
+<div class="g-input-group">
+<input id="compAltPhone" placeholder=" " type="tel"/>
+<label>Alternate Phone</label>
+</div>
+<div class="g-input-group">
+<input id="compWhatsapp" placeholder=" " type="tel"/>
+<label>WhatsApp Number</label>
+</div>
+<div class="g-input-group">
+<input id="compWebsite" placeholder=" " type="url"/>
+<label>Website (https://...)</label>
+</div>
+<div class="g-input-group full-width">
+<select id="compPrefContact" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="email">Email</option>
+<option value="phone">Phone</option>
+<option value="wa">WhatsApp</option>
+<option value="sms">SMS</option>
+</select>
+<label>Preferred Contact Method</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- 4. REGISTERED ADDRESS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">location_on</span>
+                4. REGISTERED ADDRESS
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group">
+<select id="compCountry" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="in">India</option>
+<option value="ae">UAE</option>
+<option value="other">Other</option>
+</select>
+<label>Country</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<input id="compPin" placeholder=" " required="" type="text"/>
+<label>PIN / ZIP Code</label>
+</div>
+<div class="g-input-group full-width">
+<input id="compAdd1" placeholder=" " required="" type="text"/>
+<label>Address Line 1</label>
+</div>
+<div class="g-input-group full-width">
+<input id="compAdd2" placeholder=" " type="text"/>
+<label>Address Line 2</label>
+</div>
+<div class="g-input-group">
+<input id="compCity" placeholder=" " required="" type="text"/>
+<label>City</label>
+</div>
+<div class="g-input-group">
+<input id="compDistrict" placeholder=" " type="text"/>
+<label>District</label>
+</div>
+<div class="g-input-group">
+<input id="compState" placeholder=" " required="" type="text"/>
+<label>State / Province</label>
+</div>
+</div>
+<label class="g-checkbox checkbox-top">
+<input checked="" type="checkbox"/>
+<span>Billing address is same as registered address</span>
+</label>
+</div>
+<!-- 5. TAX & REGISTRATION -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">receipt_long</span>
+                5. TAX &amp; REGISTRATION (INDIA)
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group"><input id="compPan" placeholder=" " type="text"/><label>PAN</label></div>
+<div class="g-input-group"><input id="compTan" placeholder=" " type="text"/><label>TAN</label></div>
+<div class="g-input-group"><input id="compGstin" placeholder=" " type="text"/><label>GSTIN</label></div>
+<div class="g-input-group">
+<select id="compGstType">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="reg">Regular</option>
+<option value="comp">Composition</option>
+<option value="casual">Casual Taxable Person</option>
+<option value="sez">SEZ</option>
+<option value="isd">Input Service Distributor</option>
+<option value="nonres">Non-Resident Taxable Person</option>
+<option value="unreg">Unregistered</option>
+</select>
+<label>GST Registration Type</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group"><input id="compGstState" placeholder=" " type="text"/><label>GST State</label></div>
+<div class="g-input-group"><input id="compCin" placeholder=" " type="text"/><label>CIN</label></div>
+<div class="g-input-group"><input id="compUdyam" placeholder=" " type="text"/><label>UDYAM Registration No.</label></div>
+<div class="g-input-group"><input id="compIec" placeholder=" " type="text"/><label>IEC</label></div>
+<div class="g-input-group full-width"><input id="compFssai" placeholder=" " type="text"/><label>FSSAI No.</label></div>
+</div>
+</div>
+<!-- 6. UAE TAX & REGISTRATION -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">public</span>
+                6. UAE TAX &amp; REGISTRATION
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group"><input id="compTrn" placeholder=" " type="text"/><label>TRN (Tax Registration Number)</label></div>
+<div class="g-input-group"><input id="compTradeLic" placeholder=" " type="text"/><label>Trade License No.</label></div>
+<div class="g-input-group"><input id="compLicAuth" placeholder=" " type="text"/><label>License Authority</label></div>
+<div class="g-input-group"><input id="compEstCard" placeholder=" " type="text"/><label>Establishment Card No.</label></div>
+</div>
+</div>
+<!-- 7. FINANCIAL SETTINGS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">account_balance_wallet</span>
+                7. FINANCIAL SETTINGS
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group">
+<select id="compCurrency" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="inr">INR – Indian Rupee</option>
+<option value="aed">AED – UAE Dirham</option>
+<option value="usd">USD – US Dollar</option>
+<option value="eur">EUR – Euro</option>
+<option value="gbp">GBP – Pound Sterling</option>
+</select>
+<label>Default Currency</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select id="compFinYear" required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="apr-mar">April – March</option>
+<option value="jan-dec">January – December</option>
+<option value="other">Other</option>
+</select>
+<label>Financial Year</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select id="compNumFormat">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="in">Indian (1,00,000.00)</option>
+<option value="int">International (100,000.00)</option>
+</select>
+<label>Number Format</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select id="compDecimal">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="0">0</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+</select>
+<label>Decimal Places</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group"><input id="compTaxType" placeholder=" " type="text"/><label>Default Tax Type (e.g. GST, VAT)</label></div>
+<div class="g-input-group"><input id="compTaxRate" placeholder=" " step="0.01" type="number"/><label>Default Tax Rate (%)</label></div>
+<div class="g-input-group full-width">
+<select id="compTaxDisplay">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="ex">Tax Exclusive</option>
+<option value="in">Tax Inclusive</option>
+</select>
+<label>Tax Display</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- 8. INVOICE & DOCUMENT SETTINGS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">description</span>
+                8. INVOICE &amp; DOCUMENT SETTINGS
+            </h2>
+<div class="comp-grid">
+<div class="g-input-group"><input placeholder=" " type="text" value="INV"/><label>Invoice Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="000001"/><label>Invoice Number Start</label></div>
+<div class="g-input-group full-width">
+<input placeholder=" " readonly="" type="text" value="INV-000001"/>
+<label>Invoice Number Format Preview</label>
+</div>
+<div class="g-input-group"><input placeholder=" " type="text" value="PI"/><label>Proforma Invoice Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="QT"/><label>Quotation Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="CN"/><label>Credit Note Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="DN"/><label>Debit Note Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="RC"/><label>Receipt Prefix</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="PAY"/><label>Payment Prefix</label></div>
+<div class="g-input-group full-width">
+<select>
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="t1">Standard Professional</option>
+<option value="t2">Modern Clean</option>
+<option value="t3">Classic Corporate</option>
+</select>
+<label>Invoice Template</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select>
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="rec">Due on Receipt</option>
+<option value="7">7 Days</option>
+<option value="15">15 Days</option>
+<option value="30">30 Days</option>
+<option value="45">45 Days</option>
+<option value="60">60 Days</option>
+<option value="custom">Custom</option>
+</select>
+<label>Default Payment Terms</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<input placeholder=" " type="number" value="0"/>
+<label>Default Due Days</label>
+</div>
+</div>
+<div class="g-checkbox-group document-options">
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Show company logo</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Show company address</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Show tax registration details</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Show bank details</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Show QR code</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Show terms &amp; conditions</span></label>
+</div>
+</div>
+<!-- 9. BANK DETAILS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">account_balance</span>
+                9. BANK DETAILS
+            </h2>
+<div class="sub-card">
+<button class="sub-card-delete" title="Remove Bank" type="button">
+<span class="material-symbols-rounded">delete</span>
+</button>
+<div class="comp-grid">
+<div class="g-input-group full-width"><input placeholder=" " required="" type="text"/><label>Account Name</label></div>
+<div class="g-input-group"><input placeholder=" " required="" type="text"/><label>Bank Name</label></div>
+<div class="g-input-group"><input placeholder=" " type="text"/><label>Branch</label></div>
+<div class="g-input-group full-width"><input placeholder=" " required="" type="text"/><label>Account Number</label></div>
+<div class="g-input-group"><input placeholder=" " type="text"/><label>IFSC Code</label></div>
+<div class="g-input-group"><input placeholder=" " type="text"/><label>SWIFT Code</label></div>
+<div class="g-input-group"><input placeholder=" " type="text"/><label>IBAN</label></div>
+<div class="g-input-group">
+<select required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="current">Current</option>
+<option value="saving">Savings</option>
+<option value="biz">Business</option>
+<option value="other">Other</option>
+</select>
+<label>Account Type</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+<label class="g-checkbox checkbox-top">
+<input checked="" type="checkbox"/>
+<span>Set as Default Account</span>
+</label>
+</div>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">add</span>
+                Add Bank Account
+            </button>
+</div>
+<!-- 10. PAYMENT SETTINGS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">payments</span>
+                10. PAYMENT SETTINGS
+            </h2>
+<p class="form-helper-text">Accepted Payment Methods</p>
+<div class="g-checkbox-group">
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Cash</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Bank Transfer</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>UPI</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Credit Card</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Debit Card</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Online Payment</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Cheque</span></label>
+<label class="g-checkbox"><input type="checkbox"/><span>Other</span></label>
+</div>
+<hr class="form-divider"/>
+<div class="comp-grid">
+<div class="g-input-group">
+<input placeholder=" " type="text"/>
+<label>UPI ID</label>
+</div>
+<div class="payment-qr-row">
+<div class="upload-box payment-qr-box">
+<span class="material-symbols-rounded">qr_code</span>
+</div>
+<button class="comp-action-btn" type="button">Generate QR</button>
+</div>
+<div class="g-input-group">
+<select>
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="rp">Razorpay</option>
+<option value="st">Stripe</option>
+<option value="pp">PayPal</option>
+<option value="cc">CCAvenue</option>
+</select>
+<label>Payment Gateway</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<input placeholder=" " type="text"/>
+<label>Merchant ID</label>
+</div>
+<div class="g-input-group full-width">
+<input placeholder=" " type="url"/>
+<label>Default Payment Link</label>
+</div>
+</div>
+</div>
+<!-- 11. COMPANY PREFERENCES -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">settings</span>
+                11. COMPANY PREFERENCES
+            </h2>
+<div class="comp-grid col-3">
+<div class="g-input-group">
+<select required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="en">English</option>
+<option value="ml">Malayalam</option>
+<option value="hi">Hindi</option>
+<option value="ar">Arabic</option>
+</select>
+<label>Default Language</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="dmy">DD/MM/YYYY</option>
+<option value="mdy">MM/DD/YYYY</option>
+<option value="ymd">YYYY-MM-DD</option>
+</select>
+<label>Date Format</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select required="">
+<option disabled="" hidden="" selected="" value=""></option>
+<option value="ist">Asia/Kolkata (IST)</option>
+<option value="gst">Asia/Dubai (GST)</option>
+<option value="utc">UTC</option>
+</select>
+<label>Time Zone</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- 12. NOTIFICATIONS -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">notifications_active</span>
+                12. NOTIFICATIONS
+            </h2>
+<div class="g-checkbox-group">
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Email Notifications</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Payment Notifications</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Invoice Notifications</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>Compliance Reminders</span></label>
+<label class="g-checkbox"><input checked="" type="checkbox"/><span>System Notifications</span></label>
+</div>
+</div>
+<!-- 13. BRANCH MANAGEMENT -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">store</span>
+                13. BRANCH MANAGEMENT
+            </h2>
+<div class="sub-card">
+<div class="comp-grid">
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="BR-001"/><label>Branch ID</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="Head Office"/><label>Branch Name</label></div>
+<div class="g-input-group"><input placeholder=" " type="text" value="HO"/><label>Branch Code</label></div>
+<div class="g-input-group"><input placeholder=" " type="text"/><label>Branch Manager</label></div>
+<div class="g-input-group"><input placeholder=" " type="tel"/><label>Phone</label></div>
+<div class="g-input-group"><input placeholder=" " type="email"/><label>Email</label></div>
+<div class="g-input-group full-width"><input placeholder=" " type="text"/><label>Address</label></div>
+<div class="g-input-group">
+<select>
+<option disabled="" hidden="" value=""></option>
+<option selected="" value="active">Active</option>
+<option value="inactive">Inactive</option>
+</select>
+<label>Status</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<button class="comp-action-btn" type="button">
+<span class="material-symbols-rounded">add</span>
+                Add Branch
+            </button>
+<div class="branch-tree">
+                COMIQ-001<br/>
+                ├── BR-001 — Head Office<br/>
+                ├── BR-002 — Kochi<br/>
+                └── BR-003 — Kannur
+            </div>
+</div>
+<!-- 14. SYSTEM INFORMATION -->
+<div class="comp-form-section">
+<h2>
+<span class="material-symbols-rounded">info</span>
+                14. SYSTEM INFORMATION
+            </h2>
+<div class="comp-grid col-3">
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="COMIQ-001"/><label>Company ID (Read-only)</label></div>
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="Active"/><label>Company Status</label></div>
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="23-Sep-2026"/><label>Created Date</label></div>
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="System Admin"/><label>Created By</label></div>
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="23-Sep-2026 08:00 PM"/><label>Last Updated</label></div>
+<div class="g-input-group"><input placeholder=" " readonly="" type="text" value="System Admin"/><label>Updated By</label></div>
+<div class="g-input-group">
+<select>
+<option disabled="" hidden="" value=""></option>
+<option selected="" value="mumbai">Asia (Mumbai)</option>
+<option value="uae">Middle East (UAE)</option>
+</select>
+<label>Data Region</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+<div class="g-input-group">
+<select>
+<option disabled="" hidden="" value=""></option>
+<option selected="" value="edit">Editable</option>
+<option value="lock">Locked</option>
+</select>
+<label>Record Lock</label>
+<span class="material-symbols-rounded select-arrow">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- 15. ACTIONS -->
+<div class="comp-footer-actions">
+<button class="comp-action-btn" onclick="window.switchView('view-dashboard', null)" type="button">
+                Cancel
+            </button>
+<button class="comp-action-btn primary" type="submit">
+                Save Changes
+            </button>
+<button class="comp-action-btn primary" type="button">
+                Save &amp; Continue
+            </button>
+</div>
+</form>
+</div>
+</div>

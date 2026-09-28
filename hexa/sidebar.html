@@ -1,0 +1,35 @@
+<style>
+.sidebar-inner-wrapper{display:flex;flex-direction:column;min-height:100%;height:100%;background:var(--surface)}
+.sidebar-header{position:sticky;top:0;z-index:20;min-height:76px;padding:16px 20px;display:flex;align-items:center;justify-content:center;background:var(--surface);border-bottom:1px solid var(--border)}
+.sidebar-brand{width:100%;display:flex;align-items:center;justify-content:center}.sidebar-logo{display:block;width:100%;max-width:190px;max-height:52px;height:auto;object-fit:contain}
+.close-menu{display:flex;align-items:center;justify-content:center;width:38px;height:38px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--text-main);cursor:pointer;flex-shrink:0}.close-menu:hover{background:rgba(0,0,0,.05)}.close-menu:active{transform:scale(.95)}
+.sidebar-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 0 20px;display:flex;flex-direction:column;gap:3px;scrollbar-width:thin}
+.nav-link{width:calc(100% - 32px);min-height:44px;margin:0 16px;padding:10px 14px;display:flex;align-items:center;border:0;border-radius:10px;background:transparent;color:var(--text-muted);font-family:inherit;font-size:14px;font-weight:500;line-height:1.25;text-align:left;cursor:pointer;transition:background .18s ease,color .18s ease,transform .12s ease}.nav-link:hover{background:rgba(0,0,0,.035);color:var(--text-main)}.nav-link.active{background:var(--primary-light);color:var(--primary);font-weight:600}.nav-link .material-symbols-rounded{width:22px;min-width:22px;margin-right:12px;font-size:21px;color:currentColor;flex-shrink:0}.nav-divider{width:calc(100% - 40px);height:1px;margin:10px 20px;background:var(--border);flex-shrink:0}
+.sidebar-footer{flex-shrink:0;padding:14px 20px 16px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border-top:1px solid var(--border)}
+.footer-logo{display:block;width:150px;max-width:100%;height:auto;max-height:32px;margin:0 auto 7px;object-fit:contain}.footer-app-name{margin-bottom:2px;color:var(--text-main);font-size:12px;font-weight:700;line-height:1.2;text-align:center}.footer-version{color:var(--text-muted);font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;line-height:1.2}
+@media(min-width:769px){.close-menu{display:none}.sidebar-logo{max-width:175px}.footer-logo{width:145px;max-height:30px}}
+@media(max-width:768px){.sidebar-header{min-height:78px;padding:13px 14px;justify-content:space-between}.sidebar-brand{justify-content:flex-start}.sidebar-logo{max-width:185px;max-height:52px}.close-menu{display:flex}.nav-link{width:calc(100% - 24px);min-height:46px;margin:0 12px;padding:11px 14px;font-size:14px}.sidebar-footer{padding:13px 20px 15px}.footer-logo{width:145px;max-width:85%;max-height:30px;margin-bottom:6px}}
+@media(max-width:380px){.nav-link{font-size:13.5px;padding-left:12px;padding-right:12px}.sidebar-logo{max-width:165px}.footer-logo{width:130px;max-height:28px}}
+</style>
+<div class="sidebar-inner-wrapper">
+<div class="sidebar-header"><div class="sidebar-brand"><img src="assets/name-client.png" alt="COREBIQ" class="sidebar-logo"></div><button type="button" class="close-menu" onclick="window.toggleMenu()" aria-label="Close menu"><span class="material-symbols-rounded">close</span></button></div>
+<div class="sidebar-nav" id="sidebar-nav">
+<button type="button" class="nav-link active" data-target="view-dashboard" onclick="window.switchView('view-dashboard',this)"><span class="material-symbols-rounded">dashboard</span>Dashboard</button>
+<button type="button" class="nav-link" data-target="view-clients" onclick="window.switchView('view-clients',this)"><span class="material-symbols-rounded">groups</span>Client Data</button>
+<button type="button" class="nav-link" data-target="view-appointments" onclick="window.switchView('view-appointments',this)"><span class="material-symbols-rounded">calendar_month</span>Appointments</button>
+<button type="button" class="nav-link" data-target="view-sales" onclick="window.switchView('view-sales',this)"><span class="material-symbols-rounded">point_of_sale</span>Sales</button>
+<div class="nav-divider"></div>
+<button type="button" class="nav-link" data-target="view-transaction" onclick="window.switchView('view-transaction',this)"><span class="material-symbols-rounded">receipt_long</span>Transactions</button>
+<button type="button" class="nav-link" data-target="view-qr" onclick="window.switchView('view-qr',this)"><span class="material-symbols-rounded">qr_code_scanner</span>UPI Payment QR</button>
+<button type="button" class="nav-link" data-target="view-company" onclick="window.switchView('view-company',this)"><span class="material-symbols-rounded">domain</span>Company Profile</button>
+<button type="button" class="nav-link" data-target="view-branches" onclick="window.switchView('view-branches',this)"><span class="material-symbols-rounded">apartment</span>Branches</button>
+<button type="button" class="nav-link" data-target="view-staff" onclick="window.switchView('view-staff',this)"><span class="material-symbols-rounded">badge</span>Staff Directory</button>
+<button type="button" class="nav-link" data-target="view-attendance" onclick="window.switchView('view-attendance',this)"><span class="material-symbols-rounded">how_to_reg</span>Daily Attendance</button>
+<div class="nav-divider"></div>
+<button type="button" class="nav-link" data-target="view-updates" onclick="window.switchView('view-updates',this)"><span class="material-symbols-rounded">campaign</span>App Updates</button>
+<button type="button" class="nav-link" data-target="view-licenceinfo" onclick="window.switchView('view-licenceinfo',this)"><span class="material-symbols-rounded">workspace_premium</span>Licence Info</button>
+<button type="button" class="nav-link" data-target="view-aboutapp" onclick="window.switchView('view-aboutapp',this)"><span class="material-symbols-rounded">info</span>About App</button>
+<button type="button" class="nav-link" data-target="view-privacy" onclick="window.switchView('view-privacy',this)"><span class="material-symbols-rounded">privacy_tip</span>Privacy Policy</button>
+</div>
+<div class="sidebar-footer"><img src="assets/logo-name.png" alt="COREBIQ" class="footer-logo"><div class="footer-app-name">App Version</div><span class="footer-version">1.1.0</span></div>
+</div>

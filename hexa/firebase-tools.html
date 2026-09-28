@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<meta content="#F3F4F6" name="theme-color"/>
+<title>COREBIQ · Company Data</title>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+</head>
+<body><div class="module-container" id="firebase-tools-module">
+<main class="app">
+<div class="shell">
+<header class="topbar">
+<div class="logo">C</div>
+<div>
+<h2 class="brand-title">COREBIQ</h2>
+<p class="brand-subtitle">Company Data Manager</p>
+</div>
+</header>
+<section class="card hero">
+<p class="eyebrow">FIRESTORE · COMPANY</p>
+<h1>Company data</h1>
+<p>Download the standard company CSV format, edit it, then upload it directly to Firestore.</p>
+</section>
+<section class="card">
+<h3 class="section-title">Company details</h3>
+<div class="form-grid">
+<div class="field">
+<label for="companyId">Document ID</label>
+<input autocomplete="off" id="companyId" value="company"/>
+</div>
+<div class="field">
+<label for="companyName">Company name</label>
+<input id="companyName" value="ABC Healthcare"/>
+</div>
+<div class="field full">
+<label for="legalName">Legal name</label>
+<input id="legalName" value="ABC Healthcare Pvt Ltd"/>
+</div>
+<div class="field">
+<label for="businessType">Business type</label>
+<input id="businessType" value="Private Limited"/>
+</div>
+<div class="field">
+<label for="industry">Industry</label>
+<input id="industry" value="Healthcare"/>
+</div>
+<div class="field">
+<label for="email">Email</label>
+<input id="email" type="email" value="info@abchealthcare.com"/>
+</div>
+<div class="field">
+<label for="phone">Phone</label>
+<input id="phone" value="+919876543210"/>
+</div>
+<div class="field full">
+<label for="website">Website</label>
+<input id="website" value="https://www.abchealthcare.com"/>
+</div>
+<div class="field">
+<label for="taxNumber">Tax number</label>
+<input id="taxNumber" value="32ABCDE1234F1Z5"/>
+</div>
+<div class="field">
+<label for="registrationNumber">Registration number</label>
+<input id="registrationNumber" value="U12345KL2026PTC000001"/>
+</div>
+<div class="field full">
+<label for="address">Address</label>
+<input id="address" value="MG Road"/>
+</div>
+<div class="field">
+<label for="city">City</label>
+<input id="city" value="Kochi"/>
+</div>
+<div class="field">
+<label for="state">State</label>
+<input id="state" value="Kerala"/>
+</div>
+<div class="field">
+<label for="country">Country</label>
+<input id="country" value="India"/>
+</div>
+<div class="field">
+<label for="postalCode">Postal code</label>
+<input id="postalCode" value="682001"/>
+</div>
+<div class="field">
+<label for="currency">Currency</label>
+<input id="currency" value="INR"/>
+</div>
+<div class="field">
+<label for="timezone">Timezone</label>
+<input id="timezone" value="Asia/Kolkata"/>
+</div>
+<div class="field">
+<label for="fiscalYearStart">Fiscal year start</label>
+<input id="fiscalYearStart" value="April"/>
+</div>
+<div class="field">
+<label for="statusValue">Status</label>
+<input id="statusValue" value="active"/>
+</div>
+</div>
+<div class="actions">
+<button class="btn-filled" id="downloadBtn">Download CSV</button>
+<button class="btn-outlined" id="saveBtn">Save to Firebase</button>
+</div>
+<div class="status" id="status"></div>
+</section>
+<section class="card">
+<h3 class="section-title">Upload company CSV</h3>
+<div class="file-box">
+<p>
+      Upload a CSV using the same COREBIQ company format. The <code>id</code>
+      column becomes the Firestore document ID.
+    </p>
+<input accept=".csv,text/csv" class="file-input" id="csvFile" type="file"/>
+</div>
+<div class="actions">
+<button class="btn-filled" id="uploadBtn">Upload CSV to Firebase</button>
+<button class="btn-outlined" id="downloadBlankBtn">Download Blank CSV</button>
+</div>
+</section>
+<section class="card">
+<h3 class="section-title">Firestore format</h3>
+<div class="schema">
+<table>
+<thead>
+<tr><th>Field</th><th>Example</th></tr>
+</thead>
+<tbody id="schemaBody"></tbody>
+</table>
+</div>
+<p class="hint">
+    Collection: <code>company</code> · Document ID: <code>company</code>.
+    This page uses the Firebase Web SDK and the Firebase configuration supplied for COREBIQ.
+  </p>
+</section>
+</div>
+</main>
+<script type="module">
+import { db } from './firebase-config.js';
+
+const fields = [
+  ["id","company"],
+  ["companyName","ABC Healthcare"],
+  ["legalName","ABC Healthcare Pvt Ltd"],
+  ["businessType","Private Limited"],
+  ["industry","Healthcare"],
+  ["email","info@abchealthcare.com"],
+  ["phone","+919876543210"],
+  ["website","https://www.abchealthcare.com"],
+  ["taxNumber","32ABCDE1234F1Z5"],
+  ["registrationNumber","U12345KL2026PTC000001"],
+  ["address","MG Road"],
+  ["city","Kochi"],
+  ["state","Kerala"],
+  ["country","India"],
+  ["postalCode","682001"],
+  ["currency","INR"],
+  ["timezone","Asia/Kolkata"],
+  ["fiscalYearStart","April"],
+  ["status","active"]
+];
+
+const statusBox = document.getElementById("status");
+
+function showStatus(message, type="") {
+  statusBox.textContent = message;
+  statusBox.className = "status show " + type;
+}
+
+function valuesFromForm() {
+  const data = {};
+  fields.forEach(([key]) => {
+    if (key === "id") {
+      data.id = document.getElementById("companyId").value.trim() || "company";
+    } else {
+      data[key] = document.getElementById(
+        key === "status" ? "statusValue" : key
+      ).value.trim();
+    }
+  });
+  return data;
+}
+
+function csvEscape(value) {
+  const text = String(value ?? "");
+  return /[",\n\r]/.test(text)
+    ? '"' + text.replaceAll('"','""') + '"'
+    : text;
+}
+
+function makeCsv(data) {
+  const headers = fields.map(([key]) => key);
+  return [
+    headers.join(","),
+    headers.map(key => csvEscape(data[key] ?? "")).join(",")
+  ].join("\r\n");
+}
+
+function downloadCsv(data, filename="company-sample.csv") {
+  const blob = new Blob([makeCsv(data)], {
+    type: "text/csv;charset=utf-8"
+  });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function renderSchema() {
+  const body = document.getElementById("schemaBody");
+  body.innerHTML = fields.map(([key, example]) => `
+    <tr>
+      <td>${key}</td>
+      <td>${example}</td>
+    </tr>
+  `).join("");
+}
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  downloadCsv(valuesFromForm());
+  showStatus("Company CSV downloaded successfully.", "success");
+});
+
+document.getElementById("downloadBlankBtn").addEventListener("click", () => {
+  const blank = {};
+  fields.forEach(([key]) => blank[key] = key === "id" ? "company" : "");
+  downloadCsv(blank, "company-template.csv");
+  showStatus("Blank company CSV template downloaded.", "success");
+});
+
+document.getElementById("saveBtn").addEventListener("click", async () => {
+  const data = valuesFromForm();
+
+  if (!data.companyName) {
+    showStatus("Company name is required.", "error");
+    return;
+  }
+
+  try {
+    await setDoc(
+      doc(db, "company", data.id),
+      {
+        companyName: data.companyName,
+        legalName: data.legalName,
+        businessType: data.businessType,
+        industry: data.industry,
+        email: data.email,
+        phone: data.phone,
+        website: data.website,
+        taxNumber: data.taxNumber,
+        registrationNumber: data.registrationNumber,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        country: data.country,
+        postalCode: data.postalCode,
+        currency: data.currency,
+        timezone: data.timezone,
+        fiscalYearStart: data.fiscalYearStart,
+        status: data.status,
+        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp()
+      },
+      { merge: true }
+    );
+
+    showStatus(
+      `Saved successfully.\n\nFirestore: company/${data.id}`,
+      "success"
+    );
+  } catch (error) {
+    console.error(error);
+    showStatus(
+      "Firebase save failed.\n\n" + (error.message || error),
+      "error"
+    );
+  }
+});
+
+/* Simple CSV parser supporting quoted values and commas. */
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let cell = "";
+  let quoted = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const next = text[i + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === "," && !quoted) {
+      row.push(cell);
+      cell = "";
+    } else if ((char === "\n" || char === "\r") && !quoted) {
+      if (char === "\r" && next === "\n") i++;
+      row.push(cell);
+      if (row.some(v => v.trim() !== "")) rows.push(row);
+      row = [];
+      cell = "";
+    } else {
+      cell += char;
+    }
+  }
+
+  if (cell !== "" || row.length) {
+    row.push(cell);
+    if (row.some(v => v.trim() !== "")) rows.push(row);
+  }
+
+  if (!rows.length) return [];
+
+  const headers = rows[0].map(v => v.trim());
+
+  return rows.slice(1).map(values => {
+    const obj = {};
+    headers.forEach((header, index) => {
+      obj[header] = (values[index] ?? "").trim();
+    });
+    return obj;
+  });
+}
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const file = document.getElementById("csvFile").files[0];
+
+  if (!file) {
+    showStatus("Please select a CSV file first.", "error");
+    return;
+  }
+
+  try {
+    const text = await file.text();
+    const rows = parseCsv(text);
+
+    if (!rows.length) {
+      showStatus("The CSV contains no data.", "error");
+      return;
+    }
+
+    let uploaded = 0;
+
+    for (const row of rows) {
+      const id = row.id?.trim() || "company";
+
+      const data = {};
+      fields.forEach(([key]) => {
+        if (key !== "id" && row[key] !== undefined) {
+          data[key] = row[key];
+        }
+      });
+
+      data.updatedAt = serverTimestamp();
+      data.createdAt = serverTimestamp();
+
+      await setDoc(
+        doc(db, "company", id),
+        data,
+        { merge: true }
+      );
+
+      uploaded++;
+    }
+
+    showStatus(
+      `CSV upload completed.\n\n${uploaded} company record(s) uploaded.`,
+      "success"
+    );
+  } catch (error) {
+    console.error(error);
+    showStatus(
+      "CSV upload failed.\n\n" + (error.message || error),
+      "error"
+    );
+  }
+});
+
+renderSchema();
+</script>
+</div></body>
+</html>
