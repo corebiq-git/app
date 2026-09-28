@@ -1,7 +1,6 @@
 <style>
 /* =========================================================
-   COREBIQ SIDEBAR
-   MAIN MODULE + DROPDOWN SUBMODULE SYSTEM
+   SIDEBAR
    ========================================================= */
 
 .sidebar-inner-wrapper {
@@ -22,8 +21,8 @@
     top: 0;
     z-index: 20;
 
-    min-height: 76px;
-    padding: 15px 20px;
+    min-height: 70px;
+    padding: 12px 18px;
 
     display: flex;
     align-items: center;
@@ -35,7 +34,6 @@
 
 .sidebar-brand {
     width: 100%;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,61 +41,37 @@
 
 .sidebar-logo {
     display: block;
-
-    width: 100%;
-    max-width: 180px;
-    max-height: 52px;
-
-    height: auto;
-
+    width: auto;
+    max-width: 175px;
+    max-height: 48px;
     object-fit: contain;
 }
 
-
-/* =========================================================
-   CLOSE MENU
-   ========================================================= */
-
 .close-menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: none;
 
     width: 38px;
     height: 38px;
 
-    padding: 0;
+    align-items: center;
+    justify-content: center;
 
-    border: 0;
+    border: none;
     border-radius: 10px;
 
     background: transparent;
     color: var(--text-main);
 
     cursor: pointer;
-
-    flex-shrink: 0;
-
-    transition:
-        background .18s ease,
-        transform .12s ease;
 }
 
 .close-menu:hover {
-    background: rgba(0,0,0,.05);
-}
-
-.close-menu:active {
-    transform: scale(.95);
-}
-
-.close-menu .material-symbols-rounded {
-    font-size: 23px;
+    background: var(--primary-light);
 }
 
 
 /* =========================================================
-   SIDEBAR NAV
+   NAVIGATION
    ========================================================= */
 
 .sidebar-nav {
@@ -106,196 +80,136 @@
     overflow-y: auto;
     overflow-x: hidden;
 
-    padding: 12px 0 20px;
+    padding: 8px 0 16px;
 
     scrollbar-width: thin;
 }
 
 
 /* =========================================================
-   DASHBOARD / DIRECT NAV BUTTON
+   MAIN MODULE DROPDOWN
    ========================================================= */
 
-.nav-link {
-    width: calc(100% - 32px);
+.sidebar-group {
+    margin: 2px 10px;
+}
+
+
+/* Main module title */
+
+.sidebar-group > summary {
+    list-style: none;
+
+    width: 100%;
+
     min-height: 44px;
-
-    margin: 3px 16px;
-    padding: 10px 14px;
+    padding: 0 12px;
 
     display: flex;
     align-items: center;
 
-    border: 0;
     border-radius: 10px;
-
-    background: transparent;
-
-    color: var(--text-muted);
-
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 500;
-
-    line-height: 1.25;
-
-    text-align: left;
 
     cursor: pointer;
 
-    transition:
-        background .18s ease,
-        color .18s ease,
-        transform .12s ease;
-}
-
-.nav-link:hover {
-    background: rgba(0,0,0,.035);
     color: var(--text-main);
-}
-
-.nav-link:active {
-    transform: scale(.985);
-}
-
-.nav-link.active {
-    background: var(--primary-light);
-    color: var(--primary);
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   NAV ICON
-   ========================================================= */
-
-.nav-link > .material-symbols-rounded {
-    width: 22px;
-    min-width: 22px;
-
-    margin-right: 12px;
-
-    font-size: 21px;
-
-    color: currentColor;
-
-    flex-shrink: 0;
-}
-
-
-/* =========================================================
-   MAIN MODULE
-   ========================================================= */
-
-.sidebar-module {
-    margin: 2px 0;
-}
-
-
-/* =========================================================
-   MAIN MODULE BUTTON
-   ========================================================= */
-
-.module-toggle {
-    position: relative;
-
-    width: calc(100% - 32px);
-    min-height: 46px;
-
-    margin: 2px 16px;
-    padding: 10px 14px;
-
-    display: flex;
-    align-items: center;
-
-    border: 0;
-    border-radius: 10px;
-
-    background: transparent;
-
-    color: var(--text-muted);
 
     font-family: inherit;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 650;
 
-    text-align: left;
-
-    cursor: pointer;
+    user-select: none;
 
     transition:
         background .18s ease,
         color .18s ease;
 }
 
-.module-toggle:hover {
-    background: rgba(0,0,0,.035);
-    color: var(--text-main);
+
+/* Remove default triangle */
+
+.sidebar-group > summary::-webkit-details-marker {
+    display: none;
 }
 
 
-/* =========================================================
-   MODULE ICON
-   ========================================================= */
+/* Icon */
 
-.module-toggle > .material-symbols-rounded:first-child {
-    width: 22px;
-    min-width: 22px;
-
+.sidebar-group > summary .module-icon {
+    width: 24px;
     margin-right: 12px;
 
-    font-size: 21px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    color: currentColor;
+    color: var(--text-muted);
+
+    flex-shrink: 0;
+}
+
+.sidebar-group > summary .material-symbols-rounded {
+    font-size: 21px;
 }
 
 
-/* =========================================================
-   DROPDOWN ARROW
-   ========================================================= */
+/* Chevron */
 
-.module-arrow {
+.module-chevron {
     margin-left: auto;
 
-    font-size: 20px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    transition: transform .22s ease;
+    color: var(--text-muted);
+
+    transition: transform .2s ease;
+}
+
+.module-chevron .material-symbols-rounded {
+    font-size: 20px;
 }
 
 
-/* Rotate arrow when open */
+/* Open state */
 
-.sidebar-module.open .module-arrow {
+.sidebar-group[open] > summary {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.sidebar-group[open] > summary .module-icon {
+    color: var(--primary);
+}
+
+.sidebar-group[open] > summary .module-chevron {
+    color: var(--primary);
     transform: rotate(180deg);
 }
 
 
-/* =========================================================
-   SUBMENU
-   ========================================================= */
+/* Hover */
 
-.module-submenu {
-    display: none;
-
-    padding: 2px 0 5px;
-
-    animation: submenuOpen .18s ease;
-}
-
-.sidebar-module.open .module-submenu {
-    display: block;
+.sidebar-group > summary:hover {
+    background: #F7F8FA;
 }
 
 
 /* =========================================================
-   SUBMENU ANIMATION
+   SUB MENU
    ========================================================= */
+
+.sidebar-submenu {
+    padding: 3px 0 5px 0;
+
+    animation: submenuOpen .16s ease;
+}
 
 @keyframes submenuOpen {
-
     from {
         opacity: 0;
-        transform: translateY(-4px);
+        transform: translateY(-3px);
     }
 
     to {
@@ -306,99 +220,62 @@
 
 
 /* =========================================================
-   SUBMENU BUTTON
+   SUB MENU BUTTON
    ========================================================= */
 
-.submenu-link {
-    position: relative;
-
-    width: calc(100% - 52px);
+.nav-link {
+    width: calc(100% - 12px);
     min-height: 40px;
 
-    margin: 2px 16px 2px 36px;
-    padding: 9px 12px 9px 16px;
+    margin: 2px 6px;
+    padding: 8px 12px 8px 42px;
 
     display: flex;
     align-items: center;
 
-    border: 0;
-    border-radius: 9px;
+    border: none;
+    border-radius: 8px;
 
     background: transparent;
 
     color: var(--text-muted);
 
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 500;
-
     text-align: left;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
 
     cursor: pointer;
 
     transition:
-        background .18s ease,
-        color .18s ease;
+        background .16s ease,
+        color .16s ease;
 }
 
-.submenu-link:hover {
-    background: rgba(0,0,0,.035);
+.nav-link:hover {
+    background: #F7F8FA;
     color: var(--text-main);
 }
 
-
-/* =========================================================
-   SUBMENU ACTIVE
-   ========================================================= */
-
-.submenu-link.active {
+.nav-link.active {
     background: var(--primary-light);
     color: var(--primary);
-
-    font-weight: 600;
+    font-weight: 650;
 }
 
 
-/* =========================================================
-   SUBMENU ICON
-   ========================================================= */
+/* Submenu icon */
 
-.submenu-link .material-symbols-rounded {
-    width: 20px;
-    min-width: 20px;
-
+.nav-link .material-symbols-rounded {
+    width: 22px;
     margin-right: 10px;
 
     font-size: 19px;
 
-    color: currentColor;
-}
+    color: inherit;
 
-
-/* =========================================================
-   SUBMENU LEFT GUIDE LINE
-   ========================================================= */
-
-.submenu-link::before {
-    content: "";
-
-    position: absolute;
-
-    left: -10px;
-    top: 50%;
-
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--border);
-
-    transform: translateY(-50%);
-}
-
-.submenu-link.active::before {
-    background: var(--primary);
+    flex-shrink: 0;
 }
 
 
@@ -407,12 +284,30 @@
    ========================================================= */
 
 .nav-divider {
-    width: calc(100% - 40px);
     height: 1px;
 
-    margin: 11px 20px;
+    margin: 7px 20px;
 
     background: var(--border);
+}
+
+
+/* =========================================================
+   BADGE
+   ========================================================= */
+
+.menu-badge {
+    margin-left: auto;
+
+    padding: 2px 7px;
+
+    border-radius: 20px;
+
+    background: var(--primary);
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 700;
 }
 
 
@@ -423,66 +318,42 @@
 .sidebar-footer {
     flex-shrink: 0;
 
-    padding: 15px 20px;
+    padding: 12px 18px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    background: var(--surface);
-
+    background: #FAFAFA;
     border-top: 1px solid var(--border);
 }
 
 .footer-logo {
-    width: 80px;
+    width: 68px;
     height: auto;
 
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 
     object-fit: contain;
 }
 
 .footer-app-name {
-    margin-bottom: 2px;
+    margin-bottom: 1px;
 
     color: var(--text-main);
 
-    font-size: 13px;
-    font-weight: 800;
-
-    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
 }
 
 .footer-version {
     color: var(--text-muted);
 
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
 
-    letter-spacing: .5px;
-    text-transform: uppercase;
-}
-
-
-/* =========================================================
-   DESKTOP
-   ========================================================= */
-
-@media (min-width: 769px) {
-
-    .close-menu {
-        display: none;
-    }
-
-    .sidebar-header {
-        justify-content: center;
-    }
-
-    .sidebar-logo {
-        max-width: 175px;
-    }
+    letter-spacing: .4px;
 }
 
 
@@ -493,9 +364,8 @@
 @media (max-width: 768px) {
 
     .sidebar-header {
-        min-height: 78px;
-
-        padding: 13px 14px;
+        min-height: 68px;
+        padding: 10px 14px;
 
         justify-content: space-between;
     }
@@ -505,8 +375,8 @@
     }
 
     .sidebar-logo {
-        max-width: 185px;
-        max-height: 52px;
+        max-width: 170px;
+        max-height: 46px;
     }
 
     .close-menu {
@@ -514,90 +384,50 @@
     }
 
     .sidebar-nav {
-        padding-top: 10px;
-        padding-bottom: 18px;
+        padding-top: 7px;
+        padding-bottom: 12px;
+    }
+
+    .sidebar-group {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .sidebar-group > summary {
+        min-height: 46px;
+        padding: 0 13px;
+
+        font-size: 14px;
+    }
+
+    .sidebar-group > summary .material-symbols-rounded {
+        font-size: 21px;
     }
 
     .nav-link {
-        width: calc(100% - 24px);
-
-        min-height: 46px;
-
-        margin-left: 12px;
-        margin-right: 12px;
-
-        font-size: 14px;
-    }
-
-    .module-toggle {
-        width: calc(100% - 24px);
-
-        min-height: 46px;
-
-        margin-left: 12px;
-        margin-right: 12px;
-
-        padding-left: 14px;
-        padding-right: 12px;
-
-        font-size: 14px;
-    }
-
-    .submenu-link {
-        width: calc(100% - 44px);
-
         min-height: 43px;
 
-        margin-left: 32px;
-        margin-right: 12px;
+        padding: 9px 12px 9px 43px;
 
-        font-size: 14px;
-
-        padding-top: 10px;
-        padding-bottom: 10px;
+        font-size: 13.5px;
     }
 
-    .submenu-link .material-symbols-rounded {
+    .nav-link .material-symbols-rounded {
         font-size: 19px;
     }
 
     .nav-divider {
-        margin: 10px 20px;
+        margin: 6px 18px;
     }
 
     .sidebar-footer {
-        padding: 13px 20px;
-    }
-}
-
-
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
-
-@media (max-width: 380px) {
-
-    .module-toggle {
-        font-size: 13.5px;
-    }
-
-    .submenu-link {
-        font-size: 13.5px;
-    }
-
-    .sidebar-logo {
-        max-width: 165px;
+        padding: 11px 16px;
     }
 }
 </style>
 
 
-<!-- =======================================================
-     SIDEBAR
-     ======================================================= -->
-
 <div class="sidebar-inner-wrapper">
-
 
     <!-- =====================================================
          HEADER
@@ -615,22 +445,17 @@
 
         </div>
 
-
         <button
-            type="button"
             class="close-menu"
             onclick="window.toggleMenu()"
             aria-label="Close menu"
         >
-
             <span class="material-symbols-rounded">
                 close
             </span>
-
         </button>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -641,86 +466,46 @@
 
 
         <!-- =================================================
-             DASHBOARD
+             CORE
              ================================================= -->
 
-        <button
-            type="button"
-            class="nav-link active"
-            data-target="view-dashboard"
-            onclick="window.switchView('view-dashboard', this)"
-        >
+        <details class="sidebar-group" open>
 
-            <span class="material-symbols-rounded">
-                dashboard
-            </span>
+            <summary>
 
-            Dashboard
-
-        </button>
-
-
-
-        <!-- =================================================
-             BUSINESS
-             ================================================= -->
-
-        <div class="sidebar-module">
-
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
-
-                <span class="material-symbols-rounded">
-                    business_center
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        dashboard
+                    </span>
                 </span>
 
-                <span>
-                    Business
+                Core
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
                 </span>
 
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
+            </summary>
 
 
-            <div class="module-submenu">
-
+            <div class="sidebar-submenu">
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-company"
-                    onclick="window.switchView('view-company', this)"
+                    class="nav-link active"
+                    data-target="view-dashboard"
+                    onclick="window.switchView('view-dashboard', this)"
                 >
                     <span class="material-symbols-rounded">
-                        domain
+                        dashboard
                     </span>
-                    Company Profile
+                    Dashboard
                 </button>
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-branches"
-                    onclick="window.switchView('view-branches', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        apartment
-                    </span>
-                    Branches
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-clients"
                     onclick="window.switchView('view-clients', this)"
                 >
@@ -732,72 +517,64 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-appointments"
-                    onclick="window.switchView('view-appointments', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        calendar_month
-                    </span>
-                    Appointments
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-sales"
                     onclick="window.switchView('view-sales', this)"
                 >
                     <span class="material-symbols-rounded">
-                        point_of_sale
+                        event_note
                     </span>
                     Sales
                 </button>
 
+
+                <button
+                    class="nav-link"
+                    data-target="view-calender"
+                    onclick="window.switchView('view-calender', this)"
+                >
+                    <span class="material-symbols-rounded">
+                        calendar_month
+                    </span>
+                    Calendar
+                </button>
+
             </div>
 
-        </div>
-
+        </details>
 
 
         <!-- =================================================
-             FINANCE
+             FINANCIAL
              ================================================= -->
 
-        <div class="sidebar-module">
+        <details class="sidebar-group">
 
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
+            <summary>
 
-                <span class="material-symbols-rounded">
-                    account_balance
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        account_balance
+                    </span>
                 </span>
 
-                <span>
-                    Finance
+                Financial
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
                 </span>
 
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
+            </summary>
 
 
-            <div class="module-submenu">
-
+            <div class="sidebar-submenu">
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-transactions"
-                    onclick="window.switchView('view-transactions', this)"
+                    class="nav-link"
+                    data-target="view-transaction"
+                    onclick="window.switchView('view-transaction', this)"
                 >
                     <span class="material-symbols-rounded">
                         receipt_long
@@ -807,60 +584,7 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-cash-book"
-                    onclick="window.switchView('view-cash-book', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        payments
-                    </span>
-                    Cash Book
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-bank-book"
-                    onclick="window.switchView('view-bank-book', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        account_balance_wallet
-                    </span>
-                    Bank Book
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-ledgers"
-                    onclick="window.switchView('view-ledgers', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        menu_book
-                    </span>
-                    Ledgers
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-payment"
-                    onclick="window.switchView('view-payment', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        payments
-                    </span>
-                    Payments
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-qr"
                     onclick="window.switchView('view-qr', this)"
                 >
@@ -872,57 +596,62 @@
 
             </div>
 
-        </div>
-
+        </details>
 
 
         <!-- =================================================
-             PEOPLE
+             CLINIC ORGANIZATION
              ================================================= -->
 
-        <div class="sidebar-module">
+        <details class="sidebar-group">
 
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
+            <summary>
 
-                <span class="material-symbols-rounded">
-                    groups
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        business
+                    </span>
                 </span>
 
-                <span>
-                    People
+                Organization
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
                 </span>
 
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
+            </summary>
 
 
-            <div class="module-submenu">
+            <div class="sidebar-submenu">
+
+                <button
+                    class="nav-link"
+                    data-target="view-branches"
+                    onclick="window.switchView('view-branches', this)"
+                >
+                    <span class="material-symbols-rounded">
+                        apartment
+                    </span>
+                    Branches
+                </button>
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-management"
                     onclick="window.switchView('view-management', this)"
                 >
                     <span class="material-symbols-rounded">
-                        manage_accounts
+                        groups
                     </span>
                     Management Team
                 </button>
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-staff"
                     onclick="window.switchView('view-staff', this)"
                 >
@@ -934,8 +663,7 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-attendance"
                     onclick="window.switchView('view-attendance', this)"
                 >
@@ -945,87 +673,79 @@
                     Daily Attendance
                 </button>
 
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-leave-request"
-                    onclick="window.switchView('view-leave-request', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        event_busy
-                    </span>
-                    Leave Requests
-                </button>
-
             </div>
 
-        </div>
-
+        </details>
 
 
         <!-- =================================================
-             DOCUMENTS
+             SETTINGS
              ================================================= -->
 
-        <div class="sidebar-module">
+        <details class="sidebar-group">
 
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
+            <summary>
 
-                <span class="material-symbols-rounded">
-                    folder
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        settings
+                    </span>
                 </span>
 
-                <span>
-                    Documents
+                Settings
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
                 </span>
 
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
+            </summary>
 
 
-            <div class="module-submenu">
-
+            <div class="sidebar-submenu">
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-documents"
-                    onclick="window.switchView('view-documents', this)"
+                    class="nav-link"
+                    data-target="view-users"
+                    id="nav-users-btn"
+                    onclick="window.switchView('view-users', this)"
                 >
                     <span class="material-symbols-rounded">
-                        folder_open
+                        manage_accounts
                     </span>
-                    Documents
+                    Users (Admin)
                 </button>
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-packages"
-                    onclick="window.switchView('view-packages', this)"
+                    class="nav-link"
+                    data-target="view-clinic-details"
+                    onclick="window.switchView('view-clinic-details', this)"
                 >
                     <span class="material-symbols-rounded">
-                        inventory_2
+                        settings
                     </span>
-                    Packages
+                    Clinic Details
                 </button>
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-letterhead"
-                    onclick="window.switchView('view-temp-letterhead', this)"
+                    class="nav-link"
+                    data-target="view-company"
+                    onclick="window.switchView('view-company', this)"
+                >
+                    <span class="material-symbols-rounded">
+                        domain
+                    </span>
+                    Company Profile
+                </button>
+
+
+                <button
+                    class="nav-link"
+                    data-target="view-letterhead"
+                    onclick="window.switchView('view-letterhead', this)"
                 >
                     <span class="material-symbols-rounded">
                         description
@@ -1035,75 +755,9 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-invoice"
-                    onclick="window.switchView('view-temp-invoice', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        receipt
-                    </span>
-                    Invoice
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-estimate"
-                    onclick="window.switchView('view-temp-estimate', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        request_quote
-                    </span>
-                    Estimate
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-receipt-voucher"
-                    onclick="window.switchView('view-temp-receipt-voucher', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        receipt_long
-                    </span>
-                    Receipt Voucher
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-payment-voucher"
-                    onclick="window.switchView('view-temp-payment-voucher', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        payments
-                    </span>
-                    Payment Voucher
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-payslip-voucher"
-                    onclick="window.switchView('view-temp-payslip-voucher', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        badge
-                    </span>
-                    Payslip
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-temp-seal"
-                    onclick="window.switchView('view-temp-seal', this)"
+                    class="nav-link"
+                    data-target="view-seal"
+                    onclick="window.switchView('view-seal', this)"
                 >
                     <span class="material-symbols-rounded">
                         verified
@@ -1113,44 +767,38 @@
 
             </div>
 
-        </div>
-
+        </details>
 
 
         <!-- =================================================
              TOOLS
              ================================================= -->
 
-        <div class="sidebar-module">
+        <details class="sidebar-group">
 
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
+            <summary>
 
-                <span class="material-symbols-rounded">
-                    build
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        construction
+                    </span>
                 </span>
 
-                <span>
-                    Tools
+                Tools
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
                 </span>
 
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
+            </summary>
 
 
-            <div class="module-submenu">
-
+            <div class="sidebar-submenu">
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-calc"
                     onclick="window.switchView('view-calc', this)"
                 >
@@ -1162,21 +810,7 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-ai-chat"
-                    onclick="window.switchView('view-ai-chat', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        auto_awesome
-                    </span>
-                    AI Assistant
-                </button>
-
-
-                <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-backup"
                     onclick="window.switchView('view-backup', this)"
                 >
@@ -1186,46 +820,9 @@
                     Export & Backup
                 </button>
 
-            </div>
-
-        </div>
-
-
-
-        <!-- =================================================
-             SYSTEM
-             ================================================= -->
-
-        <div class="sidebar-module">
-
-            <button
-                type="button"
-                class="module-toggle"
-                onclick="toggleSidebarModule(this)"
-                aria-expanded="false"
-            >
-
-                <span class="material-symbols-rounded">
-                    settings
-                </span>
-
-                <span>
-                    System
-                </span>
-
-                <span class="material-symbols-rounded module-arrow">
-                    expand_more
-                </span>
-
-            </button>
-
-
-            <div class="module-submenu">
-
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-updates"
                     onclick="window.switchView('view-updates', this)"
                 >
@@ -1237,8 +834,50 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
+                    data-target="view-dev"
+                    onclick="window.switchView('view-dev', this)"
+                >
+                    <span class="material-symbols-rounded">
+                        developer_mode
+                    </span>
+                    Developer Tools
+                </button>
+
+            </div>
+
+        </details>
+
+
+        <!-- =================================================
+             INFORMATION
+             ================================================= -->
+
+        <details class="sidebar-group">
+
+            <summary>
+
+                <span class="module-icon">
+                    <span class="material-symbols-rounded">
+                        info
+                    </span>
+                </span>
+
+                Information
+
+                <span class="module-chevron">
+                    <span class="material-symbols-rounded">
+                        expand_more
+                    </span>
+                </span>
+
+            </summary>
+
+
+            <div class="sidebar-submenu">
+
+                <button
+                    class="nav-link"
                     data-target="view-licenceinfo"
                     onclick="window.switchView('view-licenceinfo', this)"
                 >
@@ -1250,8 +889,7 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-aboutapp"
                     onclick="window.switchView('view-aboutapp', this)"
                 >
@@ -1263,8 +901,7 @@
 
 
                 <button
-                    type="button"
-                    class="submenu-link"
+                    class="nav-link"
                     data-target="view-privacy"
                     onclick="window.switchView('view-privacy', this)"
                 >
@@ -1274,25 +911,11 @@
                     Privacy Policy
                 </button>
 
-
-                <button
-                    type="button"
-                    class="submenu-link"
-                    data-target="view-more"
-                    onclick="window.switchView('view-more', this)"
-                >
-                    <span class="material-symbols-rounded">
-                        more_horiz
-                    </span>
-                    More
-                </button>
-
             </div>
 
-        </div>
+        </details>
 
     </div>
-
 
 
     <!-- =====================================================
@@ -1318,54 +941,3 @@
     </div>
 
 </div>
-
-
-
-<script>
-/* =========================================================
-   SIDEBAR DROPDOWN
-   Only one main module opens at a time
-   ========================================================= */
-
-window.toggleSidebarModule = function(button) {
-
-    const currentModule = button.closest('.sidebar-module');
-
-    if (!currentModule) return;
-
-
-    const modules = document.querySelectorAll(
-        '#sidebar-nav .sidebar-module'
-    );
-
-
-    modules.forEach(function(module) {
-
-        if (module !== currentModule) {
-
-            module.classList.remove('open');
-
-            const toggle = module.querySelector('.module-toggle');
-
-            if (toggle) {
-                toggle.setAttribute(
-                    'aria-expanded',
-                    'false'
-                );
-            }
-
-        }
-
-    });
-
-
-    const isOpen = currentModule.classList.toggle('open');
-
-
-    button.setAttribute(
-        'aria-expanded',
-        isOpen ? 'true' : 'false'
-    );
-
-};
-</script>
