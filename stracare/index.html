@@ -155,13 +155,15 @@ button {
     visibility: hidden;
     pointer-events: none;
 }
+
 #cb-splash-screen img {
     width: auto;
     height: 60px;
     max-width: 240px;
     object-fit: contain;
-    animation: cbSplashPulse 1.8s ease-in-out infinite;
+    animation: cbSplashLogoIn 0.9s cubic-bezier(.22, 1, .36, 1) both;
 }
+
 .cb-splash-loader {
     width: 34px;
     height: 34px;
@@ -170,18 +172,35 @@ button {
     border-radius: 50%;
     animation: cbSpin .8s linear infinite;
 }
+
 .cb-splash-brand {
     font-size: 12px;
     font-weight: 700;
     color: var(--text-muted);
     letter-spacing: 1.5px;
 }
-@keyframes cbSplashPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(.96); opacity: .78; }
+
+@keyframes cbSplashLogoIn {
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(.94);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translateY(-2px) scale(1.01);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
+
 @keyframes cbSpin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* APP SHELL */
