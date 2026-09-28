@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no,
+      viewport-fit=cover">
+
+<meta name="theme-color" content="#F7F9FC">
+
+<title>COREBIQ | Sign In</title>
+
+<link rel="icon"
+      href="assets/logo-favicon.png"
+      type="image/png">
+
+<!-- =========================================================
+     GOOGLE FONTS
+     ========================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet">
+
+
+<style>
+
+/* =========================================================
+   COREBIQ
+   GEMINI / MATERIAL 3 INSPIRED DESIGN SYSTEM
+   ========================================================= */
+
+:root{
+
+    /* Background */
+
+    --bg:#F7F9FC;
+
+    --surface:#FFFFFF;
+
+    --surface-container:#F1F3F4;
+
+    --surface-container-high:#E8EAED;
+
+
+    /* Primary */
+
+    --primary:#0B57D0;
+
+    --primary-hover:#0848B5;
+
+    --primary-container:#D3E3FD;
+
+    --on-primary:#FFFFFF;
+
+
+    /* Text */
+
+    --text:#1F1F1F;
+
+    --text-secondary:#5F6368;
+
+
+    /* Borders */
+
+    --outline:#747775;
+
+    --outline-variant:#DADCE0;
+
+
+    /* Error */
+
+    --error:#B3261E;
+
+    --error-container:#F9DEDC;
+
+
+    /* Success */
+
+    --success:#137333;
+
+    --success-container:#E6F4EA;
+
+
+    /* Radius */
+
+    --radius-xl:28px;
+
+    --radius-lg:24px;
+
+    --radius-md:16px;
+
+
+    /* Shadow */
+
+    --shadow:
+        0 1px 2px rgba(60,64,67,.08),
+        0 4px 12px rgba(60,64,67,.08);
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+
+    box-sizing:border-box;
+
+    margin:0;
+
+    padding:0;
+
+    font-family:"Outfit",sans-serif;
+
+    -webkit-tap-highlight-color:transparent;
+
+}
+
+
+html,
+body{
+
+    width:100%;
+
+    min-height:100%;
+
+}
+
+
+body{
+
+    min-height:100svh;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    font-family:"Outfit",sans-serif;
+
+    -webkit-font-smoothing:antialiased;
+
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app{
+
+    min-height:100svh;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main{
+
+    flex:1;
+
+    width:100%;
+
+    max-width:1440px;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:
+        40px
+        max(24px,env(safe-area-inset-right))
+        40px
+        max(24px,env(safe-area-inset-left));
+
+}
+
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.login-shell{
+
+    width:100%;
+
+    max-width:460px;
+
+    padding:40px;
+
+    background:var(--surface);
+
+    border:1px solid var(--outline-variant);
+
+    border-radius:var(--radius-xl);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+/* =========================================================
+   LOGIN HEADER
+   ========================================================= */
+
+.login-header{
+
+    text-align:center;
+
+    margin-bottom:32px;
+
+}
+
+
+.brand-logo{
+
+    display:block;
+
+    width:auto;
+
+    max-width:170px;
+
+    height:40px;
+
+    object-fit:contain;
+
+    margin:
+        0 auto
+        25px;
+
+}
+
+
+.login-title{
+
+    font-family:"Outfit",sans-serif;
+
+    font-size:32px;
+
+    line-height:1.15;
+
+    font-weight:500;
+
+    letter-spacing:-.7px;
+
+    margin-bottom:9px;
+
+}
+
+
+.login-subtitle{
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+    line-height:1.5;
+
+    font-weight:400;
+
+}
+
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.alert{
+
+    display:none;
+
+    align-items:flex-start;
+
+    gap:10px;
+
+    width:100%;
+
+    padding:13px 15px;
+
+    margin-bottom:22px;
+
+    border-radius:16px;
+
+    font-size:13px;
+
+    line-height:1.45;
+
+    font-weight:500;
+
+    text-align:left;
+
+}
+
+
+.alert.active{
+
+    display:flex;
+
+}
+
+
+.alert.error{
+
+    background:var(--error-container);
+
+    color:var(--error);
+
+}
+
+
+.alert.success{
+
+    background:var(--success-container);
+
+    color:var(--success);
+
+}
+
+
+.alert .material-symbols-rounded{
+
+    font-size:19px;
+
+    flex-shrink:0;
+
+}
+
+
+/* =========================================================
+   INPUT GROUP
+   ========================================================= */
+
+.input-group{
+
+    position:relative;
+
+    margin-bottom:18px;
+
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.input-group input{
+
+    width:100%;
+
+    height:56px;
+
+    padding:
+        17px
+        48px
+        7px
+        17px;
+
+    border:1px solid var(--outline);
+
+    border-radius:16px;
+
+    outline:none;
+
+    background:transparent;
+
+    color:var(--text);
+
+    font-family:"Outfit",sans-serif;
+
+    font-size:16px;
+
+    font-weight:400;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.input-group input:hover{
+
+    border-color:#5F6368;
+
+}
+
+
+.input-group input:focus{
+
+    border:2px solid var(--primary);
+
+    padding-left:16px;
+
+    padding-right:47px;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(11,87,208,.04);
+
+}
+
+
+/* =========================================================
+   FLOATING LABEL
+   ========================================================= */
+
+.input-group label{
+
+    position:absolute;
+
+    left:13px;
+
+    top:18px;
+
+    padding:0 5px;
+
+    background:var(--surface);
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+    font-weight:400;
+
+    pointer-events:none;
+
+    transition:
+        top .16s ease,
+        font-size .16s ease,
+        color .16s ease;
+
+}
+
+
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label{
+
+    top:-8px;
+
+    font-size:12px;
+
+    font-weight:500;
+
+}
+
+
+.input-group input:focus ~ label{
+
+    color:var(--primary);
+
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+   ========================================================= */
+
+.toggle-password{
+
+    position:absolute;
+
+    right:13px;
+
+    top:14px;
+
+    width:28px;
+
+    height:28px;
+
+    display:grid;
+
+    place-items:center;
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+
+    border-radius:50%;
+
+    user-select:none;
+
+    transition:
+        background .18s ease,
+        color .18s ease;
+
+}
+
+
+.toggle-password:hover{
+
+    background:var(--surface-container);
+
+    color:var(--text);
+
+}
+
+
+/* =========================================================
+   FORM OPTIONS
+   ========================================================= */
+
+.form-options{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+    margin:
+        5px
+        0
+        24px;
+
+}
+
+
+.remember-me{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:9px;
+
+    color:var(--text-secondary);
+
+    font-size:13px;
+
+    font-weight:400;
+
+    cursor:pointer;
+
+}
+
+
+.remember-me input{
+
+    width:18px;
+
+    height:18px;
+
+    margin:0;
+
+    accent-color:var(--primary);
+
+    cursor:pointer;
+
+}
+
+
+/* =========================================================
+   TEXT LINK
+   ========================================================= */
+
+.text-link{
+
+    border:0;
+
+    background:transparent;
+
+    color:var(--primary);
+
+    font-family:"Outfit",sans-serif;
+
+    font-size:13px;
+
+    font-weight:500;
+
+    padding:7px 8px;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+    transition:
+        background .18s ease;
+
+}
+
+
+.text-link:hover{
+
+    background:var(--primary-container);
+
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   GEMINI / MATERIAL 3 FILLED PILL
+   ========================================================= */
+
+.btn-primary{
+
+    width:100%;
+
+    min-height:48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    border:0;
+
+    border-radius:999px;
+
+    background:#0B57D0;
+
+    color:#FFFFFF;
+
+    padding:10px 24px;
+
+    font-family:"Outfit",sans-serif;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    cursor:pointer;
+
+    box-shadow:none;
+
+    transition:
+        background .2s ease,
+        transform .15s ease;
+
+}
+
+
+.btn-primary:hover{
+
+    background:#0848B5;
+
+}
+
+
+.btn-primary:active{
+
+    transform:scale(.98);
+
+}
+
+
+.btn-primary:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.divider{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    margin:25px 0;
+
+    color:var(--text-secondary);
+
+    font-size:11px;
+
+    font-weight:500;
+
+    letter-spacing:.3px;
+
+}
+
+
+.divider::before,
+.divider::after{
+
+    content:"";
+
+    flex:1;
+
+    height:1px;
+
+    background:var(--outline-variant);
+
+}
+
+
+/* =========================================================
+   GOOGLE BUTTON
+   MATERIAL 3 OUTLINED PILL
+   ========================================================= */
+
+.btn-google{
+
+    width:100%;
+
+    min-height:48px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:11px;
+
+    background:#FFFFFF;
+
+    color:#0B57D0;
+
+    border:1px solid #747775;
+
+    border-radius:999px;
+
+    padding:10px 24px;
+
+    font-family:"Outfit",sans-serif;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    cursor:pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        transform .15s ease;
+
+}
+
+
+.btn-google:hover{
+
+    background:#F1F3F4;
+
+    border-color:#0B57D0;
+
+}
+
+
+.btn-google:active{
+
+    transform:scale(.98);
+
+}
+
+
+.btn-google:disabled{
+
+    opacity:.55;
+
+    cursor:not-allowed;
+
+}
+
+
+.btn-google svg{
+
+    width:20px;
+
+    height:20px;
+
+    flex-shrink:0;
+
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+.loader{
+
+    display:none;
+
+    width:18px;
+
+    height:18px;
+
+    border:2px solid rgba(255,255,255,.45);
+
+    border-top-color:#FFFFFF;
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer{
+
+    text-align:center;
+
+    margin-top:24px;
+
+    color:#7A7E85;
+
+    font-size:11px;
+
+    line-height:1.5;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:600px){
+
+    body{
+
+        background:#FFFFFF;
+
+    }
+
+
+    main{
+
+        align-items:flex-start;
+
+        padding:
+            24px
+            20px
+            calc(30px + env(safe-area-inset-bottom));
+
+    }
+
+
+    .login-shell{
+
+        max-width:none;
+
+        padding:
+            28px
+            0
+            20px;
+
+        border:0;
+
+        border-radius:0;
+
+        box-shadow:none;
+
+    }
+
+
+    .login-header{
+
+        margin-bottom:30px;
+
+    }
+
+
+    .brand-logo{
+
+        height:36px;
+
+        max-width:160px;
+
+        margin-bottom:25px;
+
+    }
+
+
+    .login-title{
+
+        font-size:30px;
+
+    }
+
+
+    .login-subtitle{
+
+        font-size:14px;
+
+    }
+
+
+    .input-group{
+
+        margin-bottom:17px;
+
+    }
+
+
+    .input-group input{
+
+        height:56px;
+
+        border-radius:16px;
+
+    }
+
+
+    .form-options{
+
+        margin-top:4px;
+
+        margin-bottom:23px;
+
+    }
+
+
+    .btn-primary,
+    .btn-google{
+
+        min-height:48px;
+
+        border-radius:999px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media(max-width:380px){
+
+    main{
+
+        padding-left:18px;
+
+        padding-right:18px;
+
+    }
+
+
+    .login-shell{
+
+        padding-left:0;
+
+        padding-right:0;
+
+    }
+
+
+    .login-title{
+
+        font-size:28px;
+
+    }
+
+
+    .login-subtitle{
+
+        font-size:13px;
+
+    }
+
+
+    .remember-me,
+    .text-link{
+
+        font-size:12px;
+
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+input:focus-visible{
+
+    outline:3px solid #8CC4FF;
+
+    outline-offset:2px;
+
+}
+
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        transition:none!important;
+
+        animation:none!important;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main>
+
+
+        <section class="login-shell">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="login-header">
+
+
+                <img
+                    src="assets/name.png"
+                    alt="COREBIQ"
+                    class="brand-logo"
+                    onerror="this.src='assets/logo.png'"
+                >
+
+
+                <h1 class="login-title">
+                    Sign in
+                </h1>
+
+
+                <p class="login-subtitle">
+                    Continue to your COREBIQ Workspace
+                </p>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 ALERT
+                 ================================================= -->
+
+            <div
+                id="error-box"
+                class="alert error"
+            >
+
+
+                <span
+                    class="material-symbols-rounded"
+                >
+                    error
+                </span>
+
+
+                <span id="error-message">
+                    Invalid credentials.
+                </span>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LOGIN FORM
+                 ================================================= -->
+
+            <form id="login-form">
+
+
+                <!-- EMAIL -->
+
+                <div class="input-group">
+
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder=" "
+                        required
+                        autocomplete="email"
+                    >
+
+
+                    <label for="email">
+                        Email
+                    </label>
+
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="input-group">
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder=" "
+                        required
+                        autocomplete="current-password"
+                    >
+
+
+                    <label for="password">
+                        Password
+                    </label>
+
+
+                    <span
+                        class="material-symbols-rounded toggle-password"
+                        onclick="togglePassword()"
+                        id="toggle-icon"
+                        title="Show password"
+                    >
+                        visibility
+                    </span>
+
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="form-options">
+
+
+                    <label class="remember-me">
+
+
+                        <input
+                            type="checkbox"
+                            id="remember-me"
+                            checked
+                        >
+
+
+                        Save password
+
+
+                    </label>
+
+
+                    <button
+                        type="button"
+                        class="text-link"
+                        onclick="handleForgotPassword()"
+                    >
+                        Forgot password?
+                    </button>
+
+
+                </div>
+
+
+                <!-- SIGN IN -->
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                    id="login-btn"
+                >
+
+
+                    <span id="login-text">
+                        Sign in
+                    </span>
+
+
+                    <div
+                        class="loader"
+                        id="login-loader"
+                    ></div>
+
+
+                </button>
+
+
+            </form>
+
+
+            <!-- =================================================
+                 DIVIDER
+                 ================================================= -->
+
+            <div class="divider">
+                OR
+            </div>
+
+
+            <!-- =================================================
+                 GOOGLE LOGIN
+                 ================================================= -->
+
+            <button
+                type="button"
+                class="btn-google"
+                id="google-btn"
+                onclick="handleGoogleLogin()"
+            >
+
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 48 48"
+                >
+
+
+                    <path
+                        fill="#EA4335"
+                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                    />
+
+
+                    <path
+                        fill="#4285F4"
+                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                    />
+
+
+                    <path
+                        fill="#FBBC05"
+                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                    />
+
+
+                    <path
+                        fill="#34A853"
+                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                    />
+
+
+                </svg>
+
+
+                Continue with Google
+
+
+            </button>
+
+
+            <!-- FOOTER -->
+
+            <div class="login-footer">
+
+                Secure access to your COREBIQ Workspace
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     FIREBASE AUTHENTICATION
+     ========================================================= -->
+
+<script type="module">
+
+
+import { auth }
+from './firebase-config.js';
+
+
+import {
+
+    signInWithEmailAndPassword,
+
+    sendPasswordResetEmail,
+
+    GoogleAuthProvider,
+
+    signInWithPopup,
+
+    setPersistence,
+
+    browserLocalPersistence,
+
+    browserSessionPersistence
+
+}
+from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+
+
+/* =========================================================
+   DOM REFERENCES
+   ========================================================= */
+
+const loginForm =
+    document.getElementById('login-form');
+
+
+const emailInput =
+    document.getElementById('email');
+
+
+const passwordInput =
+    document.getElementById('password');
+
+
+const rememberCheckbox =
+    document.getElementById('remember-me');
+
+
+const loginBtn =
+    document.getElementById('login-btn');
+
+
+const loginText =
+    document.getElementById('login-text');
+
+
+const loginLoader =
+    document.getElementById('login-loader');
+
+
+const googleBtn =
+    document.getElementById('google-btn');
+
+
+const errorBox =
+    document.getElementById('error-box');
+
+
+const errorMessage =
+    document.getElementById('error-message');
+
+
+
+/* =========================================================
+   PASSWORD VISIBILITY
+   ========================================================= */
+
+window.togglePassword = function(){
+
+
+    const type =
+        passwordInput.getAttribute('type') === 'password'
+        ? 'text'
+        : 'password';
+
+
+    passwordInput.setAttribute(
+        'type',
+        type
+    );
+
+
+    const icon =
+        document.getElementById('toggle-icon');
+
+
+    icon.innerText =
+        type === 'password'
+        ? 'visibility'
+        : 'visibility_off';
+
+
+};
+
+
+
+/* =========================================================
+   SHOW ERROR / SUCCESS
+   ========================================================= */
+
+function showError(
+    message,
+    isSuccess = false
+){
+
+
+    errorBox.className =
+        isSuccess
+        ? 'alert success active'
+        : 'alert error active';
+
+
+    errorBox
+        .querySelector('.material-symbols-rounded')
+        .innerText =
+        isSuccess
+        ? 'check_circle'
+        : 'error';
+
+
+    errorMessage.innerText =
+        message;
+
+
+}
+
+
+
+/* =========================================================
+   HIDE ERROR
+   ========================================================= */
+
+function hideError(){
+
+
+    errorBox.classList.remove(
+        'active'
+    );
+
+
+}
+
+
+
+/* =========================================================
+   BUTTON LOADING
+   ========================================================= */
+
+function setBtnLoading(
+    isLoading
+){
+
+
+    loginBtn.disabled =
+        isLoading;
+
+
+    googleBtn.disabled =
+        isLoading;
+
+
+    loginText.style.display =
+        isLoading
+        ? 'none'
+        : 'block';
+
+
+    loginLoader.style.display =
+        isLoading
+        ? 'block'
+        : 'none';
+
+
+}
+
+
+
+/* =========================================================
+   EMAIL / PASSWORD LOGIN
+   ========================================================= */
+
+loginForm.addEventListener(
+    'submit',
+    async (e) => {
+
+
+        e.preventDefault();
+
+
+        hideError();
+
+
+        const email =
+            emailInput.value.trim();
+
+
+        const password =
+            passwordInput.value;
+
+
+        const rememberMe =
+            rememberCheckbox.checked;
+
+
+
+        /* VALIDATION */
+
+        if(!email || !password){
+
+
+            showError(
+                "Please enter your email and password."
+            );
+
+
+            return;
+
+        }
+
+
+
+        setBtnLoading(true);
+
+
+
+        try{
+
+
+            /* PERSISTENCE */
+
+            const persistenceType =
+                rememberMe
+                ? browserLocalPersistence
+                : browserSessionPersistence;
+
+
+            await setPersistence(
+                auth,
+                persistenceType
+            );
+
+
+
+            /* LOGIN */
+
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+
+            /* REDIRECT */
+
+            window.location.href =
+                'index.html';
+
+
+
+        }
+
+
+        catch(error){
+
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+
+            let msg =
+                "Invalid email or password.";
+
+
+
+            if(
+
+                error.code ===
+                'auth/user-not-found'
+
+                ||
+
+                error.code ===
+                'auth/wrong-password'
+
+                ||
+
+                error.code ===
+                'auth/invalid-credential'
+
+            ){
+
+
+                msg =
+                    "Wrong email or password. Try again.";
+
+
+            }
+
+
+            else if(
+
+                error.code ===
+                'auth/too-many-requests'
+
+            ){
+
+
+                msg =
+                    "Too many failed attempts. Try resetting your password.";
+
+
+            }
+
+
+            else if(
+
+                error.code ===
+                'auth/invalid-email'
+
+            ){
+
+
+                msg =
+                    "Please enter a valid email address.";
+
+
+            }
+
+
+
+            showError(msg);
+
+
+            setBtnLoading(false);
+
+
+        }
+
+
+    }
+
+);
+
+
+
+/* =========================================================
+   GOOGLE LOGIN
+   ========================================================= */
+
+window.handleGoogleLogin =
+async function(){
+
+
+    hideError();
+
+
+    setBtnLoading(true);
+
+
+    const provider =
+        new GoogleAuthProvider();
+
+
+
+    try{
+
+
+        await setPersistence(
+            auth,
+            browserLocalPersistence
+        );
+
+
+        await signInWithPopup(
+            auth,
+            provider
+        );
+
+
+        window.location.href =
+            'index.html';
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            "Google Login error:",
+            error
+        );
+
+
+        if(
+
+            error.code !==
+            'auth/popup-closed-by-user'
+
+        ){
+
+
+            showError(
+                "Google sign-in failed. Please try again."
+            );
+
+
+        }
+
+
+        setBtnLoading(false);
+
+
+    }
+
+
+};
+
+
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+window.handleForgotPassword =
+async function(){
+
+
+    hideError();
+
+
+    const email =
+        emailInput.value.trim();
+
+
+
+    if(!email){
+
+
+        showError(
+            "Enter your email address above, then click 'Forgot password?'."
+        );
+
+
+        emailInput.focus();
+
+
+        return;
+
+
+    }
+
+
+
+    const btnOriginalText =
+        loginText.innerText;
+
+
+    loginText.innerText =
+        "Sending...";
+
+
+    loginBtn.disabled =
+        true;
+
+
+
+    try{
+
+
+        await sendPasswordResetEmail(
+            auth,
+            email
+        );
+
+
+        showError(
+            "Password reset link sent! Check your inbox.",
+            true
+        );
+
+
+    }
+
+
+    catch(error){
+
+
+        console.error(
+            "Reset error:",
+            error
+        );
+
+
+        if(
+
+            error.code ===
+            'auth/user-not-found'
+
+        ){
+
+
+            showError(
+                "No account found with this email."
+            );
+
+
+        }
+
+
+        else if(
+
+            error.code ===
+            'auth/invalid-email'
+
+        ){
+
+
+            showError(
+                "Please enter a valid email address."
+            );
+
+
+        }
+
+
+        else{
+
+
+            showError(
+                "Failed to send reset email. Please try again."
+            );
+
+
+        }
+
+
+    }
+
+
+    finally{
+
+
+        loginText.innerText =
+            btnOriginalText;
+
+
+        loginBtn.disabled =
+            false;
+
+
+    }
+
+
+};
+
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ - Estimate Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    
+    <!-- PDF Generation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="module-container" id="estimate-module">
+    
+    <style>
+        /* --- Core Theme Variables (Gemini Material 3) --- */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+            --accent-soft: #E0E7FF;
+            --bg: #F8FAFF;
+            --surface: #FFFFFF;
+            --surface-soft: #FAFAFF;
+            --text-main: #111827;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 24px rgba(79, 70, 229, 0.08);
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --danger: #EF4444;
+        }
+
+        #estimate-module { 
+            font-family: 'Outfit', sans-serif; 
+            width: 100%; 
+            max-width: 1000px;
+            margin: 0 auto; 
+            padding-bottom: 40px;
+        } 
+
+        /* --- UI Components --- */
+        .section-title { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            color: var(--text-dark); 
+            display: flex; 
+            align-items: center; 
+            gap: 10px;
+        }
+        
+        .form-card { 
+            background: var(--surface); 
+            border-radius: var(--radius-lg); 
+            padding: 24px; 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 24px; 
+        }
+
+        .form-label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 8px; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .form-input, .form-select, .form-textarea { 
+            width: 100%; 
+            padding: 12px 16px; 
+            border-radius: var(--radius-md); 
+            border: 1px solid var(--border); 
+            font-size: 14px; 
+            color: var(--text-main); 
+            background: #FAFAFA; 
+            outline: none; 
+            transition: 0.2s ease; 
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .input-group { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 16px; 
+            margin-bottom: 20px; 
+        }
+        @media (min-width: 768px) { .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 900px) { .input-group-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+        .section-divider {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin: 24px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- Dynamic Table (Form) --- */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+        
+        .items-table th {
+            text-align: left;
+            padding: 12px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .items-table td {
+            padding: 8px;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .items-table input {
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .btn-icon-danger {
+            background: transparent;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            display: inline-flex;
+            transition: 0.2s;
+        }
+        .btn-icon-danger:hover { background: #FEE2E2; }
+
+        /* --- Buttons --- */
+        .btn-primary, .btn-secondary, .btn-dashed {
+            padding: 14px 24px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; box-shadow: var(--shadow-md); width: 100%; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); }
+        
+        .btn-secondary { background: var(--surface-soft); color: var(--text-main); border: 1px solid var(--border); width: 100%;}
+        .btn-secondary:hover { background: var(--primary-light); color: var(--primary-dark); border-color: var(--accent-soft); }
+
+        .btn-dashed {
+            background: transparent;
+            border: 2px dashed var(--border);
+            color: var(--text-muted);
+            width: 100%;
+            margin-bottom: 24px;
+        }
+        .btn-dashed:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .preview-area.active { display: flex; }
+
+        /* A4 Paper Styles */
+        .a4-container {
+            width: 100%;
+            max-width: 794px; /* Standard A4 width at 96 DPI */
+            min-height: 1123px; /* Standard A4 height */
+            background: #FFFFFF;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #111827;
+        }
+
+        /* Watermark */
+        .est-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Estimate Header */
+        .est-header {
+            padding: 40px 50px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            z-index: 1;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .est-logo { height: 40px; object-fit: contain; margin-bottom: 16px; }
+        .est-company-details { font-size: 11px; color: #4B5563; line-height: 1.6; }
+        .est-company-details strong { font-size: 14px; color: #111827; display: block; margin-bottom: 4px;}
+
+        .est-title-box { text-align: right; }
+        .est-title { font-size: 36px; font-weight: 800; color: var(--primary-dark); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;}
+        .est-meta-grid { display: grid; grid-template-columns: auto auto; gap: 8px 16px; text-align: right; font-size: 12px; }
+        .est-meta-label { font-weight: 600; color: #6B7280; }
+        .est-meta-value { font-weight: 700; color: #111827; }
+
+        /* Estimate Body */
+        .est-body {
+            flex: 1;
+            padding: 30px 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .est-bill-to {
+            margin-bottom: 30px;
+            background: #F9FAFB;
+            padding: 16px 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        .est-bill-to-title { font-size: 11px; font-weight: 700; color: #6B7280; text-transform: uppercase; margin-bottom: 8px; }
+        .est-client-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .est-client-address { font-size: 13px; color: #4B5563; line-height: 1.5; }
+
+        /* Estimate Table */
+        .est-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        .est-table th {
+            background: var(--primary-dark);
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 12px;
+            text-align: left;
+        }
+        .est-table th.right-align { text-align: right; }
+        .est-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #E5E7EB;
+            font-size: 13px;
+            vertical-align: top;
+        }
+        .est-table td.right-align { text-align: right; font-weight: 600;}
+        .est-item-desc { font-weight: 600; color: #111827; margin-bottom: 4px;}
+        .est-item-sac { font-size: 11px; color: #6B7280; }
+
+        /* Estimate Totals */
+        .est-summary-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        .est-totals {
+            width: 50%;
+        }
+        .est-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            color: #4B5563;
+        }
+        .est-total-row.grand-total {
+            border-top: 2px solid #E5E7EB;
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .est-amount-words {
+            margin-top: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #4B5563;
+            background: #F3F4F6;
+            padding: 12px 16px;
+            border-radius: 6px;
+        }
+
+        /* Footer / Signatory */
+        .est-footer {
+            padding: 20px 50px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .est-notes {
+            width: 55%;
+            font-size: 11px;
+            color: #6B7280;
+            line-height: 1.5;
+        }
+
+        .est-signatory {
+            text-align: center;
+            width: 250px;
+        }
+        .est-sig-space {
+            height: 80px;
+            border-bottom: 1px solid #111827;
+            margin-bottom: 8px;
+        }
+        .est-sig-name { font-size: 13px; font-weight: 700; }
+        .est-sig-company { font-size: 11px; color: #6B7280; }
+
+        .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 794px;}
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="color: var(--primary); font-size: 28px;">request_quote</span>
+        Estimate Generator
+    </div>
+
+    <!-- INPUT FORM -->
+    <div class="form-card" id="estimate-form-card">
+        <form id="estimate-generator-form">
+            
+            <div class="section-divider">
+                <span class="material-symbols-rounded">info</span> Estimate Details
+            </div>
+            
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">Estimate No.</label>
+                    <input type="text" id="estNo" class="form-input" placeholder="e.g. EST-26-001" required>
+                </div>
+                <div>
+                    <label class="form-label">Date</label>
+                    <input type="date" id="estDate" class="form-input" required>
+                </div>
+                <div>
+                    <label class="form-label">Valid Until</label>
+                    <input type="date" id="estValidUntil" class="form-input" required>
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">person</span> Client Details
+            </div>
+
+            <div class="input-group">
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Client / Company Name</label>
+                    <input type="text" id="clientName" class="form-input" placeholder="Client Name" required>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Address</label>
+                    <textarea id="clientAddress" class="form-textarea" style="min-height: 80px;" placeholder="Full Address..." required></textarea>
+                </div>
+                <div>
+                    <label class="form-label">Contact Email / Phone</label>
+                    <input type="text" id="clientContact" class="form-input" placeholder="Email or Phone">
+                </div>
+                <div>
+                    <label class="form-label">Client GSTIN (Optional)</label>
+                    <input type="text" id="clientGstin" class="form-input" placeholder="29XXXXX0000X1Z5">
+                </div>
+            </div>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">list_alt</span> Proposed Items & Services
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="items-table" id="itemsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 45%;">Description</th>
+                            <th style="width: 15%;">SAC / HSN</th>
+                            <th style="width: 10%;">Qty</th>
+                            <th style="width: 20%;">Rate (₹)</th>
+                            <th style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="itemsBody">
+                        <!-- Initial Row -->
+                        <tr class="item-row">
+                            <td><input type="text" class="form-input item-desc" placeholder="Service or Item" required></td>
+                            <td><input type="text" class="form-input item-sac" placeholder="9983"></td>
+                            <td><input type="number" class="form-input item-qty" value="1" min="1" required oninput="calculateFormTotals()"></td>
+                            <td><input type="number" class="form-input item-rate" placeholder="0.00" step="0.01" required oninput="calculateFormTotals()"></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-icon-danger" onclick="removeRow(this)"><span class="material-symbols-rounded">delete</span></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <button type="button" class="btn-dashed" onclick="addItemRow()">
+                <span class="material-symbols-rounded">add</span> Add Another Item
+            </button>
+
+            <div class="section-divider">
+                <span class="material-symbols-rounded">account_balance</span> Tax Settings
+            </div>
+
+            <div class="input-group input-group-3">
+                <div>
+                    <label class="form-label">CGST (%)</label>
+                    <input type="number" id="taxCgst" class="form-input" value="9" min="0" step="0.01" oninput="calculateFormTotals()">
+                </div>
+                <div>
+                    <label class="form-label">SGST (%)</label>
+                    <input type="number" id="taxSgst" class="form-input" value="9" min="0" step="0.01" oninput="calculateFormTotals()">
+                </div>
+                <div>
+                    <label class="form-label">IGST (%)</label>
+                    <input type="number" id="taxIgst" class="form-input" value="0" min="0" step="0.01" oninput="calculateFormTotals()">
+                </div>
+            </div>
+
+            <!-- Auto Calculated Totals Display -->
+            <div style="background: var(--surface-soft); padding: 16px; border-radius: 8px; margin-bottom: 20px; text-align: right; border: 1px solid var(--border);">
+                <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 4px;">Subtotal: ₹<span id="formSubtotal">0.00</span></div>
+                <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 4px;">Tax Amount: ₹<span id="formTax">0.00</span></div>
+                <div style="font-size: 20px; font-weight: 700; color: var(--primary-dark);">Estimated Total: ₹<span id="formGrandTotal">0.00</span></div>
+            </div>
+
+            <button type="submit" class="btn-primary">
+                <span class="material-symbols-rounded">preview</span>
+                Generate Estimate Preview
+            </button>
+        </form>
+    </div>
+
+    <!-- PREVIEW AREA -->
+    <div class="preview-area" id="estimate-preview-area">
+        
+        <!-- Standard A4 Container for PDF generation -->
+        <div class="a4-container" id="a4Estimate">
+            <!-- Background Watermark -->
+            <img src="assets/logo.png" alt="" class="est-watermark" onerror="this.style.display='none'">
+
+            <!-- Header -->
+            <div class="est-header">
+                <div>
+                    <img src="assets/name.png" alt="COREBIQ" class="est-logo" onerror="this.style.display='none'">
+                    <div class="est-company-details">
+                        <strong>COREBIQ PRIVATE LIMITED</strong>
+                        1st Floor, Shakthi Complex, Chokli<br>
+                        Kannur District, Kerala 670672<br>
+                        Email: support@cmfilings.com<br>
+                        GSTIN: 32XXXXX0000X1Z5 <!-- Mock GSTIN -->
+                    </div>
+                </div>
+                <div class="est-title-box">
+                    <div class="est-title">ESTIMATE</div>
+                    <div class="est-meta-grid">
+                        <div class="est-meta-label">Estimate No:</div>
+                        <div class="est-meta-value" id="prevEstNo">EST-001</div>
+                        
+                        <div class="est-meta-label">Date:</div>
+                        <div class="est-meta-value" id="prevEstDate">27-09-2026</div>
+                        
+                        <div class="est-meta-label">Valid Until:</div>
+                        <div class="est-meta-value" id="prevEstValid">27-10-2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="est-body">
+                <div class="est-bill-to">
+                    <div class="est-bill-to-title">Estimate For</div>
+                    <div class="est-client-name" id="prevClientName">Client Name</div>
+                    <div class="est-client-address" id="prevClientAddress">Address</div>
+                    <div class="est-client-address" style="margin-top: 4px;" id="prevClientContact">Contact</div>
+                    <div class="est-client-address" style="margin-top: 4px; font-weight: 600;" id="prevClientGst"></div>
+                </div>
+
+                <table class="est-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 50%;">Description</th>
+                            <th style="width: 15%;">SAC / HSN</th>
+                            <th style="width: 10%; text-align: center;">Qty</th>
+                            <th style="width: 20%;" class="right-align">Amount (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="prevItemsBody">
+                        <!-- Populated dynamically -->
+                    </tbody>
+                </table>
+
+                <div class="est-summary-wrapper">
+                    <!-- Totals -->
+                    <div class="est-totals">
+                        <div class="est-total-row">
+                            <span>Subtotal</span>
+                            <span id="prevSubtotal">₹ 0.00</span>
+                        </div>
+                        <div class="est-total-row" id="rowCgst">
+                            <span>CGST (<span id="prevCgstRate">0</span>%)</span>
+                            <span id="prevCgstAmt">₹ 0.00</span>
+                        </div>
+                        <div class="est-total-row" id="rowSgst">
+                            <span>SGST (<span id="prevSgstRate">0</span>%)</span>
+                            <span id="prevSgstAmt">₹ 0.00</span>
+                        </div>
+                        <div class="est-total-row" id="rowIgst" style="display:none;">
+                            <span>IGST (<span id="prevIgstRate">0</span>%)</span>
+                            <span id="prevIgstAmt">₹ 0.00</span>
+                        </div>
+                        <div class="est-total-row grand-total">
+                            <span>Estimated Total</span>
+                            <span id="prevGrandTotal">₹ 0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="est-amount-words">
+                    Estimated Amount in words: <span id="prevAmountWords">Zero Rupees Only</span>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="est-footer">
+                <div class="est-notes">
+                    <strong>Terms & Conditions:</strong><br>
+                    1. This is a quotation, not a final invoice or bill of supply.<br>
+                    2. The estimated prices are valid until the specified 'Valid Until' date.<br>
+                    3. Final billing may vary based on actual requirements or scope changes.<br>
+                    4. Taxes are subject to prevailing government rates at the time of final invoicing.
+                </div>
+                <div class="est-signatory">
+                    <div class="est-sig-space"></div>
+                    <div class="est-sig-name">Authorized Signatory</div>
+                    <div class="est-sig-company">COREBIQ PRIVATE LIMITED</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="action-grid">
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+                <span class="material-symbols-rounded">edit</span>
+                Edit Estimate
+            </button>
+            <button type="button" class="btn-primary" onclick="downloadPDF()">
+                <span class="material-symbols-rounded">picture_as_pdf</span>
+                Download PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set default date to today
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            document.getElementById('estDate').value = dateStr;
+            
+            // Set validity to +30 days by default
+            today.setDate(today.getDate() + 30);
+            document.getElementById('estValidUntil').value = today.toISOString().split('T')[0];
+            
+            calculateFormTotals();
+        });
+
+        // --- Dynamic Rows ---
+        function addItemRow() {
+            const tbody = document.getElementById('itemsBody');
+            const row = document.createElement('tr');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <td><input type="text" class="form-input item-desc" placeholder="Item Name" required></td>
+                <td><input type="text" class="form-input item-sac" placeholder="SAC/HSN"></td>
+                <td><input type="number" class="form-input item-qty" value="1" min="1" required oninput="calculateFormTotals()"></td>
+                <td><input type="number" class="form-input item-rate" placeholder="0.00" step="0.01" required oninput="calculateFormTotals()"></td>
+                <td style="text-align: center;">
+                    <button type="button" class="btn-icon-danger" onclick="removeRow(this)"><span class="material-symbols-rounded">delete</span></button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        function removeRow(btn) {
+            const rows = document.querySelectorAll('.item-row');
+            if (rows.length > 1) {
+                btn.closest('tr').remove();
+                calculateFormTotals();
+            } else {
+                alert("You must have at least one item in the estimate.");
+            }
+        }
+
+        // --- Calculations ---
+        function calculateFormTotals() {
+            let subtotal = 0;
+            const rows = document.querySelectorAll('.item-row');
+            
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+                subtotal += (qty * rate);
+            });
+
+            const cgstRate = parseFloat(document.getElementById('taxCgst').value) || 0;
+            const sgstRate = parseFloat(document.getElementById('taxSgst').value) || 0;
+            const igstRate = parseFloat(document.getElementById('taxIgst').value) || 0;
+
+            const cgstAmt = subtotal * (cgstRate / 100);
+            const sgstAmt = subtotal * (sgstRate / 100);
+            const igstAmt = subtotal * (igstRate / 100);
+            
+            const totalTax = cgstAmt + sgstAmt + igstAmt;
+            const grandTotal = subtotal + totalTax;
+
+            document.getElementById('formSubtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('formTax').innerText = totalTax.toFixed(2);
+            document.getElementById('formGrandTotal').innerText = grandTotal.toFixed(2);
+
+            return { subtotal, cgstAmt, sgstAmt, igstAmt, grandTotal, cgstRate, sgstRate, igstRate };
+        }
+
+        // Number to Words Converter (Indian Numbering System)
+        function numberToWords(num) {
+            if (num === 0) return 'Zero Rupees Only';
+            
+            const a = ['','One ','Two ','Three ','Four ', 'Five ','Six ','Seven ','Eight ','Nine ','Ten ','Eleven ','Twelve ','Thirteen ','Fourteen ','Fifteen ','Sixteen ','Seventeen ','Eighteen ','Nineteen '];
+            const b = ['', '', 'Twenty','Thirty','Forty','Fifty', 'Sixty','Seventy','Eighty','Ninety'];
+
+            const format = (n) => {
+                if (n < 20) return a[n];
+                if (n < 100) return b[Math.floor(n/10)] + (n%10 !== 0 ? ' ' + a[n%10] : '');
+                if (n < 1000) return a[Math.floor(n/100)] + 'Hundred ' + (n%100 !== 0 ? 'and ' + format(n%100) : '');
+                if (n < 100000) return format(Math.floor(n/1000)) + 'Thousand ' + (n%1000 !== 0 ? format(n%1000) : '');
+                if (n < 10000000) return format(Math.floor(n/100000)) + 'Lakh ' + (n%100000 !== 0 ? format(n%100000) : '');
+                return format(Math.floor(n/10000000)) + 'Crore ' + (n%10000000 !== 0 ? format(n%10000000) : '');
+            };
+
+            const integerPart = Math.floor(num);
+            const fractionalPart = Math.round((num - integerPart) * 100);
+            
+            let words = 'Rupees ' + format(integerPart);
+            if (fractionalPart > 0) {
+                words += 'and ' + format(fractionalPart) + 'Paise ';
+            }
+            return words.trim() + ' Only';
+        }
+
+        // --- Form Submission & Preview Generation ---
+        document.getElementById('estimate-generator-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formatDate = (dateStr) => {
+                if(!dateStr) return '';
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+            };
+
+            // Map Meta
+            document.getElementById('prevEstNo').innerText = document.getElementById('estNo').value;
+            document.getElementById('prevEstDate').innerText = formatDate(document.getElementById('estDate').value);
+            document.getElementById('prevEstValid').innerText = formatDate(document.getElementById('estValidUntil').value);
+            
+            // Map Client
+            document.getElementById('prevClientName').innerText = document.getElementById('clientName').value;
+            document.getElementById('prevClientAddress').innerHTML = document.getElementById('clientAddress').value.replace(/\n/g, '<br>');
+            
+            const contact = document.getElementById('clientContact').value;
+            document.getElementById('prevClientContact').innerText = contact ? `Contact: ${contact}` : '';
+            
+            const gstin = document.getElementById('clientGstin').value;
+            document.getElementById('prevClientGst').innerText = gstin ? `GSTIN: ${gstin.toUpperCase()}` : '';
+
+            // Map Items
+            const tbody = document.getElementById('prevItemsBody');
+            tbody.innerHTML = '';
+            const rows = document.querySelectorAll('.item-row');
+            
+            rows.forEach((row, index) => {
+                const desc = row.querySelector('.item-desc').value;
+                const sac = row.querySelector('.item-sac').value;
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const rate = parseFloat(row.querySelector('.item-rate').value) || 0;
+                const amt = qty * rate;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>
+                        <div class="est-item-desc">${desc}</div>
+                        ${sac ? `<div class="est-item-sac">SAC/HSN: ${sac}</div>` : ''}
+                    </td>
+                    <td>${sac || '-'}</td>
+                    <td style="text-align: center;">${qty}</td>
+                    <td class="right-align">${amt.toFixed(2)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Map Totals
+            const totals = calculateFormTotals();
+            document.getElementById('prevSubtotal').innerText = '₹ ' + totals.subtotal.toFixed(2);
+            document.getElementById('prevGrandTotal').innerText = '₹ ' + totals.grandTotal.toFixed(2);
+            document.getElementById('prevAmountWords').innerText = numberToWords(totals.grandTotal);
+
+            // Handle Tax Visibility
+            if (totals.cgstAmt > 0 || totals.sgstAmt > 0) {
+                document.getElementById('rowCgst').style.display = 'flex';
+                document.getElementById('rowSgst').style.display = 'flex';
+                document.getElementById('prevCgstRate').innerText = totals.cgstRate;
+                document.getElementById('prevSgstRate').innerText = totals.sgstRate;
+                document.getElementById('prevCgstAmt').innerText = '₹ ' + totals.cgstAmt.toFixed(2);
+                document.getElementById('prevSgstAmt').innerText = '₹ ' + totals.sgstAmt.toFixed(2);
+                document.getElementById('rowIgst').style.display = 'none';
+            } else if (totals.igstAmt > 0) {
+                document.getElementById('rowIgst').style.display = 'flex';
+                document.getElementById('prevIgstRate').innerText = totals.igstRate;
+                document.getElementById('prevIgstAmt').innerText = '₹ ' + totals.igstAmt.toFixed(2);
+                document.getElementById('rowCgst').style.display = 'none';
+                document.getElementById('rowSgst').style.display = 'none';
+            } else {
+                // Zero Tax
+                document.getElementById('rowCgst').style.display = 'none';
+                document.getElementById('rowSgst').style.display = 'none';
+                document.getElementById('rowIgst').style.display = 'none';
+            }
+
+            // Toggle UI Views
+            document.getElementById('estimate-form-card').style.display = 'none';
+            document.getElementById('estimate-preview-area').classList.add('active');
+        });
+
+        // --- PDF Download using html2pdf ---
+        function downloadPDF() {
+            const element = document.getElementById('a4Estimate');
+            const estNo = document.getElementById('estNo').value.replace(/[^a-zA-Z0-9]/g, '_');
+            
+            const opt = {
+                margin:       0,
+                filename:     `Estimate_${estNo}.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Temporarily hide box shadow for clean PDF edges
+            element.style.boxShadow = 'none';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restore shadow
+                element.style.boxShadow = '0 10px 40px rgba(0,0,0,0.1)';
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('estimate-preview-area').classList.remove('active');
+            document.getElementById('estimate-form-card').style.display = 'block';
+        }
+    </script>
+</div>
+
+</body>
+</html>
