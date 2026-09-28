@@ -1,15 +1,12 @@
 <div class="module-container" id="company-master-module">
   
-  <!-- Link to the revised standalone CSS -->
   <link rel="stylesheet" href="css/company-module.css">
 
   <div class="app-card">
-    
     <div id="compLoader" class="loading-overlay">
       <span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite; margin-right: 8px;">sync</span> Loading Data...
     </div>
 
-    <!-- Header Toolbar -->
     <div class="module-toolbar">
       <div class="module-title">
         <span class="material-symbols-rounded" style="color: var(--primary);">domain</span>
@@ -26,244 +23,108 @@
     </div>
 
     <form id="masterCompanyForm">
-      
-      <!-- General Info -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">info</span> General Information
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">info</span> General Information</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>Company ID</label>
-            <input type="text" class="form-control" id="cmp_id" value="COMP-00001" readonly disabled>
-          </div>
-          <div class="form-group">
-            <label>Company Name <span class="req">*</span></label>
-            <input type="text" class="form-control" id="cmp_name" required disabled>
-          </div>
-          <div class="form-group">
-            <label>Legal Name</label>
-            <input type="text" class="form-control" id="cmp_legal_name" disabled>
-          </div>
+          <div class="form-group"><label>Company ID</label><input type="text" class="form-control" id="cmp_id" value="COMP-00001" readonly disabled></div>
+          <div class="form-group"><label>Company Name <span class="req">*</span></label><input type="text" class="form-control" id="cmp_name" required disabled></div>
+          <div class="form-group"><label>Legal Name</label><input type="text" class="form-control" id="cmp_legal_name" disabled></div>
           <div class="form-group">
             <label>Business Type <span class="req">*</span></label>
             <select class="form-control" id="cmp_biz_type" required disabled>
-              <option value="">Select Type</option>
-              <option value="Private Limited">Private Limited</option>
-              <option value="LLP">LLP</option>
-              <option value="Partnership">Partnership</option>
-              <option value="Sole Proprietorship">Sole Proprietorship</option>
-              <option value="Public Limited">Public Limited</option>
-              <option value="Other">Other</option>
+              <option value="">Select Type</option><option value="Private Limited">Private Limited</option><option value="LLP">LLP</option>
+              <option value="Partnership">Partnership</option><option value="Sole Proprietorship">Sole Proprietorship</option>
+              <option value="Public Limited">Public Limited</option><option value="Other">Other</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Company Email <span class="req">*</span></label>
-            <input type="email" class="form-control" id="cmp_email" required disabled>
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input type="tel" class="form-control" id="cmp_phone" disabled>
-          </div>
-          <div class="form-group">
-            <label>Alternate Phone</label>
-            <input type="tel" class="form-control" id="cmp_alt_phone" disabled>
-          </div>
-          <div class="form-group">
-            <label>Website</label>
-            <input type="url" class="form-control" id="cmp_website" disabled>
-          </div>
+          <div class="form-group"><label>Company Email <span class="req">*</span></label><input type="email" class="form-control" id="cmp_email" required disabled></div>
+          <div class="form-group"><label>Phone</label><input type="tel" class="form-control" id="cmp_phone" disabled></div>
+          <div class="form-group"><label>Alternate Phone</label><input type="tel" class="form-control" id="cmp_alt_phone" disabled></div>
+          <div class="form-group"><label>Website</label><input type="url" class="form-control" id="cmp_website" disabled></div>
         </div>
       </div>
 
-      <!-- Registration Details -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">gavel</span> Registration Details
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">gavel</span> Registration Details</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>Reg. / Incorporation No.</label>
-            <input type="text" class="form-control" id="cmp_reg_no" disabled>
-          </div>
-          <div class="form-group">
-            <label>PAN</label>
-            <input type="text" class="form-control" id="cmp_pan" disabled>
-          </div>
-          <div class="form-group">
-            <label>GSTIN</label>
-            <input type="text" class="form-control" id="cmp_gstin" disabled>
-          </div>
-          <div class="form-group">
-            <label>CIN / LLPIN</label>
-            <input type="text" class="form-control" id="cmp_cin" disabled>
-          </div>
+          <div class="form-group"><label>Reg. / Incorporation No.</label><input type="text" class="form-control" id="cmp_reg_no" disabled></div>
+          <div class="form-group"><label>PAN</label><input type="text" class="form-control" id="cmp_pan" disabled></div>
+          <div class="form-group"><label>GSTIN</label><input type="text" class="form-control" id="cmp_gstin" disabled></div>
+          <div class="form-group"><label>CIN / LLPIN</label><input type="text" class="form-control" id="cmp_cin" disabled></div>
         </div>
       </div>
 
-      <!-- Registered Address -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">location_on</span> Registered Address
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">location_on</span> Registered Address</div>
         <div class="form-grid">
-          <div class="form-group span-2">
-            <label>Address Line 1</label>
-            <input type="text" class="form-control" id="cmp_addr1" disabled>
-          </div>
-          <div class="form-group span-2">
-            <label>Address Line 2</label>
-            <input type="text" class="form-control" id="cmp_addr2" disabled>
-          </div>
-          <div class="form-group">
-            <label>City</label>
-            <input type="text" class="form-control" id="cmp_city" disabled>
-          </div>
-          <div class="form-group">
-            <label>District</label>
-            <input type="text" class="form-control" id="cmp_district" disabled>
-          </div>
-          <div class="form-group">
-            <label>State</label>
-            <input type="text" class="form-control" id="cmp_state" disabled>
-          </div>
-          <div class="form-group">
-            <label>PIN Code</label>
-            <input type="text" class="form-control" id="cmp_pin" disabled>
-          </div>
-          <div class="form-group">
-            <label>Country <span class="req">*</span></label>
-            <input type="text" class="form-control" id="cmp_country" value="India" required disabled>
-          </div>
+          <div class="form-group span-2"><label>Address Line 1</label><input type="text" class="form-control" id="cmp_addr1" disabled></div>
+          <div class="form-group span-2"><label>Address Line 2</label><input type="text" class="form-control" id="cmp_addr2" disabled></div>
+          <div class="form-group"><label>City</label><input type="text" class="form-control" id="cmp_city" disabled></div>
+          <div class="form-group"><label>District</label><input type="text" class="form-control" id="cmp_district" disabled></div>
+          <div class="form-group"><label>State</label><input type="text" class="form-control" id="cmp_state" disabled></div>
+          <div class="form-group"><label>PIN Code</label><input type="text" class="form-control" id="cmp_pin" disabled></div>
+          <div class="form-group"><label>Country <span class="req">*</span></label><input type="text" class="form-control" id="cmp_country" value="India" required disabled></div>
         </div>
       </div>
 
-      <!-- Financial Defaults -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">account_balance_wallet</span> Business & Financial Defaults
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">account_balance_wallet</span> Business & Financial Defaults</div>
         <div class="form-grid">
           <div class="form-group">
             <label>Default Currency <span class="req">*</span></label>
             <select class="form-control" id="cmp_currency" required disabled>
-              <option value="INR">INR (₹)</option>
-              <option value="USD">USD ($)</option>
-              <option value="AED">AED (د.إ)</option>
+              <option value="INR">INR (₹)</option><option value="USD">USD ($)</option><option value="AED">AED (د.إ)</option>
             </select>
           </div>
           <div class="form-group">
             <label>Financial Year Start</label>
-            <select class="form-control" id="cmp_fy_start" disabled>
-              <option value="April">1st April</option>
-              <option value="January">1st January</option>
-            </select>
+            <select class="form-control" id="cmp_fy_start" disabled><option value="April">1st April</option><option value="January">1st January</option></select>
           </div>
           <div class="form-group">
             <label>Tax Registration Type</label>
-            <select class="form-control" id="cmp_tax_type" disabled>
-              <option value="Registered">Registered</option>
-              <option value="Composition">Composition</option>
-              <option value="Unregistered">Unregistered</option>
-            </select>
+            <select class="form-control" id="cmp_tax_type" disabled><option value="Registered">Registered</option><option value="Composition">Composition</option><option value="Unregistered">Unregistered</option></select>
           </div>
-          <div class="form-group">
-            <label>Default Tax Rate (%)</label>
-            <input type="number" step="0.01" class="form-control" id="cmp_tax_rate" disabled>
-          </div>
-          <div class="form-group">
-            <label>Invoice Prefix</label>
-            <input type="text" class="form-control" id="cmp_inv_prefix" placeholder="e.g. INV-" disabled>
-          </div>
-          <div class="form-group">
-            <label>Invoice Starting Number</label>
-            <input type="number" class="form-control" id="cmp_inv_start" disabled>
-          </div>
+          <div class="form-group"><label>Default Tax Rate (%)</label><input type="number" step="0.01" class="form-control" id="cmp_tax_rate" disabled></div>
+          <div class="form-group"><label>Invoice Prefix</label><input type="text" class="form-control" id="cmp_inv_prefix" placeholder="e.g. INV-" disabled></div>
+          <div class="form-group"><label>Invoice Starting Number</label><input type="number" class="form-control" id="cmp_inv_start" disabled></div>
         </div>
       </div>
 
-      <!-- Bank Details -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">account_balance</span> Bank Details
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">account_balance</span> Bank Details</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>Bank Name</label>
-            <input type="text" class="form-control" id="cmp_bank_name" disabled>
-          </div>
-          <div class="form-group">
-            <label>Account Holder Name</label>
-            <input type="text" class="form-control" id="cmp_acc_name" disabled>
-          </div>
-          <div class="form-group">
-            <label>Account Number</label>
-            <input type="text" class="form-control" id="cmp_acc_no" disabled>
-          </div>
-          <div class="form-group">
-            <label>IFSC Code</label>
-            <input type="text" class="form-control" id="cmp_ifsc" disabled>
-          </div>
-          <div class="form-group">
-            <label>Branch</label>
-            <input type="text" class="form-control" id="cmp_bank_branch" disabled>
-          </div>
+          <div class="form-group"><label>Bank Name</label><input type="text" class="form-control" id="cmp_bank_name" disabled></div>
+          <div class="form-group"><label>Account Holder Name</label><input type="text" class="form-control" id="cmp_acc_name" disabled></div>
+          <div class="form-group"><label>Account Number</label><input type="text" class="form-control" id="cmp_acc_no" disabled></div>
+          <div class="form-group"><label>IFSC Code</label><input type="text" class="form-control" id="cmp_ifsc" disabled></div>
+          <div class="form-group"><label>Branch</label><input type="text" class="form-control" id="cmp_bank_branch" disabled></div>
         </div>
       </div>
 
-      <!-- Branding & Prefs -->
       <div class="form-section">
-        <div class="form-section-title">
-          <span class="material-symbols-rounded">settings_suggest</span> Branding & Preferences
-        </div>
+        <div class="form-section-title"><span class="material-symbols-rounded">settings_suggest</span> Branding & Preferences</div>
         <div class="form-grid">
-          <div class="form-group">
-            <label>Company Logo URL</label>
-            <input type="url" class="form-control" id="cmp_logo" disabled>
-          </div>
-          <div class="form-group">
-            <label>Invoice Logo URL</label>
-            <input type="url" class="form-control" id="cmp_inv_logo" disabled>
-          </div>
-          <div class="form-group span-2">
-            <label>Invoice Header/Footer Details</label>
-            <textarea class="form-control" id="cmp_inv_header" rows="2" disabled></textarea>
-          </div>
+          <div class="form-group"><label>Company Logo URL</label><input type="url" class="form-control" id="cmp_logo" disabled></div>
+          <div class="form-group"><label>Invoice Logo URL</label><input type="url" class="form-control" id="cmp_inv_logo" disabled></div>
+          <div class="form-group span-2"><label>Invoice Header/Footer Details</label><textarea class="form-control" id="cmp_inv_header" rows="2" disabled></textarea></div>
           <div class="form-group">
             <label>Date Format</label>
-            <select class="form-control" id="cmp_date_format" disabled>
-              <option value="DD-MM-YYYY">DD-MM-YYYY</option>
-              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-            </select>
+            <select class="form-control" id="cmp_date_format" disabled><option value="DD-MM-YYYY">DD-MM-YYYY</option><option value="MM/DD/YYYY">MM/DD/YYYY</option><option value="YYYY-MM-DD">YYYY-MM-DD</option></select>
           </div>
           <div class="form-group">
             <label>Time Zone</label>
-            <select class="form-control" id="cmp_timezone" disabled>
-              <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
-              <option value="Asia/Dubai">Asia/Dubai (GST)</option>
-            </select>
+            <select class="form-control" id="cmp_timezone" disabled><option value="Asia/Kolkata">Asia/Kolkata (IST)</option><option value="Asia/Dubai">Asia/Dubai (GST)</option></select>
           </div>
-          <div class="form-group span-2">
-            <label>Standard Invoice Terms</label>
-            <textarea class="form-control" id="cmp_terms" rows="2" disabled></textarea>
-          </div>
-          <div class="form-group span-2">
-            <label>Internal Notes</label>
-            <textarea class="form-control" id="cmp_notes" rows="2" disabled></textarea>
-          </div>
+          <div class="form-group span-2"><label>Standard Invoice Terms</label><textarea class="form-control" id="cmp_terms" rows="2" disabled></textarea></div>
+          <div class="form-group span-2"><label>Internal Notes</label><textarea class="form-control" id="cmp_notes" rows="2" disabled></textarea></div>
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="form-actions" id="editModeActions" style="display: none;">
         <button type="button" class="btn btn-outlined" id="btnCancel">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="btnSave">
-          <span class="material-symbols-rounded">save</span> Save Company
-        </button>
+        <button type="submit" class="btn btn-primary" id="btnSave"><span class="material-symbols-rounded">save</span> Save Company</button>
       </div>
 
-      <!-- System Information (Read Only) -->
       <div class="system-info-card">
         <div class="form-section-title" style="font-size: 0.95rem; margin-bottom:12px; color:var(--text-muted);">
           <span class="material-symbols-rounded" style="font-size:18px;">memory</span> System Information
@@ -280,83 +141,43 @@
           <div class="sys-item"><span>Updated By Email</span> <span id="sys_updated_email">--</span></div>
         </div>
       </div>
-
     </form>
   </div>
 </div>
 
-<!-- Script mapped for Module injection -->
 <script type="module">
   import { db } from "./firebase-config.js";
-  import { 
-    doc, 
-    getDoc, 
-    setDoc, 
-    serverTimestamp 
-  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // --- DOM Elements ---
   const form = document.getElementById('masterCompanyForm');
   const loader = document.getElementById('compLoader');
   const viewActions = document.getElementById('viewModeActions');
   const editActions = document.getElementById('editModeActions');
-  
   const btnEdit = document.getElementById('btnEditMode');
   const btnRefresh = document.getElementById('btnRefresh');
   const btnCancel = document.getElementById('btnCancel');
   const btnSave = document.getElementById('btnSave');
 
-  // Document Reference for Single Master Profile
   const companyDocRef = doc(db, 'company_settings', 'master');
   
-  let isEditing = false;
-  let hasExistingData = false;
-  let originalData = {};
+  let isEditing = false, hasExistingData = false, originalData = {};
+  const fields = ['cmp_name', 'cmp_legal_name', 'cmp_biz_type', 'cmp_email', 'cmp_phone', 'cmp_alt_phone', 'cmp_website', 'cmp_reg_no', 'cmp_pan', 'cmp_gstin', 'cmp_cin', 'cmp_addr1', 'cmp_addr2', 'cmp_city', 'cmp_district', 'cmp_state', 'cmp_pin', 'cmp_country', 'cmp_currency', 'cmp_fy_start', 'cmp_tax_type', 'cmp_tax_rate', 'cmp_inv_prefix', 'cmp_inv_start', 'cmp_bank_name', 'cmp_acc_name', 'cmp_acc_no', 'cmp_ifsc', 'cmp_bank_branch', 'cmp_logo', 'cmp_inv_logo', 'cmp_inv_header', 'cmp_date_format', 'cmp_timezone', 'cmp_terms', 'cmp_notes'];
 
-  // All inputs to track
-  const fields = [
-    'cmp_name', 'cmp_legal_name', 'cmp_biz_type', 'cmp_email', 'cmp_phone', 'cmp_alt_phone', 'cmp_website',
-    'cmp_reg_no', 'cmp_pan', 'cmp_gstin', 'cmp_cin',
-    'cmp_addr1', 'cmp_addr2', 'cmp_city', 'cmp_district', 'cmp_state', 'cmp_pin', 'cmp_country',
-    'cmp_currency', 'cmp_fy_start', 'cmp_tax_type', 'cmp_tax_rate', 'cmp_inv_prefix', 'cmp_inv_start',
-    'cmp_bank_name', 'cmp_acc_name', 'cmp_acc_no', 'cmp_ifsc', 'cmp_bank_branch',
-    'cmp_logo', 'cmp_inv_logo', 'cmp_inv_header', 'cmp_date_format', 'cmp_timezone', 'cmp_terms', 'cmp_notes'
-  ];
-
-  // Helper: Format Dates safely
   const formatTimestamp = (ts) => {
     if (!ts) return '--';
     const date = ts.toDate ? ts.toDate() : new Date(ts);
     return date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
   };
 
-  // Helper: Toggle Form Read/Write Mode
   const toggleEditMode = (enable) => {
     isEditing = enable;
-    fields.forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.disabled = !enable;
-    });
-
-    if (enable) {
-      viewActions.style.display = 'none';
-      editActions.style.display = 'flex';
-      document.getElementById('cmp_name').focus();
-    } else {
-      if(hasExistingData) {
-        viewActions.style.display = 'flex';
-      }
-      editActions.style.display = 'none';
-    }
+    fields.forEach(id => { const el = document.getElementById(id); if(el) el.disabled = !enable; });
+    if (enable) { viewActions.style.display = 'none'; editActions.style.display = 'flex'; document.getElementById('cmp_name').focus(); } 
+    else { if(hasExistingData) viewActions.style.display = 'flex'; editActions.style.display = 'none'; }
   };
 
-  // Helper: Fill Form with Firestore Data
   const populateForm = (data) => {
-    fields.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && data[id] !== undefined) el.value = data[id];
-    });
-
+    fields.forEach(id => { const el = document.getElementById(id); if (el && data[id] !== undefined) el.value = data[id]; });
     document.getElementById('sys_created_at').innerText = formatTimestamp(data.createdAt);
     document.getElementById('sys_created_by').innerText = data.createdBy || '--';
     document.getElementById('sys_created_email').innerText = data.createdByEmail || '--';
@@ -365,84 +186,39 @@
     document.getElementById('sys_updated_email').innerText = data.updatedByEmail || '--';
   };
 
-  // Load Master Company Record
   const loadCompanyData = async () => {
     loader.style.display = 'flex';
     try {
       const docSnap = await getDoc(companyDocRef);
       if (docSnap.exists()) {
-        hasExistingData = true;
-        originalData = docSnap.data();
-        populateForm(originalData);
-        toggleEditMode(false); // Make Read-only when it exists
-      } else {
-        hasExistingData = false;
-        toggleEditMode(true); // Open in Edit Mode so they can add the company
-      }
-    } catch (err) {
-      console.error("Error loading company data:", err);
-      alert("Error loading data. Check console.");
-    } finally {
-      loader.style.display = 'none';
-    }
+        hasExistingData = true; originalData = docSnap.data(); populateForm(originalData); toggleEditMode(false);
+      } else { hasExistingData = false; toggleEditMode(true); }
+    } catch (err) { console.error(err); alert("Error loading data."); } 
+    finally { loader.style.display = 'none'; }
   };
 
-  // Event Handlers
   if(btnEdit) btnEdit.addEventListener('click', () => toggleEditMode(true));
   if(btnRefresh) btnRefresh.addEventListener('click', loadCompanyData);
-  
-  if(btnCancel) {
-    btnCancel.addEventListener('click', () => {
-      if (hasExistingData) {
-        populateForm(originalData); 
-        toggleEditMode(false);
-      } else {
-        form.reset(); 
-      }
-    });
-  }
+  if(btnCancel) btnCancel.addEventListener('click', () => { if (hasExistingData) { populateForm(originalData); toggleEditMode(false); } else { form.reset(); } });
 
-  // Handle Save
   if(form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
       btnSave.disabled = true;
       const originalText = btnSave.innerHTML;
       btnSave.innerHTML = `<span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite;">sync</span> Saving...`;
 
       const userEmail = window.currentUser ? window.currentUser.email : "user@example.com";
       const userName = userEmail.split('@')[0];
-
       const payload = {};
-      fields.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) payload[id] = el.value;
-      });
+      fields.forEach(id => { const el = document.getElementById(id); if(el) payload[id] = el.value; });
+      payload.updatedAt = serverTimestamp(); payload.updatedByEmail = userEmail; payload.updatedBy = userName;
+      if (!hasExistingData) { payload.createdAt = serverTimestamp(); payload.createdByEmail = userEmail; payload.createdBy = userName; }
 
-      payload.updatedAt = serverTimestamp();
-      payload.updatedByEmail = userEmail;
-      payload.updatedBy = userName;
-      
-      if (!hasExistingData) {
-        payload.createdAt = serverTimestamp();
-        payload.createdByEmail = userEmail;
-        payload.createdBy = userName;
-      }
-
-      try {
-        await setDoc(companyDocRef, payload, { merge: true });
-        await loadCompanyData(); // Reload to secure server timestamps
-      } catch (err) {
-        console.error("Error saving company details:", err);
-        alert("Error saving data: " + err.message);
-      } finally {
-        btnSave.disabled = false;
-        btnSave.innerHTML = originalText;
-      }
+      try { await setDoc(companyDocRef, payload, { merge: true }); await loadCompanyData(); } 
+      catch (err) { alert("Error saving data: " + err.message); } 
+      finally { btnSave.disabled = false; btnSave.innerHTML = originalText; }
     });
   }
-
-  // Init Data fetch
   loadCompanyData();
 </script>
