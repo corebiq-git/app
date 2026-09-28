@@ -2,1693 +2,625 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no,
-               viewport-fit=cover">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>COREBIQ Header</title>
 
-<!-- =========================================================
-     GOOGLE FONTS
-     ========================================================= -->
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
-      rel="stylesheet">
-
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
-      rel="stylesheet">
-
+<!-- GOOGLE FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
 
 <style>
-
 /* =========================================================
-   COREBIQ HEADER
-   CORPORATE MINIMAL / MATERIAL INSPIRED
+   COREBIQ HEADER - CORPORATE MINIMAL / MATERIAL INSPIRED
    ========================================================= */
-
-#cb-header {
-
-    width: 100%;
-    min-height: 72px;
-
-    box-sizing: border-box;
-
-    background: #FFFFFF;
-
-    border-bottom:
-        1px solid rgba(148, 163, 184, .18);
-
-    box-shadow:
-        0 1px 0 rgba(15, 23, 42, .04);
-
-    display: flex;
-    align-items: center;
-
-    padding:
-        0 24px;
-
-    position: relative;
-
-    z-index: 900;
-
-    flex-shrink: 0;
-
-    font-family:
-        'Outfit',
-        sans-serif;
-
-    gap: 20px;
+body {
+    margin: 0;
+    background-color: #F8FAFC;
 }
 
+#cb-header {
+    width: 100%;
+    min-height: 72px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(148, 163, 184, .18);
+    box-shadow: 0 1px 0 rgba(15, 23, 42, .04);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: relative;
+    z-index: 900;
+    flex-shrink: 0;
+    font-family: 'Outfit', sans-serif;
+    gap: 20px;
+}
 
 /* =========================================================
    SEARCH
    ========================================================= */
-
 .cb-search-wrapper {
-
     flex: 1;
-
     max-width: 500px;
-
     margin-right: auto;
-
     min-width: 0;
 }
 
-
 .cb-search-container {
-
     width: 100%;
-
     height: 42px;
-
     box-sizing: border-box;
-
     display: flex;
-
     align-items: center;
-
     gap: 10px;
-
-    padding:
-        0 13px;
-
+    padding: 0 13px;
     background: #FFFFFF;
-
-    border:
-        1px solid rgba(203, 213, 225, .65);
-
+    border: 1px solid rgba(203, 213, 225, .65);
     border-radius: 10px;
-
-    transition:
-        border-color .2s ease,
-        box-shadow .2s ease,
-        background .2s ease;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
 }
-
 
 .cb-search-container:hover {
-
-    border-color:
-        rgba(148, 163, 184, .55);
+    border-color: rgba(148, 163, 184, .55);
 }
-
 
 .cb-search-container:focus-within {
-
-    border-color:
-        rgba(66, 133, 244, .45);
-
-    box-shadow:
-        0 0 0 3px rgba(66, 133, 244, .06);
+    border-color: rgba(66, 133, 244, .45);
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, .06);
 }
 
-
 .cb-search-icon {
-
     font-size: 20px;
-
     color: #64748B;
-
     flex-shrink: 0;
 }
 
-
 .cb-search-input {
-
     width: 100%;
-
     min-width: 0;
-
     border: 0;
-
     outline: 0;
-
     background: transparent;
-
     color: #1E293B;
-
     font-size: 13px;
-
     font-weight: 500;
-
-    font-family:
-        'Outfit',
-        sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
-
 .cb-search-input::placeholder {
-
     color: #94A3B8;
 }
 
-
 .cb-search-clear {
-
     display: none;
-
     width: 28px;
     height: 28px;
-
     border: 0;
-
     background: #F1F5F9;
-
     border-radius: 7px;
-
     color: #64748B;
-
     cursor: pointer;
-
     flex-shrink: 0;
-
     align-items: center;
     justify-content: center;
-
     padding: 0;
 }
-
 
 .cb-search-clear:hover {
-
     background: #E2E8F0;
-
     color: #334155;
 }
 
-
-.cb-search-input:not(:placeholder-shown)
-~ .cb-search-clear {
-
+.cb-search-input:not(:placeholder-shown) ~ .cb-search-clear {
     display: flex;
 }
 
-
 /* =========================================================
-   HEADER RIGHT
+   HEADER RIGHT & BUTTONS
    ========================================================= */
-
 .cb-header-right {
-
     display: flex;
-
     align-items: center;
-
     gap: 9px;
-
     flex-shrink: 0;
 }
-
-
-/* =========================================================
-   COMMON HEADER BUTTON
-   ========================================================= */
 
 .header-icon-btn {
-
     width: 40px;
     height: 40px;
-
-    border:
-        1px solid rgba(203, 213, 225, .65);
-
+    border: 1px solid rgba(203, 213, 225, .65);
     background: #F8FAFC;
-
     border-radius: 10px;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     color: #64748B;
-
     cursor: pointer;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease,
-        transform .15s ease;
-
+    transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
     position: relative;
-
     flex-shrink: 0;
-
     padding: 0;
-
-    font-family:
-        'Outfit',
-        sans-serif;
+    font-family: 'Outfit', sans-serif;
+    text-decoration: none;
 }
 
-
 .header-icon-btn:hover {
-
     background: #F1F5F9;
-
-    border-color:
-        rgba(148, 163, 184, .55);
-
+    border-color: rgba(148, 163, 184, .55);
     color: #334155;
 }
 
-
 .header-icon-btn:active {
-
     transform: scale(.94);
 }
 
-
 .header-icon-btn .material-symbols-rounded {
-
     font-size: 21px;
 }
 
-
 /* =========================================================
-   SYNC
+   SYNC / REFRESH
    ========================================================= */
-
 .cb-sync-icon {
-
-    transition:
-        color .2s ease;
+    transition: color .2s ease;
 }
 
-
-.header-icon-btn.syncing
-.cb-sync-icon {
-
-    animation:
-        cbSyncRotate .8s linear infinite;
+.header-icon-btn.syncing .cb-sync-icon {
+    animation: cbSyncRotate .8s linear infinite;
 }
-
 
 @keyframes cbSyncRotate {
-
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
-
 
 /* =========================================================
    INSTALL ICON
    ========================================================= */
-
 .cb-install-btn {
-
     display: flex;
 }
-
-
-.cb-install-btn .material-symbols-rounded {
-
-    font-size: 21px;
-}
-
 
 /* =========================================================
    NOTIFICATION
    ========================================================= */
-
 .notification-dot {
-
     position: absolute;
-
     top: 6px;
     right: 6px;
-
     width: 6px;
     height: 6px;
-
     border-radius: 50%;
-
     background: #F59E0B;
-
-    border:
-        1px solid #FFFFFF;
-
-    box-shadow:
-        0 0 7px rgba(245, 158, 11, .30);
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 0 7px rgba(245, 158, 11, .30);
 }
-
 
 @keyframes cbRing {
-
-    0%,
-    50%,
-    100% {
-
-        transform:
-            rotate(0deg);
-    }
-
-    10% {
-
-        transform:
-            rotate(15deg);
-    }
-
-    20% {
-
-        transform:
-            rotate(-10deg);
-    }
-
-    30% {
-
-        transform:
-            rotate(5deg);
-    }
-
-    40% {
-
-        transform:
-            rotate(-5deg);
-    }
+    0%, 50%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(15deg); }
+    20% { transform: rotate(-10deg); }
+    30% { transform: rotate(5deg); }
+    40% { transform: rotate(-5deg); }
 }
-
 
 .bell-anim {
-
-    animation:
-        cbRing 2.5s infinite;
-
-    transform-origin:
-        top center;
+    animation: cbRing 2.5s infinite;
+    transform-origin: top center;
 }
-
 
 /* =========================================================
    PROFILE
    ========================================================= */
-
 .cb-profile-btn {
-
     width: 40px;
     height: 40px;
-
     border-radius: 50%;
-
-    border:
-        1.5px solid rgba(203, 213, 225, .65);
-
+    border: 1.5px solid rgba(203, 213, 225, .65);
     background: #F8FAFC;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     cursor: pointer;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease,
-        transform .15s ease;
-
+    transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
     flex-shrink: 0;
-
     color: #64748B;
-
     padding: 0;
-
-    font-family:
-        'Outfit',
-        sans-serif;
+    font-family: 'Outfit', sans-serif;
 }
 
-
 .cb-profile-btn:hover {
-
-    border-color:
-        rgba(148, 163, 184, .65);
-
+    border-color: rgba(148, 163, 184, .65);
     background: #F1F5F9;
-
     color: #334155;
 }
 
-
 .cb-profile-btn:active {
-
     transform: scale(.94);
 }
 
-
 .cb-profile-btn .material-symbols-rounded {
-
     font-size: 22px;
 }
-
 
 /* =========================================================
    INSTALL POPUP
    ========================================================= */
-
 .cb-install-popup {
-
     position: fixed;
-
-    top:
-        max(12px, env(safe-area-inset-top));
-
-    right: 12px;
-
-    width: min(
-        330px,
-        calc(100vw - 24px)
-    );
-
+    top: 80px; /* Positioned securely below the header */
+    right: 24px;
+    width: min(330px, calc(100vw - 48px));
     box-sizing: border-box;
-
     background: rgba(255, 255, 255, .98);
-
-    border:
-        1px solid rgba(203, 213, 225, .75);
-
+    border: 1px solid rgba(203, 213, 225, .75);
     border-radius: 18px;
-
     padding: 15px;
-
-    box-shadow:
-        0 18px 50px rgba(15, 23, 42, .16);
-
+    box-shadow: 0 18px 50px rgba(15, 23, 42, .16);
     display: none;
-
     z-index: 99999;
-
-    animation:
-        cbInstallIn .25s ease;
+    animation: cbInstallIn .25s ease;
 }
 
-
 .cb-install-popup.show {
-
     display: block;
 }
 
-
 @keyframes cbInstallIn {
-
     from {
-
         opacity: 0;
-
-        transform:
-            translateY(-8px)
-            scale(.97);
+        transform: translateY(-8px) scale(.97);
     }
-
     to {
-
         opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
-
-/* =========================================================
-   INSTALL POPUP TOP
-   ========================================================= */
-
 .cb-install-top {
-
     display: flex;
-
     align-items: center;
-
     gap: 12px;
 }
 
-
 .cb-install-logo {
-
     width: 44px;
     height: 44px;
-
     border-radius: 12px;
-
     object-fit: contain;
-
     background: #F8FAFC;
-
-    border:
-        1px solid #E2E8F0;
-
+    border: 1px solid #E2E8F0;
     flex-shrink: 0;
 }
 
-
 .cb-install-content {
-
     min-width: 0;
-
     flex: 1;
 }
 
-
 .cb-install-title {
-
     font-size: 14px;
-
     font-weight: 700;
-
     color: #0F172A;
-
     line-height: 1.25;
 }
 
-
 .cb-install-text {
-
     margin-top: 3px;
-
     font-size: 11px;
-
     font-weight: 500;
-
     color: #64748B;
-
     line-height: 1.4;
 }
 
-
-/* =========================================================
-   INSTALL CLOSE
-   ========================================================= */
-
 .cb-install-close {
-
     width: 28px;
     height: 28px;
-
     border: 0;
-
     background: transparent;
-
     color: #94A3B8;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     border-radius: 8px;
-
     cursor: pointer;
-
     padding: 0;
-
     flex-shrink: 0;
 }
 
-
 .cb-install-close:hover {
-
     background: #F1F5F9;
-
     color: #475569;
 }
 
-
-.cb-install-close
-.material-symbols-rounded {
-
+.cb-install-close .material-symbols-rounded {
     font-size: 18px;
 }
 
-
-/* =========================================================
-   INSTALL BUTTON
-   ========================================================= */
-
 .cb-install-action {
-
     width: 100%;
-
     height: 40px;
-
     margin-top: 13px;
-
     border: 0;
-
     border-radius: 10px;
-
     background: #4285F4;
-
     color: #FFFFFF;
-
-    font-family:
-        'Outfit',
-        sans-serif;
-
+    font-family: 'Outfit', sans-serif;
     font-size: 13px;
-
     font-weight: 600;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     gap: 7px;
-
     cursor: pointer;
-
-    transition:
-        background .2s ease,
-        transform .15s ease;
+    transition: background .2s ease, transform .15s ease;
 }
 
-
 .cb-install-action:hover {
-
     background: #3578E5;
 }
 
-
 .cb-install-action:active {
-
     transform: scale(.98);
 }
 
-
-.cb-install-action
-.material-symbols-rounded {
-
-    font-size: 19px;
-}
-
-
-/* =========================================================
-   INSTALL POPUP ARROW
-   ========================================================= */
-
 .cb-install-arrow {
-
     position: absolute;
-
     top: -7px;
-
-    right: 21px;
-
+    right: 78px; /* Adjusted to point towards the install button on desktop */
     width: 14px;
     height: 14px;
-
     background: #FFFFFF;
-
-    border-left:
-        1px solid rgba(203, 213, 225, .75);
-
-    border-top:
-        1px solid rgba(203, 213, 225, .75);
-
-    transform:
-        rotate(45deg);
+    border-left: 1px solid rgba(203, 213, 225, .75);
+    border-top: 1px solid rgba(203, 213, 225, .75);
+    transform: rotate(45deg);
 }
 
-
 /* =========================================================
-   DESKTOP
+   MEDIA QUERIES
    ========================================================= */
-
-@media (min-width: 1025px) {
-
-    #cb-header {
-
-        padding:
-            0 24px;
-
-        gap: 20px;
-    }
-
-}
-
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
 @media (max-width: 1024px) {
-
     #cb-header {
-
         min-height: 68px;
-
-        padding:
-            0 16px;
-
+        padding: 0 16px;
         gap: 14px;
     }
-
-
-    .cb-search-wrapper {
-
-        max-width: 400px;
-    }
-
-
-    .cb-header-right {
-
-        gap: 8px;
-    }
-
+    .cb-search-wrapper { max-width: 400px; }
+    .cb-header-right { gap: 8px; }
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media (max-width: 768px) {
-
     #cb-header {
-
         min-height: 64px;
-
-        padding:
-            0 10px;
-
+        padding: 0 10px;
         gap: 8px;
-
         justify-content: flex-start;
     }
-
-
-    /*
-       IMPORTANT:
-       Mobile search is now a REAL SEARCH BAR,
-       NOT a search icon.
-    */
-
     .cb-search-wrapper {
-
         display: block;
-
         flex: 1;
-
         max-width: none;
-
-        min-width: 0;
-
         margin-right: 0;
     }
-
-
     .cb-search-container {
-
         height: 40px;
-
-        padding:
-            0 11px;
-
-        border-radius: 10px;
-
+        padding: 0 11px;
         gap: 8px;
     }
-
-
-    .cb-search-input {
-
-        font-size: 13px;
-
-        min-width: 0;
-    }
-
-
-    .cb-search-icon {
-
-        font-size: 19px;
-    }
-
-
-    .cb-search-clear {
-
-        width: 26px;
-        height: 26px;
-    }
-
-
-    .cb-header-right {
-
-        gap: 6px;
-
-        flex-shrink: 0;
-    }
-
-
-    .header-icon-btn {
-
-        width: 38px;
-        height: 38px;
-
-        border-radius: 9px;
-    }
-
-
-    .cb-profile-btn {
-
-        width: 38px;
-        height: 38px;
-    }
-
-
-    .header-icon-btn
-    .material-symbols-rounded {
-
-        font-size: 20px;
-    }
-
-
-    .cb-profile-btn
-    .material-symbols-rounded {
-
-        font-size: 20px;
-    }
-
-
-    /*
-       Mobile popup starts from the
-       top camera/browser area.
-    */
-
+    .cb-search-icon { font-size: 19px; }
+    .cb-search-clear { width: 26px; height: 26px; }
+    .cb-header-right { gap: 6px; }
+    .header-icon-btn, .cb-profile-btn { width: 38px; height: 38px; border-radius: 9px; }
+    
     .cb-install-popup {
-
-        top:
-            max(
-                10px,
-                env(safe-area-inset-top)
-            );
-
+        top: 72px; /* Just below header */
         right: 10px;
-
-        width:
-            calc(100vw - 20px);
-
-        border-radius: 16px;
+        width: calc(100vw - 20px);
     }
-
+    .cb-install-arrow {
+        right: 56px; /* Align with install button on mobile */
+    }
 }
-
-
-/* =========================================================
-   SMALL PHONES
-   ========================================================= */
 
 @media (max-width: 420px) {
-
-    #cb-header {
-
-        padding:
-            0 8px;
-
-        gap: 6px;
-    }
-
-
-    .cb-search-container {
-
-        height: 38px;
-
-        padding:
-            0 10px;
-    }
-
-
-    .cb-search-input {
-
-        font-size: 12px;
-    }
-
-
-    .header-icon-btn {
-
-        width: 36px;
-        height: 36px;
-    }
-
-
-    .cb-profile-btn {
-
-        width: 36px;
-        height: 36px;
-    }
-
-
-    .header-icon-btn
-    .material-symbols-rounded {
-
-        font-size: 19px;
-    }
-
-
-    .cb-profile-btn
-    .material-symbols-rounded {
-
-        font-size: 19px;
-    }
-
-
-    /*
-       Hide install icon on very small screens
-       only if space becomes too tight.
-    */
-
-    .cb-install-btn {
-
-        display: flex;
-    }
-
+    #cb-header { padding: 0 8px; gap: 6px; }
+    .cb-search-container { height: 38px; padding: 0 10px; }
+    .header-icon-btn, .cb-profile-btn { width: 36px; height: 36px; }
 }
-
-
-/* =========================================================
-   EXTRA SMALL
-   ========================================================= */
-
-@media (max-width: 350px) {
-
-    .cb-header-right {
-
-        gap: 4px;
-    }
-
-
-    .header-icon-btn {
-
-        width: 34px;
-        height: 34px;
-    }
-
-
-    .cb-profile-btn {
-
-        width: 34px;
-        height: 34px;
-    }
-
-
-    .cb-search-container {
-
-        padding:
-            0 8px;
-    }
-
-
-    .cb-search-icon {
-
-        font-size: 18px;
-    }
-
-}
-
 </style>
 </head>
 
-
 <body>
-
 
 <!-- =========================================================
      COREBIQ HEADER
      ========================================================= -->
-
 <header id="cb-header">
 
-
-    <!-- =====================================================
-         SEARCH
-         ===================================================== -->
-
+    <!-- SEARCH -->
     <div class="cb-search-wrapper">
-
         <div class="cb-search-container">
-
-            <span class="material-symbols-rounded cb-search-icon">
-                search
-            </span>
-
-            <input
-                type="search"
-                class="cb-search-input"
-                id="cb-search-input"
-                placeholder="Search anything..."
-                autocomplete="off"
-                aria-label="Search">
-
-            <button
-                type="button"
-                class="cb-search-clear"
-                id="cb-search-clear"
-                aria-label="Clear search">
-
-                <span class="material-symbols-rounded">
-                    close
-                </span>
-
+            <span class="material-symbols-rounded cb-search-icon">search</span>
+            <input type="search" class="cb-search-input" id="cb-search-input" placeholder="Search anything..." autocomplete="off" aria-label="Search">
+            <button type="button" class="cb-search-clear" id="cb-search-clear" aria-label="Clear search">
+                <span class="material-symbols-rounded">close</span>
             </button>
-
         </div>
-
     </div>
 
-
-    <!-- =====================================================
-         RIGHT HEADER ACTIONS
-         ===================================================== -->
-
+    <!-- RIGHT HEADER ACTIONS -->
     <div class="cb-header-right">
 
-
-        <!-- =================================================
-             SYNC
-             ================================================= -->
-
-        <button
-            type="button"
-            class="header-icon-btn"
-            id="cb-sync-btn"
-            title="Sync"
-            aria-label="Sync">
-
-            <span class="material-symbols-rounded cb-sync-icon">
-                sync
-            </span>
-
+        <!-- SYNC (WORKING REFRESH) -->
+        <button type="button" class="header-icon-btn" id="cb-sync-btn" title="Refresh" aria-label="Refresh">
+            <span class="material-symbols-rounded cb-sync-icon">sync</span>
         </button>
 
-
-        <!-- =================================================
-             INSTALL APP
-             ================================================= -->
-
-        <button
-            type="button"
-            class="header-icon-btn cb-install-btn"
-            id="cb-install-btn"
-            title="Install App"
-            aria-label="Install App">
-
-            <span class="material-symbols-rounded">
-                install_mobile
-            </span>
-
+        <!-- INSTALL APP -->
+        <button type="button" class="header-icon-btn cb-install-btn" id="cb-install-btn" title="Install App" aria-label="Install App">
+            <span class="material-symbols-rounded">install_mobile</span>
         </button>
 
-
-        <!-- =================================================
-             NOTIFICATIONS
-             ================================================= -->
-
-        <button
-            type="button"
-            class="header-icon-btn"
-            title="Notifications"
-            aria-label="Notifications"
-            onclick="window.handleHeaderNotification?.()">
-
-            <span class="material-symbols-rounded bell-anim">
-                notifications
-            </span>
-
+        <!-- NOTIFICATIONS (LINKED TO HTML) -->
+        <a href="notifications.html" class="header-icon-btn" title="Notifications" aria-label="Notifications">
+            <span class="material-symbols-rounded bell-anim">notifications</span>
             <span class="notification-dot"></span>
+        </a>
 
-        </button>
-
-
-        <!-- =================================================
-             PROFILE
-             ================================================= -->
-
-        <button
-            type="button"
-            class="cb-profile-btn"
-            title="Profile"
-            aria-label="Profile"
-            onclick="window.handleProfile?.()">
-
-            <span class="material-symbols-rounded">
-                account_circle
-            </span>
-
+        <!-- PROFILE -->
+        <button type="button" class="cb-profile-btn" title="Profile" aria-label="Profile" onclick="window.handleProfile?.()">
+            <span class="material-symbols-rounded">account_circle</span>
         </button>
 
     </div>
-
 </header>
-
 
 <!-- =========================================================
      INSTALL APP POPUP
      ========================================================= -->
-
-<div
-    class="cb-install-popup"
-    id="cb-install-popup"
-    role="dialog"
-    aria-label="Install COREBIQ">
-
+<div class="cb-install-popup" id="cb-install-popup" role="dialog" aria-label="Install COREBIQ">
     <div class="cb-install-arrow"></div>
-
-
     <div class="cb-install-top">
-
-
-        <!-- APP LOGO -->
-
-        <img
-            src="assets/logo-client.png"
-            class="cb-install-logo"
-            alt="COREBIQ">
-
-
-        <!-- CONTENT -->
-
+        <img src="assets/logo-client.png" class="cb-install-logo" alt="COREBIQ">
         <div class="cb-install-content">
-
-            <div class="cb-install-title">
-                Install COREBIQ
-            </div>
-
-            <div class="cb-install-text">
-                Add COREBIQ to your phone for faster access.
-            </div>
-
+            <div class="cb-install-title">Install COREBIQ</div>
+            <div class="cb-install-text">Add COREBIQ to your phone for faster access.</div>
         </div>
-
-
-        <!-- CLOSE -->
-
-        <button
-            type="button"
-            class="cb-install-close"
-            id="cb-install-close"
-            aria-label="Close">
-
-            <span class="material-symbols-rounded">
-                close
-            </span>
-
+        <button type="button" class="cb-install-close" id="cb-install-close" aria-label="Close">
+            <span class="material-symbols-rounded">close</span>
         </button>
-
     </div>
-
-
-    <!-- INSTALL ACTION -->
-
-    <button
-        type="button"
-        class="cb-install-action"
-        id="cb-install-action">
-
-        <span class="material-symbols-rounded">
-            install_mobile
-        </span>
-
+    <button type="button" class="cb-install-action" id="cb-install-action">
+        <span class="material-symbols-rounded">install_mobile</span>
         Install App
-
     </button>
-
 </div>
 
-
 <script>
-
-/* =========================================================
-   COREBIQ HEADER SCRIPT
-   ========================================================= */
-
 (function () {
-
     'use strict';
 
+    /* ELEMENTS */
+    const searchInput = document.getElementById('cb-search-input');
+    const searchClear = document.getElementById('cb-search-clear');
+    const syncButton = document.getElementById('cb-sync-btn');
+    const installButton = document.getElementById('cb-install-btn');
+    const installPopup = document.getElementById('cb-install-popup');
+    const installAction = document.getElementById('cb-install-action');
+    const installClose = document.getElementById('cb-install-close');
 
-    /* =======================================================
-       ELEMENTS
-       ======================================================= */
-
-    const searchInput =
-        document.getElementById(
-            'cb-search-input'
-        );
-
-    const searchClear =
-        document.getElementById(
-            'cb-search-clear'
-        );
-
-    const syncButton =
-        document.getElementById(
-            'cb-sync-btn'
-        );
-
-    const installButton =
-        document.getElementById(
-            'cb-install-btn'
-        );
-
-    const installPopup =
-        document.getElementById(
-            'cb-install-popup'
-        );
-
-    const installAction =
-        document.getElementById(
-            'cb-install-action'
-        );
-
-    const installClose =
-        document.getElementById(
-            'cb-install-close'
-        );
-
-
-    /* =======================================================
-       SEARCH CLEAR
-       ======================================================= */
-
+    /* SEARCH CLEAR */
     if (searchClear && searchInput) {
-
-        searchClear.addEventListener(
-            'click',
-            function () {
-
-                searchInput.value = '';
-
-                searchInput.focus();
-
-            }
-        );
-
+        searchClear.addEventListener('click', function () {
+            searchInput.value = '';
+            searchInput.focus();
+        });
     }
 
-
-    /* =======================================================
-       SEARCH
-       ======================================================= */
-
+    /* SEARCH */
     if (searchInput) {
-
-        searchInput.addEventListener(
-            'keydown',
-            function (event) {
-
-                if (
-                    event.key === 'Enter'
-                ) {
-
-                    const query =
-                        this.value.trim();
-
-                    if (!query) return;
-
-                    console.log(
-                        'COREBIQ Search:',
-                        query
-                    );
-
-                    /*
-                       Your global search function
-                       can be connected later.
-                    */
-
-                    if (
-                        typeof window.handleGlobalSearch ===
-                        'function'
-                    ) {
-
-                        window.handleGlobalSearch(
-                            query
-                        );
-
-                    }
-
+        searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const query = this.value.trim();
+                if (!query) return;
+                console.log('COREBIQ Search:', query);
+                if (typeof window.handleGlobalSearch === 'function') {
+                    window.handleGlobalSearch(query);
                 }
-
             }
-        );
-
+        });
     }
 
-
-    /* =======================================================
-       SYNC
-       ======================================================= */
-
+    /* FUNCTIONAL SYNC / REFRESH */
     function performSync() {
-
         if (!syncButton) return;
+        
+        // Add rotation class
+        syncButton.classList.add('syncing');
 
-
-        syncButton.classList.add(
-            'syncing'
-        );
-
-
-        /*
-           If your application already has
-           a global sync function, use it.
-        */
-
-        try {
-
-            if (
-                typeof window.syncApp ===
-                'function'
-            ) {
-
-                const result =
-                    window.syncApp();
-
-                /*
-                   Support async sync functions.
-                */
-
-                if (
-                    result &&
-                    typeof result.then ===
-                    'function'
-                ) {
-
-                    result.finally(
-                        finishSync
-                    );
-
-                    return;
-
-                }
-
-            }
-
-        } catch (error) {
-
-            console.error(
-                'COREBIQ Sync Error:',
-                error
-            );
-
-        }
-
-
-        /*
-           Small fallback animation
-           when no sync function exists.
-        */
-
-        setTimeout(
-            finishSync,
-            900
-        );
-
+        // Reload page after a short delay to allow the animation to play
+        setTimeout(() => {
+            window.location.reload();
+        }, 600);
     }
-
-
-    function finishSync() {
-
-        if (!syncButton) return;
-
-        syncButton.classList.remove(
-            'syncing'
-        );
-
-    }
-
 
     if (syncButton) {
-
-        syncButton.addEventListener(
-            'click',
-            performSync
-        );
-
+        syncButton.addEventListener('click', performSync);
     }
 
-
-    /* =======================================================
-       PWA INSTALL
-       ======================================================= */
-
+    /* PWA INSTALL LOGIC */
     let deferredInstallPrompt = null;
 
-
-    window.addEventListener(
-        'beforeinstallprompt',
-        function (event) {
-
-            event.preventDefault();
-
-            deferredInstallPrompt =
-                event;
-
-            /*
-               Keep the install button
-               visible when installation
-               is available.
-            */
-
-            if (installButton) {
-
-                installButton.style.display =
-                    'flex';
-
-            }
-
+    window.addEventListener('beforeinstallprompt', function (event) {
+        event.preventDefault();
+        deferredInstallPrompt = event;
+        if (installButton) {
+            installButton.style.display = 'flex';
         }
-    );
+    });
 
-
-    /* =======================================================
-       OPEN INSTALL POPUP
-       ======================================================= */
-
+    /* INSTALL POPUP LOGIC */
     function openInstallPopup() {
-
         if (!installPopup) return;
-
-        installPopup.classList.add(
-            'show'
-        );
-
+        installPopup.classList.add('show');
     }
-
 
     function closeInstallPopup() {
-
         if (!installPopup) return;
-
-        installPopup.classList.remove(
-            'show'
-        );
-
+        installPopup.classList.remove('show');
     }
-
 
     if (installButton) {
-
-        installButton.addEventListener(
-            'click',
-            function (event) {
-
-                event.stopPropagation();
-
+        installButton.addEventListener('click', function (event) {
+            event.stopPropagation();
+            if(installPopup.classList.contains('show')) {
+                closeInstallPopup();
+            } else {
                 openInstallPopup();
-
             }
-        );
-
+        });
     }
-
 
     if (installClose) {
-
-        installClose.addEventListener(
-            'click',
-            function () {
-
-                closeInstallPopup();
-
-            }
-        );
-
+        installClose.addEventListener('click', closeInstallPopup);
     }
-
-
-    /* =======================================================
-       INSTALL ACTION
-       ======================================================= */
 
     if (installAction) {
-
-        installAction.addEventListener(
-            'click',
-            async function () {
-
-                /*
-                   Android / Chrome PWA
-                */
-
-                if (
-                    deferredInstallPrompt
-                ) {
-
-                    deferredInstallPrompt.prompt();
-
-                    try {
-
-                        const choice =
-                            await deferredInstallPrompt
-                                .userChoice;
-
-                        console.log(
-                            'COREBIQ install:',
-                            choice.outcome
-                        );
-
-                    } catch (error) {
-
-                        console.log(
-                            'Install prompt closed.'
-                        );
-
-                    }
-
-                    deferredInstallPrompt =
-                        null;
-
-                    closeInstallPopup();
-
-                    return;
-
+        installAction.addEventListener('click', async function () {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                try {
+                    const choice = await deferredInstallPrompt.userChoice;
+                    console.log('COREBIQ install:', choice.outcome);
+                } catch (error) {
+                    console.log('Install prompt closed.');
                 }
-
-
-                /*
-                   Already installed / iOS /
-                   browser without native prompt.
-                */
-
-                alert(
-                    'To install COREBIQ, open your browser menu and choose "Add to Home screen" or "Install app".'
-                );
-
+                deferredInstallPrompt = null;
+                closeInstallPopup();
+                return;
             }
-        );
-
+            alert('To install COREBIQ, open your browser menu and choose "Add to Home screen" or "Install app".');
+        });
     }
 
-
-    /* =======================================================
-       CLOSE POPUP OUTSIDE
-       ======================================================= */
-
-    document.addEventListener(
-        'click',
-        function (event) {
-
-            if (!installPopup) return;
-
-            if (
-                installPopup.classList.contains(
-                    'show'
-                ) &&
-                !installPopup.contains(
-                    event.target
-                ) &&
-                !installButton?.contains(
-                    event.target
-                )
-            ) {
-
-                closeInstallPopup();
-
-            }
-
-        }
-    );
-
-
-    /* =======================================================
-       PWA INSTALLED
-       ======================================================= */
-
-    window.addEventListener(
-        'appinstalled',
-        function () {
-
-            deferredInstallPrompt =
-                null;
-
+    /* CLOSE POPUP WHEN CLICKING OUTSIDE */
+    document.addEventListener('click', function (event) {
+        if (!installPopup) return;
+        if (
+            installPopup.classList.contains('show') &&
+            !installPopup.contains(event.target) &&
+            !installButton?.contains(event.target)
+        ) {
             closeInstallPopup();
-
-            console.log(
-                'COREBIQ installed successfully.'
-            );
-
         }
-    );
+    });
 
-
-    /* =======================================================
-       EXISTING GLOBAL FUNCTIONS
-       ======================================================= */
-
-    window.handleHeaderNotification =
-        window.handleHeaderNotification ||
-        function () {
-
-            console.log(
-                'COREBIQ notifications clicked'
-            );
-
-        };
-
-
-    window.handleProfile =
-        window.handleProfile ||
-        function () {
-
-            console.log(
-                'COREBIQ profile clicked'
-            );
-
-        };
-
+    window.addEventListener('appinstalled', function () {
+        deferredInstallPrompt = null;
+        closeInstallPopup();
+        console.log('COREBIQ installed successfully.');
+    });
 
 })();
-
 </script>
 
 </body>
