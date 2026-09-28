@@ -1,0 +1,627 @@
+<div class="module-container" id="branch-module">
+  
+  <style>
+    /* --- Branch Module Styles --- */
+    #branch-module {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #branch-module .app-card {
+      background: var(--surface, #ffffff);
+      border-radius: var(--radius-xl, 16px);
+      box-shadow: var(--shadow, 0 1px 2px rgba(0,0,0,0.15));
+      border: 1px solid var(--border, #E0E2E0);
+      padding: 24px;
+      position: relative;
+    }
+
+    /* Toolbar */
+    #branch-module .module-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border, #E0E2E0);
+    }
+    #branch-module .module-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text-main, #1f1f1f);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #branch-module .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* Buttons */
+    #branch-module .btn {
+      font-family: inherit;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    #branch-module .btn-primary { background: var(--primary, #0B57D0); color: #ffffff; }
+    #branch-module .btn-primary:hover:not(:disabled) { background: var(--primary-dark, #0842A0); }
+    #branch-module .btn-tonal { background: var(--primary-light, #D3E3FD); color: var(--primary-dark, #0842A0); }
+    #branch-module .btn-tonal:hover:not(:disabled) { filter: brightness(0.95); }
+    #branch-module .btn-outlined { background: transparent; color: var(--text-main, #1f1f1f); border: 1px solid var(--border-strong, #C4C7C5); }
+    #branch-module .btn-outlined:hover:not(:disabled) { background: var(--surface-soft, #F3F4F6); }
+    #branch-module .btn-icon { padding: 8px; border-radius: 50%; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: 0.2s; }
+    #branch-module .btn-icon:hover { background: var(--surface-soft); color: var(--text-main); }
+    #branch-module .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Search */
+    #branch-module .search-container {
+      display: flex;
+      align-items: center;
+      background: var(--surface-soft, #F3F4F6);
+      border-radius: 50px;
+      padding: 4px 12px;
+      flex: 1 1 100%;
+    }
+    @media (min-width: 600px) {
+      #branch-module .search-container { flex: 0 1 260px; }
+    }
+    #branch-module .search-input { border: none; background: transparent; outline: none; padding: 8px; width: 100%; font-family: inherit; }
+
+    /* List View (Cards for mobile friendliness) */
+    #branch-module .list-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      #branch-module .list-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      #branch-module .list-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    
+    #branch-module .branch-card {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md, 12px);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow 0.2s;
+    }
+    #branch-module .branch-card:hover { box-shadow: var(--shadow-hover, 0 4px 8px rgba(0,0,0,0.08)); }
+    #branch-module .bc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    #branch-module .bc-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+    #branch-module .bc-code { font-size: 0.8rem; color: var(--primary); font-weight: 600; background: var(--primary-light); padding: 4px 8px; border-radius: 6px; display: inline-block; }
+    #branch-module .bc-status { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; }
+    #branch-module .bc-status.active { background: #e6f4ea; color: #1e8e3e; }
+    #branch-module .bc-status.inactive { background: #fce8e6; color: #d93025; }
+    #branch-module .bc-info { font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+    #branch-module .bc-info span { display: flex; align-items: center; gap: 6px; }
+    #branch-module .bc-info .material-symbols-rounded { font-size: 16px; }
+    #branch-module .bc-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+
+    /* Form Sections */
+    #branch-module .form-section { margin-bottom: 32px; }
+    #branch-module .form-section-title { font-size: 1.05rem; font-weight: 600; color: var(--primary, #0B57D0); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    
+    #branch-module .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px 20px; }
+    @media (min-width: 640px) { #branch-module .form-grid { grid-template-columns: repeat(2, 1fr); } #branch-module .span-2 { grid-column: span 2; } }
+    @media (min-width: 1024px) { #branch-module .form-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    /* Form Controls */
+    #branch-module .form-group { display: flex; flex-direction: column; gap: 6px; }
+    #branch-module .form-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-muted, #444746); }
+    #branch-module .form-group label span.req { color: var(--danger, #B3261E); }
+    #branch-module .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border-strong, #C4C7C5); border-radius: 8px; font-family: inherit; font-size: 0.95rem; color: var(--text-main); background: var(--surface); transition: all 0.2s; }
+    #branch-module .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+    #branch-module .form-control:read-only { background: var(--surface-soft); color: var(--text-muted); cursor: default; }
+
+    /* System Info Grid */
+    #branch-module .system-info-card { background: var(--surface-soft); border-radius: 12px; padding: 20px; margin-top: 32px; border: 1px dashed var(--border-strong); }
+    #branch-module .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (min-width: 768px) { #branch-module .system-grid { grid-template-columns: repeat(3, 1fr); } }
+    #branch-module .sys-item { display: flex; flex-direction: column; }
+    #branch-module .sys-item span:first-child { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+    #branch-module .sys-item span:last-child { font-size: 0.85rem; color: var(--text-main); word-break: break-all; }
+
+    /* Action Footer */
+    #branch-module .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+    
+    #branch-module .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 10; border-radius: var(--radius-xl); font-weight: 500; color: var(--primary); }
+    #branch-module .empty-state { padding: 40px; text-align: center; color: var(--text-muted); border: 1px dashed var(--border); border-radius: 12px; }
+  </style>
+
+  <!-- ================= LIST VIEW ================= -->
+  <div class="app-card" id="branchListView">
+    <div id="listLoader" class="loading-overlay" style="display:none;">
+      <span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite; margin-right: 8px;">sync</span> Loading...
+    </div>
+
+    <div class="module-toolbar">
+      <div class="module-title">
+        <span class="material-symbols-rounded" style="color: var(--primary);">store</span>
+        Branch Directory
+      </div>
+      <div class="toolbar-actions">
+        <div class="search-container">
+          <span class="material-symbols-rounded" style="color:var(--text-muted)">search</span>
+          <input type="text" class="search-input" id="searchBranch" placeholder="Search branches...">
+        </div>
+        <button class="btn btn-primary" id="btnAddNewBranch">
+          <span class="material-symbols-rounded">add</span> New Branch
+        </button>
+      </div>
+    </div>
+
+    <div class="list-grid" id="branchCardsContainer">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- ================= FORM VIEW ================= -->
+  <div class="app-card" id="branchFormView" style="display: none;">
+    <div id="formLoader" class="loading-overlay" style="display:none;">
+      <span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite; margin-right: 8px;">sync</span> Saving...
+    </div>
+
+    <div class="module-toolbar">
+      <div class="module-title">
+        <button class="btn-icon" id="btnBackToList" title="Back to List">
+          <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+        <span id="formTitleText">Add New Branch</span>
+      </div>
+    </div>
+
+    <form id="branchForm">
+      <input type="hidden" id="doc_id"> <!-- Hidden Firebase Doc ID -->
+
+      <!-- Branch Info -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">business</span> Branch Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Branch ID</label>
+            <input type="text" class="form-control" id="brn_id" value="BRN-AUTO" readonly>
+          </div>
+          <div class="form-group">
+            <label>Branch Name <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_name" required>
+          </div>
+          <div class="form-group">
+            <label>Branch Code <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_code" placeholder="e.g. MAIN" required>
+          </div>
+          <div class="form-group">
+            <label>Branch Type</label>
+            <select class="form-control" id="brn_type">
+              <option value="Head Office">Head Office</option>
+              <option value="Branch">Branch</option>
+              <option value="Warehouse">Warehouse</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select class="form-control" id="brn_status">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Details -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">contact_mail</span> Contact Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input type="text" class="form-control" id="brn_contact_person">
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" class="form-control" id="brn_phone">
+          </div>
+          <div class="form-group">
+            <label>Alternate Phone</label>
+            <input type="tel" class="form-control" id="brn_alt_phone">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" id="brn_email">
+          </div>
+          <div class="form-group span-2">
+            <label>Website</label>
+            <input type="url" class="form-control" id="brn_website">
+          </div>
+        </div>
+      </div>
+
+      <!-- Branch Address -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">location_on</span> Branch Address</div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label>Address Line 1 <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_addr1" required>
+          </div>
+          <div class="form-group span-2">
+            <label>Address Line 2</label>
+            <input type="text" class="form-control" id="brn_addr2">
+          </div>
+          <div class="form-group">
+            <label>City <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_city" required>
+          </div>
+          <div class="form-group">
+            <label>District</label>
+            <input type="text" class="form-control" id="brn_district">
+          </div>
+          <div class="form-group">
+            <label>State <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_state" required>
+          </div>
+          <div class="form-group">
+            <label>PIN Code <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_pin" required>
+          </div>
+          <div class="form-group">
+            <label>Country <span class="req">*</span></label>
+            <input type="text" class="form-control" id="brn_country" value="India" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tax & Registration -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">receipt_long</span> Tax & Registration</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>GSTIN</label>
+            <input type="text" class="form-control" id="brn_gstin">
+          </div>
+          <div class="form-group">
+            <label>GST Registration Type</label>
+            <select class="form-control" id="brn_gst_type">
+              <option value="Regular">Regular</option>
+              <option value="Composition">Composition</option>
+              <option value="Unregistered">Unregistered</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>State Code</label>
+            <input type="text" class="form-control" id="brn_state_code">
+          </div>
+          <div class="form-group">
+            <label>PAN</label>
+            <input type="text" class="form-control" id="brn_pan">
+          </div>
+          <div class="form-group">
+            <label>TAN</label>
+            <input type="text" class="form-control" id="brn_tan">
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank Details -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">account_balance</span> Bank Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Bank Name</label>
+            <input type="text" class="form-control" id="brn_bank_name">
+          </div>
+          <div class="form-group">
+            <label>Account Holder Name</label>
+            <input type="text" class="form-control" id="brn_acc_name">
+          </div>
+          <div class="form-group">
+            <label>Account Number</label>
+            <input type="text" class="form-control" id="brn_acc_no">
+          </div>
+          <div class="form-group">
+            <label>IFSC</label>
+            <input type="text" class="form-control" id="brn_ifsc">
+          </div>
+          <div class="form-group">
+            <label>Branch Name</label>
+            <input type="text" class="form-control" id="brn_bank_branch">
+          </div>
+        </div>
+      </div>
+
+      <!-- Branch Settings -->
+      <div class="form-section">
+        <div class="form-section-title"><span class="material-symbols-rounded">settings</span> Branch Settings</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Default Currency</label>
+            <input type="text" class="form-control" id="brn_currency" value="INR">
+          </div>
+          <div class="form-group">
+            <label>Financial Year</label>
+            <select class="form-control" id="brn_fy">
+              <option value="April-March">April - March</option>
+              <option value="Jan-Dec">January - December</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Invoice Prefix</label>
+            <input type="text" class="form-control" id="brn_inv_prefix" placeholder="e.g. INV-M-">
+          </div>
+          <div class="form-group">
+            <label>Invoice Starting No.</label>
+            <input type="number" class="form-control" id="brn_inv_start">
+          </div>
+          <div class="form-group">
+            <label>Default Payment Terms</label>
+            <input type="text" class="form-control" id="brn_pay_terms" placeholder="e.g. Net 30">
+          </div>
+          <div class="form-group span-2">
+            <label>Notes</label>
+            <textarea class="form-control" id="brn_notes" rows="2"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-outlined" id="btnResetCancel">Reset</button>
+        <button type="submit" class="btn btn-primary" id="btnSaveBranch">
+          <span class="material-symbols-rounded">save</span> <span id="btnSaveText">Save Branch</span>
+        </button>
+      </div>
+
+      <!-- System Information (Read Only) -->
+      <div class="system-info-card" id="systemInfoBlock" style="display: none;">
+        <div class="form-section-title" style="font-size: 0.95rem; margin-bottom:12px; color:var(--text-muted);">
+          <span class="material-symbols-rounded" style="font-size:18px;">memory</span> System Information
+        </div>
+        <div class="system-grid">
+          <div class="sys-item"><span>Branch ID</span> <span id="sys_brn_id">--</span></div>
+          <div class="sys-item"><span>Company ID</span> <span id="sys_comp_id">COMP-00001</span></div>
+          <div class="sys-item"><span>Created At</span> <span id="sys_created_at">--</span></div>
+          <div class="sys-item"><span>Created By</span> <span id="sys_created_by">--</span></div>
+          <div class="sys-item"><span>Updated At</span> <span id="sys_updated_at">--</span></div>
+          <div class="sys-item"><span>Updated By</span> <span id="sys_updated_by">--</span></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Script for Logic -->
+<script type="module">
+  import { db } from "./firebase-config.js";
+  import { 
+    collection, addDoc, doc, updateDoc, onSnapshot, query, orderBy, serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  // Views
+  const listView = document.getElementById('branchListView');
+  const formView = document.getElementById('branchFormView');
+  
+  // Containers
+  const cardsContainer = document.getElementById('branchCardsContainer');
+  const form = document.getElementById('branchForm');
+  const systemInfoBlock = document.getElementById('systemInfoBlock');
+  
+  // Loaders & Buttons
+  const listLoader = document.getElementById('listLoader');
+  const formLoader = document.getElementById('formLoader');
+  const btnAddNew = document.getElementById('btnAddNewBranch');
+  const btnBack = document.getElementById('btnBackToList');
+  const btnResetCancel = document.getElementById('btnResetCancel');
+  const btnSave = document.getElementById('btnSaveBranch');
+  const searchInput = document.getElementById('searchBranch');
+  
+  const formTitleText = document.getElementById('formTitleText');
+  const btnSaveText = document.getElementById('btnSaveText');
+
+  // Firebase
+  const branchCollection = collection(db, 'branches');
+  let currentBranches = [];
+  let isEditing = false;
+
+  // Fields to map
+  const fields = [
+    'brn_name', 'brn_code', 'brn_type', 'brn_status',
+    'brn_contact_person', 'brn_phone', 'brn_alt_phone', 'brn_email', 'brn_website',
+    'brn_addr1', 'brn_addr2', 'brn_city', 'brn_district', 'brn_state', 'brn_pin', 'brn_country',
+    'brn_gstin', 'brn_gst_type', 'brn_state_code', 'brn_pan', 'brn_tan',
+    'brn_bank_name', 'brn_acc_name', 'brn_acc_no', 'brn_ifsc', 'brn_bank_branch',
+    'brn_currency', 'brn_fy', 'brn_inv_prefix', 'brn_inv_start', 'brn_pay_terms', 'brn_notes'
+  ];
+
+  // Utility: Format Date
+  const formatTime = (ts) => {
+    if (!ts) return '--';
+    const date = ts.toDate ? ts.toDate() : new Date(ts);
+    return date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  };
+
+  // Utility: Toggle Views
+  const showList = () => {
+    formView.style.display = 'none';
+    listView.style.display = 'block';
+  };
+  
+  const showForm = (editMode = false) => {
+    isEditing = editMode;
+    listView.style.display = 'none';
+    formView.style.display = 'block';
+    
+    if (editMode) {
+      formTitleText.innerText = "Edit Branch";
+      btnSaveText.innerText = "Save Changes";
+      btnResetCancel.innerText = "Cancel";
+      systemInfoBlock.style.display = "block";
+    } else {
+      formTitleText.innerText = "Add New Branch";
+      btnSaveText.innerText = "Save Branch";
+      btnResetCancel.innerText = "Reset";
+      systemInfoBlock.style.display = "none";
+      form.reset();
+      document.getElementById('doc_id').value = "";
+      document.getElementById('brn_id').value = "BRN-AUTO";
+      document.getElementById('brn_country').value = "India";
+      document.getElementById('brn_currency').value = "INR";
+    }
+  };
+
+  // Render Cards
+  const renderCards = (dataList) => {
+    cardsContainer.innerHTML = '';
+    if(dataList.length === 0) {
+      cardsContainer.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;">No branches found. Click 'New Branch' to create one.</div>`;
+      return;
+    }
+
+    dataList.forEach(branch => {
+      const card = document.createElement('div');
+      card.className = 'branch-card';
+      card.innerHTML = `
+        <div class="bc-header">
+          <div>
+            <div class="bc-title">${branch.brn_name}</div>
+            <div class="bc-code">${branch.brn_code}</div>
+          </div>
+          <div class="bc-status ${branch.brn_status === 'Active' ? 'active' : 'inactive'}">${branch.brn_status}</div>
+        </div>
+        <div class="bc-info">
+          <span><span class="material-symbols-rounded">business</span> ${branch.brn_type || 'N/A'}</span>
+          <span><span class="material-symbols-rounded">location_on</span> ${branch.brn_city}, ${branch.brn_state}</span>
+          ${branch.brn_phone ? `<span><span class="material-symbols-rounded">call</span> ${branch.brn_phone}</span>` : ''}
+        </div>
+        <div class="bc-actions">
+          <button class="btn btn-outlined" style="padding: 6px 12px; font-size: 0.85rem;" data-edit-id="${branch.id}">
+            <span class="material-symbols-rounded" style="font-size: 16px;">edit</span> Edit
+          </button>
+        </div>
+      `;
+      cardsContainer.appendChild(card);
+    });
+
+    // Attach Edit Listeners
+    document.querySelectorAll('[data-edit-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-edit-id');
+        const branchData = currentBranches.find(b => b.id === id);
+        if(branchData) loadFormForEdit(branchData);
+      });
+    });
+  };
+
+  // Load Form Data
+  const loadFormForEdit = (data) => {
+    showForm(true);
+    document.getElementById('doc_id').value = data.id;
+    document.getElementById('brn_id').value = data.custom_brn_id || "BRN-AUTO";
+
+    fields.forEach(f => {
+      const el = document.getElementById(f);
+      if (el && data[f] !== undefined) el.value = data[f];
+    });
+
+    // Sys Info
+    document.getElementById('sys_brn_id').innerText = data.custom_brn_id || '--';
+    document.getElementById('sys_created_at').innerText = formatTime(data.createdAt);
+    document.getElementById('sys_created_by').innerText = data.createdBy || '--';
+    document.getElementById('sys_updated_at').innerText = formatTime(data.updatedAt);
+    document.getElementById('sys_updated_by').innerText = data.updatedBy || '--';
+  };
+
+  // Real-time Fetch
+  listLoader.style.display = 'flex';
+  const q = query(branchCollection, orderBy('createdAt', 'desc'));
+  onSnapshot(q, (snapshot) => {
+    currentBranches = [];
+    snapshot.forEach(doc => {
+      currentBranches.push({ id: doc.id, ...doc.data() });
+    });
+    renderCards(currentBranches);
+    listLoader.style.display = 'none';
+  }, (err) => {
+    console.error(err);
+    listLoader.style.display = 'none';
+  });
+
+  // Search Logic
+  searchInput.addEventListener('input', (e) => {
+    const val = e.target.value.toLowerCase();
+    const filtered = currentBranches.filter(b => 
+      (b.brn_name || '').toLowerCase().includes(val) || 
+      (b.brn_code || '').toLowerCase().includes(val) ||
+      (b.brn_city || '').toLowerCase().includes(val)
+    );
+    renderCards(filtered);
+  });
+
+  // Events
+  btnAddNew.addEventListener('click', () => showForm(false));
+  btnBack.addEventListener('click', showList);
+  btnResetCancel.addEventListener('click', () => {
+    if(isEditing) showList();
+    else form.reset();
+  });
+
+  // Form Submit
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    formLoader.style.display = 'flex';
+    btnSave.disabled = true;
+
+    const userEmail = window.currentUser ? window.currentUser.email : "user@example.com";
+    const userName = userEmail.split('@')[0];
+
+    const payload = {};
+    fields.forEach(f => {
+      const el = document.getElementById(f);
+      if(el) payload[f] = el.value;
+    });
+
+    payload.updatedAt = serverTimestamp();
+    payload.updatedBy = userName;
+
+    try {
+      if (isEditing) {
+        const docId = document.getElementById('doc_id').value;
+        await updateDoc(doc(db, 'branches', docId), payload);
+      } else {
+        payload.createdAt = serverTimestamp();
+        payload.createdBy = userName;
+        // Generate a pseudo-ID for UI display
+        payload.custom_brn_id = "BRN-" + Math.floor(10000 + Math.random() * 90000);
+        await addDoc(branchCollection, payload);
+      }
+      showList();
+    } catch (err) {
+      console.error("Save Error:", err);
+      alert("Error saving branch: " + err.message);
+    } finally {
+      formLoader.style.display = 'none';
+      btnSave.disabled = false;
+    }
+  });
+
+</script>
