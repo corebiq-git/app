@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Updated Header</title>
+<!-- Include Google Fonts for Outfit and Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+
+<style>
+/* =========================================================
+   COREBIQ HEADER - CORPORATE MINIMAL
+   ========================================================= */
+body {
+    margin: 0;
+    background-color: #f1f5f9; /* Just for contrast in preview */
+}
+
+#cb-header {
+    width: 100%;
+    min-height: 72px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border-bottom: 1px solid rgba(148, 163, 184, .18);
+    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Align remaining items to the right by default */
+    padding: 0 24px;
+    position: relative;
+    z-index: 900;
+    flex-shrink: 0;
+    font-family: 'Outfit', sans-serif;
+    gap: 24px;
+}
+
+/* =========================================================
+   SEARCH BAR - LENGTHY
+   ========================================================= */
+.cb-search-wrapper {
+    flex: 1; /* Allow search to take up available space */
+    max-width: 500px;
+    margin-right: auto; /* Push icons to the right if there is space */
+}
+
+.cb-search-container {
+    width: 100%;
+    height: 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    background: #FFFFFF;
+    border: 1px solid rgba(203, 213, 225, .5);
+    border-radius: 10px;
+    transition: .2s ease;
+    position: relative;
+}
+
+.cb-search-container:hover {
+    background: #FFFFFF;
+    border-color: rgba(148, 163, 184, .5);
+}
+
+.cb-search-container:focus-within {
+    background: #FFFFFF;
+    border-color: rgba(148, 163, 184, .6);
+    box-shadow: 0 0 12px rgba(148, 163, 184, .12);
+}
+
+.cb-search-icon {
+    font-size: 20px;
+    color: #64748B;
+    flex-shrink: 0;
+}
+
+.cb-search-input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #1E293B;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+}
+
+.cb-search-input::placeholder {
+    color: #CBD5E1;
+}
+
+.cb-search-clear {
+    display: none;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: #F3F4F6;
+    border-radius: 6px;
+    color: #64748B;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: .2s ease;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.cb-search-clear:hover {
+    background: #E2E8F0;
+    color: #475569;
+}
+
+.cb-search-input:not(:placeholder-shown) ~ .cb-search-clear {
+    display: flex;
+}
+
+/* =========================================================
+   RIGHT ICONS SECTION
+   ========================================================= */
+.cb-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* =========================================================
+   HEADER ICON BUTTON (Notifications)
+   ========================================================= */
+.header-icon-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(203, 213, 225, .5);
+    background: #F8FAFC;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748B;
+    cursor: pointer;
+    transition: .2s ease;
+    position: relative;
+    flex-shrink: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+.header-icon-btn:hover {
+    background: #F1F5F9;
+    border-color: rgba(148, 163, 184, .5);
+    color: #475569;
+}
+
+.header-icon-btn .material-symbols-rounded {
+    font-size: 21px;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #F59E0B;
+    border: 1px solid #fff;
+    box-shadow: 0 0 8px rgba(245, 158, 11, .35);
+}
+
+@keyframes cbRing {
+    0%, 50%, 100% { transform: rotate(0); }
+    10% { transform: rotate(15deg); }
+    20% { transform: rotate(-10deg); }
+    30% { transform: rotate(5deg); }
+    40% { transform: rotate(-5deg); }
+}
+
+.bell-anim {
+    animation: cbRing 2s infinite;
+    transform-origin: top center;
+    color: #64748B !important;
+}
+
+.header-icon-btn:hover .bell-anim {
+    color: #475569 !important;
+}
+
+/* =========================================================
+   PROFILE ICON
+   ========================================================= */
+.cb-profile-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(203, 213, 225, .5);
+    background: #F8FAFC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: .2s ease;
+    flex-shrink: 0;
+    color: #64748B;
+    font-family: 'Outfit', sans-serif;
+}
+
+.cb-profile-btn:hover {
+    border-color: rgba(148, 163, 184, .6);
+    background: #F1F5F9;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+
+.cb-profile-btn .material-symbols-rounded {
+    font-size: 22px;
+}
+
+/* =========================================================
+   MOBILE SEARCH
+   ========================================================= */
+.mobile-search-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(203, 213, 225, .5);
+    background: #F8FAFC;
+    border-radius: 9px;
+    align-items: center;
+    justify-content: center;
+    color: #64748B;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.mobile-search-btn:hover {
+    background: #F1F5F9;
+    border-color: rgba(148, 163, 184, .5);
+    color: #475569;
+}
+
+.mobile-search-btn .material-symbols-rounded {
+    font-size: 21px;
+    color: #64748B;
+}
+
+.mobile-search-panel {
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(100% + 8px);
+    padding: 8px;
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(203, 213, 225, .5);
+    border-radius: 11px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .06);
+    z-index: 9999;
+}
+
+.mobile-search-panel.open {
+    display: flex;
+}
+
+.mobile-search-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 11px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid rgba(203, 213, 225, .5);
+    border-radius: 8px;
+}
+
+.mobile-search-inner .material-symbols-rounded {
+    color: #64748B;
+    font-size: 20px;
+}
+
+.mobile-search-input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #1E293B;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+}
+
+.mobile-search-input::placeholder {
+    color: #CBD5E1;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1024px) {
+    #cb-header {
+        gap: 16px;
+        padding: 0 16px;
+    }
+
+    .cb-search-wrapper {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    #cb-header {
+        gap: 12px;
+        min-height: 64px;
+        padding: 0 12px;
+        justify-content: flex-end; /* Keep right aligned */
+    }
+
+    .cb-search-wrapper {
+        display: none;
+    }
+
+    .mobile-search-btn {
+        display: flex;
+    }
+
+    .header-icon-btn,
+    .cb-profile-btn,
+    .mobile-search-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .header-icon-btn .material-symbols-rounded,
+    .mobile-search-btn .material-symbols-rounded {
+        font-size: 20px;
+    }
+
+    .cb-profile-btn .material-symbols-rounded {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #cb-header {
+        padding: 0 10px;
+        gap: 8px;
+    }
+
+    .header-icon-btn,
+    .cb-profile-btn,
+    .mobile-search-btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+</style>
+</head>
+<body>
+
+<header id="cb-header">
+
+    <!-- SEARCH BAR -->
+    <div class="cb-search-wrapper">
+        <div class="cb-search-container">
+            <span class="material-symbols-rounded cb-search-icon">search</span>
+            <input
+                type="search"
+                class="cb-search-input"
+                id="cb-search-input"
+                placeholder="Search anything..."
+                autocomplete="off">
+            <button type="button" class="cb-search-clear" onclick="document.getElementById('cb-search-input').value=''; document.getElementById('cb-search-input').focus();">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- RIGHT ICONS -->
+    <div class="cb-header-right">
+
+        <!-- MOBILE SEARCH BUTTON -->
+        <button
+            type="button"
+            class="mobile-search-btn"
+            onclick="window.toggleMobileSearch()"
+            aria-label="Search">
+            <span class="material-symbols-rounded">search</span>
+        </button>
+
+        <!-- NOTIFICATION BELL -->
+        <button
+            type="button"
+            class="header-icon-btn"
+            title="Notifications"
+            onclick="window.handleHeaderNotification?.()">
+            <span class="material-symbols-rounded bell-anim">notifications</span>
+            <span class="notification-dot"></span>
+        </button>
+
+        <!-- PROFILE ICON -->
+        <button
+            type="button"
+            class="cb-profile-btn"
+            title="Profile"
+            onclick="window.handleProfile?.()">
+            <span class="material-symbols-rounded">account_circle</span>
+        </button>
+    </div>
+
+    <!-- MOBILE SEARCH PANEL -->
+    <div class="mobile-search-panel" id="mobile-search-panel">
+        <div class="mobile-search-inner">
+            <span class="material-symbols-rounded">search</span>
+            <input
+                type="search"
+                class="mobile-search-input"
+                id="mobile-header-search"
+                placeholder="Search..."
+                autocomplete="off">
+        </div>
+    </div>
+</header>
+
+<script>
+/* =========================================================
+   HEADER COMPONENT FUNCTIONS
+   ========================================================= */
+(function () {
+    /* MOBILE SEARCH */
+    window.toggleMobileSearch = function () {
+        const panel = document.getElementById('mobile-search-panel');
+        if (!panel) return;
+        panel.classList.toggle('open');
+        if (panel.classList.contains('open')) {
+            setTimeout(() => document.getElementById('mobile-header-search')?.focus(), 100);
+        }
+    };
+
+    /* CLOSE MOBILE SEARCH WHEN CLICKING OUTSIDE */
+    document.addEventListener('click', function (event) {
+        const panel = document.getElementById('mobile-search-panel');
+        const button = document.querySelector('.mobile-search-btn');
+        if (panel?.classList.contains('open') && !panel.contains(event.target) && !button?.contains(event.target)) {
+            panel.classList.remove('open');
+        }
+    });
+
+    /* NOTIFICATION HANDLER */
+    window.handleHeaderNotification = function () {
+        console.log('COREBIQ notifications clicked');
+    };
+
+    /* PROFILE HANDLER */
+    window.handleProfile = function () {
+        console.log('COREBIQ profile clicked');
+    };
+
+    /* SEARCH HANDLER */
+    const searchInput = document.getElementById('cb-search-input');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                console.log('Search query:', this.value);
+            }
+        });
+    }
+})();
+</script>
+</body>
+</html>

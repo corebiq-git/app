@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#FFFFFF">
+    <title>COREBIQ | Loading...</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           COREBIQ PREMIUM CORPORATE SAAS - MD3 / GEMINI
+        ========================================================= */
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --primary-light: #EEF2FF;
+            --accent: #6366F1;
+
+            --surface: #FFFFFF;
+            
+            --text-main: #111827;
+            --text-muted: #64748B;
+            
+            --border: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: var(--surface);
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =========================================================
+           SPLASH SCREEN COMPONENT
+        ========================================================= */
+        #cb-splash-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            background: var(--surface);
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+        }
+
+        #cb-splash-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.05); /* Slight zoom out effect on exit */
+            pointer-events: none;
+        }
+
+        /* Ambient Glow Behind Logo */
+        .splash-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            animation: cbPulseGlow 3s ease-in-out infinite;
+        }
+
+        #cb-splash-screen img {
+            width: auto;
+            height: 56px; /* Optimized for mobile and desktop */
+            max-width: 240px;
+            object-fit: contain;
+            animation: cbSplashPulse 2s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* MD3 Styled Loader */
+        .cb-splash-loader {
+            width: 36px;
+            height: 36px;
+            border: 3.5px solid var(--primary-light);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: cbSpin 0.85s linear infinite;
+        }
+
+        .cb-splash-brand {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: cbFadePulse 2s ease-in-out infinite;
+        }
+
+        /* =========================================================
+           ANIMATIONS
+        ========================================================= */
+        @keyframes cbSplashPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.96);
+            }
+        }
+
+        @keyframes cbPulseGlow {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes cbSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes cbFadePulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SPLASH SCREEN WRAPPER -->
+    <div id="cb-splash-screen" aria-label="Loading COREBIQ">
+        
+        <!-- Ambient background glow -->
+        <div class="splash-glow"></div>
+
+        <!-- Logo -->
+        <img src="assets/name.png" alt="COREBIQ">
+
+        <!-- Animated Loader -->
+        <div class="cb-splash-loader"></div>
+
+        <!-- Loading Text -->
+        <div class="cb-splash-brand">
+            Workspace
+        </div>
+
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Configuration
+            const splashDuration = 2500; // 2.5 seconds display time
+            const nextDestination = 'onboarding.html'; // Target page after splash
+
+            // Select the splash container
+            const splashScreen = document.getElementById('cb-splash-screen');
+
+            // Trigger the fade-out and redirect
+            setTimeout(() => {
+                // Add the hide class to trigger CSS transitions
+                splashScreen.classList.add('hide');
+
+                // Wait for the CSS transition (0.4s) to complete before redirecting
+                setTimeout(() => {
+                    window.location.href = nextDestination;
+                }, 400); 
+
+            }, splashDuration);
+        });
+    </script>
+
+</body>
+</html>

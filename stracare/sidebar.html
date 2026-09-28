@@ -1,0 +1,670 @@
+<style>
+    /* =========================================================
+       SIDEBAR BASE
+       ========================================================= */
+
+    .sidebar-inner-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        height: 100%;
+    }
+
+
+    /* =========================================================
+       SIDEBAR HEADER / COREBIQ LOGO
+       ========================================================= */
+
+    .sidebar-header {
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 10;
+        border-bottom: 1px solid var(--border);
+
+        padding: 16px 20px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        min-height: 76px;
+    }
+
+    .sidebar-brand {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar-logo {
+        display: block;
+        width: 100%;
+        max-width: 190px;
+        height: auto;
+        max-height: 52px;
+        object-fit: contain;
+    }
+
+    .close-menu {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-main);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+    }
+
+    .close-menu:hover {
+        background: #F5F5F5;
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+       ========================================================= */
+
+    .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+
+        padding-top: 14px;
+        padding-bottom: 20px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+
+        scrollbar-width: thin;
+    }
+
+
+    /* =========================================================
+       NAVIGATION LINKS
+       ========================================================= */
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+
+        width: calc(100% - 32px);
+        margin: 0 16px;
+
+        padding: 11px 14px;
+
+        border: none;
+        background: transparent;
+
+        text-align: left;
+        cursor: pointer;
+
+        font-size: 14px;
+        font-weight: 500;
+
+        color: var(--text-muted);
+
+        border-radius: 8px;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+
+        font-family: inherit;
+    }
+
+    .nav-link:hover {
+        background: #FAFAFA;
+        color: var(--text-main);
+    }
+
+    .nav-link.active {
+        background: var(--primary-light);
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .nav-link .material-symbols-rounded {
+        font-size: 21px;
+        margin-right: 12px;
+        color: inherit;
+        transition: color 0.2s ease;
+        flex-shrink: 0;
+    }
+
+
+    /* =========================================================
+       DIVIDERS
+       ========================================================= */
+
+    .nav-divider {
+        height: 1px;
+        background: var(--border);
+
+        margin: 11px 24px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =========================================================
+       BADGES
+       ========================================================= */
+
+    .menu-badge {
+        margin-left: auto;
+
+        background: var(--primary);
+        color: white;
+
+        padding: 2px 8px;
+
+        border-radius: 20px;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .menu-badge.pending {
+        background: var(--warning);
+        color: #fff;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .sidebar-footer {
+        padding: 18px 20px;
+
+        border-top: 1px solid var(--border);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: #FAFAFA;
+
+        margin-top: auto;
+        flex-shrink: 0;
+    }
+
+    .footer-logo {
+        width: 82px;
+        height: auto;
+
+        margin-bottom: 6px;
+
+        object-fit: contain;
+    }
+
+    .footer-app-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--text-main);
+
+        margin-bottom: 2px;
+
+        text-align: center;
+    }
+
+    .footer-version {
+        font-size: 11px;
+        font-weight: 600;
+
+        color: var(--text-muted);
+
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+
+    /* =========================================================
+       DESKTOP
+       ========================================================= */
+
+    @media (min-width: 769px) {
+
+        .close-menu {
+            display: none;
+        }
+
+        .sidebar-header {
+            justify-content: center;
+        }
+
+        .sidebar-logo {
+            max-width: 175px;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE SIDEBAR
+       ========================================================= */
+
+    @media (max-width: 768px) {
+
+        .sidebar-header {
+            padding: 14px 16px;
+
+            min-height: 82px;
+
+            justify-content: space-between;
+        }
+
+        .sidebar-brand {
+            justify-content: flex-start;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            max-width: 190px;
+            max-height: 55px;
+        }
+
+        .close-menu {
+            display: flex;
+
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+        }
+
+        .close-menu .material-symbols-rounded {
+            font-size: 23px;
+        }
+
+        .sidebar-nav {
+            padding-top: 12px;
+            padding-bottom: 20px;
+        }
+
+        .nav-link {
+            width: calc(100% - 24px);
+            margin: 0 12px;
+
+            padding: 12px 14px;
+
+            font-size: 14px;
+        }
+
+        .nav-link .material-symbols-rounded {
+            font-size: 21px;
+            margin-right: 12px;
+        }
+
+        .nav-divider {
+            margin: 10px 20px;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+        }
+    }
+</style>
+
+
+<div class="sidebar-inner-wrapper">
+
+    <!-- =====================================================
+         COREBIQ SIDEBAR HEADER
+         ===================================================== -->
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-brand">
+
+            <img
+                src="assets/name-client.png"
+                alt="COREBIQ"
+                class="sidebar-logo"
+            >
+
+        </div>
+
+        <button
+            class="close-menu"
+            onclick="window.toggleMenu()"
+            aria-label="Close menu"
+        >
+            <span class="material-symbols-rounded">
+                close
+            </span>
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <div class="sidebar-nav" id="sidebar-nav">
+
+        <!-- CORE MODULES -->
+
+        <button
+            class="nav-link active"
+            data-target="view-dashboard"
+            onclick="window.switchView('view-dashboard', this)"
+        >
+            <span class="material-symbols-rounded">
+                dashboard
+            </span>
+            Dashboard
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-clients"
+            onclick="window.switchView('view-clients', this)"
+        >
+            <span class="material-symbols-rounded">
+                groups
+            </span>
+            Client Data
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-sales"
+            onclick="window.switchView('view-sales', this)"
+        >
+            <span class="material-symbols-rounded">
+                event_note
+            </span>
+            Sales
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-calender"
+            onclick="window.switchView('view-calender', this)"
+        >
+            <span class="material-symbols-rounded">
+                calendar_month
+            </span>
+            Calendar
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- FINANCIALS -->
+
+        <button
+            class="nav-link"
+            data-target="view-transaction"
+            onclick="window.switchView('view-transaction', this)"
+        >
+            <span class="material-symbols-rounded">
+                receipt_long
+            </span>
+            Transactions
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-qr"
+            onclick="window.switchView('view-qr', this)"
+        >
+            <span class="material-symbols-rounded">
+                qr_code_scanner
+            </span>
+            UPI Payment QR
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- CLINIC ORGANIZATION -->
+
+        <button
+            class="nav-link"
+            data-target="view-branches"
+            onclick="window.switchView('view-branches', this)"
+        >
+            <span class="material-symbols-rounded">
+                apartment
+            </span>
+            Branches
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-management"
+            onclick="window.switchView('view-therapist', this)"
+        >
+            <span class="material-symbols-rounded">
+                travel
+            </span>
+            Management Team
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-staff"
+            onclick="window.switchView('view-staff', this)"
+        >
+            <span class="material-symbols-rounded">
+                badge
+            </span>
+            Staff Directory
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-attendance"
+            onclick="window.switchView('view-attendance', this)"
+        >
+            <span class="material-symbols-rounded">
+                how_to_reg
+            </span>
+            Daily Attendance
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- SETTINGS & DOCUMENTATION -->
+
+        <button
+            class="nav-link"
+            data-target="view-users"
+            id="nav-users-btn"
+            onclick="window.switchView('view-users', this)"
+        >
+            <span class="material-symbols-rounded">
+                manage_accounts
+            </span>
+            Users (Admin)
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-clinic-details"
+            onclick="window.switchView('view-clinic-details', this)"
+        >
+            <span class="material-symbols-rounded">
+                settings
+            </span>
+            Clinic Details
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-company"
+            onclick="window.switchView('view-company', this)"
+        >
+            <span class="material-symbols-rounded">
+                domain
+            </span>
+            Company Profile
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-letterhead"
+            onclick="window.switchView('view-letterhead', this)"
+        >
+            <span class="material-symbols-rounded">
+                description
+            </span>
+            Letterheads
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-seal"
+            onclick="window.switchView('view-seal', this)"
+        >
+            <span class="material-symbols-rounded">
+                verified
+            </span>
+            Digital Seals
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- TOOLS & SYSTEM -->
+
+        <button
+            class="nav-link"
+            data-target="view-calc"
+            onclick="window.switchView('view-calc', this)"
+        >
+            <span class="material-symbols-rounded">
+                calculate
+            </span>
+            Calculator Tool
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-backup"
+            onclick="window.switchView('view-backup', this)"
+        >
+            <span class="material-symbols-rounded">
+                cloud_download
+            </span>
+            Export & Backup
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-updates"
+            onclick="window.switchView('view-updates', this)"
+        >
+            <span class="material-symbols-rounded">
+                campaign
+            </span>
+            App Updates
+        </button>
+        
+        <!-- PROPERLY STYLED DEV TOOLS BUTTON -->
+        <button
+            class="nav-link"
+            data-target="view-dev"
+            onclick="window.switchView('view-dev', this)"
+        >
+            <span class="material-symbols-rounded">
+                developer_mode
+            </span>
+            Developer Tools
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- INFORMATION & LEGAL -->
+
+        <button
+            class="nav-link"
+            data-target="view-licenceinfo"
+            onclick="window.switchView('view-licenceinfo', this)"
+        >
+            <span class="material-symbols-rounded">
+                workspace_premium
+            </span>
+            Licence Info
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-aboutapp"
+            onclick="window.switchView('view-aboutapp', this)"
+        >
+            <span class="material-symbols-rounded">
+                info
+            </span>
+            About App
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-privacy"
+            onclick="window.switchView('view-privacy', this)"
+        >
+            <span class="material-symbols-rounded">
+                privacy_tip
+            </span>
+            Privacy Policy
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <div class="sidebar-footer">
+
+        <img
+            src="assets/poweredby.png"
+            alt="COREBIQ"
+            class="footer-logo"
+        >
+
+        <div class="footer-app-name">
+            App Version
+        </div>
+
+        <span class="footer-version">
+            1.1.0
+        </span>
+
+    </div>
+
+</div>
