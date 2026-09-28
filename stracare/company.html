@@ -1,354 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Company Directory - Module</title>
+<!-- We place the CSS link INSIDE the module container so your DOMParser router grabs it -->
+<div class="module-container" id="company-module">
   
-  <!-- Google Fonts & Material Symbols -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-
-  <style>
-    :root {
-      /* Minimal Theme Colors */
-      --bg-color: #f8f9fa;
-      --card-bg: #ffffff;
-      --text-main: #1f1f1f;
-      --text-muted: #5f6368;
-      --border-color: #dadce0;
-      --hover-bg: #f1f3f4;
+  <link rel="stylesheet" href="css/company-module.css">
+  
+  <div class="app-card">
+    <div class="toolbar">
+      <div class="toolbar-title">Companies</div>
       
-      /* Primary Gemini Blue */
-      --gemini-blue: #1a73e8; 
-      --gemini-blue-hover: #1557b0;
-      
-      /* Attached Button Styles */
-      --tonal-bg: #e8f0fe; 
-      --tonal-text: #174ea6; 
-      --outlined-border: #747775; 
-      --outlined-text: #0b57d0; 
-
-      --radius-sm: 12px;
-      --radius-pill: 50px;
-      --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.05);
-      --shadow-modal: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Outfit', system-ui, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 16px;
-    }
-
-    /* Module Containers */
-    .module-container {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Main App Card */
-    .app-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-soft);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* Toolbar Layout */
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .toolbar-title {
-      font-size: 1.25rem;
-      font-weight: 500;
-      margin-right: auto;
-    }
-
-    .icon-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-    .icon-btn:hover {
-      background: var(--hover-bg);
-      color: var(--text-main);
-    }
-
-    .search-container {
-      display: flex;
-      align-items: center;
-      background: var(--hover-bg);
-      border-radius: var(--radius-pill);
-      padding: 4px 12px;
-      flex: 1 1 100%;
-      order: 3;
-      margin-top: 8px;
-    }
-    .search-input {
-      border: none;
-      background: transparent;
-      outline: none;
-      padding: 8px;
-      width: 100%;
-      font-family: inherit;
-    }
-
-    /* Button Styles */
-    .btn {
-      font-family: inherit;
-      font-weight: 500;
-      padding: 10px 24px;
-      border-radius: var(--radius-pill);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      font-size: 0.95rem;
-    }
-    .btn-primary {
-      background: var(--gemini-blue);
-      color: white;
-      border: none;
-      order: 2;
-    }
-    .btn-primary:hover {
-      background: var(--gemini-blue-hover);
-      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
-    }
-    .btn-tonal {
-      background: var(--tonal-bg);
-      color: var(--tonal-text);
-      border: none;
-    }
-    .btn-tonal:hover { filter: brightness(0.95); }
-    
-    .btn-outlined {
-      background: transparent;
-      color: var(--outlined-text);
-      border: 1px solid var(--outlined-border);
-    }
-    .btn-outlined:hover { background: var(--hover-bg); }
-
-    /* Data View List */
-    .data-view {
-      padding: 16px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      min-height: 250px;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: var(--text-muted);
-      padding: 48px 16px;
-      border: 1px dashed var(--border-color);
-      border-radius: var(--radius-sm);
-      width: 100%;
-    }
-
-    /* Record Cards */
-    .record-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding: 16px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      background: var(--card-bg);
-      transition: box-shadow 0.2s;
-    }
-    .record-card:hover { box-shadow: var(--shadow-soft); }
-
-    .record-details h3 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--text-main);
-      margin-bottom: 6px;
-    }
-    .record-details .meta {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      display: flex;
-      gap: 16px;
-    }
-    .record-details .meta span {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .badge {
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      white-space: nowrap;
-    }
-    .badge.active { background: #e6f4ea; color: #1e8e3e; }
-    .badge.pending { background: #fef7e0; color: #b06000; }
-    .badge.archived { background: #f1f3f4; color: #5f6368; }
-
-    /* Modal Styles */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(2px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-      z-index: 1000;
-      padding: 16px;
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
-      background: var(--card-bg);
-      width: 100%;
-      max-width: 500px;
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow-modal);
-      padding: 24px;
-      transform: scale(0.95);
-      transition: transform 0.2s ease;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .modal-overlay.active .modal-content {
-      transform: scale(1);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    
-    /* Grid for Form */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-    }
-    .form-control {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-control:focus { border-color: var(--gemini-blue); }
-    
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 32px;
-    }
-
-    /* Responsive */
-    @media (min-width: 600px) {
-      .app-card { padding: 24px; }
-      .search-container { flex: 0 1 240px; order: 1; margin-top: 0; }
-      .btn-primary { order: 2; }
-      .action-icons { order: 3; }
-      .form-grid.two-cols { grid-template-columns: 1fr 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Estimate Module Placeholder -->
-  <div class="module-container" id="estimate-module" style="display: none;">
-    <!-- Future estimate code goes here -->
-  </div>
-
-  <!-- Company Module Container -->
-  <div class="module-container" id="company-module">
-    
-    <div class="app-card">
-      <div class="toolbar">
-        <div class="toolbar-title">Companies</div>
-        
-        <!-- Search Input -->
-        <div class="search-container">
-          <span class="material-symbols-rounded">search</span>
-          <input type="text" class="search-input" id="searchInput" placeholder="Search companies...">
-        </div>
-
-        <!-- Options / Icons -->
-        <div class="action-icons" style="display: flex; gap: 4px;">
-          <button class="icon-btn" title="Sort"><span class="material-symbols-rounded">sort</span></button>
-          <button class="icon-btn" title="Filter"><span class="material-symbols-rounded">filter_list</span></button>
-          <button class="icon-btn" title="Download"><span class="material-symbols-rounded">download</span></button>
-          <button class="icon-btn" title="Options"><span class="material-symbols-rounded">more_vert</span></button>
-        </div>
-
-        <!-- Primary Action -->
-        <button class="btn btn-primary" id="openCompanyModalBtn">
-          <span class="material-symbols-rounded">add</span>
-          Add Company
-        </button>
+      <!-- Search Input -->
+      <div class="search-container">
+        <span class="material-symbols-rounded">search</span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search companies...">
       </div>
 
-      <!-- Data View Area -->
-      <div class="data-view" id="companyContainer">
-        <!-- Records will be injected here by JS -->
+      <!-- Action Buttons -->
+      <div class="action-icons" style="display: flex; gap: 4px;">
+        <button class="icon-btn" title="Sort"><span class="material-symbols-rounded">sort</span></button>
+        <button class="icon-btn" title="Filter"><span class="material-symbols-rounded">filter_list</span></button>
+        <button class="icon-btn" title="Download"><span class="material-symbols-rounded">download</span></button>
+        <button class="icon-btn" title="Options"><span class="material-symbols-rounded">more_vert</span></button>
       </div>
+
+      <!-- Primary Action -->
+      <button class="btn btn-primary" id="openCompanyModalBtn">
+        <span class="material-symbols-rounded">add</span>
+        Add Company
+      </button>
     </div>
 
+    <!-- Live Data Area -->
+    <div class="data-view" id="companyContainer">
+      <!-- Records injected by JS -->
+    </div>
   </div>
 
   <!-- Popup Form Modal for Company -->
@@ -364,13 +47,11 @@
       <form id="companyForm">
         <div class="form-grid">
           
-          <!-- Full Width Field -->
           <div class="form-group" style="grid-column: 1 / -1;">
             <label for="companyName">Legal Company Name</label>
             <input type="text" id="companyName" class="form-control" placeholder="Enter full legal name" required>
           </div>
 
-          <!-- Two Column Grid for Desktop -->
           <div class="form-grid two-cols" style="grid-column: 1 / -1; gap: 16px;">
             <div class="form-group">
               <label for="entityType">Entity Type</label>
@@ -413,53 +94,61 @@
         <div class="modal-actions">
           <button type="button" class="btn btn-outlined" id="cancelBtn">Cancel</button>
           <button type="button" class="btn btn-tonal" id="clearBtn">Clear Form</button>
-          <button type="submit" class="btn btn-primary">Save Company</button>
+          <button type="submit" class="btn btn-primary" id="saveBtn">Save Company</button>
         </div>
       </form>
     </div>
   </div>
+</div>
 
-  <script>
-    // --- DOM Elements ---
-    const modal = document.getElementById('companyModal');
-    const openBtn = document.getElementById('openCompanyModalBtn');
-    const closeIcon = document.getElementById('closeModalIcon');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const form = document.getElementById('companyForm');
-    const dataContainer = document.getElementById('companyContainer');
+<!-- Scripts must remain inside the fetched document to be parsed/re-injected by your router -->
+<script type="module">
+  import { db } from "./firebase-config.js";
+  import { 
+    collection, 
+    addDoc, 
+    onSnapshot, 
+    query, 
+    orderBy, 
+    serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // --- Modal Logic ---
-    const openModal = () => modal.classList.add('active');
-    const closeModal = () => modal.classList.remove('active');
+  // --- DOM Elements ---
+  const modal = document.getElementById('companyModal');
+  const openBtn = document.getElementById('openCompanyModalBtn');
+  const closeIcon = document.getElementById('closeModalIcon');
+  const cancelBtn = document.getElementById('cancelBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const form = document.getElementById('companyForm');
+  const dataContainer = document.getElementById('companyContainer');
+  const saveBtn = document.getElementById('saveBtn');
 
-    openBtn.addEventListener('click', openModal);
-    closeIcon.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  // --- Modal Controls ---
+  const openModal = () => modal.classList.add('active');
+  const closeModal = () => modal.classList.remove('active');
 
-    clearBtn.addEventListener('click', () => { form.reset(); });
+  if(openBtn) openBtn.addEventListener('click', openModal);
+  if(closeIcon) closeIcon.addEventListener('click', closeModal);
+  if(cancelBtn) cancelBtn.addEventListener('click', closeModal);
+  if(modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  if(clearBtn) clearBtn.addEventListener('click', () => { form.reset(); });
 
-    // --- LocalStorage & Data Logic ---
-    const STORAGE_KEY = 'module_company_records';
+  // Firestore Collection Reference
+  const companiesCollection = collection(db, "companies");
+  const q = query(companiesCollection, orderBy("createdAt", "desc"));
 
-    // Fetch existing records from LocalStorage
-    function getRecords() {
-      const records = localStorage.getItem(STORAGE_KEY);
-      return records ? JSON.parse(records) : [];
-    }
+  // --- Real-time Firestore Listener ---
+  if(dataContainer) {
+    onSnapshot(q, (snapshot) => {
+      dataContainer.innerHTML = '';
 
-    // Render records to the UI
-    function renderRecords() {
-      const records = getRecords();
-      dataContainer.innerHTML = ''; 
-
-      if (records.length === 0) {
+      if (snapshot.empty) {
         dataContainer.innerHTML = `<div class="empty-state">No companies registered yet. Click 'Add Company' to begin.</div>`;
         return;
       }
 
-      records.forEach(record => {
+      snapshot.forEach((doc) => {
+        const record = doc.data();
         const card = document.createElement('div');
         card.className = 'record-card';
         
@@ -488,35 +177,37 @@
         `;
         dataContainer.appendChild(card);
       });
-    }
-
-    // Handle Form Submit
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const newRecord = {
-        id: Date.now(),
-        name: document.getElementById('companyName').value,
-        type: document.getElementById('entityType').value,
-        gstin: document.getElementById('gstin').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        status: document.getElementById('status').value,
-        dateAdded: new Date().toISOString()
-      };
-
-      const records = getRecords();
-      records.unshift(newRecord); // Add newest to the top
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-
-      renderRecords();
-      closeModal();
-      form.reset();
+    }, (error) => {
+      console.error("Firestore sync error:", error);
+      dataContainer.innerHTML = `<div class="empty-state" style="color:var(--danger)">Failed to load data.</div>`;
     });
+  }
 
-    // Initial render
-    renderRecords();
-  </script>
+  // --- Add New Document to Firestore ---
+  if(form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      saveBtn.disabled = true;
 
-</body>
-</html>
+      try {
+        await addDoc(companiesCollection, {
+          name: document.getElementById('companyName').value,
+          type: document.getElementById('entityType').value,
+          gstin: document.getElementById('gstin').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          status: document.getElementById('status').value,
+          createdAt: serverTimestamp()
+        });
+
+        closeModal();
+        form.reset();
+      } catch (err) {
+        console.error("Error saving document:", err);
+        alert("Error saving record: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
+  }
+</script>
