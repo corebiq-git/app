@@ -1,0 +1,54 @@
+/* --- Branch Module Styles --- */
+#branch-module { width: 100%; max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+#branch-module .app-card { background: var(--surface, #ffffff); border-radius: var(--radius-xl, 16px); box-shadow: var(--shadow, 0 1px 2px rgba(0,0,0,0.15)); border: 1px solid var(--border, #E0E2E0); padding: 24px; position: relative; }
+#branch-module .module-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border, #E0E2E0); }
+#branch-module .module-title { font-size: 1.25rem; font-weight: 500; color: var(--text-main, #1f1f1f); display: flex; align-items: center; gap: 8px; }
+#branch-module .toolbar-actions { display: flex; gap: 8px; align-items: center; }
+#branch-module .btn { font-family: inherit; font-weight: 500; padding: 10px 20px; border-radius: 50px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; transition: all 0.2s ease; border: none; }
+#branch-module .btn-primary { background: var(--primary, #0B57D0); color: #ffffff; }
+#branch-module .btn-primary:hover:not(:disabled) { background: var(--primary-dark, #0842A0); }
+#branch-module .btn-tonal { background: var(--primary-light, #D3E3FD); color: var(--primary-dark, #0842A0); }
+#branch-module .btn-tonal:hover:not(:disabled) { filter: brightness(0.95); }
+#branch-module .btn-outlined { background: transparent; color: var(--text-main, #1f1f1f); border: 1px solid var(--border-strong, #C4C7C5); }
+#branch-module .btn-outlined:hover:not(:disabled) { background: var(--surface-soft, #F3F4F6); }
+#branch-module .btn-icon { padding: 8px; border-radius: 50%; background: transparent; color: var(--text-muted); border: none; cursor: pointer; transition: 0.2s; }
+#branch-module .btn-icon:hover { background: var(--surface-soft); color: var(--text-main); }
+#branch-module .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+#branch-module .search-container { display: flex; align-items: center; background: var(--surface-soft, #F3F4F6); border-radius: 50px; padding: 4px 12px; flex: 1 1 100%; }
+@media (min-width: 600px) { #branch-module .search-container { flex: 0 1 260px; } }
+#branch-module .search-input { border: none; background: transparent; outline: none; padding: 8px; width: 100%; font-family: inherit; }
+#branch-module .list-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 768px) { #branch-module .list-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { #branch-module .list-grid { grid-template-columns: repeat(3, 1fr); } }
+#branch-module .branch-card { padding: 20px; border: 1px solid var(--border); border-radius: var(--radius-md, 12px); background: var(--surface); display: flex; flex-direction: column; gap: 12px; transition: box-shadow 0.2s; }
+#branch-module .branch-card:hover { box-shadow: var(--shadow-hover, 0 4px 8px rgba(0,0,0,0.08)); }
+#branch-module .bc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+#branch-module .bc-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin-bottom: 4px; }
+#branch-module .bc-code { font-size: 0.8rem; color: var(--primary); font-weight: 600; background: var(--primary-light); padding: 4px 8px; border-radius: 6px; display: inline-block; }
+#branch-module .bc-status { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; padding: 4px 8px; border-radius: 6px; }
+#branch-module .bc-status.active { background: #e6f4ea; color: #1e8e3e; }
+#branch-module .bc-status.inactive { background: #fce8e6; color: #d93025; }
+#branch-module .bc-info { font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+#branch-module .bc-info span { display: flex; align-items: center; gap: 6px; }
+#branch-module .bc-info .material-symbols-rounded { font-size: 16px; }
+#branch-module .bc-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
+#branch-module .form-section { margin-bottom: 32px; }
+#branch-module .form-section-title { font-size: 1.05rem; font-weight: 600; color: var(--primary, #0B57D0); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+#branch-module .form-grid { display: grid; grid-template-columns: 1fr; gap: 16px 20px; }
+@media (min-width: 640px) { #branch-module .form-grid { grid-template-columns: repeat(2, 1fr); } #branch-module .span-2 { grid-column: span 2; } }
+@media (min-width: 1024px) { #branch-module .form-grid { grid-template-columns: repeat(3, 1fr); } }
+#branch-module .form-group { display: flex; flex-direction: column; gap: 6px; }
+#branch-module .form-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-muted, #444746); }
+#branch-module .form-group label span.req { color: var(--danger, #B3261E); }
+#branch-module .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border-strong, #C4C7C5); border-radius: 8px; font-family: inherit; font-size: 0.95rem; color: var(--text-main); background: var(--surface); transition: all 0.2s; }
+#branch-module .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+#branch-module .form-control:read-only { background: var(--surface-soft); color: var(--text-muted); cursor: default; }
+#branch-module .system-info-card { background: var(--surface-soft); border-radius: 12px; padding: 20px; margin-top: 32px; border: 1px dashed var(--border-strong); }
+#branch-module .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (min-width: 768px) { #branch-module .system-grid { grid-template-columns: repeat(3, 1fr); } }
+#branch-module .sys-item { display: flex; flex-direction: column; }
+#branch-module .sys-item span:first-child { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); font-weight: 600; }
+#branch-module .sys-item span:last-child { font-size: 0.85rem; color: var(--text-main); word-break: break-all; }
+#branch-module .form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+#branch-module .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 10; border-radius: var(--radius-xl); font-weight: 500; color: var(--primary); }
+#branch-module .empty-state { padding: 40px; text-align: center; color: var(--text-muted); border: 1px dashed var(--border); border-radius: 12px; }
