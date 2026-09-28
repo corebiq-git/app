@@ -4,13 +4,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
-    authDomain: "cmf001stra.firebaseapp.com",
-    projectId: "cmf001stra",
-    storageBucket: "cmf001stra.firebasestorage.app",
-    messagingSenderId: "763958641347",
-    appId: "1:763958641347:web:316876bc2340b26bd21876",
-    measurementId: "G-770FBR88LJ"
+  apiKey: "AIzaSyDShAm9FNnIj7sodlfzQFZ727pc9WhU-fc",
+  authDomain: "corebic--inspirego.firebaseapp.com",
+  projectId: "corebic--inspirego",
+  storageBucket: "corebic--inspirego.firebasestorage.app",
+  messagingSenderId: "1091888608027",
+  appId: "1:1091888608027:web:6d4b56472871e3c48299be",
+  measurementId: "G-FTT83137B0"
 };
 
 // Initialize Firebase only if it hasn't been initialized yet
