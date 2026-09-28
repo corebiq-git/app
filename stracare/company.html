@@ -1,213 +1,662 @@
-<!-- We place the CSS link INSIDE the module container so your DOMParser router grabs it -->
-<div class="module-container" id="company-module">
+<div class="module-container" id="company-master-module">
   
-  <link rel="stylesheet" href="css/company-module.css">
-  
-  <div class="app-card">
-    <div class="toolbar">
-      <div class="toolbar-title">Companies</div>
+  <style>
+    /* --- Master Company Module Styles --- */
+    .module-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .app-card {
+      background: var(--surface, #ffffff);
+      border-radius: var(--radius-xl, 16px);
+      box-shadow: var(--shadow, 0 1px 2px rgba(0,0,0,0.15));
+      border: 1px solid var(--border, #E0E2E0);
+      padding: 24px;
+    }
+
+    /* Toolbar */
+    .module-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border, #E0E2E0);
+    }
+
+    .module-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text-main, #1f1f1f);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: inherit;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary, #0B57D0);
+      color: #ffffff;
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--primary-dark, #0842A0); }
+    
+    .btn-tonal {
+      background: var(--primary-light, #D3E3FD);
+      color: var(--primary-dark, #0842A0);
+    }
+    .btn-tonal:hover:not(:disabled) { filter: brightness(0.95); }
+
+    .btn-outlined {
+      background: transparent;
+      color: var(--text-main, #1f1f1f);
+      border: 1px solid var(--border-strong, #C4C7C5);
+    }
+    .btn-outlined:hover:not(:disabled) { background: var(--surface-soft, #F3F4F6); }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Form Sections */
+    .form-section {
+      margin-bottom: 32px;
+    }
+    .form-section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary, #0B57D0);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    /* Responsive Grid */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px 20px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .form-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-muted, #444746);
+    }
+    .form-group label span.req { color: var(--danger, #B3261E); }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border-strong, #C4C7C5);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text-main, #1f1f1f);
+      background: var(--surface, #ffffff);
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary, #0B57D0);
+      box-shadow: 0 0 0 3px var(--primary-light, #D3E3FD);
+    }
+    .form-control:disabled {
+      background: var(--surface-soft, #F3F4F6);
+      color: var(--text-muted, #444746);
+      border-color: var(--border, #E0E2E0);
+      cursor: not-allowed;
+    }
+
+    /* System Info Grid (Read-only bottom area) */
+    .system-info-card {
+      background: var(--surface-soft, #F3F4F6);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 32px;
+      border: 1px dashed var(--border-strong, #C4C7C5);
+    }
+    .system-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .system-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .sys-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .sys-item span:first-child {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted, #444746);
+      font-weight: 600;
+    }
+    .sys-item span:last-child {
+      font-size: 0.85rem;
+      color: var(--text-main, #1f1f1f);
+      word-break: break-all;
+    }
+
+    /* Action Footer */
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border, #E0E2E0);
+    }
+
+    /* Utility */
+    .span-2 { grid-column: span 1; }
+    @media (min-width: 640px) { .span-2 { grid-column: span 2; } }
+    
+    .loading-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      border-radius: var(--radius-xl, 16px);
+      font-weight: 500;
+      color: var(--primary);
+    }
+  </style>
+
+  <div class="app-card" style="position: relative;">
+    
+    <div id="compLoader" class="loading-overlay">
+      <span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite; margin-right: 8px;">sync</span> Loading Data...
+    </div>
+
+    <!-- Header Toolbar -->
+    <div class="module-toolbar">
+      <div class="module-title">
+        <span class="material-symbols-rounded" style="color: var(--primary);">domain</span>
+        Company Profile
+      </div>
+      <div class="toolbar-actions" id="viewModeActions" style="display: none;">
+        <button class="btn btn-outlined" id="btnRefresh">
+          <span class="material-symbols-rounded">refresh</span> Refresh
+        </button>
+        <button class="btn btn-tonal" id="btnEditMode">
+          <span class="material-symbols-rounded">edit</span> Edit Company
+        </button>
+      </div>
+    </div>
+
+    <form id="masterCompanyForm">
       
-      <!-- Search Input -->
-      <div class="search-container">
-        <span class="material-symbols-rounded">search</span>
-        <input type="text" class="search-input" id="searchInput" placeholder="Search companies...">
+      <!-- General Info -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">info</span> General Information
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company ID</label>
+            <input type="text" class="form-control" id="cmp_id" value="COMP-00001" readonly disabled>
+          </div>
+          <div class="form-group">
+            <label>Company Name <span class="req">*</span></label>
+            <input type="text" class="form-control" id="cmp_name" required disabled>
+          </div>
+          <div class="form-group">
+            <label>Legal Name</label>
+            <input type="text" class="form-control" id="cmp_legal_name" disabled>
+          </div>
+          <div class="form-group">
+            <label>Business Type <span class="req">*</span></label>
+            <select class="form-control" id="cmp_biz_type" required disabled>
+              <option value="">Select Type</option>
+              <option value="Private Limited">Private Limited</option>
+              <option value="LLP">LLP</option>
+              <option value="Partnership">Partnership</option>
+              <option value="Sole Proprietorship">Sole Proprietorship</option>
+              <option value="Public Limited">Public Limited</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Company Email <span class="req">*</span></label>
+            <input type="email" class="form-control" id="cmp_email" required disabled>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="tel" class="form-control" id="cmp_phone" disabled>
+          </div>
+          <div class="form-group">
+            <label>Alternate Phone</label>
+            <input type="tel" class="form-control" id="cmp_alt_phone" disabled>
+          </div>
+          <div class="form-group">
+            <label>Website</label>
+            <input type="url" class="form-control" id="cmp_website" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Details -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">gavel</span> Registration Details
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Reg. / Incorporation No.</label>
+            <input type="text" class="form-control" id="cmp_reg_no" disabled>
+          </div>
+          <div class="form-group">
+            <label>PAN</label>
+            <input type="text" class="form-control" id="cmp_pan" disabled>
+          </div>
+          <div class="form-group">
+            <label>GSTIN</label>
+            <input type="text" class="form-control" id="cmp_gstin" disabled>
+          </div>
+          <div class="form-group">
+            <label>CIN / LLPIN</label>
+            <input type="text" class="form-control" id="cmp_cin" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registered Address -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">location_on</span> Registered Address
+        </div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label>Address Line 1</label>
+            <input type="text" class="form-control" id="cmp_addr1" disabled>
+          </div>
+          <div class="form-group span-2">
+            <label>Address Line 2</label>
+            <input type="text" class="form-control" id="cmp_addr2" disabled>
+          </div>
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" class="form-control" id="cmp_city" disabled>
+          </div>
+          <div class="form-group">
+            <label>District</label>
+            <input type="text" class="form-control" id="cmp_district" disabled>
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <input type="text" class="form-control" id="cmp_state" disabled>
+          </div>
+          <div class="form-group">
+            <label>PIN Code</label>
+            <input type="text" class="form-control" id="cmp_pin" disabled>
+          </div>
+          <div class="form-group">
+            <label>Country <span class="req">*</span></label>
+            <input type="text" class="form-control" id="cmp_country" value="India" required disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Defaults -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">account_balance_wallet</span> Business & Financial Defaults
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Default Currency <span class="req">*</span></label>
+            <select class="form-control" id="cmp_currency" required disabled>
+              <option value="INR">INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="AED">AED (د.إ)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Financial Year Start</label>
+            <select class="form-control" id="cmp_fy_start" disabled>
+              <option value="April">1st April</option>
+              <option value="January">1st January</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tax Registration Type</label>
+            <select class="form-control" id="cmp_tax_type" disabled>
+              <option value="Registered">Registered</option>
+              <option value="Composition">Composition</option>
+              <option value="Unregistered">Unregistered</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Default Tax Rate (%)</label>
+            <input type="number" step="0.01" class="form-control" id="cmp_tax_rate" disabled>
+          </div>
+          <div class="form-group">
+            <label>Invoice Prefix</label>
+            <input type="text" class="form-control" id="cmp_inv_prefix" placeholder="e.g. INV-" disabled>
+          </div>
+          <div class="form-group">
+            <label>Invoice Starting Number</label>
+            <input type="number" class="form-control" id="cmp_inv_start" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bank Details -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">account_balance</span> Bank Details
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Bank Name</label>
+            <input type="text" class="form-control" id="cmp_bank_name" disabled>
+          </div>
+          <div class="form-group">
+            <label>Account Holder Name</label>
+            <input type="text" class="form-control" id="cmp_acc_name" disabled>
+          </div>
+          <div class="form-group">
+            <label>Account Number</label>
+            <input type="text" class="form-control" id="cmp_acc_no" disabled>
+          </div>
+          <div class="form-group">
+            <label>IFSC Code</label>
+            <input type="text" class="form-control" id="cmp_ifsc" disabled>
+          </div>
+          <div class="form-group">
+            <label>Branch</label>
+            <input type="text" class="form-control" id="cmp_bank_branch" disabled>
+          </div>
+        </div>
+      </div>
+
+      <!-- Branding & Prefs -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <span class="material-symbols-rounded">settings_suggest</span> Branding & Preferences
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Logo URL</label>
+            <input type="url" class="form-control" id="cmp_logo" disabled>
+          </div>
+          <div class="form-group">
+            <label>Invoice Logo URL</label>
+            <input type="url" class="form-control" id="cmp_inv_logo" disabled>
+          </div>
+          <div class="form-group span-2">
+            <label>Invoice Header/Footer Details</label>
+            <textarea class="form-control" id="cmp_inv_header" rows="2" disabled></textarea>
+          </div>
+          <div class="form-group">
+            <label>Date Format</label>
+            <select class="form-control" id="cmp_date_format" disabled>
+              <option value="DD-MM-YYYY">DD-MM-YYYY</option>
+              <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+              <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Time Zone</label>
+            <select class="form-control" id="cmp_timezone" disabled>
+              <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+              <option value="Asia/Dubai">Asia/Dubai (GST)</option>
+            </select>
+          </div>
+          <div class="form-group span-2">
+            <label>Standard Invoice Terms</label>
+            <textarea class="form-control" id="cmp_terms" rows="2" disabled></textarea>
+          </div>
+          <div class="form-group span-2">
+            <label>Internal Notes</label>
+            <textarea class="form-control" id="cmp_notes" rows="2" disabled></textarea>
+          </div>
+        </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="action-icons" style="display: flex; gap: 4px;">
-        <button class="icon-btn" title="Sort"><span class="material-symbols-rounded">sort</span></button>
-        <button class="icon-btn" title="Filter"><span class="material-symbols-rounded">filter_list</span></button>
-        <button class="icon-btn" title="Download"><span class="material-symbols-rounded">download</span></button>
-        <button class="icon-btn" title="Options"><span class="material-symbols-rounded">more_vert</span></button>
-      </div>
-
-      <!-- Primary Action -->
-      <button class="btn btn-primary" id="openCompanyModalBtn">
-        <span class="material-symbols-rounded">add</span>
-        Add Company
-      </button>
-    </div>
-
-    <!-- Live Data Area -->
-    <div class="data-view" id="companyContainer">
-      <!-- Records injected by JS -->
-    </div>
-  </div>
-
-  <!-- Popup Form Modal for Company -->
-  <div class="modal-overlay" id="companyModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Register Company</h2>
-        <button class="icon-btn" id="closeModalIcon">
-          <span class="material-symbols-rounded">close</span>
+      <div class="form-actions" id="editModeActions" style="display: none;">
+        <button type="button" class="btn btn-outlined" id="btnCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btnSave">
+          <span class="material-symbols-rounded">save</span> Save Company
         </button>
       </div>
-      
-      <form id="companyForm">
-        <div class="form-grid">
-          
-          <div class="form-group" style="grid-column: 1 / -1;">
-            <label for="companyName">Legal Company Name</label>
-            <input type="text" id="companyName" class="form-control" placeholder="Enter full legal name" required>
-          </div>
 
-          <div class="form-grid two-cols" style="grid-column: 1 / -1; gap: 16px;">
-            <div class="form-group">
-              <label for="entityType">Entity Type</label>
-              <select id="entityType" class="form-control">
-                <option value="Private Limited">Private Limited</option>
-                <option value="LLP">LLP</option>
-                <option value="Partnership">Partnership</option>
-                <option value="Sole Proprietorship">Sole Proprietorship</option>
-                <option value="Public Limited">Public Limited</option>
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="gstin">GSTIN / Tax ID</label>
-              <input type="text" id="gstin" class="form-control" placeholder="e.g. 32XXXXX1234X1ZX">
-            </div>
-
-            <div class="form-group">
-              <label for="email">Primary Email</label>
-              <input type="email" id="email" class="form-control" placeholder="contact@company.com">
-            </div>
-
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" class="form-control" placeholder="+91 00000 00000">
-            </div>
-          </div>
-
-          <div class="form-group" style="grid-column: 1 / -1;">
-            <label for="status">Compliance Status</label>
-            <select id="status" class="form-control">
-              <option value="active">Active</option>
-              <option value="pending">Pending Registration</option>
-              <option value="archived">Inactive/Struck Off</option>
-            </select>
-          </div>
-
+      <!-- System Information (Read Only) -->
+      <div class="system-info-card">
+        <div class="form-section-title" style="font-size: 0.95rem; margin-bottom:12px; color:var(--text-muted);">
+          <span class="material-symbols-rounded" style="font-size:18px;">memory</span> System Information
         </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-outlined" id="cancelBtn">Cancel</button>
-          <button type="button" class="btn btn-tonal" id="clearBtn">Clear Form</button>
-          <button type="submit" class="btn btn-primary" id="saveBtn">Save Company</button>
+        <div class="system-grid">
+          <div class="sys-item"><span>Form ID</span> <span id="sys_form_id">COM-00001</span></div>
+          <div class="sys-item"><span>Client ID</span> <span id="sys_client_id">Auto</span></div>
+          <div class="sys-item"><span>Branch ID</span> <span id="sys_branch_id">Auto</span></div>
+          <div class="sys-item"><span>Created At</span> <span id="sys_created_at">--</span></div>
+          <div class="sys-item"><span>Created By</span> <span id="sys_created_by">--</span></div>
+          <div class="sys-item"><span>Created By Email</span> <span id="sys_created_email">--</span></div>
+          <div class="sys-item"><span>Updated At</span> <span id="sys_updated_at">--</span></div>
+          <div class="sys-item"><span>Updated By</span> <span id="sys_updated_by">--</span></div>
+          <div class="sys-item"><span>Updated By Email</span> <span id="sys_updated_email">--</span></div>
         </div>
-      </form>
-    </div>
+      </div>
+
+    </form>
   </div>
 </div>
 
-<!-- Scripts must remain inside the fetched document to be parsed/re-injected by your router -->
+<!-- Script mapped for Module injection -->
 <script type="module">
   import { db } from "./firebase-config.js";
   import { 
-    collection, 
-    addDoc, 
-    onSnapshot, 
-    query, 
-    orderBy, 
+    doc, 
+    getDoc, 
+    setDoc, 
     serverTimestamp 
   } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
   // --- DOM Elements ---
-  const modal = document.getElementById('companyModal');
-  const openBtn = document.getElementById('openCompanyModalBtn');
-  const closeIcon = document.getElementById('closeModalIcon');
-  const cancelBtn = document.getElementById('cancelBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const form = document.getElementById('companyForm');
-  const dataContainer = document.getElementById('companyContainer');
-  const saveBtn = document.getElementById('saveBtn');
+  const form = document.getElementById('masterCompanyForm');
+  const loader = document.getElementById('compLoader');
+  const viewActions = document.getElementById('viewModeActions');
+  const editActions = document.getElementById('editModeActions');
+  
+  const btnEdit = document.getElementById('btnEditMode');
+  const btnRefresh = document.getElementById('btnRefresh');
+  const btnCancel = document.getElementById('btnCancel');
+  const btnSave = document.getElementById('btnSave');
 
-  // --- Modal Controls ---
-  const openModal = () => modal.classList.add('active');
-  const closeModal = () => modal.classList.remove('active');
+  // Document Reference
+  const companyDocRef = doc(db, 'company_settings', 'master');
+  
+  let isEditing = false;
+  let hasExistingData = false;
+  let originalData = {};
 
-  if(openBtn) openBtn.addEventListener('click', openModal);
-  if(closeIcon) closeIcon.addEventListener('click', closeModal);
-  if(cancelBtn) cancelBtn.addEventListener('click', closeModal);
-  if(modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  if(clearBtn) clearBtn.addEventListener('click', () => { form.reset(); });
+  // Form Field IDs
+  const fields = [
+    'cmp_name', 'cmp_legal_name', 'cmp_biz_type', 'cmp_email', 'cmp_phone', 'cmp_alt_phone', 'cmp_website',
+    'cmp_reg_no', 'cmp_pan', 'cmp_gstin', 'cmp_cin',
+    'cmp_addr1', 'cmp_addr2', 'cmp_city', 'cmp_district', 'cmp_state', 'cmp_pin', 'cmp_country',
+    'cmp_currency', 'cmp_fy_start', 'cmp_tax_type', 'cmp_tax_rate', 'cmp_inv_prefix', 'cmp_inv_start',
+    'cmp_bank_name', 'cmp_acc_name', 'cmp_acc_no', 'cmp_ifsc', 'cmp_bank_branch',
+    'cmp_logo', 'cmp_inv_logo', 'cmp_inv_header', 'cmp_date_format', 'cmp_timezone', 'cmp_terms', 'cmp_notes'
+  ];
 
-  // Firestore Collection Reference
-  const companiesCollection = collection(db, "companies");
-  const q = query(companiesCollection, orderBy("createdAt", "desc"));
+  // Helper: Format Dates
+  const formatTimestamp = (ts) => {
+    if (!ts) return '--';
+    const date = ts.toDate ? ts.toDate() : new Date(ts);
+    return date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+  };
 
-  // --- Real-time Firestore Listener ---
-  if(dataContainer) {
-    onSnapshot(q, (snapshot) => {
-      dataContainer.innerHTML = '';
+  // Helper: Toggle Edit Mode
+  const toggleEditMode = (enable) => {
+    isEditing = enable;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.disabled = !enable;
+    });
 
-      if (snapshot.empty) {
-        dataContainer.innerHTML = `<div class="empty-state">No companies registered yet. Click 'Add Company' to begin.</div>`;
-        return;
+    if (enable) {
+      viewActions.style.display = 'none';
+      editActions.style.display = 'flex';
+      document.getElementById('cmp_name').focus();
+    } else {
+      if(hasExistingData) {
+        viewActions.style.display = 'flex';
       }
+      editActions.style.display = 'none';
+    }
+  };
 
-      snapshot.forEach((doc) => {
-        const record = doc.data();
-        const card = document.createElement('div');
-        card.className = 'record-card';
-        
-        card.innerHTML = `
-          <div class="record-details">
-            <h3>${record.name}</h3>
-            <div class="meta">
-              <span>
-                <span class="material-symbols-rounded" style="font-size: 16px;">domain</span>
-                ${record.type}
-              </span>
-              ${record.gstin ? `
-              <span>
-                <span class="material-symbols-rounded" style="font-size: 16px;">receipt_long</span>
-                ${record.gstin}
-              </span>` : ''}
-            </div>
-            <div class="meta" style="margin-top: 8px;">
-              ${record.email ? `<span><span class="material-symbols-rounded" style="font-size: 16px;">mail</span> ${record.email}</span>` : ''}
-              ${record.phone ? `<span><span class="material-symbols-rounded" style="font-size: 16px;">call</span> ${record.phone}</span>` : ''}
-            </div>
-          </div>
-          <div class="badge ${record.status}">
-            ${record.status.replace('-', ' ')}
-          </div>
-        `;
-        dataContainer.appendChild(card);
-      });
-    }, (error) => {
-      console.error("Firestore sync error:", error);
-      dataContainer.innerHTML = `<div class="empty-state" style="color:var(--danger)">Failed to load data.</div>`;
+  // Helper: Populate Form
+  const populateForm = (data) => {
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && data[id] !== undefined) el.value = data[id];
+    });
+
+    // Populate System Info
+    document.getElementById('sys_created_at').innerText = formatTimestamp(data.createdAt);
+    document.getElementById('sys_created_by').innerText = data.createdBy || '--';
+    document.getElementById('sys_created_email').innerText = data.createdByEmail || '--';
+    document.getElementById('sys_updated_at').innerText = formatTimestamp(data.updatedAt);
+    document.getElementById('sys_updated_by').innerText = data.updatedBy || '--';
+    document.getElementById('sys_updated_email').innerText = data.updatedByEmail || '--';
+  };
+
+  // Load Data
+  const loadCompanyData = async () => {
+    loader.style.display = 'flex';
+    try {
+      const docSnap = await getDoc(companyDocRef);
+      if (docSnap.exists()) {
+        hasExistingData = true;
+        originalData = docSnap.data();
+        populateForm(originalData);
+        toggleEditMode(false); // Read-only mode
+      } else {
+        hasExistingData = false;
+        toggleEditMode(true); // Open in edit mode if empty
+      }
+    } catch (err) {
+      console.error("Error loading company data:", err);
+      alert("Error loading data. Check console.");
+    } finally {
+      loader.style.display = 'none';
+    }
+  };
+
+  // Event Listeners
+  if(btnEdit) btnEdit.addEventListener('click', () => toggleEditMode(true));
+  if(btnRefresh) btnRefresh.addEventListener('click', loadCompanyData);
+  
+  if(btnCancel) {
+    btnCancel.addEventListener('click', () => {
+      if (hasExistingData) {
+        populateForm(originalData); // revert
+        toggleEditMode(false);
+      } else {
+        form.reset(); // clear if nothing saved yet
+      }
     });
   }
 
-  // --- Add New Document to Firestore ---
+  // Handle Form Save
   if(form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      saveBtn.disabled = true;
+      
+      btnSave.disabled = true;
+      const originalText = btnSave.innerHTML;
+      btnSave.innerHTML = `<span class="material-symbols-rounded" style="animation: cbSpin 1s linear infinite;">sync</span> Saving...`;
+
+      // Get user context from global window object (if available)
+      const userEmail = window.currentUser ? window.currentUser.email : "user@example.com";
+      const userName = userEmail.split('@')[0];
+
+      // Collect Data
+      const payload = {};
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) payload[id] = el.value;
+      });
+
+      // Append System Tracking Fields
+      payload.updatedAt = serverTimestamp();
+      payload.updatedByEmail = userEmail;
+      payload.updatedBy = userName;
+      
+      if (!hasExistingData) {
+        payload.createdAt = serverTimestamp();
+        payload.createdByEmail = userEmail;
+        payload.createdBy = userName;
+      }
 
       try {
-        await addDoc(companiesCollection, {
-          name: document.getElementById('companyName').value,
-          type: document.getElementById('entityType').value,
-          gstin: document.getElementById('gstin').value,
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phone').value,
-          status: document.getElementById('status').value,
-          createdAt: serverTimestamp()
-        });
-
-        closeModal();
-        form.reset();
+        await setDoc(companyDocRef, payload, { merge: true });
+        // Reload fresh data to capture server timestamps
+        await loadCompanyData();
       } catch (err) {
-        console.error("Error saving document:", err);
-        alert("Error saving record: " + err.message);
+        console.error("Error saving company details:", err);
+        alert("Error saving data: " + err.message);
       } finally {
-        saveBtn.disabled = false;
+        btnSave.disabled = false;
+        btnSave.innerHTML = originalText;
       }
     });
   }
+
+  // Initialize
+  loadCompanyData();
+
 </script>
