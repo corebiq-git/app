@@ -1,1 +1,0 @@
-export async function init() { console.log("COREBIQ Payments module initialized"); }
