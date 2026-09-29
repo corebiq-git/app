@@ -1,0 +1,9 @@
+{
+  "name":"COREBIQ CRM & ERP",
+  "short_name":"COREBIQ",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#F7F9FC",
+  "theme_color":"#0B57D0",
+  "icons":[]
+}

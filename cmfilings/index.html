@@ -1,9 +1,94 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyDShAm9FNnIj7sodlfzQFZ727pc9WhU-fc",
-  authDomain: "corebic--inspirego.firebaseapp.com",
-  projectId: "corebic--inspirego",
-  storageBucket: "corebic--inspirego.firebasestorage.app",
-  messagingSenderId: "1091888608027",
-  appId: "1:1091888608027:web:6d4b56472871e3c48299be",
-  measurementId: "G-FTT83137B0"
-};
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F7F9FC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>COREBIQ CRM & ERP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+  <link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div>
+          <div class="brand-name">COREBIQ</div>
+          <div class="brand-sub">CRM • ERP</div>
+        </div>
+      </div>
+
+      <nav class="side-nav" id="sideNav">
+        <div class="nav-label">Workspace</div>
+        <button class="nav-item active" data-module="dashboard"><span class="material-symbols-rounded">home</span><span>Dashboard</span></button>
+        <button class="nav-item" data-module="company"><span class="material-symbols-rounded">domain</span><span>Company</span></button>
+        <button class="nav-item" data-module="branches"><span class="material-symbols-rounded">account_tree</span><span>Branches</span></button>
+
+        <div class="nav-label">CRM</div>
+        <button class="nav-item" data-module="clients"><span class="material-symbols-rounded">group</span><span>Clients</span></button>
+        <button class="nav-item" data-module="staff"><span class="material-symbols-rounded">badge</span><span>Staff</span></button>
+
+        <div class="nav-label">Inventory</div>
+        <button class="nav-item" data-module="products"><span class="material-symbols-rounded">inventory_2</span><span>Products</span></button>
+        <button class="nav-item" data-module="services"><span class="material-symbols-rounded">design_services</span><span>Services</span></button>
+
+        <div class="nav-label">Commerce</div>
+        <button class="nav-item" data-module="sales"><span class="material-symbols-rounded">point_of_sale</span><span>Sales</span></button>
+        <button class="nav-item" data-module="purchases"><span class="material-symbols-rounded">shopping_cart</span><span>Purchases</span></button>
+        <button class="nav-item" data-module="invoices"><span class="material-symbols-rounded">receipt_long</span><span>Invoices</span></button>
+        <button class="nav-item" data-module="expenses"><span class="material-symbols-rounded">payments</span><span>Expenses</span></button>
+
+        <div class="nav-label">Finance</div>
+        <button class="nav-item" data-module="transactions"><span class="material-symbols-rounded">account_balance</span><span>Transactions</span></button>
+        <button class="nav-item" data-module="payments"><span class="material-symbols-rounded">currency_rupee</span><span>Payments</span></button>
+        <button class="nav-item" data-module="qr"><span class="material-symbols-rounded">qr_code_2</span><span>QR</span></button>
+
+        <div class="nav-label">Insights</div>
+        <button class="nav-item" data-module="reports"><span class="material-symbols-rounded">bar_chart</span><span>Reports</span></button>
+        <button class="nav-item" data-module="settings"><span class="material-symbols-rounded">settings</span><span>Settings</span></button>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menuButton" aria-label="Menu">
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+
+        <div class="search-box">
+          <span class="material-symbols-rounded">search</span>
+          <input id="globalSearch" placeholder="Search anything..." autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button" id="syncButton" title="Refresh"><span class="material-symbols-rounded">sync</span></button>
+          <button class="icon-button" title="Downloads"><span class="material-symbols-rounded">download</span></button>
+          <button class="icon-button notification" title="Notifications"><span class="material-symbols-rounded">notifications</span><i></i></button>
+          <button class="avatar-button" title="Account"><span class="material-symbols-rounded">account_circle</span></button>
+        </div>
+      </header>
+
+      <main class="content">
+        <div id="moduleContainer" class="module-container" aria-live="polite"></div>
+      </main>
+
+      <nav class="bottom-nav">
+        <button data-module="dashboard"><span class="material-symbols-rounded">home</span><small>Home</small></button>
+        <button data-module="clients"><span class="material-symbols-rounded">group</span><small>Clients</small></button>
+        <button data-module="sales"><span class="material-symbols-rounded">flight_takeoff</span><small>Sales</small></button>
+        <button id="bottomMenu"><span class="material-symbols-rounded">menu</span><small>Menu</small></button>
+      </nav>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
