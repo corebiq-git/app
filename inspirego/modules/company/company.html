@@ -1,0 +1,35 @@
+<section class="module-card">
+<div class="module-head"><div><h1>Company Profile</h1><p>Manage your COREBIQ company master data.</p></div>
+<div><button id="companyEdit" class="btn btn-primary">Edit Company</button></div></div>
+<form id="companyForm">
+<div class="section-title">General Information</div>
+<div class="form-grid">
+<div class="field"><label>Company Name *</label><input id="cmp_name" required disabled></div>
+<div class="field"><label>Legal Name</label><input id="cmp_legal_name" disabled></div>
+<div class="field"><label>Business Type</label><select id="cmp_biz_type" disabled><option>Private Limited</option><option>LLP</option><option>Partnership</option><option>Sole Proprietorship</option><option>Other</option></select></div>
+<div class="field"><label>Email *</label><input id="cmp_email" type="email" required disabled></div>
+<div class="field"><label>Phone</label><input id="cmp_phone" disabled></div>
+<div class="field"><label>Website</label><input id="cmp_website" disabled></div>
+</div>
+<div class="section-title">Registration</div>
+<div class="form-grid">
+<div class="field"><label>PAN</label><input id="cmp_pan" disabled></div>
+<div class="field"><label>GSTIN</label><input id="cmp_gstin" disabled></div>
+<div class="field"><label>CIN / LLPIN</label><input id="cmp_cin" disabled></div>
+</div>
+<div class="section-title">Registered Address</div>
+<div class="form-grid">
+<div class="field full"><label>Address</label><textarea id="cmp_address" rows="2" disabled></textarea></div>
+<div class="field"><label>City</label><input id="cmp_city" disabled></div>
+<div class="field"><label>State</label><input id="cmp_state" disabled></div>
+<div class="field"><label>PIN</label><input id="cmp_pin" disabled></div>
+<div class="field"><label>Country</label><input id="cmp_country" value="India" disabled></div>
+</div>
+<div id="companyActions" class="form-actions" style="display:none">
+<button type="button" id="companyCancel" class="btn btn-outline">Cancel</button>
+<button type="submit" id="companySave" class="btn btn-primary">Save Company</button>
+</div>
+</form>
+<div class="section-title">System Information</div>
+<div id="companyMeta" style="color:#6b7280;font-size:13px">Loading...</div>
+</section>

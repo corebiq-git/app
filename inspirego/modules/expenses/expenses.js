@@ -1,0 +1,1 @@
+export async function init() { console.log("COREBIQ Expenses module initialized"); }

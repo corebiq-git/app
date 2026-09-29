@@ -1,0 +1,1 @@
+export async function init() { console.log("COREBIQ Products module initialized"); }

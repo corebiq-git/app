@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="theme-color" content="#F7F9FC">
+<title>COREBIQ | Business Workspace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+<div id="appLoader" class="app-loader"><div class="spinner"></div><span>Loading COREBIQ...</span></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><div class="brand-mark small">C<span>O</span>M</div><div><strong>COREBIQ</strong><small>Business Intelligence</small></div></div>
+    <nav id="sideNav">
+      <button data-module="dashboard"><span>⌂</span>Dashboard</button>
+      <button data-module="company"><span>▣</span>Company</button>
+      <button data-module="branches"><span>⌘</span>Branches</button>
+      <button data-module="clients"><span>♙</span>Clients</button>
+      <button data-module="staff"><span>♧</span>Staff</button>
+      <button data-module="products"><span>▤</span>Products</button>
+      <button data-module="services"><span>◈</span>Services</button>
+      <button data-module="sales"><span>↗</span>Sales</button>
+      <button data-module="purchases"><span>↙</span>Purchases</button>
+      <button data-module="invoices"><span>▧</span>Invoices</button>
+      <button data-module="expenses"><span>−</span>Expenses</button>
+      <button data-module="payments"><span>₹</span>Payments</button>
+      <button data-module="transactions"><span>⇄</span>Transactions</button>
+      <button data-module="qr"><span>⌁</span>QR</button>
+      <button data-module="reports"><span>▥</span>Reports</button>
+      <button data-module="settings"><span>⚙</span>Settings</button>
+    </nav>
+    <button id="logoutBtn" class="logout-btn">Sign out</button>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar">
+      <button id="menuBtn" class="icon-btn">☰</button>
+      <div class="page-context"><strong id="pageTitle">Dashboard</strong><span id="userEmail">—</span></div>
+      <button id="profileBtn" class="avatar">U</button>
+    </header>
+    <main id="moduleContainer" class="module-container"></main>
+  </div>
+</div>
+
+<div class="mobile-nav" id="mobileNav">
+  <button data-module="dashboard">⌂<small>Home</small></button>
+  <button data-module="clients">♙<small>Clients</small></button>
+  <button data-module="sales">↗<small>Sales</small></button>
+  <button data-module="invoices">▧<small>Invoices</small></button>
+  <button data-module="settings">⚙<small>More</small></button>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+Each module has its own HTML and JS. index.html only owns the moduleContainer and global navigation.

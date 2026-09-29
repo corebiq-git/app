@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#F7F9FC">
+<title>COREBIQ | Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body class="auth-page">
+<div class="auth-bg"></div>
+<main class="auth-shell">
+  <section class="auth-card">
+    <div class="brand-mark">C<span>O</span>M</div>
+    <div class="eyebrow">COREBIQ</div>
+    <h1>Welcome back</h1>
+    <p class="auth-subtitle">Sign in to your business workspace.</p>
+
+    <button id="googleBtn" class="auth-btn auth-google">
+      <span class="google-g">G</span>
+      Continue with Google
+    </button>
+
+    <div class="divider"><span>or continue with email</span></div>
+
+    <form id="loginForm">
+      <label>Email</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="you@company.com">
+      <label>Password</label>
+      <input id="password" type="password" autocomplete="current-password" required placeholder="••••••••">
+      <button class="auth-btn auth-primary" type="submit">Sign in</button>
+    </form>
+
+    <button id="createBtn" class="text-btn">Create an account</button>
+    <div id="authMessage" class="auth-message"></div>
+  </section>
+</main>
+
+<script type="module">
+import { auth } from "./js/firebase-config.js";
+import { loginWithGoogle, loginWithEmail, createAccount, onAuthStateChanged } from "./js/auth.js";
+
+const msg = document.getElementById("authMessage");
+const show = t => msg.textContent = t;
+
+onAuthStateChanged(auth, user => {
+  if (user) location.replace("index.html");
+});
+
+document.getElementById("googleBtn").onclick = async () => {
+  try {
+    show("Opening Google sign-in...");
+    await loginWithGoogle();
+  } catch (e) {
+    show(e.message);
+  }
+};
+
+document.getElementById("loginForm").onsubmit = async e => {
+  e.preventDefault();
+  try {
+    show("Signing in...");
+    await loginWithEmail(email.value.trim(), password.value);
+  } catch (e) {
+    show(e.message);
+  }
+};
+
+document.getElementById("createBtn").onclick = async () => {
+  try {
+    if (!email.value.trim() || !password.value) {
+      show("Enter email and password first.");
+      return;
+    }
+    show("Creating account...");
+    await createAccount(email.value.trim(), password.value);
+  } catch (e) {
+    show(e.message);
+  }
+};
+</script>
+</body>
+</html>
