@@ -1,9 +1,9 @@
 // Replace these placeholders with your Firebase web app configuration.
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDShAm9FNnIj7sodlfzQFZ727pc9WhU-fc",
+  authDomain: "corebic--inspirego.firebaseapp.com",
+  projectId: "corebic--inspirego",
+  storageBucket: "corebic--inspirego.firebasestorage.app",
+  messagingSenderId: "1091888608027",
+  appId: "1:1091888608027:web:6d4b56472871e3c48299be",
 };
