@@ -5,5 +5,4 @@ export const firebaseConfig = {
   storageBucket: "corebiq-108d6.firebasestorage.app",
   messagingSenderId: "544972060072",
   appId: "1:544972060072:web:8271003a8d5f04a866199d"
-};"
 };
