@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F7F9FC">
+  <title>Sign in | COREBIQ</title>
+  <link rel="icon" href="assets/logo-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-app.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/corebiq.css">
+  <link rel="stylesheet" href="css/login.css">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+</head>
+<body>
+  <main class="login-layout">
+    <section class="login-brand-panel">
+      <a class="login-brand" href="index.html"><img class="login-brand-logo" src="assets/logo-light.svg" alt=""><img class="login-brand-wordmark" src="assets/name-light.svg" alt="COREBIQ CRM ERP"></a>
+      <div class="login-brand-copy"><p>BUSINESS OPERATIONS</p><h1>Business Intelligence in your Pocket</h1><span>Run your business with COREBIQ Intelligent Workflow App.</span></div>
+      <div class="login-decoration" aria-hidden="true"></div>
+    </section>
+    <section class="login-form-panel">
+      <form id="authForm" class="login-form" novalidate>
+        <p class="login-eyebrow">COREBIQ CRM + ERP</p>
+        <h2 id="authTitle">Welcome back</h2>
+        <p id="authDescription" class="login-description">Sign in to continue to your workspace.</p>
+        <label class="form-group" id="authNameGroup" hidden><span>Your name</span><input class="form-control" id="authName" name="name" type="text" autocomplete="name" maxlength="100"></label>
+        <label class="form-group"><span>Email address</span><input class="form-control" id="authEmail" name="email" type="email" autocomplete="email" required></label>
+        <label class="form-group login-password-group"><span>Password</span><span class="password-field"><input class="form-control" id="authPassword" name="password" type="password" autocomplete="current-password" minlength="6" required><button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password" aria-pressed="false"><i data-lucide="eye"></i></button></span></label>
+        <label class="remember-control"><input id="rememberMe" name="rememberMe" type="checkbox" checked><span>Remember me</span></label>
+        <p class="login-feedback" id="authFeedback" role="alert" hidden></p>
+        <button class="btn btn-primary login-submit" id="authSubmit" type="submit">Sign in</button>
+        <button class="login-text-button" id="authModeToggle" type="button">Create an account</button>
+        <button class="login-text-button login-reset" id="passwordReset" type="button">Reset password</button>
+      </form>
+      <p class="login-footer">Secure sign-in powered by Firebase Authentication</p>
+    </section>
+  </main>
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>
