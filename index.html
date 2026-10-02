@@ -1,296 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>COREBIQ - Welcome</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        // Material 3 / Gemini inspired subtle palette
-                        surface: '#F8F9FA',
-                        surfaceVariant: '#E9EEF6',
-                        primary: '#0B57D0',
-                        outline: '#74777F',
-                    },
-                    animation: {
-                        'gradient-shift': 'gradient 8s ease infinite',
-                    },
-                    keyframes: {
-                        gradient: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #F8F9FA; /* M3 Light Surface */
-            color: #1F2937;
-            overflow: hidden; /* Prevent native scrolling */
-            touch-action: pan-y;
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Ambient Gemini-like blurred background elements */
-        .ambient-bg {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 0;
-            overflow: hidden;
-            pointer-events: none;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-        }
-        
-        .ambient-blob {
-            position: absolute;
-            filter: blur(90px);
-            opacity: 0.5;
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .blob-1 { top: -20%; left: -10%; width: 60vw; height: 60vw; background: #D3E3FD; animation: gradient-shift 10s infinite alternate; }
-        .blob-2 { bottom: -10%; right: -10%; width: 70vw; height: 70vw; background: #E8DEF8; animation: gradient-shift 12s infinite alternate-reverse; }
-
-        /* Slider structure */
-        .slider-wrapper {
-            display: flex;
-            width: 300%; /* 3 pages */
-            height: 100%;
-            transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1); /* M3 Emphasized Decelerate */
-            will-change: transform;
-        }
-
-        .slide {
-            width: 33.3333%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 6rem 2rem 8rem 2rem; /* Give room for header and footer */
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Hide scrollbar */
-        ::-webkit-scrollbar { display: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F7F9FC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>COREBIQ CRM & ERP</title>
+  <link rel="icon" href="assets/logo-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-app.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <link rel="stylesheet" href="css/corebiq.css">
+  <link rel="stylesheet" href="css/pwa.css">
 </head>
-<body class="relative h-[100dvh] w-full flex flex-col">
-
-    <div class="ambient-bg">
-        <div class="ambient-blob blob-1"></div>
-        <div class="ambient-blob blob-2"></div>
+<body>
+  <div class="splash-screen" id="splashScreen" role="status" aria-live="polite">
+    <div class="splash-brand">
+      <img class="splash-app-icon" src="assets/logo-app.svg" alt="">
+      <img class="splash-wordmark" src="assets/name-splash.svg" alt="COREBIQ CRM & ERP">
     </div>
+    <span class="splash-spinner" aria-hidden="true"></span>
+  </div>
 
-    <!-- Fixed Header with Logo -->
-    <header class="fixed top-0 left-0 right-0 z-50 pt-8 pb-4 px-6 flex justify-center">
-        <!-- Using the requested assets/name.png -->
-        <img src="assets/name.png" alt="COREBIQ" class="h-6 sm:h-8 object-contain drop-shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/300x100/transparent/333333?text=COREBIQ'; this.className='h-8 mix-blend-multiply';">
-    </header>
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <a class="brand-home" href="index.html" data-module="dashboard" aria-label="COREBIQ dashboard">
+          <img class="brand-logo" src="assets/logo-app.svg" alt="">
+          <img class="brand-wordmark" src="assets/name.svg" alt="COREBIQ CRM ERP">
+        </a>
+      </div>
 
-    <main class="relative z-10 flex-1 overflow-hidden h-full">
-        <div id="slider" class="slider-wrapper">
-            
-            <!-- Page 1: Intro -->
-            <section class="slide">
-                <div class="text-center w-full max-w-md transform transition-all duration-700 delay-100 translate-y-0 opacity-100 slide-content">
-                    <div class="w-32 h-32 mx-auto mb-10 relative">
-                        <div class="absolute inset-0 bg-blue-100 rounded-full animate-pulse opacity-50"></div>
-                        <div class="absolute inset-2 bg-gradient-to-tr from-blue-500 to-purple-400 rounded-full flex items-center justify-center shadow-lg">
-                            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-gray-900 mb-4">
-                        Building Intelligent Businesses
-                    </h1>
-                    <p class="text-gray-500 text-lg">
-                        The future of workspace management starts here.
-                    </p>
-                </div>
-            </section>
+      <nav class="side-nav" id="sideNav">
+        <div class="nav-label">COMPANY</div>
+        <button class="nav-item" data-module="company"><span class="material-symbols-rounded">domain</span><span>Company</span></button>
 
-            <!-- Page 2: Value Prop -->
-            <section class="slide">
-                <div class="text-center w-full max-w-md transform transition-all duration-700 translate-y-8 opacity-0 slide-content">
-                    <h2 class="text-4xl font-bold tracking-tight text-gray-900 leading-tight mb-6">
-                        Your business.<br>
-                        <span class="text-primary">In your pocket.</span>
-                    </h2>
-                    
-                    <div class="bg-white/80 backdrop-blur-xl p-6 rounded-3xl border border-white shadow-[0_4px_20px_rgb(0,0,0,0.03)]">
-                        <p class="text-base text-gray-600 font-medium leading-relaxed">
-                            Manage your business anytime, anywhere from one simple workspace built for the way you work.
-                        </p>
-                    </div>
-                </div>
-            </section>
+        <div class="nav-label">CRM</div>
+        <button class="nav-item" data-module="clients"><span class="material-symbols-rounded">group</span><span>Clients</span></button>
 
-            <!-- Page 3: Features -->
-            <section class="slide">
-                <div class="w-full max-w-sm transform transition-all duration-700 translate-y-8 opacity-0 slide-content">
-                    
-                    <div class="space-y-4 w-full">
-                        <!-- Track -->
-                        <div class="flex items-center gap-5 p-4 rounded-full bg-white shadow-sm border border-gray-100 hover:border-gray-200 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            </div>
-                            <span class="text-xl font-medium text-gray-800">Track</span>
-                        </div>
-                        
-                        <!-- Manage -->
-                        <div class="flex items-center gap-5 p-4 rounded-full bg-white shadow-sm border border-gray-100 hover:border-gray-200 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                            </div>
-                            <span class="text-xl font-medium text-gray-800">Manage</span>
-                        </div>
+        <div class="nav-label">ACCOUNTS</div>
+        <div class="nav-label nav-sub-label">Ledgers</div>
+        <button class="nav-item" data-module="ledger"><span class="material-symbols-rounded">account_balance_wallet</span><span>Ledgers</span></button>
+        <div class="nav-label nav-sub-label">Vouchers</div>
+        <button class="nav-item" data-module="transactions"><span class="material-symbols-rounded">receipt_long</span><span>Vouchers</span></button>
 
-                        <!-- Grow -->
-                        <div class="flex items-center gap-5 p-4 rounded-full bg-white shadow-sm border border-gray-100 hover:border-gray-200 transition-colors">
-                            <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center text-green-600 shrink-0">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                            </div>
-                            <span class="text-xl font-medium text-gray-800">Grow</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div class="nav-label">EMPLOYEES</div>
+        <button class="nav-item" data-module="staff"><span class="material-symbols-rounded">badge</span><span>Staff</span></button>
+
+        <div class="nav-label">DATA</div>
+        <button class="nav-item" data-module="branches"><span class="material-symbols-rounded">account_tree</span><span>Branches</span></button>
+        <button class="nav-item" data-module="products"><span class="material-symbols-rounded">inventory_2</span><span>Products</span></button>
+        <button class="nav-item" data-module="services"><span class="material-symbols-rounded">design_services</span><span>Services</span></button>
+
+        <div class="nav-label">REPORTS</div>
+        <button class="nav-item" data-module="reports"><span class="material-symbols-rounded">bar_chart</span><span>Reports</span></button>
+
+        <div class="nav-label">GST</div>
+        <button class="nav-item" data-module="sales"><span class="material-symbols-rounded">point_of_sale</span><span>Sales</span></button>
+        <button class="nav-item" data-module="purchases"><span class="material-symbols-rounded">shopping_cart</span><span>Purchases</span></button>
+        <button class="nav-item" data-module="invoices"><span class="material-symbols-rounded">receipt_long</span><span>Invoices</span></button>
+        <button class="nav-item" data-module="invoice-templates"><span class="material-symbols-rounded">view_agenda</span><span>Invoice Template</span></button>
+        <button class="nav-item" data-module="expenses"><span class="material-symbols-rounded">payments</span><span>Expenses</span></button>
+
+        <div class="nav-label">APP INFO</div>
+        <button class="nav-item active" data-module="dashboard"><span class="material-symbols-rounded">home</span><span>Dashboard</span></button>
+
+        <div class="nav-label">SETTINGS</div>
+        <button class="nav-item" data-module="settings"><span class="material-symbols-rounded">settings</span><span>Settings</span></button>
+
+        <div class="nav-label">TOOLS</div>
+        <button class="nav-item" data-module="assistant"><span class="material-symbols-rounded">auto_awesome</span><span>COREBIQ AI</span></button>
+
+        <div class="nav-label">MORE</div>
+        <button class="nav-item" data-module="qr"><span class="material-symbols-rounded">qr_code_2</span><span>QR</span></button>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <button class="icon-button sidebar-toggle" id="menuButton" aria-label="Toggle sidebar" title="Toggle sidebar">
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+
+        <div class="search-box">
+          <input id="globalSearch" placeholder="Search anything..." autocomplete="off">
+          <button class="search-submit" id="globalSearchButton" type="button" aria-label="Search" title="Search"><span class="material-symbols-rounded">search</span></button>
         </div>
-    </main>
 
-    <!-- Fixed Bottom Controls -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 px-6 pb-10 pt-6 bg-gradient-to-t from-[#F8F9FA] via-[#F8F9FA]/90 to-transparent">
-        <div class="max-w-md mx-auto flex flex-col items-center gap-8">
-            
-            <!-- M3 Pagination Dots -->
-            <div class="flex justify-center items-center gap-2" id="pagination">
-                <button class="dot w-8 h-2 rounded-full bg-primary transition-all duration-300" onclick="goToPage(0)" aria-label="Page 1"></button>
-                <button class="dot w-2 h-2 rounded-full bg-surfaceVariant transition-all duration-300" onclick="goToPage(1)" aria-label="Page 2"></button>
-                <button class="dot w-2 h-2 rounded-full bg-surfaceVariant transition-all duration-300" onclick="goToPage(2)" aria-label="Page 3"></button>
-            </div>
-
-            <!-- Material 3 Outlined Button (Pill Shape) -->
-            <button id="actionBtn" class="w-full max-w-[280px] rounded-full border border-outline bg-transparent py-3.5 px-8 flex items-center justify-center gap-2 font-medium text-gray-800 transition-all duration-200 hover:bg-surfaceVariant hover:border-gray-500 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-[#F8F9FA]">
-                <span id="btnText" class="text-[15px] tracking-wide">Next</span>
-                <svg id="btnIcon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                </svg>
-            </button>
-
+        <div class="top-actions">
+          <button class="icon-button install-button" id="installButton" title="Install COREBIQ" aria-label="Install COREBIQ" hidden><span class="material-symbols-rounded">download</span></button>
+          <button class="icon-button" id="syncButton" title="Refresh"><span class="material-symbols-rounded">sync</span></button>
+          <a class="icon-button notification" href="license.html" title="App license information" aria-label="App license information"><span class="material-symbols-rounded">notifications</span><i></i></a>
+          <div class="profile-menu-wrap">
+            <button class="avatar-button" id="profileButton" type="button" title="Account profile" aria-label="Account profile" aria-expanded="false" aria-controls="profileMenu"><span class="material-symbols-rounded">account_circle</span></button>
+            <section class="profile-menu" id="profileMenu" aria-label="Account profile" hidden>
+              <p class="profile-menu-title">Account</p>
+              <p class="profile-menu-name" id="profileName">Loading profile...</p>
+              <p class="profile-menu-email" id="profileEmail"></p>
+              <div class="profile-role-row"><span>User role</span><strong id="profileRole">User</strong></div>
+              <button class="profile-signout" id="signOutButton" type="button"><span class="material-symbols-rounded">logout</span><span>Sign out</span></button>
+            </section>
+          </div>
         </div>
+      </header>
+
+      <main class="content">
+        <div id="moduleContainer" class="module-container" aria-live="polite"></div>
+      </main>
+
+      <nav class="bottom-nav">
+        <button data-module="dashboard"><span class="material-symbols-rounded">home</span><small>Home</small></button>
+        <button data-module="clients"><span class="material-symbols-rounded">group</span><small>Clients</small></button>
+        <button data-module="sales"><span class="material-symbols-rounded">point_of_sale</span><small>Sales</small></button>
+        <button data-module="assistant"><span class="material-symbols-rounded">auto_awesome</span><small>AI Assistant</small></button>
+      </nav>
     </div>
+  </div>
 
-    <script>
-        const totalPages = 3;
-        let currentPage = 0;
-        
-        const slider = document.getElementById('slider');
-        const dots = document.querySelectorAll('.dot');
-        const actionBtn = document.getElementById('actionBtn');
-        const btnText = document.getElementById('btnText');
-        const slideContents = document.querySelectorAll('.slide-content');
+  <section class="onboarding" id="onboarding" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" hidden>
+    <div class="onboarding-panel">
+      <img src="assets/logo-app.svg" alt="" class="onboarding-logo">
+      <p class="onboarding-eyebrow">WELCOME TO COREBIQ</p>
+      <h1 id="onboardingTitle">Business Intelligence in your Pocket</h1>
+      <p class="onboarding-copy">Run your business with COREBIQ Intelligent Workflow App.</p>
+      <div class="onboarding-actions">
+        <button class="btn btn-primary" id="onboardingStart">Get started</button>
+        <button class="btn btn-tonal" id="onboardingInstall" hidden>Install app</button>
+      </div>
+    </div>
+  </section>
 
-        // Main navigation logic
-        function goToPage(index) {
-            if (index < 0 || index >= totalPages) return;
-            
-            currentPage = index;
-            
-            // Move container
-            slider.style.transform = `translateX(-${currentPage * (100 / totalPages)}%)`;
-            
-            // Update M3 pagination dots
-            dots.forEach((dot, i) => {
-                if (i === currentPage) {
-                    dot.className = 'dot w-8 h-2 rounded-full bg-primary transition-all duration-300';
-                } else {
-                    dot.className = 'dot w-2 h-2 rounded-full bg-surfaceVariant transition-all duration-300 cursor-pointer hover:bg-gray-300';
-                }
-            });
+  <div id="toast" class="toast"></div>
 
-            // Animate slide contents for dynamic feel
-            slideContents.forEach((content, i) => {
-                if (i === currentPage) {
-                    content.classList.remove('translate-y-8', 'opacity-0');
-                    content.classList.add('translate-y-0', 'opacity-100');
-                } else {
-                    content.classList.add('translate-y-8', 'opacity-0');
-                    content.classList.remove('translate-y-0', 'opacity-100');
-                }
-            });
-
-            // Update bottom button state
-            if (currentPage === totalPages - 1) {
-                btnText.textContent = 'Login';
-                // Optional: Slightly emphasize the login button on the last step
-                actionBtn.classList.add('border-primary', 'text-primary');
-                actionBtn.classList.remove('border-outline', 'text-gray-800');
-            } else {
-                btnText.textContent = 'Next';
-                actionBtn.classList.remove('border-primary', 'text-primary');
-                actionBtn.classList.add('border-outline', 'text-gray-800');
-            }
-        }
-
-        // Action button click listener
-        actionBtn.addEventListener('click', () => {
-            if (currentPage === totalPages - 1) {
-                window.location.href = 'login.html';
-            } else {
-                goToPage(currentPage + 1);
-            }
-        });
-
-        // Touch swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 40; 
-            if (touchStartX - touchEndX > swipeThreshold) {
-                // Swipe Left
-                goToPage(currentPage + 1);
-            }
-            if (touchEndX - touchStartX > swipeThreshold) {
-                // Swipe Right
-                goToPage(currentPage - 1);
-            }
-        }
-
-        // Initialize display
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => goToPage(0), 50);
-        });
-    </script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

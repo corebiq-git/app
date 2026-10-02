@@ -1,62 +1,59 @@
-const CACHE_NAME = "corebiq-v4";
-
-// Only caching files that actually exist in your directory.
-// We include your updated specific logo asset paths here.
-const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./login.html",
-  "./manifest.json",
-  "./assets/name.png",
-  "./assets/logo-app.png",
-  "./assets/logo-favicon.png",
-  "./assets/name-splash.png",
-  "./assets/logo.png"
+const CACHE="corebiq-shell-v43";
+const CORE=[
+	"./",
+	"./index.html",
+	"./login.html",
+	"./license.html",
+	"./manifest.json",
+	"./css/corebiq.css",
+	"./css/pwa.css",
+	"./css/login.css",
+	"./css/license.css",
+	"./js/app.js",
+	"./js/login.js",
+	"./js/license.js",
+	"./js/crud-module.js",
+	"./js/firebase-config.js",
+	"./js/firebase-service.js",
+	"./modules/invoice-document.js",
+	"./modules/invoice-builder-document.js",
+	"./assets/logo.svg",
+	"./assets/logo-app.svg",
+	"./assets/logo-favicon.svg",
+	"./assets/name.svg",
+	"./assets/name-splash.svg",
+	...[
+		"accounts/ledgers/ledger",
+		"accounts/vouchers/all-vouchers","accounts/vouchers/cheque-transactions/cheques",
+		"accounts/vouchers/contra/contra","accounts/vouchers/estimate/estimate","accounts/vouchers/index",
+		"accounts/vouchers/journals/journals","accounts/vouchers/payments/payment-voucher","accounts/vouchers/payments/payments",
+		"accounts/vouchers/purchase/purchase","accounts/vouchers/purchase-return/purchase-return","accounts/vouchers/receipts/receipts",
+		"accounts/vouchers/sales/sales","accounts/vouchers/sales-return/sales-return",
+		"app-info/dashboard","company/company","crm/clients","data/branches","data/products","data/services",
+		"employees/staff","gst/expenses","gst/invoice-templates","gst/invoices","gst/purchases","gst/sales",
+		"more/qr","reports/reports","settings/settings","tools/assistant"
+	].flatMap(modulePath=>[
+		`./modules/${modulePath}.html`,
+		`./modules/${modulePath}.js`,
+		`./modules/${modulePath}.css`
+	]),
+	"./modules/accounts/vouchers/voucher-engine.js",
+	"./modules/accounts/vouchers/voucher-shared.css"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
-      .catch(err => console.error("SW Install Error: ", err))
-  );
+self.addEventListener("install",event=>{
+	event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)));
+	self.skipWaiting();
 });
 
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key !== CACHE_NAME)
-          .map(key => caches.delete(key))
-      )
-    ).then(() => self.clients.claim())
-  );
+self.addEventListener("activate",event=>{
+	event.waitUntil(caches.keys().then(keys=>Promise.all(
+		keys.filter(key=>key.startsWith("corebiq-") && key!==CACHE).map(key=>caches.delete(key))
+	)));
+	self.clients.claim();
 });
 
-// Network-first strategy: Tries to fetch from the network to get the latest data.
-// If the network fails (offline), it falls back to the cached version.
-self.addEventListener("fetch", event => {
-  // We only want to cache GET requests (ignore POST/PUT for database writes)
-  if (event.request.method !== "GET") return;
-  
-  // Skip cross-origin requests (like Firebase API calls) to prevent caching errors
-  if (!event.request.url.startsWith(self.location.origin)) return;
-
-  event.respondWith(
-    fetch(event.request)
-      .then(response => {
-        // Only cache valid, successful responses
-        if (response && response.status === 200 && response.type === "basic") {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        }
-        return response;
-      })
-      .catch(() => {
-        // Network failed, look in the cache
-        return caches.match(event.request);
-      })
-  );
+self.addEventListener("fetch",event=>{
+	if(event.request.method!=="GET") return;
+	event.respondWith(caches.match(event.request,{ignoreSearch:true}).then(response=>response||fetch(event.request)));
 });
