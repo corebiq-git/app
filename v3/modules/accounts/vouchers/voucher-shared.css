@@ -1,0 +1,67 @@
+.tx-register{padding:18px 20px}
+.tx-toolbar{display:grid;grid-template-columns:minmax(220px,1fr) minmax(180px,260px);gap:10px;margin-bottom:14px}
+.tx-toolbar .form-control{height:44px}
+.tx-table{min-width:1020px}
+.tx-table td{vertical-align:middle}
+.tx-category-label{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.tx-ledger-link{padding:0;background:none;color:var(--primary);text-align:left;cursor:pointer}
+.tx-ledger-link:hover{text-decoration:underline}
+.tx-row-actions{display:flex;gap:4px}
+.tx-delete{color:var(--danger)}
+.tx-status{display:inline-flex;padding:4px 9px;border-radius:999px;background:#EEF1F4;color:#555D66;font-size:11px;font-weight:600;white-space:nowrap}
+.tx-status-posted{background:#E4F4EA;color:#17663A}
+.tx-status-cancelled{background:#FCE8E6;color:#A12820}
+.tx-status-draft{background:#FFF3D8;color:#805A00}
+.tx-feedback,.tx-form-error{padding:11px 13px;border-radius:8px;background:#FCE8E6;color:#9C2D25;font-size:13px}
+.tx-form-error{margin:0 20px 14px}
+.tx-dialog{width:min(1040px,calc(100% - 24px));max-height:92dvh;overflow:hidden}
+.tx-dialog form{padding:0;overflow:auto;max-height:92dvh}
+.tx-dialog .crud-dialog-header{position:sticky;top:0;z-index:2;margin:0;padding:18px 22px;background:#fff;border-bottom:1px solid var(--outline-soft)}
+.tx-document-number{display:flex;justify-content:space-between;gap:12px;padding:11px 22px;background:#F6F8FA;color:var(--muted);font-size:12px}
+.tx-document-number strong{color:var(--text);font-weight:600}
+.tx-dialog .form-section{padding:20px 22px}
+.tx-dialog .form-section-title{margin:0 0 14px;font-size:15px}
+.tx-dialog .form-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.tx-dialog .form-control{height:42px;border-radius:8px}
+.tx-dialog textarea.form-control{height:auto}
+.tx-dialog .form-group label{font-size:12px}
+.tx-dialog .form-actions{position:sticky;bottom:0;z-index:2;margin:0;padding:14px 22px;background:#fff}
+.tx-section-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.tx-section-heading .form-section-title{margin:0}
+.tx-small-button{height:34px;padding:0 11px;border-radius:8px;font-size:12px}
+.tx-small-button .material-symbols-rounded{font-size:18px}
+.tx-items{display:grid;gap:10px}
+.tx-item-row{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr)) 36px;gap:9px;align-items:end;padding:12px;border:1px solid var(--outline-soft);border-radius:8px;background:#FBFCFD}
+.tx-item-row label{display:grid;gap:5px;color:var(--muted);font-size:11px}
+.tx-item-row .form-control{height:36px!important;padding:0 9px;font-size:12px}
+.tx-item-tax{grid-column:1/-2;color:#4B5964;font-size:11px}
+.tx-remove-row{width:34px;height:34px}
+.tx-journal-head,.tx-journal-row{display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(120px,1.3fr) minmax(85px,.8fr) minmax(85px,.8fr) minmax(135px,1.2fr) 34px;gap:8px;align-items:center}
+.tx-journal-head{padding:0 4px 7px;color:var(--muted);font-size:11px;font-weight:600}
+.tx-journal-lines{display:grid;gap:8px}
+.tx-journal-row .form-control{height:38px!important;padding:0 9px;font-size:12px}
+.tx-journal-totals{display:block;margin-top:12px;padding:10px 12px;background:#F3F7F5;border-radius:7px;font-size:12px;font-weight:600}
+@media(max-width:850px){
+	.tx-dialog .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+	.tx-item-row{grid-template-columns:repeat(2,minmax(120px,1fr)) 36px}
+	.tx-item-tax{grid-column:1/-2}
+	.tx-journal-head{display:none}
+	.tx-journal-row{grid-template-columns:repeat(2,minmax(0,1fr)) 34px;padding:10px;border:1px solid var(--outline-soft);border-radius:8px}
+	.tx-journal-row [data-journal-field="ledgerId"],.tx-journal-row [data-journal-field="description"]{grid-column:span 1}
+}
+@media(max-width:600px){
+	.tx-register{padding:13px 10px}
+	.tx-toolbar{grid-template-columns:1fr}
+	.tx-dialog{width:calc(100% - 12px);max-height:96dvh}
+	.tx-dialog form{max-height:96dvh}
+	.tx-dialog .crud-dialog-header{padding:15px}
+	.tx-document-number{padding:10px 15px}
+	.tx-dialog .form-section{padding:16px 15px}
+	.tx-dialog .form-grid{grid-template-columns:1fr}
+	.tx-dialog .form-actions{padding:12px 15px}
+	.tx-item-row{grid-template-columns:1fr 1fr;gap:8px}
+	.tx-item-tax{grid-column:1/-1;line-height:1.5}
+	.tx-item-row .tx-remove-row{grid-column:2;justify-self:end}
+	.tx-journal-row{grid-template-columns:1fr 1fr 34px}
+	.tx-journal-row [data-journal-field="ledgerId"],.tx-journal-row [data-journal-field="description"],.tx-journal-row [data-journal-field="costCentre"]{grid-column:1/-1}
+}
