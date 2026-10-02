@@ -1,0 +1,30 @@
+<div class="module-page">
+  <div class="page-header">
+    <div class="page-title"><div class="page-title-icon"><span class="material-symbols-rounded">dashboard</span></div><div><h1 id="dashboardGreeting">Welcome back</h1><p>Your COREBIQ business at a glance.</p></div></div>
+  </div>
+  <section class="dashboard-welcome card card-pad">
+    <div class="dashboard-welcome-copy"><p><span class="dashboard-ai-mark"><span class="material-symbols-rounded">auto_awesome</span></span> COREBIQ BUSINESS INTELLIGENCE</p><h2>Business intelligence at a glance.</h2></div>
+    <time class="dashboard-running-date" id="dashboardRunningDate">As on --</time>
+    <span class="dashboard-welcome-art" aria-hidden="true"><span class="material-symbols-rounded">auto_awesome</span></span>
+  </section>
+  <div class="dashboard-filter-row">
+    <button class="dashboard-filter-button" id="dashboardFilterButton" type="button" aria-label="Filter dashboard range" title="Filter dashboard range" aria-expanded="false" aria-controls="dashboardPeriod"><span class="material-symbols-rounded">filter_list</span><span id="dashboardFilterLabel">Today</span></button>
+    <select class="form-control dashboard-period" id="dashboardPeriod" aria-label="Dashboard date range" hidden><option value="today">Today</option><option value="month">Current month</option><option value="fy">Present FY</option></select>
+  </div>
+  <div class="stats">
+    <div class="card stat-card"><div class="stat-label">Total Clients</div><div class="stat-value" id="dashboardClientCount">--</div><div class="stat-meta" data-period-caption>Today</div></div>
+    <div class="card stat-card"><div class="stat-label">Sales</div><div class="stat-value" id="dashboardSalesTotal">--</div><div class="stat-meta" data-period-caption>Today</div></div>
+    <div class="card stat-card"><div class="stat-label">Outstanding</div><div class="stat-value" id="dashboardOutstanding">--</div><div class="stat-meta" data-period-caption>Today</div></div>
+    <div class="card stat-card"><div class="stat-label">Expenses</div><div class="stat-value" id="dashboardExpenseTotal">--</div><div class="stat-meta" data-period-caption>Today</div></div>
+  </div>
+  <div class="section card card-pad">
+    <div class="section-title">Quick actions</div>
+    <div class="actions">
+      <button class="btn btn-tonal" data-module="clients"><span class="material-symbols-rounded">person_add</span> Add Client</button>
+      <button class="btn btn-tonal" data-module="invoices"><span class="material-symbols-rounded">receipt_long</span> Invoice</button>
+      <button class="btn btn-tonal" data-module="expenses"><span class="material-symbols-rounded">payments</span> Expense</button>
+      <button class="btn btn-tonal" data-module="qr"><span class="material-symbols-rounded">qr_code_2</span> QR</button>
+    </div>
+  </div>
+  <div class="section card card-pad"><div class="section-title">Recent activity</div><div id="dashboardActivity" class="empty" role="status"><span class="material-symbols-rounded">sync</span><p>Loading live records...</p></div></div>
+</div>

@@ -1,0 +1,11 @@
+.voucher-hub{max-width:1000px}
+.voucher-hub-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--outline-soft)}
+.voucher-hub-link{display:flex;align-items:center;gap:13px;min-width:0;padding:17px 12px;background:transparent;border-bottom:1px solid var(--outline-soft);text-align:left;cursor:pointer}
+.voucher-hub-link:nth-child(odd){margin-right:16px}
+.voucher-hub-link:hover{background:#F7FAF8}
+.voucher-hub-icon{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;border-radius:8px;background:#E9F3ED;color:#276749}
+.voucher-hub-copy{display:grid;gap:4px;min-width:0}
+.voucher-hub-copy strong{font-size:14px;font-weight:600;color:var(--text)}
+.voucher-hub-copy small{font-size:12px;color:var(--muted);line-height:1.4}
+.voucher-hub-arrow{margin-left:auto;color:var(--muted)}
+@media(max-width:680px){.voucher-hub-list{grid-template-columns:1fr}.voucher-hub-link:nth-child(odd){margin-right:0}}
