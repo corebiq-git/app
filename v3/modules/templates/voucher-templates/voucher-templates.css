@@ -1,0 +1,8 @@
+.voucher-template-controls{display:grid;grid-template-columns:minmax(190px,.7fr) minmax(240px,1fr);gap:12px 16px;align-items:end;margin-bottom:15px;padding:15px 0;border-top:1px solid var(--outline-soft);border-bottom:1px solid var(--outline-soft)}
+.voucher-template-controls label{display:grid;gap:6px;color:var(--muted);font-size:12px;font-weight:600}
+.voucher-template-controls .form-control{height:42px;border-radius:8px}
+.voucher-template-actions{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.voucher-template-actions .btn{height:38px;padding:0 12px;border-radius:8px;font-size:12px}
+.voucher-template-preview{display:block;width:100%;min-height:780px;border:1px solid var(--outline-soft);border-radius:8px;background:#EEF2F6}
+.voucher-template-feedback{padding:10px 12px;border-radius:7px;background:#FFF3D8;color:#805A00;font-size:13px}
+@media(max-width:700px){.voucher-template-controls{grid-template-columns:1fr}.voucher-template-actions{grid-column:auto}.voucher-template-actions .btn{flex:1 1 42%}.voucher-template-preview{min-height:680px}}
