@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CMBooks - Staff Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="staff-module">
+    
+    <style>
+    :root {
+        --primary: #2563EB;
+        --primary-light: #EFF6FF;
+
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+        --danger: #EF4444;
+    }
+
+        #staff-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; }
+        #staff-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #staff-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #staff-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #staff-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #staff-module .input-group { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #staff-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #staff-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #staff-module .readonly-input { background: #F4F4F4; color: var(--text-muted); font-weight: 600; pointer-events: none; }
+
+        #staff-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #staff-module .btn-primary:active { opacity: 0.8; }
+        #staff-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        
+        #staff-module .icon-action { color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
+        #staff-module .icon-action:hover { color: var(--primary); }
+        #staff-module .icon-action.delete:hover { color: var(--danger); }
+
+        /* Google Sheet Style Horizontal Scroll Table */
+        #staff-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #staff-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        #staff-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0; }
+        
+        #staff-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #staff-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #staff-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #staff-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #staff-module .saas-table tr:last-child td { border-bottom: none; }
+        
+        #staff-module .t-id { font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px; }
+
+        /* REMOVED the restrictive mobile max-width card CSS */
+    </style>
+
+    <div class="section-title">
+        <h2 style="margin: 0;">Manage Staff</h2>
+    </div>
+
+    <div class="form-card">
+        <form id="staff-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="staffDocId" value="">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Employee ID</label>
+                    <input type="text" id="staffIdDisplay" class="form-input readonly-input" value="Auto-Generated" readonly>
+                </div>
+                
+                <div>
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" id="staffName" class="form-input" placeholder="e.g. Priya Sharma" required>
+                </div>
+
+                <div>
+                    <label class="form-label">Role / Position *</label>
+                    <select id="staffRole" class="form-input" required>
+                        <option value="">Select Role</option>
+                        <option value="Front Desk Admin">Front Desk Admin</option>
+                        <option value="Clinic Assistant">Clinic Assistant</option>
+                        <option value="Support Staff">Support Staff</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Driver">Driver</option>
+                        <option value="HR">HR</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Assign Branch *</label>
+                    <select id="staffBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="form-label">Contact No *</label>
+                    <input type="tel" id="staffContact" class="form-input" placeholder="10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: flex-end; margin-top: 21px;">
+                    <button type="button" class="btn-outline" onclick="window.clearStaffForm()">Clear</button>
+                    <button type="button" class="btn-primary" id="saveStaffBtn" onclick="window.saveStaff()">
+                        <span class="material-symbols-rounded">person_add</span> Save
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h4>Staff Directory</h4>
+            <div style="background: #FAFAFA; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                <input type="text" id="staffSearchInput" onkeyup="window.searchStaff()" placeholder="Search directory..." style="border: none; background: transparent; outline: none; font-size: 13px; width: 130px;">
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Staff Name & ID</th>
+                        <th>Role</th>
+                        <th>Branch</th>
+                        <th>Contact Info</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="staffTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // CMF001STRA Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
+        
+        window.staffDataCache = {};
+
+        // --- 1. SAFE BRANCH LOADER (WITH RBAC) ---
+        window.loadBranchesForStaff = async function() {
+            const select = document.getElementById('staffBranch');
+            
+            // SECURITY: If standard user, lock the dropdown to their branch only
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                select.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                select.style.pointerEvents = 'none';
+                select.style.background = 'var(--grey-med)';
+                return; 
+            }
+
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                
+                snap.forEach(doc => {
+                    const bName = doc.data().name;
+                    if(bName) branchList.push(bName);
+                });
+
+                branchList.sort();
+
+                select.innerHTML = '<option value="">Select Branch</option>';
+                branchList.forEach(bName => {
+                    const option = document.createElement('option');
+                    option.value = bName;
+                    option.text = bName;
+                    select.appendChild(option);
+                });
+            } catch(e) {
+                console.error("Error loading branches", e);
+                select.innerHTML = '<option value="">Select Branch</option><option value="Mahe">Mahe</option><option value="Chokli">Chokli</option><option value="Panoor">Panoor</option><option value="Koothuparamba">Koothuparamba</option><option value="Nadapuram">Nadapuram</option><option value="Home Care">Home Care</option>';
+            }
+        };
+
+        window.loadBranchesForStaff();
+
+        // --- 2. LOAD STAFF (WITH RBAC) ---
+        window.loadStaff = async function() {
+            const tableBody = document.getElementById('staffTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Loading staff...</td></tr>';
+
+            try {
+                let q;
+                // Admin gets all, Branch users get only their branch
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "staff"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = collection(db, "staff");
+                }
+
+                const querySnapshot = await getDocs(q);
+                
+                tableBody.innerHTML = ''; 
+                window.staffDataCache = {};
+                
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">No staff added yet.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const docId = docSnap.id;
+                    window.staffDataCache[docId] = data;
+
+                    // Fallbacks to prevent crashes
+                    const safeName = data.name || 'Unknown';
+                    const safeId = data.empId || 'EMP-000';
+                    const safeRole = data.role || 'N/A';
+                    const safeBranch = data.branch || 'N/A';
+                    const safeContact = data.mobile || data.contact || 'N/A';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="Name">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="t-id">${safeId}</span>
+                                <strong>${safeName}</strong>
+                            </div>
+                        </td>
+                        <td data-label="Role">${safeRole}</td>
+                        <td data-label="Branch">${safeBranch}</td>
+                        <td data-label="Contact">+91 ${safeContact}</td>
+                        <td data-label="Actions" style="text-align: right;">
+                            <span class="material-symbols-rounded icon-action" title="Edit" onclick="window.editStaff('${docId}')">edit</span>
+                            <span class="material-symbols-rounded icon-action delete" title="Remove" style="margin-left: 8px;" onclick="window.deleteStaff('${docId}')">delete</span>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Firebase Read Error:", error);
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--danger);">Error loading data. Check Firestore rules.</td></tr>';
+            }
+        }
+
+        window.loadStaff();
+
+        // --- 3. LIVE SEARCH ---
+        window.searchStaff = function() {
+            const input = document.getElementById("staffSearchInput").value.toLowerCase();
+            const trs = document.getElementById("staffTableBody").getElementsByTagName("tr");
+            
+            for (let i = 0; i < trs.length; i++) {
+                if (trs[i].cells.length === 1) continue; 
+                const text = trs[i].innerText.toLowerCase();
+                trs[i].style.display = text.indexOf(input) > -1 ? "" : "none";
+            }
+        }
+
+        // --- 4. EDIT & DELETE ---
+        window.editStaff = function(docId) {
+            const data = window.staffDataCache[docId];
+            if(!data) return;
+
+            document.getElementById('staffDocId').value = docId;
+            document.getElementById('staffIdDisplay').value = data.empId || '';
+            document.getElementById('staffName').value = data.name || '';
+            document.getElementById('staffRole').value = data.role || '';
+            document.getElementById('staffBranch').value = data.branch || '';
+            document.getElementById('staffContact').value = data.mobile || data.contact || '';
+
+            document.getElementById('saveStaffBtn').innerHTML = '<span class="material-symbols-rounded">save</span> Update';
+            
+            const mainContent = document.getElementById('main-content');
+            if(mainContent) mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.deleteStaff = async function(docId) {
+            if(confirm("Are you sure you want to remove this staff member?")) {
+                try {
+                    await deleteDoc(doc(db, "staff", docId));
+                    window.loadStaff();
+                } catch(e) {
+                    alert("Error deleting record.");
+                }
+            }
+        }
+
+        window.clearStaffForm = function() {
+            document.getElementById('staff-form').reset();
+            document.getElementById('staffDocId').value = '';
+            document.getElementById('staffIdDisplay').value = 'Auto-Generated';
+            document.getElementById('saveStaffBtn').innerHTML = '<span class="material-symbols-rounded">person_add</span> Save';
+            
+            // Re-lock branch for standard users
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                document.getElementById('staffBranch').value = window.currentUser.branch;
+            }
+        }
+
+        // --- 5. SAVE / UPDATE ---
+        window.saveStaff = async function() {
+            const saveBtn = document.getElementById('saveStaffBtn');
+            const docId = document.getElementById('staffDocId').value;
+            
+            const name = document.getElementById('staffName').value;
+            const role = document.getElementById('staffRole').value;
+            const branch = document.getElementById('staffBranch').value;
+            const contact = document.getElementById('staffContact').value;
+
+            if(!name || !role || !branch || !contact) {
+                return alert("Please fill all required fields!");
+            }
+
+            saveBtn.innerHTML = 'Saving...';
+            saveBtn.disabled = true;
+
+            const payload = {
+                name: name,
+                role: role,
+                branch: branch,
+                mobile: contact,
+                contact: contact,
+                updatedAt: new Date()
+            };
+
+            try {
+                if(docId) {
+                    await updateDoc(doc(db, "staff", docId), payload);
+                    alert("Staff updated successfully!");
+                } else {
+                    payload.empId = "EMP-" + Math.floor(Math.random() * 9000 + 1000);
+                    payload.createdAt = new Date();
+                    await addDoc(collection(db, "staff"), payload);
+                    alert("New Staff added successfully!");
+                }
+
+                window.clearStaffForm();
+                window.loadStaff(); 
+
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to save. Check database rules.");
+            }
+
+            saveBtn.innerHTML = '<span class="material-symbols-rounded">person_add</span> Save';
+            saveBtn.disabled = false;
+        }
+
+    </script>
+</div>
+
+</body>
+</html>

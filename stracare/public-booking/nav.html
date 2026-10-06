@@ -1,0 +1,98 @@
+<style>
+    /* Wrapper to manage full height and push footer to the bottom */
+    .sidebar-inner-wrapper { display: flex; flex-direction: column; min-height: 100%; height: 100%; }
+    
+    /* Top Logo Styling - Automatically scales the 2000px image down to fit the sidebar */
+    .sidebar-logo { max-width: 160px; height: auto; object-fit: contain; display: block; } 
+    
+    /* The nav menu takes up the remaining space (flex: 1) to push the footer down */
+    .sidebar-nav { flex: 1; overflow-y: auto; padding-bottom: 20px; } 
+    
+    /* Sidebar Footer Styling */
+    .sidebar-footer { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FAFAFA; margin-top: auto; }
+    .footer-logo { width: 90px; height: auto; margin-bottom: 6px; object-fit: contain; }
+    .footer-version { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+</style>
+
+<div class="sidebar-inner-wrapper">
+    
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <!-- Replaced Icon and Text with Top Logo Image -->
+            <img src="assets/name.png" alt="Stra Care" class="sidebar-logo">
+        </div>
+        <button class="close-menu" onclick="toggleMenu()">
+            <span class="material-symbols-rounded">close</span>
+        </button>
+    </div>
+
+    <div class="sidebar-nav" id="sidebar-nav">
+        <button class="nav-link active" data-target="view-dashboard" onclick="switchView('view-dashboard', this)">
+            <span class="material-symbols-rounded">dashboard</span> Dashboard
+        </button>
+        <button class="nav-link" data-target="view-patients" onclick="switchView('view-patients', this)">
+            <span class="material-symbols-rounded">groups</span> Patient Data
+        </button>
+        <button class="nav-link" data-target="view-appointments" onclick="switchView('view-appointments', this)">
+            <span class="material-symbols-rounded">event_note</span> Appointments
+        </button>
+        
+        <button class="nav-link">
+            <span class="material-symbols-rounded">book_online</span> Today's Bookings
+            <span class="menu-badge">8</span>
+        </button>
+        
+        <div class="nav-divider"></div>
+        
+        <button class="nav-link" data-target="view-transaction" onclick="switchView('view-transaction', this)">
+            <span class="material-symbols-rounded">receipt_long</span> Transactions
+        </button>
+        <button class="nav-link">
+            <span class="material-symbols-rounded">pending_actions</span> Pending Payment
+            <span class="menu-badge pending">5</span>
+        </button>
+        <button class="nav-link" data-target="view-billing" onclick="switchView('view-billing', this)">
+            <span class="material-symbols-rounded">request_quote</span> Billing
+        </button>
+        
+        <div class="nav-divider"></div>
+        
+        <button class="nav-link" data-target="view-branches" onclick="switchView('view-branches', this)">
+            <span class="material-symbols-rounded">apartment</span> Branches
+        </button>
+        <button class="nav-link" data-target="view-therapist" onclick="switchView('view-therapist', this)">
+            <span class="material-symbols-rounded">medical_services</span> Doctors/Therapist
+        </button>
+        
+        <button class="nav-link" data-target="view-calender" onclick="switchView('view-calender', this)">
+            <span class="material-symbols-rounded">calendar_month</span> Calendar
+        </button>
+        
+        <button class="nav-link" data-target="view-letterhead" onclick="switchView('view-letterhead', this)">
+            <span class="material-symbols-rounded">description</span> Letterhead
+        </button>
+        <button class="nav-link" data-target="view-staff" onclick="switchView('view-staff', this)">
+            <span class="material-symbols-rounded">badge</span> Staffs
+        </button>
+        
+        <div class="nav-divider"></div>
+
+        <button class="nav-link" data-target="view-users" onclick="switchView('view-users', this)">
+            <span class="material-symbols-rounded">manage_accounts</span> Users
+        </button>
+        
+        <button class="nav-link" data-target="view-clinic-details" onclick="switchView('view-clinic-details', this)">
+            <span class="material-symbols-rounded">settings</span> Clinic Details
+        </button>
+        
+        <button class="nav-link"><span class="material-symbols-rounded">cloud_download</span> Export</button>
+        <button class="nav-link"><span class="material-symbols-rounded">info</span> App Info</button>
+    </div>
+
+    <!-- New Bottom Footer with bizze Logo -->
+    <div class="sidebar-footer">
+        <img src="assets/logo-cm.png" alt="cm" class="footer-logo">
+        <span class="footer-version">App Version 1.0</span>
+    </div>
+
+</div>

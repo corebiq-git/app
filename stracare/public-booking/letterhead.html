@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Letterhead | STRA CARE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="letterhead-module">
+    <style>
+    :root {
+        --primary: #2563EB;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --bg-light: #F8FAFC;
+        --stamp-green: #007B5E; /* Authentic Rubber Stamp Green */
+    }
+
+        #letterhead-module { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1120px;}
+
+        /* --- A4 Screen Canvas (Mobile Responsive) --- */
+        #letterhead-module .a4-canvas {
+            width: 100%;
+            max-width: 210mm; /* Exact A4 width */
+            min-height: 297mm; /* Exact A4 height */
+            background: #FFFFFF;
+            padding: 20mm; /* A4 Margin */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 24px;
+            overflow: hidden; /* Contains the watermark */
+        }
+
+        /* --- Center Watermark --- */
+        #letterhead-module .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; /* Scales dynamically with the page */
+            max-width: 400px;
+            height: auto;
+            opacity: 0.08; /* Low opacity */
+            pointer-events: none; /* Prevents it from blocking clicks on the text area */
+            z-index: 0;
+        }
+
+        /* Elevate content above watermark */
+        #letterhead-module .letter-header,
+        #letterhead-module .meta-group,
+        #letterhead-module .letter-body,
+        #letterhead-module .footer-section {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Header --- */
+        #letterhead-module .letter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+        #letterhead-module .logo-img { max-width: 130px; height: auto; }
+        #letterhead-module .company-info { text-align: right; font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+        #letterhead-module .comp-title-img { max-width: 180px; height: auto; display: inline-block; margin-bottom: 4px; }
+
+        #letterhead-module .branch-bar {
+            font-size: 9px;
+            color: var(--text-muted);
+            background: var(--bg-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #E8E5E1;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        /* --- Metadata Fields --- */
+        #letterhead-module .meta-group { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+        #letterhead-module .meta-row { display: flex; align-items: center; gap: 12px; }
+        #letterhead-module .meta-row.subject { align-items: flex-start; }
+        #letterhead-module .meta-label { width: 70px; font-weight: 600; font-size: 13px; color: var(--text-main); flex-shrink: 0; }
+        
+        /* Inputs & Native Date Picker */
+        #letterhead-module .meta-input { 
+            flex: 1; 
+            border: none; 
+            border-bottom: 1px dashed var(--border); 
+            outline: none; 
+            font-size: 13px; 
+            padding: 4px 0; 
+            color: #111; 
+            background: transparent;
+            font-family: inherit;
+        }
+        #letterhead-module .meta-input:focus { border-bottom-color: var(--primary); }
+
+        /* --- Content --- */
+        #letterhead-module .letter-body { flex: 1; margin-bottom: 24px; }
+        #letterhead-module .letter-body textarea { 
+            width: 100%; height: 100%; min-height: 200px; 
+            border: none; outline: none; resize: none; 
+            font-size: 13px; line-height: 1.7; color: #111; 
+            background: transparent; /* Essential for watermark visibility */
+            font-family: inherit;
+        }
+
+        /* --- Sign-off & Seal --- */
+        #letterhead-module .footer-section { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; min-height: 100px; }
+        #letterhead-module .sign-block { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 500; }
+        
+        /* --- Seal Integration Styles --- */
+        #letterhead-module .seal-control-wrapper { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+        
+        #letterhead-module .seal-box-company {
+            width: 63.5mm;
+            height: 25.4mm;
+            border: 2px solid var(--stamp-green);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--stamp-green);
+            position: relative;
+            overflow: hidden;
+            font-family: "Times New Roman", serif;
+            display: none;
+        }
+        #letterhead-module .seal-box-company .seal-name { text-align: center; font-size: 18px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4mm; line-height: 1; }
+        #letterhead-module .seal-box-company .signature-line { position: absolute; left: 5mm; right: 5mm; bottom: 8mm; border-top: 1.5px solid var(--stamp-green); }
+        #letterhead-module .seal-box-company .seal-role { position: absolute; right: 5mm; bottom: 2.5mm; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--stamp-green); }
+
+        #letterhead-module .seal-box-doctor {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--stamp-green);
+            font-family: "Arial", "Helvetica", sans-serif;
+            text-align: center;
+            line-height: 1.4;
+        }
+        #letterhead-module .seal-box-doctor .doc-name { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
+        #letterhead-module .seal-box-doctor .doc-qual { font-size: 15px; font-weight: 700; }
+        #letterhead-module .seal-box-doctor .doc-reg { font-size: 14px; font-weight: 700; margin-top: 2px; }
+        #letterhead-module .seal-box-doctor .doc-role { font-size: 14px; font-weight: 700; margin-top: 2px; }
+
+        /* --- Screen Control Action --- */
+        #letterhead-module .print-ctrl { width: 100%; max-width: 800px; text-align: right; margin-bottom: 24px; }
+        #letterhead-module .print-btn { padding: 12px 32px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        #letterhead-module .print-btn:hover { opacity: 0.9; }
+
+        /* --- Strict Print Media Queries --- */
+        @media (max-width: 768px) {
+            #letterhead-module { padding: 0px; }
+            #letterhead-module .a4-canvas { box-shadow: none; border: none; border-radius: 0; padding: 0; min-height: auto; height: auto; }
+            #letterhead-module .letter-header { flex-direction: column; gap: 12px; }
+            #letterhead-module .company-info { text-align: left; }
+            #letterhead-module .print-ctrl { text-align: center; }
+        }
+
+        @media print {
+            body { background: #FFF !important; padding: 0 !important; display: block !important; }
+            #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0; overflow: visible; }
+            #letterhead-module .a4-canvas { box-shadow: none !important; border: none !important; border-radius: 0 !important; padding: 0 !important; max-width: none !important; min-height: auto !important; height: auto !important; }
+            #letterhead-module .meta-input { border-bottom: none !important; }
+            
+            /* Print colors accurately for the seal */
+            #letterhead-module .seal-box-company, #letterhead-module .seal-box-doctor { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+
+    <div class="print-ctrl no-print">
+        <button class="print-btn" onclick="window.print()">Print Letterhead</button>
+    </div>
+
+    <div class="a4-canvas">
+        
+        <!-- Background Watermark Logo -->
+        <img src="assets/logo.png" class="watermark" alt="">
+        
+        <div class="letter-header">
+            <img src="assets/logo.png" class="logo-img" alt="Company Logo">
+            <div class="company-info">
+                <!-- Horizontal Text Logo -->
+                <img src="assets/name.png" class="comp-title-img" alt="STRA CARE">
+                <div style="margin-top: 4px; font-size: 10px;"><strong>Web:</strong> www.stracares.in | <strong>Email:</strong> info@stracares.in</div>
+                <div style="font-size: 10px;"><strong>Ph:</strong> +91 97449 02555 | +91 90612 07871</div>
+                <div class="branch-bar">
+                    <strong>Branches:</strong> Mahe | Chokli | Panoor | Koothuparamba | Nadapuram | Home Care
+                </div>
+            </div>
+        </div>
+
+        <div class="meta-group">
+            <div class="meta-row">
+                <div class="meta-label">Date:*</div>
+                <!-- Changed to text input to handle custom DD MMM YYYY format smoothly -->
+                <input type="text" class="meta-input" id="letterDate" required>
+            </div>
+            <div class="meta-row">
+                <div class="meta-label">To:*</div>
+                <input type="text" class="meta-input" placeholder="Recipient Name / Designation / Authority..." required>
+            </div>
+            <div class="meta-row subject">
+                <div class="meta-label">Subject:</div>
+                <textarea class="meta-input" rows="1" placeholder="Subject line..." style="height: auto;"></textarea>
+            </div>
+        </div>
+
+        <div class="letter-body">
+            <textarea placeholder="Type/write body of your letter here..."></textarea>
+        </div>
+
+        <div class="footer-section">
+            <div class="sign-block">
+                Sincerely,<br><br><br>
+                <strong>Administration</strong><br>
+                STRA CARE
+            </div>
+            
+            <div class="seal-control-wrapper">
+                <!-- Seal Selection Dropdown (Hidden on Print) -->
+                <div class="no-print">
+                    <select onchange="window.toggleLetterheadSeal(this.value)" style="padding: 6px; border-radius: 6px; border: 1px solid var(--border); font-size: 11px; outline: none; cursor: pointer; color: var(--text-main);">
+                        <option value="none">No Seal</option>
+                        <option value="company">Company Seal</option>
+                        <option value="doctor">Doctor's Seal</option>
+                    </select>
+                </div>
+
+                <!-- SEAL 1: COMPANY -->
+                <div class="seal-box-company" id="lh-seal-company">
+                    <div class="seal-name">FOR STRA CARE</div>
+                    <div class="signature-line"></div>
+                    <div class="seal-role">Managing Partner</div>
+                </div>
+
+                <!-- SEAL 2: DOCTOR -->
+                <div class="seal-box-doctor" id="lh-seal-doctor">
+                    <div class="doc-name">Dr. THEJASWI M.K (PT)</div>
+                    <div class="doc-qual">BPT, MPT (Ortho)</div>
+                    <div class="doc-reg">MIAP Reg No. L.43616</div>
+                    <div class="doc-role">CEO, STRA CARE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Set dynamic date to custom format (e.g. 11 Aug 2026)
+        const d = new Date();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const formattedDate = `${String(d.getDate()).padStart(2, '0')} ${months[d.getMonth()]} ${d.getFullYear()}`;
+        document.getElementById("letterDate").value = formattedDate;
+
+        // 2. Logic to toggle the seals
+        window.toggleLetterheadSeal = function(sealType) {
+            document.getElementById('lh-seal-company').style.display = 'none';
+            document.getElementById('lh-seal-doctor').style.display = 'none';
+
+            if (sealType === 'company') {
+                document.getElementById('lh-seal-company').style.display = 'block';
+            } else if (sealType === 'doctor') {
+                document.getElementById('lh-seal-doctor').style.display = 'flex';
+            }
+        }
+    </script>
+</div>
+</body>
+</html>

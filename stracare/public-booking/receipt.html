@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Stra Care - Receipt Voucher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="transaction-module">
+    
+    <style>
+    :root {
+        --primary: #2563EB;
+        --primary-light: #EFF6FF;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --success: #10B981;
+        --danger: #EF4444;
+        --secondary: #64748B;
+    }
+
+        #transaction-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; }
+        #transaction-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #transaction-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #transaction-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #transaction-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #transaction-module .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { #transaction-module .input-group.three-cols { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #transaction-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #transaction-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #transaction-module .form-input:disabled { background: #F0F0F0; color: #999; cursor: not-allowed; }
+
+        #transaction-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 700; color: var(--text-main); pointer-events: none; }
+        
+        #transaction-module .btn-primary { background: var(--success); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #transaction-module .btn-primary:active { opacity: 0.8; }
+        #transaction-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        #transaction-module .btn-verify { background: var(--text-main); color: #fff; border: none; padding: 0 20px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 13px;}
+        
+        #transaction-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #transaction-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #transaction-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+        #transaction-module .saas-table { width: 100%; min-width: 900px; border-collapse: collapse; text-align: left; }
+        #transaction-module .saas-table th { padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #transaction-module .saas-table td { padding: 16px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; white-space: nowrap; }
+        
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .badge-receipt { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-sales { background: rgba(59, 130, 246, 0.1); color: #3B82F6; }
+
+        .cta-link { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #FAFAFA; border: 1px solid var(--border); transition: 0.2s; text-decoration: none; }
+        .cta-link:hover { background: var(--surface); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        #patientSummaryDash { display: none; background: #ECFDF5; border: 1px dashed var(--success); padding: 16px; border-radius: 12px; margin-bottom: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .summary-metric { display: flex; flex-direction: column; }
+        .summary-metric span { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;}
+        .summary-metric strong { font-size: 18px; font-weight: 800; color: var(--text-main); }
+
+        .ledger-summary-banner { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; background: #FAFAFA; border-bottom: 1px solid var(--border); padding: 16px 20px; }
+        .ledger-box { padding: 16px; border-radius: 12px; background: white; border: 1px solid var(--border); }
+        .ledger-box h5 { margin: 0 0 4px 0; font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+        .ledger-box p { margin: 0; font-size: 20px; font-weight: 800; color: var(--text-main); }
+
+        @media print {
+            body { background: white; padding: 0; }
+            #sidebar-container, #header-container, #bottomnav-container, .form-card, .section-title, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0; overflow: visible; }
+            #transaction-module .table-container { box-shadow: none; border: none; margin: 0; }
+            #transaction-module .saas-table th { background: white; color: black; border-bottom: 1px solid #000; }
+            #transaction-module .saas-table td { border-bottom: 1px solid #E8E5E1; }
+        }
+    </style>
+
+    <div class="section-title">
+        <h2 style="margin: 0;">Receipt Vouchers</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <form id="transaction-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="txnDocId" value="">
+            
+            <h4 style="color: var(--success); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Log Receipt In</h4>
+            
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Voucher ID</label>
+                    <input type="text" id="txnIdDisplay" class="form-input readonly-input" value="Auto-Generated" readonly tabindex="-1">
+                </div>
+                <div>
+                    <label class="form-label">Date *</label>
+                    <input type="date" class="form-input" id="txnDate" required>
+                </div>
+                <div>
+                    <label class="form-label">Voucher Type *</label>
+                    <select id="txnType" class="form-input" required onchange="window.toggleAmtFields(this)">
+                        <option value="Receipt">Receipt (Collection/Payment In)</option>
+                        <option value="Sales">Sales (Bill/Invoice Generated)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Client/Patient Mobile</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="tel" id="mobileInput" class="form-input" placeholder="10-digit number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <button type="button" class="btn-verify" id="verifyTxnBtn" onclick="window.verifyTxnMobile()">Search</button>
+                    </div>
+                </div>
+                <div>
+                    <label class="form-label">Client/Ledger Name *</label>
+                    <input type="text" id="patientName" class="form-input" placeholder="Name of remitter/client" required>
+                </div>
+                <div>
+                    <label class="form-label">Branch *</label>
+                    <select id="txnBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- PATIENT SUMMARY DASHBOARD -->
+            <div id="patientSummaryDash">
+                <div class="summary-metric">
+                    <span>Total Services Billed</span>
+                    <strong id="dashTotalBilled">₹0.00</strong>
+                </div>
+                <div class="summary-metric">
+                    <span>Total Paid (Advance/Receipts)</span>
+                    <strong id="dashTotalPaid" style="color: var(--success);">₹0.00</strong>
+                </div>
+                <div class="summary-metric">
+                    <span>Outstanding / Pending Dues</span>
+                    <strong id="dashTotalPending" style="color: var(--danger);">₹0.00</strong>
+                </div>
+            </div>
+
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Payment Mode</label>
+                    <select id="txnMode" class="form-input">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank/UPI">Bank (Card/UPI/Net)</option>
+                    </select>
+                </div>
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Reference / UTR / Cheque No.</label>
+                    <input type="text" id="txnRef" class="form-input" placeholder="Optional reference details">
+                </div>
+            </div>
+
+            <div class="input-group three-cols" style="background: #ECFDF5; padding: 16px; border-radius: 12px;">
+                <div id="cashInContainer">
+                    <label class="form-label" style="color: var(--success);">Amount Received (₹)</label>
+                    <input type="number" id="txnCashIn" class="form-input" placeholder="0.00" style="color: var(--success); font-weight: 700; border-color: #A7F3D0;">
+                </div>
+                <div id="cashOutContainer" style="display: none;">
+                    <label class="form-label" style="color: var(--primary);">Amount Billed (₹)</label>
+                    <input type="number" id="txnCashOut" class="form-input" placeholder="0.00" style="color: var(--primary); font-weight: 700;">
+                </div>
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Particulars / Notes</label>
+                    <input type="text" id="txnNotes" class="form-input" placeholder="What is this receipt for?">
+                </div>
+            </div>
+
+            <div style="text-align: right; margin-top: 24px;">
+                <button type="button" class="btn-outline" style="margin-right: 12px; padding: 14px 24px;" onclick="window.resetTxnForm()">Clear Form</button>
+                <button type="button" class="btn-primary" id="saveTxnBtn" onclick="window.saveTransaction()">Save Receipt</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        
+        <div class="ledger-summary-banner">
+            <div class="ledger-box">
+                <h5>Total Billed (Sales)</h5>
+                <p id="ledgerTotalBilled" style="color: #3B82F6;">₹0.00</p>
+            </div>
+            <div class="ledger-box">
+                <h5>Total Collected (Receipts)</h5>
+                <p id="ledgerTotalCollected" style="color: var(--success);">₹0.00</p>
+            </div>
+            <div class="ledger-box" style="background: #ECFDF5; border-color: #A7F3D0;">
+                <h5>Net Pending Over All</h5>
+                <p id="ledgerTotalPending" style="color: var(--danger);">₹0.00</p>
+            </div>
+        </div>
+
+        <div class="table-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h4>Receipt & Sales Ledger</h4>
+                <button class="btn-outline no-print" onclick="window.print()" style="padding: 6px 12px; font-size: 12px;">
+                    <span class="material-symbols-rounded" style="font-size: 14px; color: var(--primary);">picture_as_pdf</span> Export Current View
+                </button>
+            </div>
+
+            <div class="no-print" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: #FAFAFA; padding: 12px; border-radius: 8px; border: 1px solid var(--border); width: 100%;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <input type="date" id="filterTxnDateFrom" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;" title="From Date">
+                    <span style="font-size: 12px; color: var(--text-muted);">to</span>
+                    <input type="date" id="filterTxnDateTo" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;" title="To Date">
+                </div>
+                <select id="filterTxnType" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;">
+                    <option value="">All Receipts & Sales</option>
+                    <option value="receipt">Receipt</option>
+                    <option value="sales">Sales</option>
+                </select>
+                <div style="display: flex; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; flex: 1; min-width: 200px;">
+                    <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                    <input type="text" id="txnSearchInput" onkeyup="window.filterTxnTable()" placeholder="Search Client Name or Mobile..." style="border: none; background: transparent; outline: none; font-size: 12px; width: 100%; margin-left: 6px;">
+                </div>
+                <button class="btn-outline" onclick="window.clearTxnFilters()" style="padding: 8px; font-size: 12px;" title="Clear Filters">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">close</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Date & ID</th>
+                        <th>Client / Patient</th>
+                        <th>Branch</th>
+                        <th>Type & Mode</th>
+                        <th>Ref & Notes</th>
+                        <th>Amount</th>
+                        <th class="no-print" style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="txnTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { collection, addDoc, query, where, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        window.txnDataCache = {};
+        window.allBranchesStringTxn = "";
+
+        document.getElementById("txnDate").value = new Date().toISOString().split('T')[0];
+
+        window.toggleAmtFields = function(selectEl) {
+            if(selectEl.value === 'Sales') {
+                document.getElementById('cashInContainer').style.display = 'none';
+                document.getElementById('cashOutContainer').style.display = 'block';
+                document.getElementById('txnCashIn').value = '';
+            } else {
+                document.getElementById('cashOutContainer').style.display = 'none';
+                document.getElementById('cashInContainer').style.display = 'block';
+                document.getElementById('txnCashOut').value = '';
+            }
+        };
+
+        window.loadBranchesForTxn = async function() {
+            const select = document.getElementById('txnBranch');
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                select.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                select.style.pointerEvents = 'none';
+                select.style.background = 'var(--grey-med)';
+                window.allBranchesStringTxn = userBranch;
+                return; 
+            }
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                snap.forEach(doc => { if(doc.data().name) branchList.push(doc.data().name); });
+                branchList.sort();
+                window.allBranchesStringTxn = branchList.join(" | ");
+                select.innerHTML = '<option value="">Select Branch</option>';
+                branchList.forEach(bName => {
+                    const option = document.createElement('option');
+                    option.value = bName; option.text = bName; select.appendChild(option);
+                });
+            } catch(e) { select.innerHTML = '<option value="Main Branch">Main Branch</option>'; }
+        };
+        window.loadBranchesForTxn();
+
+        window.verifyTxnMobile = async function() {
+            const mobile = document.getElementById('mobileInput').value;
+            const btn = document.getElementById('verifyTxnBtn');
+            const dash = document.getElementById('patientSummaryDash');
+            if (mobile.length !== 10) return alert("Enter 10-digit mobile number.");
+            
+            btn.innerText = "...";
+            try {
+                const pSnap = await getDocs(query(collection(db, "patients"), where("mobile", "==", mobile)));
+                if (!pSnap.empty) document.getElementById('patientName').value = pSnap.docs[0].data().name;
+                else { alert("No patient found. Type name manually."); dash.style.display = 'none'; }
+
+                const tSnap = await getDocs(query(collection(db, "transactions"), where("mobile", "==", mobile)));
+                if(!tSnap.empty) {
+                    let tBilled = 0; let tPaid = 0;
+                    tSnap.forEach(d => {
+                        const rec = d.data();
+                        tBilled += parseFloat(rec.cashOut) || 0; // Sales logged as cashOut
+                        tPaid += parseFloat(rec.cashIn) || 0;    // Receipts logged as cashIn
+                    });
+                    const tPending = tBilled - tPaid;
+                    document.getElementById('dashTotalBilled').innerText = `₹${tBilled.toFixed(2)}`;
+                    document.getElementById('dashTotalPaid').innerText = `₹${tPaid.toFixed(2)}`;
+                    document.getElementById('dashTotalPending').innerText = `₹${tPending.toFixed(2)}`;
+                    
+                    if(tPending > 0) {
+                        document.getElementById('txnType').value = 'Receipt';
+                        window.toggleAmtFields(document.getElementById('txnType'));
+                        document.getElementById('txnCashIn').value = tPending.toFixed(2);
+                        document.getElementById('txnNotes').value = "Clearing pending dues";
+                    }
+                    dash.style.display = 'flex';
+                } else dash.style.display = 'none';
+            } catch(e) { console.error(e); }
+            btn.innerText = "Search";
+        }
+
+        window.loadTransactions = async function() {
+            const tableBody = document.getElementById('txnTableBody');
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px;">Loading receipt vouchers...</td></tr>';
+
+            try {
+                let q;
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "transactions"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = collection(db, "transactions");
+                }
+
+                const querySnapshot = await getDocs(q);
+                tableBody.innerHTML = ''; 
+                window.txnDataCache = {};
+                
+                let txnList = [];
+                let tSales = 0;
+                let tReceipts = 0;
+
+                querySnapshot.forEach(doc => {
+                    const data = doc.data();
+                    // FILTER SPECIFIC TO RECEIPTS & SALES
+                    if(data.type === 'Receipt' || data.type === 'Sales') {
+                        txnList.push({ id: doc.id, data: data });
+                        if(data.type === 'Sales') tSales += parseFloat(data.cashOut) || 0;
+                        if(data.type === 'Receipt') tReceipts += parseFloat(data.cashIn) || 0;
+                    }
+                });
+
+                document.getElementById('ledgerTotalBilled').innerText = `₹${tSales.toFixed(2)}`;
+                document.getElementById('ledgerTotalCollected').innerText = `₹${tReceipts.toFixed(2)}`;
+                document.getElementById('ledgerTotalPending').innerText = `₹${(tSales - tReceipts).toFixed(2)}`;
+
+                if (txnList.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color: var(--text-muted);">No receipts or sales recorded yet.</td></tr>';
+                    return;
+                }
+
+                txnList.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
+
+                txnList.forEach((item) => {
+                    const data = item.data;
+                    const docId = item.id; 
+                    window.txnDataCache[docId] = data;
+                    
+                    let typeBadge = data.type === 'Receipt' ? '<span class="badge badge-receipt">Receipt</span>' : '<span class="badge badge-sales">Sales</span>';
+                    
+                    let amountHtml = '';
+                    if(data.type === 'Receipt') amountHtml = `<strong style="color: var(--success);">+ ₹${data.cashIn || 0}</strong>`;
+                    else amountHtml = `<strong style="color: #3B82F6;">Billed: ₹${data.cashOut || 0}</strong>`;
+
+                    const waText = encodeURIComponent(`Hello ${data.name}, your payment receipt for ₹${data.cashIn || data.cashOut} has been successfully processed at STRA CARE. Thank you!`);
+
+                    const tr = document.createElement('tr');
+                    tr.setAttribute("data-type", data.type.toLowerCase());
+                    tr.setAttribute("data-date", data.date);
+                    tr.setAttribute("data-search", `${data.name} ${data.mobile} ${data.txnId} ${data.ref}`.toLowerCase());
+
+                    tr.innerHTML = `
+                        <td data-label="Date/ID"><strong>${data.date}</strong><br><span style="font-size:11px; color:var(--text-muted);">${data.txnId || '--'}</span></td>
+                        <td data-label="Client">
+                            <strong>${data.name}</strong><br><span style="font-size:12px; color:var(--text-muted);">${data.mobile || '--'}</span>
+                            <div class="no-print" style="margin-top: 6px;">
+                                <a href="https://wa.me/91${data.mobile}?text=${waText}" class="cta-link" target="_blank" title="Send Receipt via WhatsApp"><span class="material-symbols-rounded" style="font-size: 14px; color: var(--success);">chat</span></a>
+                            </div>
+                        </td>
+                        <td data-label="Branch"><span style="font-size:12px; color:var(--primary); font-weight:600;">${data.branch || 'Unassigned'}</span></td>
+                        <td data-label="Type">${typeBadge}<br><span style="font-size:12px; color:var(--text-muted);">${data.mode}</span></td>
+                        <td data-label="Notes"><span style="font-size:12px;">Ref: ${data.ref || '--'}</span><br><span style="font-size:12px; color:var(--secondary);">${data.notes}</span></td>
+                        <td data-label="Amount">${amountHtml}</td>
+                        <td class="no-print" data-label="Actions" style="text-align: right;">
+                            <div style="display:flex; gap: 8px; align-items:center; justify-content: flex-end;">
+                                <span class="material-symbols-rounded" style="color: #8B5CF6; cursor: pointer; font-size: 20px;" title="Print Statement Ledger" onclick="window.printPatientStatement('${data.mobile}', '${data.name}')">account_box</span>
+                                <span class="material-symbols-rounded" style="color: var(--primary); cursor: pointer; font-size: 20px;" title="Print Receipt" onclick="window.printReceipt('${data.txnId}', '${data.name}', '${data.date}', '${data.type}', '${data.mode}', '${data.cashIn}', '${data.cashOut}')">receipt_long</span>
+                                <span class="material-symbols-rounded" style="color: var(--secondary); cursor: pointer; font-size: 18px;" title="Edit" onclick="window.editTxn('${docId}')">edit</span>
+                                <span class="material-symbols-rounded" style="color: var(--danger); cursor: pointer; font-size: 18px;" title="Delete" onclick="window.deleteTxn('${docId}')">delete</span>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) { console.error("Firebase Read Error:", error); }
+        };
+
+        window.loadTransactions();
+
+        window.filterTxnTable = function() {
+            const typeQuery = document.getElementById("filterTxnType").value.toLowerCase();
+            const dateFromQuery = document.getElementById("filterTxnDateFrom").value;
+            const dateToQuery = document.getElementById("filterTxnDateTo").value;
+            const textQuery = document.getElementById("txnSearchInput").value.toLowerCase();
+            const trs = document.getElementById("txnTableBody").getElementsByTagName("tr");
+
+            for (let i = 0; i < trs.length; i++) {
+                if (trs[i].cells.length === 1) continue; 
+                const rowType = trs[i].getAttribute("data-type");
+                const rowDate = trs[i].getAttribute("data-date");
+                const rowSearch = trs[i].getAttribute("data-search");
+
+                let show = true;
+                if (typeQuery && rowType !== typeQuery) show = false;
+                if (dateFromQuery && rowDate < dateFromQuery) show = false;
+                if (dateToQuery && rowDate > dateToQuery) show = false;
+                if (textQuery && rowSearch.indexOf(textQuery) === -1) show = false;
+                trs[i].style.display = show ? "" : "none";
+            }
+        }
+
+        window.clearTxnFilters = function() {
+            document.getElementById("filterTxnDateFrom").value = "";
+            document.getElementById("filterTxnDateTo").value = "";
+            document.getElementById("filterTxnType").value = "";
+            document.getElementById("txnSearchInput").value = "";
+            window.filterTxnTable();
+        }
+
+        window.printReceipt = function(txnId, name, date, type, mode, cashIn, cashOut) {
+            const amount = parseFloat(cashIn) > 0 ? cashIn : cashOut;
+            const title = type === 'Sales' ? 'Invoice / Bill' : 'Payment Receipt';
+            const branchesText = window.allBranchesStringTxn || 'Mahe | Chokli | Panoor | Koothuparamba';
+
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <html>
+                <head>
+                    <title>${title} - ${txnId}</title>
+                    <style>
+                        body { font-family: 'Helvetica Neue', sans-serif; padding: 40px; color: #222; margin: 0; }
+                        .header-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #10B981; padding-bottom: 24px; margin-bottom: 30px; }
+                        .logo-area { display: flex; align-items: center; gap: 12px; }
+                        .logo-area img { max-height: 40px; object-fit: contain; display: block; }
+                        .company-info { text-align: right; font-size: 13px; color: #555; line-height: 1.6; }
+                        .box { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; border-radius: 8px;}
+                        .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 16px;}
+                        .amt { font-size: 24px; font-weight: bold; color: #10B981; text-align: center; padding: 20px; background: #ECFDF5; border: 1px dashed #A7F3D0;}
+                        .footer-text { margin-top: 40px; text-align: center; font-size: 10px; color: #999; opacity: 0.3; text-transform: uppercase; letter-spacing: 0.5px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-row">
+                        <div class="logo-area">
+                            <img src="assets/logo.png" alt="Logo">
+                            <img src="assets/name.png" alt="STRA CARE">
+                        </div>
+                        <div class="company-info">
+                            <strong>+91 97449 02555 | +91 90612 07871</strong><br>
+                            info@stracares.in | www.stracares.in<br>
+                            Branches: ${branchesText}
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="margin:0; color: #10B981; text-transform: uppercase;">${title}</h2>
+                    </div>
+                    <div class="row"><strong>Voucher No:</strong> ${txnId}</div>
+                    <div class="row"><strong>Date:</strong> ${date}</div>
+                    <div class="box">
+                        <div class="row"><strong>Received From:</strong> <span>${name}</span></div>
+                        <div class="row"><strong>Voucher Type:</strong> <span>${type}</span></div>
+                        <div class="row"><strong>Payment Mode:</strong> <span>${mode}</span></div>
+                    </div>
+                    <div class="amt">Amount: ₹ ${amount}</div>
+                    <div style="margin-top: 60px; display: flex; justify-content: space-between;">
+                        <div>_____________________<br>Authorized Signatory</div>
+                        <div>_____________________<br>Customer / Payer</div>
+                    </div>
+                    <div class="footer-text">Generated by CM/ERP&CRM</div>
+                    <script>window.onload = function() { window.print(); }<\/script>
+                </body>
+                </html>
+            `);
+            win.document.close();
+        }
+
+        window.printPatientStatement = async function(mobile, name) {
+            if(!mobile || mobile === "undefined") return alert("Cannot generate statement. Invalid mobile number.");
+            try {
+                const q = query(collection(db, "transactions"), where("mobile", "==", mobile));
+                const snap = await getDocs(q);
+                let txns = [];
+                let totalBilled = 0; let totalPaid = 0;
+                
+                snap.forEach(doc => {
+                    let d = doc.data(); txns.push(d);
+                    totalBilled += parseFloat(d.cashOut) || 0; 
+                    totalPaid += parseFloat(d.cashIn) || 0;    
+                });
+                
+                if (txns.length === 0) return alert("No transaction history found.");
+                txns.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+                
+                let balancePending = totalBilled - totalPaid;
+                const branchesText = window.allBranchesStringTxn || 'Mahe | Chokli | Panoor | Koothuparamba';
+
+                let tbody = '';
+                txns.forEach(t => {
+                    tbody += `<tr>
+                        <td>${t.date}</td>
+                        <td>${t.txnId || '--'}</td>
+                        <td>${t.branch || '--'}</td>
+                        <td>${t.type} / ${t.mode || '--'}</td>
+                        <td style="text-align:right;">${t.cashOut > 0 ? '₹' + t.cashOut.toFixed(2) : '-'}</td>
+                        <td style="text-align:right; color: #10B981;">${t.cashIn > 0 ? '₹' + t.cashIn.toFixed(2) : '-'}</td>
+                    </tr>`;
+                });
+
+                const win = window.open('', '_blank');
+                win.document.write(`
+                    <html>
+                    <head>
+                        <title>Statement of Account - ${name}</title>
+                        <style>
+                            body { font-family: 'Helvetica Neue', sans-serif; padding: 40px; color: #222; margin: 0;}
+                            .header-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #10B981; padding-bottom: 24px; margin-bottom: 30px; }
+                            .logo-area { display: flex; align-items: center; gap: 12px; }
+                            .logo-area img { max-height: 40px; object-fit: contain; display: block; }
+                            .company-info { text-align: right; font-size: 13px; color: #555; line-height: 1.6; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px;}
+                            th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+                            th { background: #FAFAFA; color: #777; text-transform: uppercase; font-size: 12px;}
+                            .summary { margin-top: 30px; border-top: 2px solid #222; padding-top: 10px; width: 350px; float: right; }
+                            .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+                            .summary-row.total { font-weight: bold; font-size: 18px; color: #EF4444; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+                            .footer-text { clear: both; margin-top: 60px; text-align: center; font-size: 10px; color: #999; opacity: 0.3; text-transform: uppercase; letter-spacing: 0.5px; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header-row">
+                            <div class="logo-area">
+                                <img src="assets/logo.png" alt="Logo">
+                                <img src="assets/name.png" alt="STRA CARE">
+                            </div>
+                            <div class="company-info">
+                                <strong>+91 97449 02555 | +91 90612 07871</strong><br>
+                                info@stracares.in | www.stracares.in<br>
+                                Branches: ${branchesText}
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-bottom: 30px;">
+                            <h2 style="margin: 0; color: #10B981; text-transform: uppercase;">Statement of Account</h2>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div>
+                                <strong>Client Name:</strong> <span style="font-size: 16px;">${name}</span><br>
+                                <strong>Mobile Number:</strong> +91 ${mobile}
+                            </div>
+                            <div style="text-align: right;">
+                                <strong>Report Generated:</strong> ${new Date().toLocaleDateString()}
+                            </div>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Transaction ID</th>
+                                    <th>Branch</th>
+                                    <th>Type / Mode</th>
+                                    <th style="text-align:right;">Billed Fee (₹)</th>
+                                    <th style="text-align:right;">Paid Amt (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>${tbody}</tbody>
+                        </table>
+                        <div class="summary">
+                            <div class="summary-row"><span>Total Services Billed:</span> <span>₹ ${totalBilled.toFixed(2)}</span></div>
+                            <div class="summary-row"><span>Total Payments Received:</span> <span style="color: #10B981;">₹ ${totalPaid.toFixed(2)}</span></div>
+                            <div class="summary-row total"><span>Total Pending Dues:</span> <span>₹ ${balancePending.toFixed(2)}</span></div>
+                        </div>
+                        <div class="footer-text">Generated by CM/ERP&CRM</div>
+                        <script>window.onload = function() { window.print(); }<\/script>
+                    </body>
+                    </html>
+                `);
+                win.document.close();
+            } catch(e) { console.error(e); alert("Error generating statement."); }
+        }
+
+        window.editTxn = function(docId) {
+            const data = window.txnDataCache[docId];
+            if(!data) return;
+            document.getElementById('txnDocId').value = docId; 
+            document.getElementById('txnIdDisplay').value = data.txnId; 
+            document.getElementById('txnDate').value = data.date || '';
+            document.getElementById('txnType').value = data.type || 'Receipt';
+            window.toggleAmtFields(document.getElementById('txnType'));
+            document.getElementById('mobileInput').value = data.mobile || '';
+            document.getElementById('patientName').value = data.name || '';
+            document.getElementById('txnBranch').value = data.branch || '';
+            document.getElementById('txnMode').value = data.mode || 'Cash';
+            document.getElementById('txnRef').value = data.ref || '';
+            document.getElementById('txnCashIn').value = data.cashIn || '';
+            document.getElementById('txnCashOut').value = data.cashOut || '';
+            document.getElementById('txnNotes').value = data.notes || '';
+            
+            document.getElementById('saveTxnBtn').innerText = "Update Receipt";
+            const mc = document.getElementById('main-content');
+            if(mc) mc.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.deleteTxn = async function(docId) {
+            if(confirm("Are you sure you want to permanently delete this receipt voucher?")) {
+                try {
+                    await deleteDoc(doc(db, "transactions", docId));
+                    alert("Voucher deleted.");
+                    window.loadTransactions();
+                } catch(e) { alert("Error deleting transaction."); }
+            }
+        }
+
+        window.resetTxnForm = function() {
+            document.getElementById('transaction-form').reset();
+            document.getElementById('txnDocId').value = ''; 
+            document.getElementById('txnIdDisplay').value = 'Auto-Generated'; 
+            document.getElementById('txnDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('saveTxnBtn').innerText = "Save Receipt";
+            document.getElementById('patientSummaryDash').style.display = 'none';
+            window.toggleAmtFields(document.getElementById('txnType'));
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                document.getElementById('txnBranch').value = window.currentUser.branch;
+            }
+        }
+
+        window.saveTransaction = async function() {
+            const saveBtn = document.getElementById('saveTxnBtn');
+            const docId = document.getElementById('txnDocId').value; 
+            
+            const date = document.getElementById('txnDate').value;
+            const type = document.getElementById('txnType').value;
+            const branch = document.getElementById('txnBranch').value;
+            const mobile = document.getElementById('mobileInput').value;
+            const name = document.getElementById('patientName').value;
+            const mode = document.getElementById('txnMode').value;
+            const ref = document.getElementById('txnRef').value;
+            
+            // Depends on Type selected
+            const cashIn = type === 'Receipt' ? (document.getElementById('txnCashIn').value || 0) : 0;
+            const cashOut = type === 'Sales' ? (document.getElementById('txnCashOut').value || 0) : 0;
+            
+            const notes = document.getElementById('txnNotes').value;
+
+            if (!name || !date || !type || !branch) return alert("Required fields missing!");
+            if (type === 'Receipt' && !cashIn) return alert("Please enter the Amount Received.");
+            if (type === 'Sales' && !cashOut) return alert("Please enter the Amount Billed.");
+
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            const payload = {
+                date: date,
+                type: type,
+                branch: branch,
+                mobile: mobile,
+                name: name,
+                mode: mode,
+                ref: ref,
+                cashIn: parseFloat(cashIn),
+                cashOut: parseFloat(cashOut),
+                notes: notes,
+                updatedAt: new Date()
+            };
+
+            try {
+                if(docId) {
+                    payload.txnId = document.getElementById('txnIdDisplay').value;
+                    await updateDoc(doc(db, "transactions", docId), payload);
+                    alert("Receipt updated!");
+                } else {
+                    const now = new Date();
+                    const dd = String(now.getDate()).padStart(2, '0');
+                    const mm = String(now.getMonth() + 1).padStart(2, '0');
+                    const yy = String(now.getFullYear()).slice(-2);
+                    const hh = String(now.getHours()).padStart(2, '0');
+                    const mins = String(now.getMinutes()).padStart(2, '0');
+                    
+                    payload.txnId = `TRN${dd}${mm}${yy}${hh}${mins}`;
+                    payload.createdAt = now;
+                    
+                    await addDoc(collection(db, "transactions"), payload);
+                    alert("Receipt saved!");
+                }
+                window.resetTxnForm();
+                window.loadTransactions();
+            } catch (error) { console.error(error); alert("Failed to save."); }
+            saveBtn.innerText = "Save Receipt";
+            saveBtn.disabled = false;
+        }
+    </script>
+</div>
+</body>
+</html>

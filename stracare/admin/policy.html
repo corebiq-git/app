@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Privacy Policy - STRA CARE</title>
+    
+    <!-- App Icons & Favicons -->
+    <link rel="icon" type="image/png" href="assets/logo-app.png">
+    <link rel="apple-touch-icon" href="assets/logo-app.png">
+    <meta name="theme-color" content="#0F766E">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-color: #F4F7F9;
+            --surface-color: #FFFFFF;
+            --text-main: #0B1121;
+            --text-muted: #64748B;
+            --primary-color: #0F766E;
+            --primary-hover: #0D9488;
+            --border-color: #E2E8F0;
+            --health-gradient: linear-gradient(135deg, #0F766E, #14B8A6);
+            --shadow: 0 4px 20px rgba(15, 118, 110, 0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 { font-family: 'Sora', sans-serif; }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background-color: var(--surface-color);
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fixed Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            max-width: 600px;
+            background: var(--health-gradient); 
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(15, 118, 110, 0.15);
+        }
+        
+        .header .icon-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+        
+        .header .icon-btn:active { transform: scale(0.92); }
+        .header h1 { color: #FFFFFF; font-size: 18px; font-weight: 600; margin: 0; }
+
+        /* Document Content */
+        .content {
+            padding: 100px 24px 60px; /* Top padding accounts for fixed header */
+        }
+
+        .last-updated {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .policy-section {
+            margin-bottom: 32px;
+        }
+
+        .policy-section h2 {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .policy-section p {
+            font-size: 15px;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .policy-section ul {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .policy-section li {
+            font-size: 15px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+
+        .contact-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+        
+        .contact-item i {
+            color: var(--primary-color);
+            margin-top: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-color);
+        }
+        .developer-contact {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .developer-contact:hover { color: var(--text-main); }
+        .developer-name {
+            display: block;
+            width: 140px;
+            height: auto;
+            margin: 4px auto 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <!-- Header -->
+    <header class="header">
+        <a href="javascript:history.back()" class="icon-btn">
+            <i data-lucide="arrow-left"></i>
+        </a>
+        <h1>Privacy Policy</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="content">
+        <span class="last-updated">Last Updated: June 28, 2026</span>
+
+        <div class="policy-section">
+            <p>Welcome to <strong>STRA CARE</strong>. We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about this privacy notice or our practices with regard to your personal information, please contact us.</p>
+            <p>This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and related services (collectively, the "App"). Please read this privacy policy carefully to understand what we do.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="database"></i> 1. Information We Collect</h2>
+            <p>We collect personal information that you voluntarily provide to us when you register on the App, express an interest in obtaining information about us or our services, or otherwise when you contact us.</p>
+            <ul>
+                <li><strong>Personal Data:</strong> Name, age, gender, and contact phone number.</li>
+                <li><strong>Medical Information:</strong> Brief medical history, notes, and specific treatment requested (e.g., Disc Prolapse, Low Back Ache) provided during the booking process.</li>
+                <li><strong>Location Data:</strong> Address details and GPS coordinates (latitude/longitude) if you opt to use the auto-detect location feature for Home Care services.</li>
+                <li><strong>Payment Information:</strong> We do not store direct banking passwords or UPI pins. Payment references (UPI transactions) are used solely to verify advance payments for appointments.</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="activity"></i> 2. How We Use Your Information</h2>
+            <p>We use personal information collected via our App for a variety of business and healthcare purposes described below:</p>
+            <ul>
+                <li>To facilitate and manage your physiotherapy appointments and bookings.</li>
+                <li>To provide appropriate medical and physiotherapy care based on the health data provided.</li>
+                <li>To locate you accurately for Home Care services using your address or GPS data.</li>
+                <li>To communicate with you regarding your appointments, payments, or treatment updates.</li>
+                <li>To improve our services, user experience, and app functionality.</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="shield-check"></i> 3. Data Protection and Security</h2>
+            <p>We use administrative, technical, and physical security measures to help protect your personal and medical information. Your data is stored securely on encrypted cloud servers (Google Firebase) utilized by the App. While we have taken reasonable steps to secure the personal information you provide to us, please be aware that despite our efforts, no security measures are perfect or impenetrable.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="share-2"></i> 4. Sharing Your Information</h2>
+            <p>We only share information with your consent, to comply with laws, to provide you with services, to protect your rights, or to fulfill business obligations.</p>
+            <ul>
+                <li><strong>Healthcare Providers:</strong> Your data is shared strictly with assigned therapists and clinical staff at STRA CARE branches.</li>
+                <li><strong>Third-Party Service Providers:</strong> We may share your data with third-party vendors (like cloud hosting and SMS/WhatsApp API gateways) who perform services for us.</li>
+                <li><strong>Legal Obligations:</strong> We may disclose your information where we are legally required to do so in order to comply with applicable law, governmental requests, or legal processes.</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="user-cog"></i> 5. Your Privacy Rights</h2>
+            <p>Depending on your region, you may have certain rights regarding your personal information. These may include the right to:</p>
+            <ul>
+                <li>Request access and obtain a copy of your personal information.</li>
+                <li>Request rectification or erasure of your personal data.</li>
+                <li>Restrict the processing of your personal information.</li>
+            </ul>
+            <p>To exercise any of these rights, please contact us using the details provided below. We will consider and act upon any request in accordance with applicable data protection laws.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="refresh-cw"></i> 6. Updates to This Policy</h2>
+            <p>We may update this privacy notice from time to time. The updated version will be indicated by an updated "Last Updated" date and the updated version will be effective as soon as it is accessible. We encourage you to review this privacy notice frequently to be informed of how we are protecting your information.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i data-lucide="phone-call"></i> 7. Contact Us</h2>
+            <p>If you have questions or comments about this notice, you may email us or contact us by post/phone:</p>
+            
+            <div class="contact-card">
+                <div class="contact-item">
+                    <i data-lucide="building"></i>
+                    <div>
+                        <strong>STRA CARE</strong><br>
+                        Koothuparamba, Kannur Dist, Kerala
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i data-lucide="mail"></i>
+                    <div>
+                        <strong>Email:</strong><br>
+                        info@stracares.in
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i data-lucide="smartphone"></i>
+                    <div>
+                        <strong>Phone:</strong><br>
+                        +91 97449 02555<br>
+                        +91 90612 07871
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2026 STRA CARE. All rights reserved.<br>
+        <a href="https://corebiq.com" class="developer-contact" target="_blank" rel="noopener noreferrer">
+            Contact App Developer
+            <img class="developer-name" src="assets/name-corebiq.svg" alt="COREBIQ">
+        </a>
+    </div>
+
+</div>
+
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+</script>
+
+</body>
+</html>

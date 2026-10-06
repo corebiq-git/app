@@ -1,0 +1,505 @@
+<style>
+    .dashboard-header {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 24px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--outline-soft);
+        box-shadow: 0 2px 8px rgba(31, 35, 40, .04);
+        position: relative;
+        z-index: 60;
+    }
+
+    .sidebar-toggle-button {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        flex: 0 0 42px;
+        place-items: center;
+        border: 1px solid var(--primary-soft);
+        border-radius: 50%;
+        background: #F8F9FA;
+        color: var(--primary);
+        cursor: pointer;
+        transition: background-color .18s ease, border-color .18s ease;
+    }
+
+    .sidebar-toggle-button:hover {
+        background: #F1F2F4;
+        border-color: #AECBFA;
+    }
+
+    .sidebar-toggle-button[aria-expanded="true"] {
+        background: #F8F9FA;
+    }
+
+    .sidebar-toggle-button .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+    .module-search {
+        position: relative;
+        width: min(100%, 520px);
+        flex: 1 1 420px;
+        margin: 0;
+    }
+
+    .module-search-box {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 14px;
+        background: #F8F9FA;
+        border: 1px solid var(--primary-soft);
+        border-radius: 24px;
+        color: var(--muted);
+        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .module-search-box:focus-within {
+        background: var(--surface);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    .module-search-box > .material-symbols-rounded {
+        flex: 0 0 auto;
+        font-size: 21px;
+        color: var(--primary);
+    }
+
+    .module-search-input {
+        width: 100%;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+    }
+
+    .module-search-input::placeholder {
+        color: var(--muted);
+    }
+
+    .module-search-clear {
+        width: 30px;
+        height: 30px;
+        display: none;
+        flex: 0 0 30px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+    }
+
+    .module-search-clear:hover {
+        background: #E9EAEC;
+        color: var(--primary);
+    }
+
+    .module-search-input:not(:placeholder-shown) ~ .module-search-clear {
+        display: flex;
+    }
+
+    .module-search-clear .material-symbols-rounded {
+        font-size: 19px;
+    }
+
+    .header-clock {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .header-clock-group {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        white-space: nowrap;
+    }
+
+    .header-clock-group.date {
+        color: #4B5563;
+    }
+
+    .header-clock-group.time {
+        color: #9CA3AF;
+    }
+
+    .header-clock-item {
+        min-width: 31px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .header-clock-value {
+        font-family: 'Outfit', monospace;
+        font-size: 16px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+    }
+
+    .header-clock-label {
+        color: inherit;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        line-height: 1;
+    }
+
+    .header-clock-divider {
+        width: 1px;
+        height: 26px;
+        background: var(--outline-soft);
+    }
+
+    .module-search-results {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        display: none;
+        max-height: min(60vh, 420px);
+        overflow-y: auto;
+        padding: 6px;
+        background: var(--surface);
+        border: 1px solid var(--outline-soft);
+        border-radius: 14px;
+        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        z-index: 100;
+    }
+
+    .module-search-results.open {
+        display: block;
+    }
+
+    .module-search-result {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 0;
+        border-radius: 9px;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+    }
+
+    .module-search-result:hover,
+    .module-search-result:focus-visible {
+        outline: 0;
+        background: #F8F9FA;
+        color: var(--primary);
+    }
+
+    .module-search-result .material-symbols-rounded {
+        color: var(--primary);
+        font-size: 20px;
+    }
+
+    .module-search-empty {
+        padding: 14px 12px;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .header-actions {
+        position: relative;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .notification-button {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--primary-soft);
+        border-radius: 50%;
+        background: #F8F9FA;
+        color: var(--primary);
+        cursor: pointer;
+    }
+
+    .notification-button:hover {
+        background: var(--primary-soft);
+        border-color: var(--primary-soft);
+    }
+
+    .notification-button .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+    .profile-button {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--primary-soft);
+        border-radius: 50%;
+        background: #F8F9FA;
+        color: var(--primary);
+        cursor: pointer;
+    }
+
+    .profile-button:hover,
+    .profile-button[aria-expanded="true"] {
+        background: var(--primary-soft);
+        border-color: var(--primary-soft);
+    }
+
+    .profile-button .material-symbols-rounded {
+        font-size: 23px;
+    }
+
+    .profile-menu {
+        position: absolute;
+        top: calc(100% + 9px);
+        right: 0;
+        display: none;
+        width: min(290px, calc(100vw - 24px));
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--outline-soft);
+        border-radius: 14px;
+        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        z-index: 110;
+    }
+
+    .profile-menu.open {
+        display: block;
+    }
+
+    .profile-name {
+        margin: 0;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-email {
+        margin: 4px 0 12px;
+        color: var(--muted);
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-details {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 7px 10px;
+        padding: 12px 0;
+        border-top: 1px solid var(--outline-soft);
+        border-bottom: 1px solid var(--outline-soft);
+        font-size: 12px;
+    }
+
+    .profile-detail-label {
+        color: var(--muted);
+    }
+
+    .profile-detail-value {
+        color: var(--text);
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-signout {
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 9px;
+        margin-top: 12px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .profile-signout:hover {
+        background: var(--primary);
+        color: var(--surface);
+    }
+
+    @media (max-width: 768px) {
+        .dashboard-header {
+            min-height: 64px;
+            gap: 8px;
+            padding: 8px 12px;
+        }
+
+        .sidebar-toggle-button { display: none; }
+
+        .module-search {
+            width: auto;
+            flex: 1 1 auto;
+        }
+
+        .module-search-box {
+            height: 42px;
+            gap: 7px;
+            padding: 0 11px;
+        }
+
+        .module-search-input {
+            font-size: 13px;
+        }
+
+        .header-clock {
+            gap: 7px;
+        }
+
+        .header-clock-group {
+            gap: 5px;
+        }
+
+        .header-clock-item {
+            min-width: 25px;
+        }
+
+        .header-clock-value {
+            font-size: 13px;
+        }
+
+        .header-clock-label {
+            font-size: 7px;
+        }
+
+        .header-clock-divider {
+            height: 22px;
+        }
+
+        .header-actions {
+            gap: 6px;
+        }
+
+        .notification-button,
+        .profile-button {
+            width: 38px;
+            height: 38px;
+        }
+    }
+</style>
+
+<header class="dashboard-header">
+    <button
+        class="sidebar-toggle-button"
+        id="sidebar-toggle-button"
+        type="button"
+        aria-label="Collapse navigation"
+        aria-expanded="true"
+        title="Collapse navigation"
+        onclick="window.toggleSidebarCollapse()">
+        <span class="material-symbols-rounded" aria-hidden="true">left_panel_close</span>
+    </button>
+
+    <div class="module-search">
+        <div class="module-search-box">
+            <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            <input
+                class="module-search-input"
+                id="module-search-input"
+                type="text"
+                placeholder="Search modules..."
+                autocomplete="off"
+                aria-label="Search dashboard modules"
+                aria-controls="module-search-results"
+                aria-expanded="false"
+                oninput="window.searchModules(this.value)"
+                onkeydown="window.handleModuleSearchKeydown(event)">
+            <button
+                class="module-search-clear"
+                type="button"
+                aria-label="Clear module search"
+                title="Clear search"
+                onclick="window.clearModuleSearch()">
+                <span class="material-symbols-rounded" aria-hidden="true">close</span>
+            </button>
+        </div>
+        <div class="module-search-results" id="module-search-results" role="listbox"></div>
+    </div>
+
+    <div class="header-clock" aria-label="Current date and time">
+        <div class="header-clock-group date" aria-label="Date">
+            <span class="header-clock-item">
+                <span class="header-clock-value" id="dd-val">--</span>
+                <span class="header-clock-label" id="dd-context">DAY</span>
+            </span>
+            <span class="header-clock-item">
+                <span class="header-clock-value" id="mm-val">---</span>
+                <span class="header-clock-label" id="mm-context">----</span>
+            </span>
+        </div>
+        <span class="header-clock-divider" aria-hidden="true"></span>
+        <div class="header-clock-group time" aria-label="Time">
+            <span class="header-clock-item">
+                <span class="header-clock-value" id="hh-val">--</span>
+                <span class="header-clock-label" id="hh-context">--</span>
+            </span>
+            <span class="header-clock-item">
+                <span class="header-clock-value" id="min-val">--</span>
+                <span class="header-clock-label">MIN</span>
+            </span>
+        </div>
+    </div>
+
+    <div class="header-actions">
+        <button class="notification-button" type="button" aria-label="Notifications" title="Notifications">
+            <span class="material-symbols-rounded" aria-hidden="true">notifications</span>
+        </button>
+        <button
+            class="profile-button"
+            id="profile-button"
+            type="button"
+            aria-label="View signed-in user profile"
+            aria-expanded="false"
+            aria-controls="profile-menu"
+            onclick="window.toggleProfileMenu()">
+            <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
+        </button>
+        <section class="profile-menu" id="profile-menu" aria-label="User profile">
+            <h2 class="profile-name" id="profile-name">Signed-in user</h2>
+            <p class="profile-email" id="profile-email"></p>
+            <div class="profile-details">
+                <span class="profile-detail-label">Role</span>
+                <span class="profile-detail-value" id="profile-role"></span>
+                <span class="profile-detail-label">Branch</span>
+                <span class="profile-detail-value" id="profile-branch"></span>
+            </div>
+            <button class="profile-signout" type="button" onclick="window.handleLogout()">
+                <span class="material-symbols-rounded" aria-hidden="true">logout</span>
+                Sign out
+            </button>
+        </section>
+    </div>
+</header>

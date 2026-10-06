@@ -1,0 +1,804 @@
+<style>
+    /* =========================================================
+       SIDEBAR BASE
+       ========================================================= */
+
+    .sidebar-inner-wrapper {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        height: 100%;
+    }
+
+
+    /* =========================================================
+       SIDEBAR HEADER / STRA CARE LOGO
+       ========================================================= */
+
+    .sidebar-header {
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 10;
+        border-bottom: 1px solid var(--border);
+
+        padding: 10px 16px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        height: 72px;
+        min-height: 72px;
+    }
+
+    .sidebar-brand {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-width: 0;
+    }
+
+    .sidebar-logo {
+        display: block;
+        width: 38px;
+        height: 38px;
+        object-fit: contain;
+        flex: 0 0 38px;
+    }
+
+    .sidebar-name {
+        display: block;
+        width: min(100%, 150px);
+        max-height: 42px;
+        object-fit: contain;
+    }
+
+    .close-menu {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--text-main);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+    }
+
+    .close-menu:hover {
+        background: var(--primary-soft);
+        color: var(--primary);
+    }
+
+    .sidebar-brand-actions {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+       ========================================================= */
+
+    .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+
+        padding: 14px 0 20px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        scrollbar-width: thin;
+    }
+
+
+    /* =========================================================
+       NAVIGATION LINKS
+       ========================================================= */
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+
+        width: calc(100% - 32px);
+        margin: 0 16px;
+
+        min-height: 46px;
+        padding: 10px 16px;
+
+        border: 1px solid transparent;
+        background: transparent;
+
+        text-align: left;
+        cursor: pointer;
+
+        font-size: 14px;
+        font-weight: 500;
+
+        color: #4B5563;
+
+        border-radius: 999px;
+
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease,
+            transform 0.2s ease;
+
+        font-family: inherit;
+    }
+
+    .nav-link:hover {
+        background: #FFFFFF;
+        border-color: #C7D9F5;
+        color: var(--primary);
+    }
+
+    .nav-link:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+
+    .nav-link.active {
+        background: #FFFFFF;
+        border-color: var(--primary);
+        color: var(--primary);
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(11, 87, 208, .08);
+    }
+
+    .nav-link.active:hover {
+        background: #F7FAFF;
+        border-color: var(--primary-hover);
+    }
+
+    .nav-link .material-symbols-rounded {
+        font-size: 21px;
+        margin-right: 12px;
+        color: inherit;
+        transition: color 0.2s ease;
+        flex-shrink: 0;
+    }
+
+
+    /* =========================================================
+       DIVIDERS
+       ========================================================= */
+
+    .nav-divider {
+        height: 1px;
+        background: var(--border);
+
+        margin: 11px 24px;
+
+        flex-shrink: 0;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-header {
+        justify-content: center;
+        padding: 12px 8px;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-brand {
+        justify-content: center;
+    }
+
+    #sidebar-container.is-collapsed .close-menu {
+        display: none;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-name {
+        display: none;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-nav {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+
+    #sidebar-container.is-collapsed .nav-link {
+        width: 54px;
+        min-height: 50px;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 8px;
+        border: 1px solid #D7E4FA;
+        border-radius: 16px;
+        background: #FFFFFF;
+        overflow: hidden;
+        font-size: 0;
+    }
+
+    #sidebar-container.is-collapsed .nav-link:hover {
+        border-color: #4285F4;
+        background: #F3F7FF;
+        color: #1A73E8;
+    }
+
+    #sidebar-container.is-collapsed .nav-link.active {
+        border-color: #4285F4;
+        background: #FFFFFF;
+        color: #1A73E8;
+        box-shadow: 0 2px 8px rgba(66, 133, 244, .12);
+    }
+
+    #sidebar-container.is-collapsed .nav-link .material-symbols-rounded {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    #sidebar-container.is-collapsed .nav-divider {
+        margin: 8px 12px;
+    }
+
+    #sidebar-container.is-collapsed .sidebar-footer {
+        display: none;
+    }
+
+
+    /* =========================================================
+       BADGES
+       ========================================================= */
+
+    .menu-badge {
+        margin-left: auto;
+
+        background: var(--primary);
+        color: white;
+
+        padding: 2px 8px;
+
+        border-radius: 20px;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .menu-badge.pending {
+        background: var(--warning);
+        color: #fff;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .sidebar-footer {
+        padding: 18px 20px;
+
+        border-top: 1px solid var(--border);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        background: #FAFAFA;
+
+        margin-top: auto;
+        flex-shrink: 0;
+    }
+
+    .footer-logo {
+        margin: 0 0 7px;
+        background: linear-gradient(100deg, #1A73E8 0%, #A142F4 52%, #EA4335 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #1A73E8;
+        font-size: 21px;
+        font-weight: 800;
+        letter-spacing: .12em;
+        line-height: 1.15;
+    }
+
+    .footer-app-name {
+        max-width: 190px;
+        font-size: 10px;
+        font-weight: 650;
+        color: var(--text-muted);
+        margin-bottom: 2px;
+        text-align: center;
+        line-height: 1.4;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       DESKTOP
+       ========================================================= */
+
+    @media (min-width: 769px) {
+
+        .close-menu {
+            display: none;
+        }
+
+        .sidebar-brand {justify-content:flex-start}
+    }
+
+
+    /* =========================================================
+       MOBILE SIDEBAR
+       ========================================================= */
+
+    @media (max-width: 768px) {
+
+        .sidebar-header {
+            height: 64px;
+            min-height: 64px;
+            padding: 8px 12px;
+
+            justify-content: space-between;
+        }
+
+        .sidebar-brand {
+            justify-content: flex-start;
+        }
+
+        .sidebar-logo {
+            width: 32px;
+            height: 32px;
+            flex-basis: 32px;
+        }
+
+        .sidebar-name {
+            width: min(100%, 150px);
+            max-height: 48px;
+        }
+
+        .close-menu {
+            display: flex;
+
+            width: 38px;
+            height: 38px;
+
+            flex-shrink: 0;
+        }
+
+        .close-menu .material-symbols-rounded {
+            font-size: 23px;
+        }
+
+        .sidebar-nav {
+            padding-top: 12px;
+            padding-bottom: 20px;
+        }
+
+        .nav-link {
+            width: calc(100% - 24px);
+            margin: 0 12px;
+
+            min-height: 48px;
+            padding: 12px 16px;
+
+            font-size: 14px;
+        }
+
+        .nav-link .material-symbols-rounded {
+            font-size: 21px;
+            margin-right: 12px;
+        }
+
+        .nav-divider {
+            margin: 10px 20px;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+        }
+
+        #sidebar-container.is-collapsed .sidebar-header {
+            height: 64px;
+            min-height: 64px;
+            padding: 10px 6px;
+        }
+
+        #sidebar-container.is-collapsed .close-menu {
+            display: flex;
+            width: 34px;
+            height: 34px;
+        }
+    }
+</style>
+
+
+<div class="sidebar-inner-wrapper">
+
+    <!-- =====================================================
+         STRA CARE SIDEBAR HEADER
+         ===================================================== -->
+
+    <div class="sidebar-header">
+
+        <div class="sidebar-brand">
+            <img
+                src="assets/logo.png"
+                alt=""
+                class="sidebar-logo"
+            >
+            <img
+                src="assets/name.png"
+                alt="Stra Care"
+                class="sidebar-name"
+            >
+        </div>
+
+        <div class="sidebar-brand-actions">
+            <button
+                class="close-menu"
+                onclick="window.toggleMenu()"
+                aria-label="Close menu"
+                title="Close menu">
+                <span class="material-symbols-rounded">
+                    close
+                </span>
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <div class="sidebar-nav" id="sidebar-nav">
+
+        <!-- CORE MODULES -->
+
+        <button
+            class="nav-link active"
+            data-target="view-dashboard"
+            onclick="window.switchView('view-dashboard', this)"
+        >
+            <span class="material-symbols-rounded">
+                dashboard
+            </span>
+            Dashboard
+        </button>
+
+        <button
+            class="nav-link"
+            data-target="view-my-tasks"
+            onclick="window.switchView('view-my-tasks', this)"
+        >
+            <span class="material-symbols-rounded">
+                task_alt
+            </span>
+            My Task
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-patients"
+            onclick="window.switchView('view-patients', this)"
+        >
+            <span class="material-symbols-rounded">
+                groups
+            </span>
+            Patient Data
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-appointments"
+            onclick="window.switchView('view-appointments', this)"
+        >
+            <span class="material-symbols-rounded">
+                event_note
+            </span>
+            Appointments
+        </button>
+
+        <button
+            class="nav-link"
+            data-target="view-public-booking"
+            onclick="window.switchView('view-public-booking', this)"
+        >
+            <span class="material-symbols-rounded">
+                public
+            </span>
+            Public Booking
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-calender"
+            onclick="window.switchView('view-calender', this)"
+        >
+            <span class="material-symbols-rounded">
+                calendar_month
+            </span>
+            Calendar
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- FINANCIALS -->
+
+        <button
+            class="nav-link"
+            data-target="view-transaction"
+            onclick="window.switchView('view-transaction', this)"
+        >
+            <span class="material-symbols-rounded">
+                receipt_long
+            </span>
+            Transactions
+        </button>
+
+        <button
+            class="nav-link"
+            data-target="view-cash-ledger"
+            onclick="window.switchView('view-cash-ledger', this)"
+        >
+            <span class="material-symbols-rounded">
+                payments
+            </span>
+            Cash Ledger
+        </button>
+
+        <button
+            class="nav-link"
+            data-target="view-bank-ledger"
+            onclick="window.switchView('view-bank-ledger', this)"
+        >
+            <span class="material-symbols-rounded">
+                account_balance
+            </span>
+            Bank Ledger
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-qr"
+            onclick="window.switchView('view-qr', this)"
+        >
+            <span class="material-symbols-rounded">
+                qr_code_scanner
+            </span>
+            UPI Payment QR
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- CLINIC ORGANIZATION -->
+
+        <button
+            class="nav-link"
+            data-target="view-branches"
+            onclick="window.switchView('view-branches', this)"
+        >
+            <span class="material-symbols-rounded">
+                apartment
+            </span>
+            Branches
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-therapist"
+            onclick="window.switchView('view-therapist', this)"
+        >
+            <span class="material-symbols-rounded">
+                medical_services
+            </span>
+            Doctors/Therapists
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-staff"
+            onclick="window.switchView('view-staff', this)"
+        >
+            <span class="material-symbols-rounded">
+                badge
+            </span>
+            Staff Directory
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-attendance"
+            onclick="window.switchView('view-attendance', this)"
+        >
+            <span class="material-symbols-rounded">
+                how_to_reg
+            </span>
+            Daily Attendance
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- SETTINGS & DOCUMENTATION -->
+
+        <button
+            class="nav-link"
+            data-target="view-users"
+            id="nav-users-btn"
+            onclick="window.switchView('view-users', this)"
+        >
+            <span class="material-symbols-rounded">
+                manage_accounts
+            </span>
+            Users (Admin)
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-clinic-details"
+            onclick="window.switchView('view-clinic-details', this)"
+        >
+            <span class="material-symbols-rounded">
+                settings
+            </span>
+            Clinic Details
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-company"
+            onclick="window.switchView('view-company', this)"
+        >
+            <span class="material-symbols-rounded">
+                domain
+            </span>
+            Company Profile
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-letterhead"
+            onclick="window.switchView('view-letterhead', this)"
+        >
+            <span class="material-symbols-rounded">
+                description
+            </span>
+            Letterheads
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-seal"
+            onclick="window.switchView('view-seal', this)"
+        >
+            <span class="material-symbols-rounded">
+                verified
+            </span>
+            Digital Seals
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- TOOLS & SYSTEM -->
+
+        <button
+            class="nav-link"
+            data-target="view-calc"
+            onclick="window.switchView('view-calc', this)"
+        >
+            <span class="material-symbols-rounded">
+                calculate
+            </span>
+            Calculator Tool
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-backup"
+            onclick="window.switchView('view-backup', this)"
+        >
+            <span class="material-symbols-rounded">
+                cloud_download
+            </span>
+            Export & Backup
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-updates"
+            onclick="window.switchView('view-updates', this)"
+        >
+            <span class="material-symbols-rounded">
+                campaign
+            </span>
+            App Updates
+        </button>
+
+
+        <div class="nav-divider"></div>
+
+
+        <!-- INFORMATION & LEGAL -->
+
+        <button
+            class="nav-link"
+            data-target="view-licenceinfo"
+            onclick="window.switchView('view-licenceinfo', this)"
+        >
+            <span class="material-symbols-rounded">
+                workspace_premium
+            </span>
+            Licence Info
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-aboutapp"
+            onclick="window.switchView('view-aboutapp', this)"
+        >
+            <span class="material-symbols-rounded">
+                info
+            </span>
+            About App
+        </button>
+
+
+        <button
+            class="nav-link"
+            data-target="view-privacy"
+            onclick="window.switchView('view-privacy', this)"
+        >
+            <span class="material-symbols-rounded">
+                privacy_tip
+            </span>
+            Privacy Policy
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <div class="sidebar-footer">
+
+        <div class="footer-logo">COREBIQ</div>
+
+        <div class="footer-app-name">
+            Run your business with intelligent data
+        </div>
+
+    </div>
+
+</div>
