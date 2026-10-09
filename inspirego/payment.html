@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireGo Payment Voucher</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #031b33; 
+            --secondary-color: #3b9cd1; 
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+            --m3-primary: #031b33;
+            --m3-on-primary: #ffffff;
+            --m3-secondary-container: #dbeafe; 
+            --m3-on-secondary-container: #023859;
+            --m3-surface-variant: #e2e8f0;
+            --m3-error: #dc2626;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Material 3 Styled Toolbar */
+        .toolbar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            width: 95%;
+            max-width: 600px;
+        }
+
+        .toolbar button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
+        .primary-btn:hover { box-shadow: 0 4px 8px rgba(3, 27, 51, 0.3); transform: translateY(-1px); }
+        .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
+        .tonal-btn:hover { background-color: #bfdbfe; }
+        
+        /* Mobile Wrapper */
+        .voucher-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* STRICT A4 Size Setup */
+        .voucher-container {
+            width: 794px !important; 
+            height: 1123px !important;
+            min-width: 794px !important;
+            max-width: 794px !important;
+            background: white;
+            padding: 60px !important; 
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden; 
+            flex-shrink: 0;
+        }
+
+        /* Watermark Background */
+        .voucher-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('assets/logo-client.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.03; 
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content-wrapper { position: relative; z-index: 1; }
+
+        [contenteditable="true"]:hover {
+            background-color: #fff9c4;
+            outline: 1px dashed #ccc;
+            cursor: text;
+            border-radius: 4px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .logo-section { display: flex; flex-direction: column; gap: 10px; }
+        
+        #company-logo { transition: max-width 0.3s ease; }
+        #company-logo.format-standard { max-width: 180px; }
+        #company-logo.format-horizontal { max-width: 280px; }
+
+        .company-details { font-size: 11px; color: #555; line-height: 1.4; }
+        .company-name { font-weight: 700; font-size: 14px; color: var(--primary-color); margin-bottom: 6px; }
+        .contact-line { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+        .contact-line .lucide { width: 12px; height: 12px; color: var(--secondary-color); margin-top: 2px; }
+        
+        .voucher-title { text-align: right; }
+        .voucher-title h1 { color: var(--primary-color); font-size: 26px; margin: 0 0 10px 0; letter-spacing: 1px; }
+        .voucher-meta { display: grid; grid-template-columns: auto auto; gap: 6px 12px; font-size: 13px; text-align: right; }
+        .voucher-meta strong { color: var(--primary-color); }
+
+        /* Voucher Body Elements */
+        .voucher-body {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .form-row { display: flex; align-items: flex-end; gap: 15px; width: 100%; }
+        .form-label { font-weight: 600; color: var(--primary-color); white-space: nowrap; }
+        .form-input { flex-grow: 1; border-bottom: 1px dotted #888; padding-bottom: 2px; min-height: 24px; }
+
+        /* Bottom Section */
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 80px;
+        }
+
+        .amount-box {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .signatures-area {
+            display: flex;
+            gap: 40px;
+        }
+
+        .signature-box { text-align: center; width: 160px; }
+        .signature-line { border-bottom: 1px solid #333; margin-bottom: 8px; height: 40px; }
+        .signature-box p { margin: 0; font-size: 12px; color: #555; font-weight: 600; }
+
+        /* --- Saved Vouchers Dashboard --- */
+        .dashboard-container {
+            width: 100%;
+            max-width: 794px;
+            background: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            overflow-x: auto;
+        }
+        .dashboard-container h2 { margin: 0 0 15px 0; font-size: 16px; color: var(--primary-color); display: flex; align-items: center; gap: 8px; }
+        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 10px; text-align: left; font-weight: 600; border-radius: 6px; }
+        table.dash-tbl td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-color); padding: 4px; border-radius: 4px; }
+        .action-btn:hover { background-color: #f1f5f9; }
+        .action-btn.del { color: var(--m3-error); }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar, .dashboard-container { display: none !important; }
+            .voucher-wrapper { overflow: hidden; padding: 0; display: block; }
+            .voucher-container { box-shadow: none; margin: 0; padding: 15mm !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <button class="primary-btn" onclick="generatePDF()">
+            <i data-lucide="download"></i> Save & PDF
+        </button>
+        <button class="tonal-btn" onclick="sendWhatsApp()">
+            <i data-lucide="message-circle"></i> WhatsApp
+        </button>
+        <button class="tonal-btn" onclick="sendEmail()">
+            <i data-lucide="mail-plus"></i> Email
+        </button>
+        <button class="tonal-btn" onclick="toggleLogoFormat()">
+            <i data-lucide="image"></i> Toggle Logo
+        </button>
+    </div>
+
+    <div class="voucher-wrapper">
+        <div class="voucher-container" id="voucher-content">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="logo-section">
+                        <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
+                        <div class="company-details" contenteditable="true">
+                            <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                            <div class="contact-line">
+                                <i data-lucide="map-pin"></i> <span>Karaparamba, Calicut, Kozhikode, Kerala, India, 673010.</span>
+                            </div>
+                            <div class="contact-line">
+                                <i data-lucide="phone"></i> <span>India: 9947290770 | UAE: +971 555252018</span>
+                            </div>
+                            <div class="contact-line">
+                                <i data-lucide="mail"></i> <span>inspiregoa800@gmail.com | www.inspirego.com</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="voucher-title">
+                        <h1>PAYMENT VOUCHER</h1>
+                        <div class="voucher-meta">
+                            <strong>Voucher No:</strong> <span id="vouch-no" contenteditable="true">PV-2026-001</span>
+                            <strong>Date:</strong> <span id="vouch-date" contenteditable="true">09 Oct 2026</span>
+                            <strong>Ref No:</strong> <span contenteditable="true">BKG-8890</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="voucher-body">
+                    <div class="form-row">
+                        <span class="form-label">Paid to Mr. / M/s:</span>
+                        <span class="form-input" id="vendor-name" contenteditable="true">Emirates Airlines</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <span class="form-label">The sum of UAE Dirhams:</span>
+                        <span class="form-input" contenteditable="true">Two Thousand Five Hundred Only</span>
+                    </div>
+
+                    <div class="form-row">
+                        <span class="form-label">By Payment Method:</span>
+                        <span class="form-input" contenteditable="true">Bank Transfer (Ref: TRN123456789)</span>
+                    </div>
+
+                    <div class="form-row">
+                        <span class="form-label">Being payment for:</span>
+                        <span class="form-input" contenteditable="true">Flight Ticket Issuance for Mr. John Doe</span>
+                    </div>
+                </div>
+
+                <div class="bottom-section">
+                    <div class="amount-box">
+                        <span>AED</span> <span id="amount-val" contenteditable="true">2,500.00</span>
+                    </div>
+                    
+                    <div class="signatures-area">
+                        <div class="signature-box">
+                            <div class="signature-line" contenteditable="true"></div>
+                            <p>Receiver's Signature</p>
+                        </div>
+                        <div class="signature-box">
+                            <div class="signature-line" contenteditable="true"></div>
+                            <p>Authorized Signatory</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 60px; font-size: 11px; color: #777; text-align: center; border-top: 1px solid #eee; padding-top: 15px;" contenteditable="true">
+                    This document is an official record of payment issued by InspireGo Travel & Tourism.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <h2><i data-lucide="banknote"></i> Saved Payment Vouchers</h2>
+        <table class="dash-tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Voucher No</th>
+                    <th>Date</th>
+                    <th>Paid To</th>
+                    <th>Amount (AED)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dashboard-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+            applySavedLogoFormat();
+            renderDashboard();
+        };
+
+        function toggleLogoFormat() {
+            const logo = document.getElementById('company-logo');
+            if (logo.classList.contains('format-horizontal')) {
+                logo.classList.replace('format-horizontal', 'format-standard');
+                localStorage.setItem('inspirego_logo_format', 'standard');
+            } else {
+                logo.classList.replace('format-standard', 'format-horizontal');
+                localStorage.setItem('inspirego_logo_format', 'horizontal');
+            }
+        }
+
+        function applySavedLogoFormat() {
+            const savedFormat = localStorage.getItem('inspirego_logo_format');
+            const logo = document.getElementById('company-logo');
+            if (savedFormat === 'horizontal') {
+                logo.classList.replace('format-standard', 'format-horizontal');
+            }
+        }
+
+        function saveVoucher() {
+            const voucherNo = document.getElementById('vouch-no').innerText.trim() || 'Draft-' + Date.now();
+            const date = document.getElementById('vouch-date').innerText.trim();
+            const vendorName = document.getElementById('vendor-name').innerText.trim();
+            const amount = document.getElementById('amount-val').innerText.trim();
+            const htmlContent = document.getElementById('voucher-content').innerHTML;
+            
+            // Note: Different Local Storage Key to separate from receipts
+            let vouchers = JSON.parse(localStorage.getItem('inspirego_payments_db')) || [];
+            const existingIndex = vouchers.findIndex(v => v.id === voucherNo);
+            
+            const voucherData = { id: voucherNo, date: date, vendor: vendorName, amount: amount, html: htmlContent };
+            if(existingIndex >= 0) { vouchers[existingIndex] = voucherData; } else { vouchers.push(voucherData); }
+            
+            localStorage.setItem('inspirego_payments_db', JSON.stringify(vouchers));
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const tbody = document.getElementById('dashboard-body');
+            tbody.innerHTML = '';
+            let vouchers = JSON.parse(localStorage.getItem('inspirego_payments_db')) || [];
+
+            if(vouchers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No payment vouchers saved yet.</td></tr>';
+                return;
+            }
+
+            vouchers.forEach((v, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${v.id}</strong></td>
+                    <td>${v.date}</td>
+                    <td>${v.vendor}</td>
+                    <td><strong>AED ${v.amount}</strong></td>
+                    <td>
+                        <button class="action-btn" title="Load" onclick="loadVoucher('${v.id}')"><i data-lucide="edit-3"></i></button>
+                        <button class="action-btn del" title="Delete" onclick="deleteVoucher('${v.id}')"><i data-lucide="trash-2"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function loadVoucher(voucherId) {
+            let vouchers = JSON.parse(localStorage.getItem('inspirego_payments_db')) || [];
+            const voucher = vouchers.find(v => v.id === voucherId);
+            if(voucher) {
+                document.getElementById('voucher-content').innerHTML = voucher.html;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+                applySavedLogoFormat();
+            }
+        }
+
+        function deleteVoucher(voucherId) {
+            if(confirm(`Are you sure you want to delete ${voucherId}?`)) {
+                let vouchers = JSON.parse(localStorage.getItem('inspirego_payments_db')) || [];
+                vouchers = vouchers.filter(v => v.id !== voucherId);
+                localStorage.setItem('inspirego_payments_db', JSON.stringify(vouchers));
+                renderDashboard();
+            }
+        }
+
+        function sendWhatsApp() {
+            saveVoucher();
+            const vNo = document.getElementById('vouch-no').innerText.trim();
+            const total = document.getElementById('amount-val').innerText.trim();
+            const message = `Hello,\n\nPlease find attached the Payment Voucher ${vNo} for the amount of AED ${total} issued by InspireGo Travel & Tourism.\n\nThank you!`;
+            const phone = prompt("Enter vendor WhatsApp Number with country code:", "");
+            if (phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendEmail() {
+            saveVoucher();
+            const vNo = document.getElementById('vouch-no').innerText.trim();
+            const total = document.getElementById('amount-val').innerText.trim();
+            const email = prompt("Enter vendor Email address:", "");
+            if (email) window.location.href = `mailto:${email}?subject=Payment Voucher ${vNo} from InspireGo Travel & Tourism&body=${encodeURIComponent(`Hello,\n\nPlease find attached the Payment Voucher ${vNo} for the amount of AED${total} issued by InspireGo Travel & Tourism.\n\nThank you!`)}`;
+        }
+
+        function generatePDF() {
+            saveVoucher(); 
+            const element = document.getElementById('voucher-content');
+            const voucherNumber = document.getElementById('vouch-no').innerText.trim() || 'Voucher';
+            
+            const opt = {
+                margin:       0,
+                filename:     `InspireGo_${voucherNumber}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    windowWidth: 800, 
+                    scrollY: 0
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
