@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CMBooks - Company Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="company-module">
+    
+    <style>
+    /* --- Core Theme Variables --- */
+    :root {
+        --primary: #2563EB;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+
+        #company-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 850px; margin: 0 auto; } 
+
+        /* --- UI Components --- */
+        #company-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        #company-module .icon-btn { background: var(--surface); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s; }
+        #company-module .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
+        
+        #company-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #company-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #company-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #company-module .input-group { grid-template-columns: 1fr 1fr; } }
+
+        #company-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        
+        /* --- Read-Only vs Editable States --- */
+        #company-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 600; color: var(--text-main); pointer-events: none; transition: all 0.3s ease; }
+        #company-module .readonly-input.editable { background: #FAFAFA; border: 1px solid var(--border); padding-left: 16px; pointer-events: auto; font-weight: 500;}
+        #company-module .readonly-input.editable:focus { border-color: var(--primary); background: var(--surface); }
+
+        #company-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #company-module .btn-primary:active { opacity: 0.8; }
+        #company-module .btn-primary:disabled { background: var(--border); cursor: not-allowed; }
+        #company-module .section-header { color: var(--primary); margin-top: 24px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; font-size: 14px; font-weight: 700; text-transform: uppercase;}
+    </style>
+
+    <div class="section-title">
+        <h2>Company Overview</h2>
+        <button type="button" class="icon-btn" id="editCompanyBtn" onclick="window.toggleEditMode()" title="Edit Details">
+            <span class="material-symbols-rounded" style="font-size: 18px;">edit</span>
+        </button>
+    </div>
+
+    <div class="form-card">
+        <form id="company-overview-form">
+            <div class="section-header" style="margin-top: 0;">General Information</div>
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Company Name</label>
+                    <input type="text" id="compName" class="form-input readonly-input" value="STRA CARE" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Tagline</label>
+                    <input type="text" id="compTagline" class="form-input readonly-input" value="Rebuild Your Health" readonly>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Address</label>
+                    <textarea id="compAddress" class="form-input readonly-input" rows="2" readonly placeholder="Enter full registered address...">1st Floor, Shakthi Complex, Chokli, Kannur Dist, Kerala-670672</textarea>
+                </div>
+                <div style="grid-column: 1 / -1;">
+                    <label class="form-label">Branches</label>
+                    <input type="text" id="compBranches" class="form-input readonly-input" value="Mahe | Chokli | Panoor | Koothuparamba | Nadapuram | Home Care" readonly>
+                </div>
+            </div>
+
+            <div class="section-header">Contact Details</div>
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Primary Contact No</label>
+                    <input type="tel" id="compPhone1" class="form-input readonly-input" value="+91 97449 02555" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Secondary Contact No</label>
+                    <input type="tel" id="compPhone2" class="form-input readonly-input" value="+91 90612 07871" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="compEmail" class="form-input readonly-input" value="info@stracares.in" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Website</label>
+                    <input type="text" id="compWebsite" class="form-input readonly-input" value="www.stracares.in" readonly>
+                </div>
+            </div>
+
+            <div class="section-header">Bank Details</div>
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Account Name</label>
+                    <input type="text" id="compAccName" class="form-input readonly-input" value="STRA CARE" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Account Number</label>
+                    <input type="text" id="compAccNo" class="form-input readonly-input" value="50200120597389" readonly>
+                </div>
+                <div>
+                    <label class="form-label">IFSC Code</label>
+                    <input type="text" id="compIfsc" class="form-input readonly-input" value="HDFC0000465" readonly>
+                </div>
+                <div>
+                    <label class="form-label">UPI / Mobile</label>
+                    <input type="text" id="compUpi" class="form-input readonly-input" value="9744902555@hdfc" readonly>
+                </div>
+            </div>
+
+            <div id="save-actions" style="display: none; margin-top: 32px; text-align: right;">
+                <button type="button" id="saveCompanyBtn" class="btn-primary" onclick="window.saveCompanyDetails()">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
+        
+        // Target Document: A single document holding the global company configuration
+        const companyDocRef = doc(db, "settings", "company_profile");
+
+        // --- 1. LOAD DATA ON MOUNT ---
+        window.loadCompanyData = async function() {
+            try {
+                const docSnap = await getDoc(companyDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if(data.name) document.getElementById('compName').value = data.name;
+                    if(data.tagline) document.getElementById('compTagline').value = data.tagline;
+                    if(data.address) document.getElementById('compAddress').value = data.address;
+                    if(data.branches) document.getElementById('compBranches').value = data.branches;
+                    
+                    if(data.phone1) document.getElementById('compPhone1').value = data.phone1;
+                    if(data.phone2) document.getElementById('compPhone2').value = data.phone2;
+                    if(data.email) document.getElementById('compEmail').value = data.email;
+                    if(data.website) document.getElementById('compWebsite').value = data.website;
+
+                    if(data.accName) document.getElementById('compAccName').value = data.accName;
+                    if(data.accNo) document.getElementById('compAccNo').value = data.accNo;
+                    if(data.ifsc) document.getElementById('compIfsc').value = data.ifsc;
+                    if(data.upi) document.getElementById('compUpi').value = data.upi;
+                }
+            } catch (error) {
+                console.error("Error fetching company details:", error);
+            }
+
+            // ROLE-BASED ACCESS CONTROL (RBAC)
+            // If the user is NOT an admin, hide the edit button so they cannot modify the profile
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const editBtn = document.getElementById('editCompanyBtn');
+                if(editBtn) editBtn.style.display = 'none';
+            }
+        };
+
+        window.loadCompanyData();
+
+        // --- 2. TOGGLE EDIT MODE ---
+        window.toggleEditMode = function() {
+            const inputs = document.querySelectorAll('#company-overview-form .readonly-input');
+            const saveActions = document.getElementById('save-actions');
+            
+            let isEditing = false;
+            
+            inputs.forEach(input => {
+                input.classList.toggle('editable');
+                if (input.hasAttribute('readonly')) {
+                    input.removeAttribute('readonly');
+                    isEditing = true;
+                } else {
+                    input.setAttribute('readonly', true);
+                }
+            });
+
+            saveActions.style.display = isEditing ? 'block' : 'none';
+        };
+
+        // --- 3. SAVE DATA TO FIREBASE ---
+        window.saveCompanyDetails = async function() {
+            const btn = document.getElementById('saveCompanyBtn');
+            btn.innerText = "Saving...";
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('compName').value,
+                tagline: document.getElementById('compTagline').value,
+                address: document.getElementById('compAddress').value,
+                branches: document.getElementById('compBranches').value,
+                phone1: document.getElementById('compPhone1').value,
+                phone2: document.getElementById('compPhone2').value,
+                email: document.getElementById('compEmail').value,
+                website: document.getElementById('compWebsite').value,
+                accName: document.getElementById('compAccName').value,
+                accNo: document.getElementById('compAccNo').value,
+                ifsc: document.getElementById('compIfsc').value,
+                upi: document.getElementById('compUpi').value,
+                updatedAt: new Date()
+            };
+
+            try {
+                // Using merge: true so it creates the document if it doesn't exist, or updates it if it does
+                await setDoc(companyDocRef, payload, { merge: true });
+                alert("Company details updated successfully!");
+                window.toggleEditMode(); // Automatically exit edit mode
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to save changes. Please check your connection or database rules.");
+            }
+
+            btn.innerText = "Save Changes";
+            btn.disabled = false;
+        };
+
+    </script>
+</div>
+
+</body>
+</html>

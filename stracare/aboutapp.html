@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About App - CMB</title>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="about-module">
+    
+    <style>
+        #about-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 900px; margin: 0 auto; padding-bottom: 40px; }
+        
+        #about-module .section-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        
+        #about-module .modern-card { background: var(--surface); border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04); border: 1px solid var(--border); position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        
+        .app-hero-logo { max-width: 220px; height: auto; margin-bottom: 16px; }
+        
+        .app-title { font-size: 26px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; letter-spacing: -0.5px; }
+        .app-subtitle { font-size: 15px; font-weight: 500; color: var(--text-muted); margin-bottom: 24px; max-width: 600px; line-height: 1.6; }
+        
+        .version-badge { background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 20px; border: 1px solid #BFDBFE; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; }
+
+        .features-grid { display: grid; grid-template-columns: 1fr; gap: 16px; width: 100%; margin-bottom: 32px; text-align: left; }
+        @media (min-width: 768px) { .features-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .feature-item { background: #FAFAFA; border: 1px solid var(--border); padding: 20px; border-radius: 16px; display: flex; gap: 16px; align-items: flex-start; transition: transform 0.2s; }
+        .feature-item:hover { transform: translateY(-2px); border-color: var(--primary-light); box-shadow: 0 4px 12px rgba(0,98,255,0.05); }
+        .feature-icon { background: #EFF6FF; color: var(--primary); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .feature-text h5 { margin: 0 0 4px 0; font-size: 15px; font-weight: 700; color: var(--text-main); }
+        .feature-text p { margin: 0; font-size: 13px; color: var(--secondary); line-height: 1.5; }
+
+        .dev-block { width: 100%; background: #F8FAFC; border-radius: 16px; padding: 24px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 16px; }
+        .dev-logo { width: 100px; height: auto; margin-bottom: 12px; opacity: 0.8; }
+        .dev-info { font-size: 14px; color: var(--secondary); line-height: 1.6; text-align: center; }
+        .dev-link { color: var(--primary); text-decoration: none; font-weight: 600; transition: 0.2s; }
+        .dev-link:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            #about-module .modern-card { padding: 24px; }
+            .feature-item { flex-direction: column; gap: 12px; }
+        }
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="font-size: 32px; color: var(--primary);">info</span>
+        About Application
+    </div>
+
+    <div class="modern-card">
+        
+        <!-- App Header -->
+        <img src="assets/name.png" alt="Stra Care" class="app-hero-logo" onerror="this.src='https://via.placeholder.com/200x60?text=STRA+CARE'">
+        
+        <h1 class="app-title">CMB Business Flow</h1>
+        <p class="app-subtitle">The complete ERP & CRM suite engineered exclusively for streamlined clinical administration, intelligent scheduling, and seamless financial management.</p>
+        
+        <div class="version-badge">
+            <span class="material-symbols-rounded" style="font-size: 18px;">verified</span>
+            Version 1.2.0 (Stable Build)
+        </div>
+
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon"><span class="material-symbols-rounded">calendar_check</span></div>
+                <div class="feature-text">
+                    <h5>Smart Scheduling</h5>
+                    <p>Manage daily timesheets, allocate therapists, and handle rescheduling workflows effortlessly.</p>
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon"><span class="material-symbols-rounded">groups</span></div>
+                <div class="feature-text">
+                    <h5>CRM Directory</h5>
+                    <p>Auto-fetch client details, securely log medical histories, and track branch-specific patient data.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon"><span class="material-symbols-rounded">receipt_long</span></div>
+                <div class="feature-text">
+                    <h5>Automated Financials</h5>
+                    <p>Track fees, advances, and OP balance dues automatically with robust daily transaction logging.</p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon"><span class="material-symbols-rounded">qr_code_scanner</span></div>
+                <div class="feature-text">
+                    <h5>Digital Payments</h5>
+                    <p>Generate precise UPI payment receipts instantly and share them with patients via WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer & License Info -->
+        <div class="dev-block">
+            <img src="assets/logo-cm.png" alt="CMB" class="dev-logo" onerror="this.src='https://via.placeholder.com/100x40?text=CMB'">
+            <div class="dev-info">
+                <strong>Developed & Maintained by CM Filings</strong><br>
+                Licensed securely to <strong>Stra Care Physiotherapy</strong>.<br>
+                All rights reserved &copy; <script>document.write(new Date().getFullYear())</script>.<br><br>
+                
+                <span class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; color: var(--text-muted);">language</span> <a href="https://cmb.cmfilings.com" target="_blank" class="dev-link">cmb.cmfilings.com</a> &nbsp;|&nbsp; 
+                <span class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; color: var(--text-muted);">mail</span> <a href="mailto:cmb@cmfilings.com" class="dev-link">cmb@cmfilings.com</a> &nbsp;|&nbsp; 
+                <span class="material-symbols-rounded" style="font-size: 16px; vertical-align: middle; color: var(--text-muted);">call</span> <a href="tel:+919946151111" class="dev-link">+91 99461 51111</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

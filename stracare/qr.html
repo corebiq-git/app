@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Premium UPI QR Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="upi-qr-module">
+    
+    <style>
+        #upi-qr-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1100px; margin: 0 auto; padding-bottom: 40px;}
+        
+        #upi-qr-module .section-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px;}
+        
+        #upi-qr-module .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        @media (min-width: 992px) { #upi-qr-module .grid-layout { grid-template-columns: 1.1fr 0.9fr; } }
+
+        #upi-qr-module .modern-card { background: var(--surface); border-radius: 24px; padding: 30px; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04); border: 1px solid var(--border); position: relative; overflow: hidden;}
+        
+        #upi-qr-module .form-label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        
+        #upi-qr-module .input-wrapper { margin-bottom: 20px; }
+        #upi-qr-module .form-input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 15px; color: var(--text-main); background: #F8FAFC; outline: none; transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);}
+        #upi-qr-module .form-input:focus { border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 4px var(--primary-light); }
+        #upi-qr-module .form-input:read-only { background: #E2E8F0; color: var(--text-muted); cursor: not-allowed; box-shadow: none; font-weight: 600;}
+        
+        #upi-qr-module .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, #1D4ED8 100%); color: white; border: none; padding: 16px 24px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; box-shadow: 0 8px 16px rgba(37, 99, 235, 0.2);}
+        #upi-qr-module .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(37, 99, 235, 0.3); }
+        
+        #upi-qr-module .btn-outline { background: var(--surface); color: var(--text-main); border: 2px solid var(--border); padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;}
+        #upi-qr-module .btn-outline:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        
+        #upi-qr-module .btn-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; border: none; padding: 16px 24px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; box-shadow: 0 8px 16px rgba(37, 211, 102, 0.2);}
+        #upi-qr-module .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(37, 211, 102, 0.3); }
+
+        .qr-preview-container { background: #F1F5F9; border-radius: 16px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 480px; text-align: center; position: relative; }
+        
+        /* The Premium Canvas Receipt */
+        #compositeCanvas { max-width: 100%; height: auto; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); display: none; background: white; transition: 0.3s; }
+        
+        .action-buttons { display: none; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; width: 100%;}
+        @media (max-width: 600px) { .action-buttons { grid-template-columns: 1fr; } }
+        
+        .section-header { margin: 0 0 24px 0; color: var(--text-main); font-size: 18px; border-bottom: 2px solid var(--primary-light); padding-bottom: 12px; font-weight: 800; display: flex; align-items: center; justify-content: space-between;}
+    </style>
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="font-size: 32px; color: var(--primary);">contactless</span>
+        Digital Payment Request
+    </div>
+
+    <div class="grid-layout">
+        <!-- LEFT: FORM -->
+        <div class="modern-card">
+            <h3 class="section-header">
+                Payment Details
+                <span class="material-symbols-rounded" style="color: var(--text-muted); font-size: 20px;">edit_document</span>
+            </h3>
+            
+            <div class="input-wrapper">
+                <label class="form-label">Select Patient (Auto-fills Pending Dues) *</label>
+                <div style="position: relative;">
+                    <input list="qr-patients-datalist" id="qrPatientSearch" class="form-input" placeholder="Search Patient Name..." onchange="window.handleQRPatientSelect()" autocomplete="off" style="padding-left: 44px;">
+                    <span class="material-symbols-rounded" style="position: absolute; left: 14px; top: 16px; color: var(--text-muted);">search</span>
+                </div>
+                <datalist id="qr-patients-datalist"></datalist>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="input-wrapper">
+                    <label class="form-label">Patient Mobile</label>
+                    <input type="tel" id="qrMobile" class="form-input" placeholder="10-digit number" readonly>
+                </div>
+                <div class="input-wrapper">
+                    <label class="form-label">Amount (₹) *</label>
+                    <input type="number" id="qrAmount" class="form-input" placeholder="0.00" style="font-weight: 800; color: var(--primary); font-size: 18px;">
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <label class="form-label">Narration / Remarks</label>
+                <input type="text" id="qrNarration" class="form-input" placeholder="e.g., Consultation Fee, Therapy Due..." value="Clinic Payment">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="input-wrapper">
+                    <label class="form-label">Clinic UPI ID (Default)</label>
+                    <input type="text" id="qrUpiId" class="form-input" value="9744902555@hdfc">
+                </div>
+                <div class="input-wrapper">
+                    <label class="form-label">Payee Name (Default)</label>
+                    <input type="text" id="qrPayeeName" class="form-input" value="STRA CARE">
+                </div>
+            </div>
+
+            <button type="button" class="btn-primary" onclick="window.generateUPIQR()" style="margin-top: 10px;">
+                <span class="material-symbols-rounded">qr_code_scanner</span> Generate Digital Receipt
+            </button>
+        </div>
+
+        <!-- RIGHT: PREVIEW & ACTIONS -->
+        <div class="modern-card">
+            <h3 class="section-header">
+                Digital Receipt Preview
+                <span class="material-symbols-rounded" style="color: var(--text-muted); font-size: 20px;">preview</span>
+            </h3>
+            
+            <div class="qr-preview-container" id="qrPreviewArea">
+                <div id="preview-placeholder">
+                    <span class="material-symbols-rounded" style="font-size: 56px; color: var(--grey-med); margin-bottom: 16px; display: block;">receipt_long</span>
+                    <p style="color: var(--text-muted); font-size: 15px; font-weight: 500; margin: 0;">Fill details and click Generate<br>to view the payment QR code.</p>
+                </div>
+                <canvas id="compositeCanvas" width="500" height="720" style="width: 100%; max-width: 380px;"></canvas>
+            </div>
+
+            <div class="action-buttons" id="qrActionButtons">
+                <button class="btn-outline" onclick="window.downloadQR('jpeg')">
+                    <span class="material-symbols-rounded">image</span> Download JPEG
+                </button>
+                <button class="btn-outline" onclick="window.downloadQR('pdf')">
+                    <span class="material-symbols-rounded">picture_as_pdf</span> Download PDF
+                </button>
+                <button class="btn-whatsapp" onclick="window.shareToWhatsApp()" style="grid-column: 1 / -1;">
+                    <span class="material-symbols-rounded">send</span> Send via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js'; 
+        import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        window.qrPatientsCache = {};
+
+        // Helper to load external scripts dynamically
+        function loadExternalScript(src) {
+            return new Promise((resolve) => {
+                if (document.querySelector(`script[src="${src}"]`)) return resolve();
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = resolve;
+                document.head.appendChild(script);
+            });
+        }
+
+        // Helper to load images safely as a Promise (Crucial for Canvas rendering)
+        function loadCanvasImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+                img.src = src;
+            });
+        }
+
+        async function initQRModule() {
+            await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js');
+            await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+            window.loadQRPatients();
+        }
+
+        window.loadQRPatients = async function() {
+            const dataList = document.getElementById('qr-patients-datalist');
+            if(!dataList) return;
+            try {
+                let q = query(collection(db, "patients"));
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "patients"), where("branch", "==", window.currentUser.branch));
+                }
+                
+                const snap = await getDocs(q);
+                let html = '';
+                window.qrPatientsCache = {};
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    if(p.name && p.mobile) {
+                        // Store full object but only show Name in dropdown
+                        window.qrPatientsCache[p.mobile] = p;
+                        html += `<option value="${p.mobile}">${p.name}</option>`;
+                    }
+                });
+                dataList.innerHTML = html;
+            } catch(e) { console.error("Error loading QR patients: ", e); }
+        };
+
+        window.handleQRPatientSelect = async function() {
+            const selectedMobile = document.getElementById('qrPatientSearch').value;
+            const pData = window.qrPatientsCache[selectedMobile];
+            
+            if (pData) {
+                // Clear search bar and show name, log mobile
+                document.getElementById('qrPatientSearch').value = pData.name;
+                document.getElementById('qrMobile').value = pData.mobile || '';
+                document.getElementById('qrAmount').value = 'Loading...';
+                
+                let opBalance = 0;
+                try {
+                    let aptsQ = query(collection(db, "appointments"), where("mobile", "==", pData.mobile));
+                    if (window.currentUser && window.currentUser.role !== 'admin') {
+                        aptsQ = query(collection(db, "appointments"), where("mobile", "==", pData.mobile), where("branch", "==", window.currentUser.branch));
+                    }
+                    const aptsSnap = await getDocs(aptsQ);
+                    aptsSnap.forEach(doc => { opBalance += parseFloat(doc.data().balance) || 0; });
+                    
+                    document.getElementById('qrAmount').value = opBalance > 0 ? opBalance.toFixed(2) : '';
+                    if(opBalance <= 0) alert("This patient currently has no pending dues.");
+                } catch(e) { 
+                    console.error("Error fetching balance", e); 
+                    document.getElementById('qrAmount').value = '';
+                }
+            }
+        };
+
+        // --- PREMIUM CANVAS GENERATION ---
+        window.generateUPIQR = async function() {
+            const amount = parseFloat(document.getElementById('qrAmount').value);
+            const upiId = document.getElementById('qrUpiId').value.trim();
+            const payeeName = document.getElementById('qrPayeeName').value.trim();
+            const narration = document.getElementById('qrNarration').value.trim() || 'Clinic Payment';
+            
+            // Get patient name (fallback if user didn't use dropdown)
+            let patientName = document.getElementById('qrPatientSearch').value.trim() || 'Valued Patient';
+
+            if (!amount || amount <= 0 || !upiId) return alert("Please enter a valid amount and UPI ID.");
+
+            // Generate UPI String
+            const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(narration)}`;
+
+            const cvs = document.getElementById('compositeCanvas');
+            const ctx = cvs.getContext('2d');
+            const width = 500;
+            const height = 720; // Increased height to accommodate the 1x1 footer nicely
+
+            // 1. Draw Canvas Base & Border
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, width, height);
+            ctx.strokeStyle = "#E2E8F0";
+            ctx.lineWidth = 2;
+            ctx.strokeRect(1, 1, width - 2, height - 2);
+
+            // 2. Draw Top Gradient Header
+            const grad = ctx.createLinearGradient(0, 0, width, 0);
+            grad.addColorStop(0, "#F8FAFC");
+            grad.addColorStop(1, "#EFF6FF");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, 140);
+
+            try {
+                // Preload logos
+                const mainLogo = await loadCanvasImage('assets/name.png');
+                const squareLogo = await loadCanvasImage('assets/logo-cm.png'); // 1x1 Logo for footer
+
+                // 3. Draw Header Logo
+                const logoW = 200;
+                const logoH = 50;
+                ctx.drawImage(mainLogo, (width - logoW) / 2, 40, logoW, logoH);
+
+                ctx.textAlign = "center";
+                
+                // 4. Draw Financial Info
+                ctx.fillStyle = "#2563EB"; // Primary Blue
+                ctx.font = "bold 46px Inter, sans-serif";
+                ctx.fillText(`₹ ${amount.toLocaleString('en-IN', {minimumFractionDigits: 2})}`, width / 2, 200);
+                
+                ctx.fillStyle = "#64748B"; // Muted text
+                ctx.font = "600 16px Inter, sans-serif";
+                ctx.fillText(`Payment Request for: ${patientName}`, width / 2, 235);
+
+                // 5. Draw Divider
+                ctx.beginPath();
+                ctx.moveTo(60, 260);
+                ctx.lineTo(width - 60, 260);
+                ctx.strokeStyle = "#E2E8F0";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // 6. Generate QR using QRious
+                const qr = new QRious({
+                    value: upiString,
+                    size: 260,
+                    level: 'H'
+                });
+                const qrImage = await loadCanvasImage(qr.toDataURL());
+
+                // 7. Draw Soft Shadow Box for QR Code
+                ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+                ctx.shadowBlur = 20;
+                ctx.shadowOffsetY = 10;
+                ctx.fillStyle = '#ffffff';
+                
+                // Rounded rect path for background box
+                ctx.beginPath();
+                ctx.roundRect((width - 300) / 2, 280, 300, 300, 20);
+                ctx.fill();
+                
+                // Reset shadow before drawing image
+                ctx.shadowColor = 'transparent';
+                ctx.drawImage(qrImage, (width - 260) / 2, 300, 260, 260);
+                
+                // 8. Draw Payee Info Below QR
+                ctx.fillStyle = "#0F172A";
+                ctx.font = "bold 18px Inter, sans-serif";
+                ctx.fillText(payeeName, width / 2, 620);
+                
+                ctx.fillStyle = "#64748B";
+                ctx.font = "500 14px Inter, sans-serif";
+                ctx.fillText(`UPI ID: ${upiId}`, width / 2, 645);
+
+                // --- 9. MUTED FOOTER WITH 1x1 LOGO ---
+                ctx.beginPath();
+                ctx.moveTo(0, 680);
+                ctx.lineTo(width, 680);
+                ctx.strokeStyle = "#F1F5F9";
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                ctx.font = "italic 13px Inter, sans-serif";
+                ctx.fillStyle = "#94A3B8";
+                
+                const footerText = "Secure payment generated by";
+                const textWidth = ctx.measureText(footerText).width;
+                const sqLogoSize = 22;
+                const spacing = 8;
+                
+                // Calculate total width of elements to center them perfectly
+                const totalFooterWidth = textWidth + spacing + sqLogoSize;
+                const startX = (width - totalFooterWidth) / 2;
+
+                // Draw Text
+                ctx.textAlign = "left";
+                ctx.fillText(footerText, startX, 706);
+                
+                // Draw 1x1 Logo beside text
+                ctx.drawImage(squareLogo, startX + textWidth + spacing, 690, sqLogoSize, sqLogoSize);
+
+                // Reveal UI
+                document.getElementById('preview-placeholder').style.display = 'none';
+                cvs.style.display = 'block';
+                document.getElementById('qrActionButtons').style.display = 'grid';
+
+            } catch (err) {
+                console.error("Canvas Drawing Error:", err);
+                alert("Failed to render digital receipt. Ensure assets/name.png and assets/logo-cm.png exist.");
+            }
+        };
+
+        // 5. Download Handlers
+        window.downloadQR = function(format) {
+            const cvs = document.getElementById('compositeCanvas');
+            const patientName = document.getElementById('qrPatientSearch').value.split('-')[0].trim().replace(/\s+/g, '_') || 'Patient';
+            const fileName = `CM_Payment_Request_${patientName}`;
+
+            if (format === 'jpeg') {
+                const link = document.createElement('a');
+                link.download = `${fileName}.jpg`;
+                link.href = cvs.toDataURL('image/jpeg', 1.0);
+                link.click();
+            } else if (format === 'pdf') {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: "portrait", unit: "px", format: [500, 720] });
+                const imgData = cvs.toDataURL('image/jpeg', 1.0);
+                doc.addImage(imgData, 'JPEG', 0, 0, 500, 720);
+                doc.save(`${fileName}.pdf`);
+            }
+        };
+
+        // 6. Share to WhatsApp
+        window.shareToWhatsApp = async function() {
+            const cvs = document.getElementById('compositeCanvas');
+            const mobile = document.getElementById('qrMobile').value.trim();
+            const amount = document.getElementById('qrAmount').value;
+            const upiId = document.getElementById('qrUpiId').value.trim();
+            
+            const message = `Hello, please find your clinic payment request for ₹${amount}. You can scan the attached QR code or pay directly using UPI ID: ${upiId}.`;
+
+            if (navigator.canShare) {
+                cvs.toBlob(async (blob) => {
+                    const file = new File([blob], "CM_Payment_Request.jpg", { type: "image/jpeg" });
+                    if (navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                files: [file],
+                                title: 'CM Payment Request',
+                                text: message
+                            });
+                            return; 
+                        } catch (err) {
+                            console.log("Share cancelled or failed.", err);
+                        }
+                    } else { fallbackWA(mobile, message); }
+                }, 'image/jpeg', 1.0);
+            } else {
+                fallbackWA(mobile, message);
+            }
+        };
+
+        function fallbackWA(mobile, message) {
+            alert("Direct image sharing is supported mostly on mobile devices. The receipt will download now. Please attach it manually in WhatsApp.");
+            window.downloadQR('jpeg'); 
+            
+            setTimeout(() => {
+                const waUrl = mobile ? `https://wa.me/91${mobile}?text=${encodeURIComponent(message)}` : `https://wa.me/?text=${encodeURIComponent(message)}`;
+                window.open(waUrl, '_blank');
+            }, 1000);
+        }
+
+        initQRModule();
+
+    </script>
+</div>
+</body>
+</html>

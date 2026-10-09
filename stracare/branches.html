@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CMB| Branch Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="branches-module">
+    
+    <style>
+    /* --- Core Theme Variables --- */
+    :root {
+        --primary: #2563EB;
+        --primary-light: #EFF6FF;
+
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+
+        --border: #E2E8F0;
+        --grey-light: #F1F5F9;
+        --grey-med: #CBD5E1;
+
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+        --danger: #EF4444;
+    }
+
+        #branches-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; margin: 0 auto; }
+
+        /* --- UI Components --- */
+        #branches-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #branches-module .icon-btn { background: var(--surface); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s; }
+        #branches-module .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
+
+        /* Form Card - Now takes full width */
+        #branches-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 32px; width: 100%; }
+        #branches-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #branches-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #branches-module .input-group { grid-template-columns: 1fr 1fr; } }
+        /* Allowing full width rows for long addresses */
+        #branches-module .full-width-field { grid-column: 1 / -1; }
+
+        #branches-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; }
+        
+        /* --- Read-Only vs Editable States --- */
+        #branches-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 600; color: var(--text-main); pointer-events: none; transition: all 0.3s ease; }
+        #branches-module .readonly-input.editable { background: #FAFAFA; border: 1px solid var(--border); padding-left: 16px; pointer-events: auto; font-weight: 500;}
+        #branches-module .readonly-input.editable:focus { border-color: var(--primary); background: var(--surface); }
+        #branches-module .locked-input { background: #F4F4F4 !important; color: #888 !important; pointer-events: none !important; border: 1px solid var(--border) !important; padding-left: 16px !important; }
+
+        #branches-module .btn-primary { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #branches-module .btn-primary:active { opacity: 0.8; }
+        #branches-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+        /* --- Google Sheet Style Horizontal Scroll Table --- */
+        #branches-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; width: 100%; }
+        #branches-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        #branches-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0;}
+        
+        #branches-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #branches-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #branches-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #branches-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #branches-module .saas-table tr:last-child td { border-bottom: none; }
+        
+        #branches-module .branch-info { display: flex; flex-direction: column; }
+        #branches-module .branch-info .bid { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 2px; }
+    </style>
+
+    <!-- Header Section Properly Closed -->
+    <div class="section-title">
+        <h2 style="margin: 0;">Branch Management</h2>
+    </div>
+
+    <!-- Top Full Length Form -->
+    <div class="form-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 16px;">
+            <h4 style="color: var(--primary); margin: 0;">Branch Details</h4>
+            <!-- SECURITY: Hidden for non-admins -->
+            <button type="button" class="icon-btn" id="editBranchBtnForm" onclick="window.toggleEditMode(true)" title="Edit Branch">
+                <span class="material-symbols-rounded" style="font-size: 18px;">edit</span>
+            </button>
+        </div>
+
+        <form id="branch-details-form">
+            <input type="hidden" id="branchDocId" value="">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Branch ID</label>
+                    <input type="text" id="branchIdDisplay" class="form-input locked-input" value="Auto-Generated" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Branch Name *</label>
+                    <input type="text" id="branchName" class="form-input readonly-input" placeholder="e.g. Mahe" readonly required>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="full-width-field">
+                    <label class="form-label">Complete Address *</label>
+                    <textarea id="branchAddress" class="form-input readonly-input" rows="2" placeholder="Full branch address..." readonly required></textarea>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Contact No</label>
+                    <input type="tel" id="branchContact" class="form-input readonly-input" placeholder="+91 00000 00000" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="branchEmail" class="form-input readonly-input" placeholder="branch@stracares.in" readonly>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="full-width-field">
+                    <label class="form-label">Google Navigation Link</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span class="material-symbols-rounded" style="color: var(--primary);">pin_drop</span>
+                        <input type="url" id="branchMap" class="form-input readonly-input" placeholder="http://googleusercontent.com/maps.google.com/..." readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div id="save-actions" style="display: none; margin-top: 24px; text-align: right;">
+                <button type="button" class="btn-outline" onclick="window.toggleEditMode(false)" style="margin-right: 12px;">Cancel</button>
+                <button type="button" class="btn-primary" id="saveBranchBtn" onclick="window.saveBranch()">Save Updates</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bottom Full Length Table -->
+    <div class="table-container">
+        <div class="table-header">
+            <h4>All Registered Branches</h4>
+            <div style="background: #FAFAFA; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                <input type="text" id="branchSearchInput" onkeyup="window.searchBranches()" placeholder="Search branches..." style="border: none; background: transparent; outline: none; font-size: 13px; width: 130px;">
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Branch Name & ID</th>
+                        <th>Contact Info</th>
+                        <th>Email Address</th>
+                        <th>Maps Location</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="branchTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.branchDataCache = {};
+
+        // --- 0. CHECK SECURITY (RBAC) ---
+        if (window.currentUser && window.currentUser.role !== 'admin') {
+            const editBtn = document.getElementById('editBranchBtnForm');
+            if (editBtn) editBtn.style.display = 'none';
+        }
+
+        // --- 1. UI TOGGLES ---
+        window.toggleEditMode = function(forceEnable) {
+            if (forceEnable && window.currentUser && window.currentUser.role !== 'admin') {
+                return;
+            }
+
+            const inputs = document.querySelectorAll('#branch-details-form .readonly-input');
+            const saveActions = document.getElementById('save-actions');
+            
+            let isEditing = forceEnable; 
+
+            if(forceEnable === undefined || forceEnable === null) {
+                isEditing = inputs.length > 0 && inputs[0].hasAttribute('readonly'); 
+            }
+            
+            inputs.forEach(input => {
+                if(isEditing) {
+                    input.classList.add('editable');
+                    input.removeAttribute('readonly');
+                } else {
+                    input.classList.remove('editable');
+                    input.setAttribute('readonly', true);
+                }
+            });
+
+            saveActions.style.display = isEditing ? 'block' : 'none';
+        }
+
+        // --- 2. LIVE SEARCH ---
+        window.searchBranches = function() {
+            const input = document.getElementById("branchSearchInput").value.toLowerCase();
+            const trs = document.getElementById("branchTableBody").getElementsByTagName("tr");
+            
+            for (let i = 0; i < trs.length; i++) {
+                if (trs[i].cells.length === 1) continue; 
+                const text = trs[i].innerText.toLowerCase();
+                trs[i].style.display = text.indexOf(input) > -1 ? "" : "none";
+            }
+        }
+
+        // --- 3. LOAD BRANCHES ---
+        window.loadBranches = async function() {
+            const tableBody = document.getElementById('branchTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Loading branches...</td></tr>';
+
+            try {
+                const querySnapshot = await getDocs(collection(db, "branches"));
+                
+                let branchesList = [];
+                window.branchDataCache = {};
+                
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">No branches registered yet.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    data.docId = docSnap.id;
+                    window.branchDataCache[docSnap.id] = data;
+                    branchesList.push(data);
+                });
+
+                branchesList.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+                tableBody.innerHTML = ''; 
+
+                const isAdmin = !(window.currentUser && window.currentUser.role !== 'admin');
+
+                branchesList.forEach((data) => {
+                    let mapHtml = data.mapLink ? `<a href="${data.mapLink}" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 12px;">View Map</a>` : `<span style="color: #999; font-size: 12px;">N/A</span>`;
+
+                    let actionHtml = '';
+                    if (isAdmin) {
+                        actionHtml = `<span class="material-symbols-rounded" style="color: var(--text-muted); cursor: pointer; font-size: 20px;" title="Edit Branch" onclick="window.editBranch('${data.docId}')">edit</span>`;
+                    } else {
+                        actionHtml = `<span class="material-symbols-rounded" style="color: var(--grey-med); font-size: 20px;" title="Locked">lock</span>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="Branch"><div class="branch-info"><span class="bid">${data.branchId || 'B-000'}</span><strong>${data.name || 'Unknown'}</strong></div></td>
+                        <td data-label="Contact">${data.contact || '--'}</td>
+                        <td data-label="Email">${data.email || '--'}</td>
+                        <td data-label="Maps">${mapHtml}</td>
+                        <td data-label="Actions">${actionHtml}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Firebase Read Error:", error);
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--danger);">Error loading branches.</td></tr>';
+            }
+        }
+
+        window.loadBranches();
+
+        // --- 4. EDIT BRANCH ---
+        window.editBranch = function(docId) {
+            if (window.currentUser && window.currentUser.role !== 'admin') return;
+
+            const data = window.branchDataCache[docId];
+            if(!data) return;
+
+            document.getElementById('branchDocId').value = docId;
+            document.getElementById('branchIdDisplay').value = data.branchId || '';
+            document.getElementById('branchName').value = data.name || '';
+            document.getElementById('branchAddress').value = data.address || '';
+            document.getElementById('branchContact').value = data.contact || '';
+            document.getElementById('branchEmail').value = data.email || '';
+            document.getElementById('branchMap').value = data.mapLink || '';
+
+            window.toggleEditMode(true);
+            
+            const mainContent = document.getElementById('main-content');
+            if(mainContent) mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 5. SAVE UPDATED BRANCH ---
+        window.saveBranch = async function() {
+            if (window.currentUser && window.currentUser.role !== 'admin') return;
+
+            const saveBtn = document.getElementById('saveBranchBtn');
+            const docId = document.getElementById('branchDocId').value;
+            
+            const name = document.getElementById('branchName').value;
+            const address = document.getElementById('branchAddress').value;
+            const contact = document.getElementById('branchContact').value;
+            const email = document.getElementById('branchEmail').value;
+            const mapLink = document.getElementById('branchMap').value;
+
+            if(!name || !address) {
+                return alert("Branch Name and Address are required!");
+            }
+
+            if (!docId) {
+                return alert("Please select a branch from the list to edit.");
+            }
+
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            const payload = {
+                name: name,
+                address: address,
+                contact: contact,
+                email: email,
+                mapLink: mapLink,
+                updatedAt: new Date()
+            };
+
+            try {
+                await updateDoc(doc(db, "branches", docId), payload);
+                alert("Branch updated successfully!");
+
+                window.toggleEditMode(false);
+                document.getElementById('branch-details-form').reset();
+                window.loadBranches();
+
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to update branch. Check database rules.");
+            }
+
+            saveBtn.innerText = "Save Updates";
+            saveBtn.disabled = false;
+        }
+
+    </script>
+</div>
+
+</body>
+</html>
