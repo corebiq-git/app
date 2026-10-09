@@ -11,19 +11,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* InspireGo Brand Colors */
             --primary-color: #031b33; 
             --secondary-color: #3b9cd1; 
             --text-color: #333333;
             --bg-color: #f8f9fa;
-            
-            /* Material 3 UI Colors */
             --m3-primary: #031b33;
             --m3-on-primary: #ffffff;
             --m3-secondary-container: #dbeafe; 
             --m3-on-secondary-container: #023859;
             --m3-surface-variant: #e2e8f0;
-            --m3-success: #16a34a;
             --m3-error: #dc2626;
         }
         
@@ -32,10 +28,11 @@
             background-color: #e2e8f0;
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 20px 10px; /* Reduced side padding for mobile */
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
         /* Material 3 Styled Toolbar */
@@ -47,12 +44,14 @@
             flex-wrap: wrap;
             justify-content: center;
             background: white;
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 28px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
             position: sticky;
-            top: 15px;
+            top: 10px;
             z-index: 1000;
+            width: 95%;
+            max-width: 600px;
         }
 
         .toolbar button {
@@ -60,13 +59,13 @@
             align-items: center;
             gap: 6px;
             border: none;
-            padding: 8px 16px;
+            padding: 8px 14px;
             font-size: 13px;
             font-weight: 600;
             font-family: 'Inter', sans-serif;
             cursor: pointer;
             border-radius: 100px;
-            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+            transition: all 0.2s;
         }
 
         .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
@@ -74,16 +73,28 @@
         .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
         .tonal-btn:hover { background-color: #bfdbfe; }
         
-        /* A4 Size Setup */
+        /* Mobile Wrapper to prevent squishing */
+        .receipt-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* STRICT A4 Size Setup (Pixels instead of mm to fix mobile splitting/cropping) */
         .receipt-container {
-            width: 210mm;
-            height: 297mm; /* Strict A4 Height */
+            width: 794px !important; /* Strict A4 Width at 96DPI */
+            height: 1123px !important; /* Strict A4 Height at 96DPI */
+            min-width: 794px !important;
+            max-width: 794px !important;
             background: white;
-            padding: 20mm; 
+            padding: 60px !important; /* Fixed inner margins */
             box-sizing: border-box;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
-            overflow: hidden; 
+            overflow: hidden; /* Prevent extra pages */
+            flex-shrink: 0;
         }
 
         /* Watermark Background */
@@ -99,15 +110,12 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
-            opacity: 0.03; /* Very faint watermark */
+            opacity: 0.03; 
             pointer-events: none;
             z-index: 0;
         }
 
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-        }
+        .content-wrapper { position: relative; z-index: 1; }
 
         [contenteditable="true"]:hover {
             background-color: #fff9c4;
@@ -146,44 +154,16 @@
             margin-top: 40px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 30px;
             font-size: 15px;
             line-height: 1.8;
         }
 
-        .form-row {
-            display: flex;
-            align-items: flex-end;
-            gap: 15px;
-            width: 100%;
-        }
-        
-        .form-label {
-            font-weight: 600;
-            color: var(--primary-color);
-            white-space: nowrap;
-        }
-        
-        .form-input {
-            flex-grow: 1;
-            border-bottom: 1px dotted #888;
-            padding-bottom: 2px;
-            min-height: 24px;
-        }
+        .form-row { display: flex; align-items: flex-end; gap: 15px; width: 100%; }
+        .form-label { font-weight: 600; color: var(--primary-color); white-space: nowrap; }
+        .form-input { flex-grow: 1; border-bottom: 1px dotted #888; padding-bottom: 2px; min-height: 24px; }
 
-        .payment-method {
-            display: flex;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-        }
-
-        /* Bottom Section (Amount and Signatures) */
+        /* Bottom Section */
         .bottom-section {
             display: flex;
             justify-content: space-between;
@@ -204,43 +184,26 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .signature-box {
-            text-align: center;
-            width: 200px;
-        }
-        .signature-line {
-            border-bottom: 1px solid #333;
-            margin-bottom: 8px;
-            height: 40px;
-        }
-        .signature-box p {
-            margin: 0;
-            font-size: 12px;
-            color: #555;
-            font-weight: 600;
-        }
+        .signature-box { text-align: center; width: 200px; }
+        .signature-line { border-bottom: 1px solid #333; margin-bottom: 8px; height: 40px; }
+        .signature-box p { margin: 0; font-size: 12px; color: #555; font-weight: 600; }
 
         /* --- Saved Receipts Dashboard --- */
         .dashboard-container {
-            width: 210mm;
+            width: 100%;
+            max-width: 794px;
             background: white;
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: 20px;
+            padding: 20px;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             box-sizing: border-box;
+            overflow-x: auto;
         }
-        .dashboard-container h2 {
-            margin: 0 0 20px 0;
-            font-size: 18px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 12px; text-align: left; font-weight: 600; border-radius: 6px; }
-        table.dash-tbl td { padding: 12px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        .dashboard-container h2 { margin: 0 0 15px 0; font-size: 16px; color: var(--primary-color); display: flex; align-items: center; gap: 8px; }
+        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 10px; text-align: left; font-weight: 600; border-radius: 6px; }
+        table.dash-tbl td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
         
         .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-color); padding: 4px; border-radius: 4px; }
         .action-btn:hover { background-color: #f1f5f9; }
@@ -250,7 +213,8 @@
         @media print {
             body { background: white; padding: 0; }
             .toolbar, .dashboard-container { display: none !important; }
-            .receipt-container { box-shadow: none; margin: 0; padding: 20mm; height: 297mm; width: 210mm; }
+            .receipt-wrapper { overflow: hidden; padding: 0; display: block; }
+            .receipt-container { box-shadow: none; margin: 0; padding: 15mm !important; }
         }
     </style>
 </head>
@@ -259,7 +223,7 @@
     <!-- Toolbar -->
     <div class="toolbar">
         <button class="primary-btn" onclick="generatePDF()">
-            <i data-lucide="download"></i> Save & Download PDF
+            <i data-lucide="download"></i> Save & PDF
         </button>
         <button class="tonal-btn" onclick="sendWhatsApp()">
             <i data-lucide="message-circle"></i> WhatsApp
@@ -272,78 +236,80 @@
         </button>
     </div>
 
-    <!-- Receipt Template -->
-    <div class="receipt-container" id="receipt-content">
-        <div class="content-wrapper">
-            <div class="header">
-                <div class="logo-section">
-                    <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
-                    <div class="company-details" contenteditable="true">
-                        <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
-                        <div class="contact-line">
-                            <i data-lucide="map-pin"></i> <span>Karaparamba, Calicut, Kozhikode, Kerala, India, 673010.</span>
+    <!-- Wrapper allows scrolling on mobile without squishing -->
+    <div class="receipt-wrapper">
+        <!-- Receipt Template -->
+        <div class="receipt-container" id="receipt-content">
+            <div class="content-wrapper">
+                <div class="header">
+                    <div class="logo-section">
+                        <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
+                        <div class="company-details" contenteditable="true">
+                            <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                            <div class="contact-line">
+                                <i data-lucide="map-pin"></i> <span>Karaparamba, Calicut, Kozhikode, Kerala, India, 673010.</span>
+                            </div>
+                            <div class="contact-line">
+                                <i data-lucide="phone"></i> <span>India: 9947290770 | UAE: +971 555252018</span>
+                            </div>
+                            <div class="contact-line">
+                                <i data-lucide="mail"></i> <span>inspiregoa800@gmail.com | www.inspirego.com</span>
+                            </div>
                         </div>
-                        <div class="contact-line">
-                            <i data-lucide="phone"></i> <span>India: 9947290770 | UAE: +971 555252018</span>
-                        </div>
-                        <div class="contact-line">
-                            <i data-lucide="mail"></i> <span>inspiregoa800@gmail.com | www.inspirego.com</span>
+                    </div>
+                    
+                    <div class="receipt-title">
+                        <h1>RECEIPT VOUCHER</h1>
+                        <div class="receipt-meta">
+                            <strong>Receipt No:</strong> <span id="rect-no" contenteditable="true">REC-2026-001</span>
+                            <strong>Date:</strong> <span id="rect-date" contenteditable="true">09 Oct 2026</span>
+                            <strong>Ref No:</strong> <span contenteditable="true">INV-2026-0109</span>
                         </div>
                     </div>
                 </div>
-                
-                <div class="receipt-title">
-                    <h1>RECEIPT VOUCHER</h1>
-                    <div class="receipt-meta">
-                        <strong>Receipt No:</strong> <span id="rect-no" contenteditable="true">REC-2026-001</span>
-                        <strong>Date:</strong> <span id="rect-date" contenteditable="true">09 Oct 2026</span>
-                        <strong>Ref No:</strong> <span contenteditable="true">INV-2026-0109</span>
+
+                <div class="receipt-body">
+                    <div class="form-row">
+                        <span class="form-label">Received with thanks from:</span>
+                        <span class="form-input" id="client-name" contenteditable="true">Mr. John Doe</span>
+                    </div>
+                    
+                    <div class="form-row">
+                        <span class="form-label">The sum of UAE Dirhams:</span>
+                        <span class="form-input" contenteditable="true">One Thousand Five Hundred Only</span>
+                    </div>
+
+                    <div class="form-row">
+                        <span class="form-label">By Payment Method:</span>
+                        <span class="form-input" contenteditable="true">Bank Transfer (Ref: TRN987654321)</span>
+                    </div>
+
+                    <div class="form-row">
+                        <span class="form-label">Being payment for:</span>
+                        <span class="form-input" contenteditable="true">Advance payment for Dubai Premium Vacation Package</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="receipt-body">
-                <div class="form-row">
-                    <span class="form-label">Received with thanks from:</span>
-                    <span class="form-input" id="client-name" contenteditable="true">Mr. John Doe</span>
+                <div class="bottom-section">
+                    <div class="amount-box">
+                        <span>AED</span> <span id="amount-val" contenteditable="true">1,500.00</span>
+                    </div>
+                    
+                    <div class="signature-box">
+                        <div class="signature-line" contenteditable="true"></div>
+                        <p>Authorized Signatory</p>
+                    </div>
                 </div>
                 
-                <div class="form-row">
-                    <span class="form-label">The sum of UAE Dirhams:</span>
-                    <span class="form-input" contenteditable="true">One Thousand Five Hundred Only</span>
+                <div style="margin-top: 60px; font-size: 11px; color: #777; text-align: center; border-top: 1px solid #eee; padding-top: 15px;" contenteditable="true">
+                    This is a computer-generated receipt and does not require a physical signature.<br>
+                    Thank you for your business!
                 </div>
-
-                <div class="form-row">
-                    <span class="form-label">By Payment Method:</span>
-                    <span class="form-input" contenteditable="true">Bank Transfer (Ref: TRN987654321)</span>
-                </div>
-
-                <div class="form-row">
-                    <span class="form-label">Being payment for:</span>
-                    <span class="form-input" contenteditable="true">Advance payment for Dubai Premium Vacation Package</span>
-                </div>
-            </div>
-
-            <div class="bottom-section">
-                <div class="amount-box">
-                    <span>AED</span> <span id="amount-val" contenteditable="true">1,500.00</span>
-                </div>
-                
-                <div class="signature-box">
-                    <div class="signature-line" contenteditable="true"></div>
-                    <p>Authorized Signatory</p>
-                </div>
-            </div>
-            
-            <!-- Optional Footer Note -->
-            <div style="margin-top: 60px; font-size: 11px; color: #777; text-align: center; border-top: 1px solid #eee; padding-top: 15px;" contenteditable="true">
-                This is a computer-generated receipt and does not require a physical signature.<br>
-                Thank you for your business!
             </div>
         </div>
     </div>
 
-    <!-- Saved Receipts Dashboard -->
+    <!-- Dashboard -->
     <div class="dashboard-container">
         <h2><i data-lucide="wallet"></i> Saved Receipts Log</h2>
         <table class="dash-tbl">
@@ -352,26 +318,22 @@
                     <th>Sl No</th>
                     <th>Receipt No</th>
                     <th>Date</th>
-                    <th>Client Name</th>
-                    <th>Amount (AED)</th>
+                    <th>Client</th>
+                    <th>Amount</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="dashboard-body">
-                <!-- Data populated by JS -->
-            </tbody>
+            <tbody id="dashboard-body"></tbody>
         </table>
     </div>
 
     <script>
-        // --- Initialization ---
         window.onload = function() {
             lucide.createIcons();
             applySavedLogoFormat();
             renderDashboard();
         };
 
-        // --- Logo Toggle ---
         function toggleLogoFormat() {
             const logo = document.getElementById('company-logo');
             if (logo.classList.contains('format-horizontal')) {
@@ -382,6 +344,7 @@
                 localStorage.setItem('inspirego_logo_format', 'horizontal');
             }
         }
+
         function applySavedLogoFormat() {
             const savedFormat = localStorage.getItem('inspirego_logo_format');
             const logo = document.getElementById('company-logo');
@@ -390,7 +353,6 @@
             }
         }
 
-        // --- Data Extraction & LocalStorage ---
         function saveReceipt() {
             const receiptNo = document.getElementById('rect-no').innerText.trim() || 'Draft-' + Date.now();
             const date = document.getElementById('rect-date').innerText.trim();
@@ -399,47 +361,33 @@
             const htmlContent = document.getElementById('receipt-content').innerHTML;
             
             let receipts = JSON.parse(localStorage.getItem('inspirego_receipts_db')) || [];
-            
             const existingIndex = receipts.findIndex(rec => rec.id === receiptNo);
             
-            const receiptData = {
-                id: receiptNo,
-                date: date,
-                client: clientName,
-                amount: amount,
-                html: htmlContent
-            };
-
-            if(existingIndex >= 0) {
-                receipts[existingIndex] = receiptData;
-            } else {
-                receipts.push(receiptData);
-            }
+            const receiptData = { id: receiptNo, date: date, client: clientName, amount: amount, html: htmlContent };
+            if(existingIndex >= 0) { receipts[existingIndex] = receiptData; } else { receipts.push(receiptData); }
             
             localStorage.setItem('inspirego_receipts_db', JSON.stringify(receipts));
             renderDashboard();
         }
 
-        // --- Dashboard Logic ---
         function renderDashboard() {
             const tbody = document.getElementById('dashboard-body');
             tbody.innerHTML = '';
             let receipts = JSON.parse(localStorage.getItem('inspirego_receipts_db')) || [];
 
             if(receipts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No receipts saved yet. Click "Save & Download PDF" to save a receipt here.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No receipts saved yet.</td></tr>';
                 return;
             }
 
             receipts.forEach((rec, index) => {
-                const slNo = index + 1;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${slNo}</td>
+                    <td>${index + 1}</td>
                     <td><strong>${rec.id}</strong></td>
                     <td>${rec.date}</td>
                     <td>${rec.client}</td>
-                    <td><strong>${rec.amount}</strong></td>
+                    <td><strong>AED ${rec.amount}</strong></td>
                     <td>
                         <button class="action-btn" title="Load" onclick="loadReceipt('${rec.id}')"><i data-lucide="edit-3"></i></button>
                         <button class="action-btn del" title="Delete" onclick="deleteReceipt('${rec.id}')"><i data-lucide="trash-2"></i></button>
@@ -470,13 +418,12 @@
             }
         }
 
-        // --- Comm Tools & PDF Generation ---
         function sendWhatsApp() {
             saveReceipt();
             const recNo = document.getElementById('rect-no').innerText.trim();
             const total = document.getElementById('amount-val').innerText.trim();
             const message = `Hello,\n\nPlease find the details for your Payment Receipt ${recNo} amounting to AED ${total} attached/sent.\n\nThank you for choosing InspireGo Travel & Tourism!`;
-            const phone = prompt("Enter customer WhatsApp Number with country code (e.g., 971501234567):", "");
+            const phone = prompt("Enter customer WhatsApp Number with country code:", "");
             if (phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
@@ -485,7 +432,7 @@
             const recNo = document.getElementById('rect-no').innerText.trim();
             const total = document.getElementById('amount-val').innerText.trim();
             const email = prompt("Enter customer Email address:", "");
-            if (email) window.location.href = `mailto:${email}?subject=Payment Receipt ${recNo} from InspireGo Travel & Tourism&body=${encodeURIComponent(`Hello,\n\nPlease find the details for your Payment Receipt ${recNo} amounting to AED${total}.\n\nThank you for your payment and for choosing InspireGo Travel & Tourism!`)}`;
+            if (email) window.location.href = `mailto:${email}?subject=Payment Receipt ${recNo} from InspireGo Travel & Tourism&body=${encodeURIComponent(`Hello,\n\nPlease find the details for your Payment Receipt ${recNo} amounting to AED${total}.\n\nThank you for your business!`)}`;
         }
 
         function generatePDF() {
@@ -493,11 +440,17 @@
             const element = document.getElementById('receipt-content');
             const receiptNumber = document.getElementById('rect-no').innerText.trim() || 'Receipt';
             
+            // KEY FIX FOR MOBILE: Force windowWidth to 800 so it captures as a desktop layout
             const opt = {
                 margin:       0,
                 filename:     `InspireGo_${receiptNumber}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, windowWidth: 794 }, // A4 width at 96 DPI to lock layout
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    windowWidth: 800, // Forces the capture width to desktop size
+                    scrollY: 0
+                }, 
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
