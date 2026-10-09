@@ -1,0 +1,23 @@
+.invoice-template-layout{display:grid;grid-template-columns:minmax(280px,370px) minmax(0,1fr);align-items:start;gap:20px}
+.invoice-template-settings{display:grid;gap:16px;min-width:0;padding:22px;border:1px solid var(--outline-soft);border-radius:16px;background:#fff;box-shadow:var(--shadow)}
+.invoice-template-settings h2,.invoice-template-preview-header h2{margin:0;font-size:18px;font-weight:650}
+.invoice-template-settings .form-group{gap:7px}
+.invoice-template-eyebrow{margin:0 0 5px;color:var(--primary);font-size:10px;font-weight:700;letter-spacing:1px}
+.invoice-template-color{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+.invoice-template-color input{width:50px;height:42px;padding:3px;border:1px solid var(--outline);border-radius:9px;background:#fff;cursor:pointer}
+.invoice-template-options{display:grid;gap:10px;padding:14px;border:1px solid var(--outline-soft);border-radius:12px;background:#F8FAFC}
+.invoice-template-toggle{display:flex;align-items:center;gap:10px;min-height:24px;color:#41464f;font-size:13px;cursor:pointer}
+.invoice-template-toggle input{width:17px;height:17px;margin:0;accent-color:var(--primary)}
+.invoice-template-help,.invoice-template-company{color:var(--muted);font-size:12px;line-height:1.5}
+.invoice-template-help{display:block;margin-top:5px}
+.invoice-template-company{margin:0;padding-top:12px;border-top:1px solid var(--outline-soft)}
+.invoice-template-feedback{margin:0;color:var(--success);font-size:13px;overflow-wrap:anywhere}
+.invoice-template-feedback[hidden]{display:none}
+.invoice-template-preview{min-width:0;overflow:hidden;border:1px solid var(--outline-soft);border-radius:16px;background:#E9EEF4;box-shadow:var(--shadow)}
+.invoice-template-preview-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:#fff;border-bottom:1px solid var(--outline-soft)}
+.invoice-template-preview-header .invoice-template-eyebrow{margin-bottom:3px}
+.invoice-template-preview-header span{color:var(--muted);font-size:12px}
+.invoice-template-preview iframe{display:block;width:100%;height:min(900px,calc(100dvh - 180px));min-height:650px;border:0;background:#fff}
+.invoice-template-error{padding:24px}
+@media(max-width:960px){.invoice-template-layout{grid-template-columns:minmax(0,1fr)}.invoice-template-preview iframe{height:760px}}
+@media(max-width:600px){.invoice-template-settings{padding:16px}.invoice-template-preview iframe{min-height:560px;height:70dvh}}
