@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ QR - Material 3 Generator</title>
+    
+    <!-- PWA Meta Tags & Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6750A4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="COREBIQ QR">
+    <link rel="apple-touch-icon" href="assets/app-icon.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <!-- Tailwind CSS with Material You color palette integration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6750A4',
+                        'primary-container': '#EADDFF',
+                        'on-primary': '#FFFFFF',
+                        'on-primary-container': '#21005D',
+                        surface: '#FEF7FF',
+                        'surface-variant': '#E7E0EC',
+                        'on-surface': '#1D1B20',
+                        'on-surface-variant': '#49454F',
+                        outline: '#79747E',
+                        background: '#FEF7FF',
+                        'on-background': '#1D1B20',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Roboto & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Material 3 style icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QRCode.js library for rendering QR codes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', 'Roboto', sans-serif;
+            background-color: #FEF7FF;
+            color: #1D1B20;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* PWA Splash Screen overlay styling */
+        #pwa-splash {
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+
+    <!-- PWA Splash Screen Overlay -->
+    <div id="pwa-splash" class="fixed inset-0 z-[100] bg-surface flex flex-col items-center justify-center p-6 text-center">
+        <div class="w-24 h-24 rounded-3xl bg-primary flex items-center justify-center text-on-primary shadow-lg mb-6 animate-pulse">
+            <img src="assets/splash.svg" alt="COREBIQ Logo" class="w-14 h-14 object-contain" onerror="this.onerror=null; this.src='assets/app-icon.svg';">
+        </div>
+        <img src="assets/name.svg" alt="COREBIQ" class="h-8 object-contain mb-2" onerror="this.replaceWith(Object.assign(document.createElement('h1'), {innerText: 'COREBIQ QR', className: 'text-2xl font-bold text-on-background'}))">
+        <p class="text-xs font-medium text-outline tracking-widest uppercase">Material 3 QR Experience</p>
+    </div>
+
+    <!-- App Header / Top App Bar -->
+    <header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-md border-b border-surface-variant px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center text-on-primary shadow-sm overflow-hidden p-1">
+                <img src="assets/logo.svg" alt="Logo" class="w-full h-full object-contain" onerror="this.onerror=null; this.src='assets/favicon.svg';">
+            </div>
+            <div class="flex items-center">
+                <img src="assets/name.svg" alt="COREBIQ" class="h-6 object-contain" onerror="this.replaceWith(Object.assign(document.createElement('span'), {innerText: 'COREBIQ QR', className: 'text-lg font-bold tracking-tight text-on-background'}))">
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <!-- PWA Install Button (Hidden by default unless install prompt is ready) -->
+            <button id="installAppBtn" onclick="installPWA()" class="hidden px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container text-xs font-semibold items-center gap-1.5 shadow-xs hover:opacity-90 transition-all">
+                <i class="fa-solid fa-download">></i> Install
+            </button>
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant transition-colors text-on-surface-variant" title="Toggle Theme">
+                <i class="fa-solid fa-moon text-base" id="themeIcon"></i>
+            </button>
+            <button onclick="openInfoModal()" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant transition-colors text-on-surface-variant" title="About">
+                <i class="fa-solid fa-circle-info text-base"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-lg w-full mx-auto p-4 sm:p-6 flex flex-col gap-6 overflow-y-auto">
+
+        <!-- Generator Category Tabs -->
+        <div class="flex bg-surface-variant/60 p-1.5 rounded-3xl gap-1 shadow-inner">
+            <button onclick="switchTab('upi')" id="tab-upi" class="flex-1 py-3 px-3 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all bg-primary text-on-primary shadow-sm">
+                <i class="fa-solid fa-indian-rupee-sign text-sm"></i> UPI
+            </button>
+            <button onclick="switchTab('url')" id="tab-url" class="flex-1 py-3 px-3 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all text-on-surface-variant hover:bg-surface">
+                <i class="fa-solid fa-globe text-sm"></i> Website
+            </button>
+            <button onclick="switchTab('text')" id="tab-text" class="flex-1 py-3 px-3 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all text-on-surface-variant hover:bg-surface">
+                <i class="fa-solid fa-align-left text-sm"></i> Text
+            </button>
+        </div>
+
+        <!-- Form Inputs Card -->
+        <div class="bg-white dark:bg-zinc-900 border border-surface-variant/80 rounded-3xl p-5 shadow-sm transition-all duration-300">
+            
+            <!-- UPI Form Section -->
+            <div id="form-upi" class="space-y-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-primary">UPI Payment Details</h2>
+                    <span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full font-medium">GPay / PhonePe / Paytm</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">UPI ID / VPA *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-outline pointer-events-none">
+                            <i class="fa-solid fa-at"></i>
+                        </span>
+                        <input type="text" id="upi-id" placeholder="username@oksbi or 9876543210@paytm" oninput="generateQR()" 
+                            class="w-full pl-10 pr-4 py-3 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">Payee Name *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-outline pointer-events-none">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <input type="text" id="upi-name" placeholder="John Doe" oninput="generateQR()" 
+                            class="w-full pl-10 pr-4 py-3 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">Amount (Optional)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-outline pointer-events-none">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+                            </span>
+                            <input type="number" id="upi-amount" placeholder="500" oninput="generateQR()" 
+                                class="w-full pl-10 pr-4 py-3 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">Transaction Note</label>
+                        <input type="text" id="upi-note" placeholder="Dinner split" oninput="generateQR()" 
+                            class="w-full px-4 py-3 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <!-- URL Form Section -->
+            <div id="form-url" class="space-y-4 hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-primary">Website URL</h2>
+                    <span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full font-medium">Link QR</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">Website Link *</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-outline pointer-events-none">
+                            <i class="fa-solid fa-link"></i>
+                        </span>
+                        <input type="url" id="url-input" placeholder="https://example.com" oninput="generateQR()" 
+                            class="w-full pl-10 pr-4 py-3 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Form Section -->
+            <div id="form-text" class="space-y-4 hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-primary">Plain Text / Notes</h2>
+                    <span class="text-xs bg-primary-container text-on-primary-container px-2 py-0.5 rounded-full font-medium">Text QR</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-on-surface-variant mb-1 ml-1">Your Message or Text *</label>
+                    <textarea id="text-input" rows="3" placeholder="Type secret messages, WiFi credentials, or notes here..." oninput="generateQR()" 
+                        class="w-full p-4 bg-surface border border-outline/30 rounded-2xl text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Customization Drawer Toggle & Controls -->
+            <div class="mt-5 pt-4 border-t border-surface-variant/60">
+                <button onclick="toggleCustomization()" class="w-full flex items-center justify-between text-xs font-bold text-on-surface-variant py-1">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-primary"></i> Color Customization</span>
+                    <i class="fa-solid fa-chevron-down transition-transform duration-300" id="customChevron"></i>
+                </button>
+                <div id="customizationPanel" class="hidden mt-3 grid grid-cols-2 gap-3 pt-2">
+                    <div>
+                        <label class="block text-xs font-medium text-on-surface-variant mb-1">QR Color</label>
+                        <div class="flex items-center gap-2">
+                            <input type="color" id="qr-color" value="#1D1B20" onchange="generateQR()" class="w-10 h-10 rounded-xl border border-outline/30 cursor-pointer bg-transparent">
+                            <span id="qr-color-val" class="text-xs text-outline font-mono">#1D1B20</span>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-on-surface-variant mb-1">Background Color</label>
+                        <div class="flex items-center gap-2">
+                            <input type="color" id="qr-bg" value="#FFFFFF" onchange="generateQR()" class="w-10 h-10 rounded-xl border border-outline/30 cursor-pointer bg-transparent">
+                            <span id="qr-bg-val" class="text-xs text-outline font-mono">#FFFFFF</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- QR Output Card -->
+        <div class="bg-white dark:bg-zinc-900 border border-surface-variant/80 rounded-3xl p-6 shadow-sm flex flex-col items-center text-center">
+            
+            <h3 class="text-xs font-bold uppercase tracking-wider text-outline mb-4">Generated QR Code</h3>
+            
+            <!-- QR Display Box with smooth loading state -->
+            <div class="relative p-4 bg-surface rounded-3xl border border-outline/20 shadow-inner flex items-center justify-center mb-6">
+                <div id="qrcode" class="flex items-center justify-center"></div>
+                <!-- Placeholder when empty -->
+                <div id="qr-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-surface/90 rounded-3xl backdrop-blur-xs transition-opacity duration-300">
+                    <i class="fa-solid fa-qrcode text-4xl text-outline/50 mb-2"></i>
+                    <p class="text-xs font-medium text-outline">Fill required fields to generate</p>
+                </div>
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="grid grid-cols-2 gap-3 w-full">
+                <button onclick="downloadQR('png')" id="downloadPngBtn" disabled
+                    class="py-3 px-4 rounded-2xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 bg-primary text-on-primary shadow-sm hover:opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    <i class="fa-solid fa-download"></i> Download PNG
+                </button>
+                <button onclick="copyQRData()" id="copyBtn" disabled
+                    class="py-3 px-4 rounded-2xl font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 bg-surface-variant text-on-surface-variant hover:bg-surface-variant/80 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+                    <i class="fa-solid fa-copy"></i> Copy Data
+                </button>
+            </div>
+            
+        </div>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-on-background text-surface px-4 py-2.5 rounded-2xl text-xs sm:text-sm shadow-lg flex items-center gap-2 opacity-0 pointer-events-none transition-all duration-300 z-50">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toast-msg">Action successful!</span>
+    </div>
+
+    <!-- About Modal -->
+    <div id="infoModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white dark:bg-zinc-900 rounded-3xl p-6 max-w-sm w-full shadow-xl space-y-4 animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-primary-container text-on-primary-container flex items-center justify-center">
+                        <i class="fa-solid fa-qrcode text-lg"></i>
+                    </div>
+                    <h3 class="font-bold text-base text-on-background">About COREBIQ QR</h3>
+                </div>
+                <button onclick="closeInfoModal()" class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:bg-surface-variant">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+                COREBIQ QR is a lightning-fast, privacy-first PWA QR code generator built with Material Design 3 guidelines. Create instant QR codes for UPI payments, website links, or custom text without sending data to external servers.
+            </p>
+            <div class="pt-2 border-t border-surface-variant flex justify-between items-center">
+                <span class="text-[10px] text-outline font-mono">PWA Enabled</span>
+                <button onclick="closeInfoModal()" class="px-4 py-2 bg-primary text-on-primary rounded-xl text-xs font-semibold">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'upi';
+        let qrcodeObj = null;
+        let deferredPrompt = null;
+
+        // Initialize App & Splash Screen on Load
+        window.onload = function() {
+            initQRContainer();
+            generateQR();
+            
+            // Hide Splash screen smoothly after brief load
+            setTimeout(() => {
+                const splash = document.getElementById('pwa-splash');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    splash.style.visibility = 'hidden';
+                }
+            }, 600);
+
+            // Register PWA Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js')
+                    .then(() => console.log('ServiceWorker registered successfully.'))
+                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+            }
+        };
+
+        // PWA Install prompt listener
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installAppBtn');
+            if (installBtn) installBtn.classList.remove('hidden');
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('installAppBtn').classList.add('hidden');
+                });
+            }
+        }
+
+        function initQRContainer() {
+            const container = document.getElementById('qrcode');
+            container.innerHTML = '';
+            const size = Math.min(window.innerWidth - 80, 200);
+            qrcodeObj = new QRCode(container, {
+                text: "",
+                width: size,
+                height: size,
+                colorDark: "#1D1B20",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            currentTab = tab;
+            ['upi', 'url', 'text'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const form = document.getElementById(`form-${t}`);
+                if (t === tab) {
+                    btn.className = "flex-1 py-3 px-3 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all bg-primary text-on-primary shadow-sm";
+                    form.classList.remove('hidden');
+                } else {
+                    btn.className = "flex-1 py-3 px-3 rounded-2xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all text-on-surface-variant hover:bg-surface";
+                    form.classList.add('hidden');
+                }
+            });
+            generateQR();
+        }
+
+        // Toggle Customization Panel
+        function toggleCustomization() {
+            const panel = document.getElementById('customizationPanel');
+            const chevron = document.getElementById('customChevron');
+            panel.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-180');
+        }
+
+        // Core QR Generation Function
+        function generateQR() {
+            let data = "";
+            let isValid = false;
+
+            const qrColor = document.getElementById('qr-color').value;
+            const qrBg = document.getElementById('qr-bg').value;
+            
+            document.getElementById('qr-color-val').innerText = qrColor;
+            document.getElementById('qr-bg-val').innerText = qrBg;
+
+            if (currentTab === 'upi') {
+                const upiId = document.getElementById('upi-id').value.trim();
+                const upiName = document.getElementById('upi-name').value.trim();
+                const upiAmount = document.getElementById('upi-amount').value.trim();
+                const upiNote = document.getElementById('upi-note').value.trim();
+
+                if (upiId && upiName) {
+                    data = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}`;
+                    if (upiAmount) data += `&am=${encodeURIComponent(upiAmount)}`;
+                    if (upiNote) data += `&tn=${encodeURIComponent(upiNote)}`;
+                    data += `&cu=INR`;
+                    isValid = true;
+                }
+            } else if (currentTab === 'url') {
+                const urlInput = document.getElementById('url-input').value.trim();
+                if (urlInput) {
+                    data = urlInput;
+                    isValid = true;
+                }
+            } else if (currentTab === 'text') {
+                const textInput = document.getElementById('text-input').value.trim();
+                if (textInput) {
+                    data = textInput;
+                    isValid = true;
+                }
+            }
+
+            const placeholder = document.getElementById('qr-placeholder');
+            const downloadBtn = document.getElementById('downloadPngBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            if (isValid && data) {
+                placeholder.classList.add('opacity-0', 'pointer-events-none');
+                downloadBtn.removeAttribute('disabled');
+                copyBtn.removeAttribute('disabled');
+
+                const container = document.getElementById('qrcode');
+                container.innerHTML = '';
+                const size = Math.min(window.innerWidth - 80, 200);
+                
+                try {
+                    new QRCode(container, {
+                        text: data,
+                        width: size,
+                        height: size,
+                        colorDark: qrColor,
+                        colorLight: qrBg,
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+                } catch(e) {
+                    console.error("QR Generation error", e);
+                }
+            } else {
+                placeholder.classList.remove('opacity-0', 'pointer-events-none');
+                downloadBtn.setAttribute('disabled', 'true');
+                copyBtn.setAttribute('disabled', 'true');
+                const container = document.getElementById('qrcode');
+                container.innerHTML = '';
+            }
+        }
+
+        // Download QR as PNG
+        function downloadQR(format) {
+            const qrCanvas = document.querySelector('#qrcode canvas');
+            const qrImage = document.querySelector('#qrcode img');
+            
+            let imageUrl = "";
+            if (qrCanvas) {
+                imageUrl = qrCanvas.toDataURL("image/png");
+            } else if (qrImage) {
+                imageUrl = qrImage.src;
+            }
+
+            if (!imageUrl) {
+                showToast("Please generate a valid QR code first!");
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = `corebiq-qr-${currentTab}-${Date.now()}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("QR Code downloaded successfully!");
+        }
+
+        // Copy QR Data payload
+        function copyQRData() {
+            let data = "";
+            if (currentTab === 'upi') {
+                const upiId = document.getElementById('upi-id').value.trim();
+                const upiName = document.getElementById('upi-name').value.trim();
+                const upiAmount = document.getElementById('upi-amount').value.trim();
+                if (upiId && upiName) {
+                    data = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}`;
+                    if (upiAmount) data += `&am=${encodeURIComponent(upiAmount)}`;
+                }
+            } else if (currentTab === 'url') {
+                data = document.getElementById('url-input').value.trim();
+            } else if (currentTab === 'text') {
+                data = document.getElementById('text-input').value.trim();
+            }
+
+            if (!data) return;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = data;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("QR payload copied to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy data.");
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                icon.className = "fa-solid fa-sun text-base";
+            } else {
+                icon.className = "fa-solid fa-moon text-base";
+            }
+        }
+
+        // Modal Controls
+        function openInfoModal() {
+            document.getElementById('infoModal').classList.remove('hidden');
+            document.getElementById('infoModal').classList.add('flex');
+        }
+        function closeInfoModal() {
+            document.getElementById('infoModal').classList.remove('flex');
+            document.getElementById('infoModal').classList.add('hidden');
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
