@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireGo Official Letterhead</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #031b33; 
+            --secondary-color: #3b9cd1; 
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+            --m3-primary: #031b33;
+            --m3-on-primary: #ffffff;
+            --m3-secondary-container: #dbeafe; 
+            --m3-on-secondary-container: #023859;
+            --m3-surface-variant: #e2e8f0;
+            --m3-error: #dc2626;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Material 3 Styled Toolbar */
+        .toolbar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            width: 95%;
+            max-width: 600px;
+        }
+
+        .toolbar button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
+        .primary-btn:hover { box-shadow: 0 4px 8px rgba(3, 27, 51, 0.3); transform: translateY(-1px); }
+        .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
+        .tonal-btn:hover { background-color: #bfdbfe; }
+        
+        /* Mobile Wrapper */
+        .letter-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* STRICT A4 Size Setup */
+        .letter-container {
+            width: 794px !important; 
+            height: 1123px !important;
+            min-width: 794px !important;
+            max-width: 794px !important;
+            background: white;
+            padding: 0 !important; /* Managed by inner wrappers */
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden; 
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Watermark Background */
+        .letter-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background-image: url('assets/logo-client.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.03; 
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Top Border Accent */
+        .top-accent {
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            width: 100%;
+        }
+
+        /* Content Padding */
+        .content-wrapper {
+            padding: 50px 60px;
+            position: relative;
+            z-index: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: #fff9c4;
+            outline: 1px dashed #ccc;
+            cursor: text;
+            border-radius: 4px;
+        }
+        
+        /* Letterhead Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        #company-logo { transition: max-width 0.3s ease; }
+        #company-logo.format-standard { max-width: 200px; }
+        #company-logo.format-horizontal { max-width: 300px; }
+
+        .contact-details {
+            text-align: right;
+            font-size: 11px;
+            color: #555;
+            line-height: 1.6;
+        }
+        .company-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .contact-line {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+        .contact-line .lucide {
+            width: 12px;
+            height: 12px;
+            color: var(--secondary-color);
+        }
+
+        /* Letter Body Area */
+        .letter-body {
+            flex-grow: 1;
+            font-size: 14.5px;
+            line-height: 1.7;
+            color: #222;
+        }
+
+        .letter-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .letter-to {
+            margin-bottom: 25px;
+        }
+
+        .letter-subject {
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .letter-text p {
+            margin: 0 0 15px 0;
+            text-align: justify;
+        }
+
+        .letter-signoff {
+            margin-top: 50px;
+        }
+        .signature-space {
+            height: 60px; /* Space for physical or digital signature */
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 11px;
+            z-index: 1;
+        }
+        .footer span {
+            margin: 0 10px;
+        }
+
+        /* --- Saved Letters Dashboard --- */
+        .dashboard-container {
+            width: 100%;
+            max-width: 794px;
+            background: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            overflow-x: auto;
+        }
+        .dashboard-container h2 { margin: 0 0 15px 0; font-size: 16px; color: var(--primary-color); display: flex; align-items: center; gap: 8px; }
+        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 10px; text-align: left; font-weight: 600; border-radius: 6px; }
+        table.dash-tbl td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-color); padding: 4px; border-radius: 4px; }
+        .action-btn:hover { background-color: #f1f5f9; }
+        .action-btn.del { color: var(--m3-error); }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar, .dashboard-container { display: none !important; }
+            .letter-wrapper { overflow: hidden; padding: 0; display: block; }
+            .letter-container { box-shadow: none; margin: 0; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <button class="primary-btn" onclick="generatePDF()">
+            <i data-lucide="download"></i> Save & PDF
+        </button>
+        <button class="tonal-btn" onclick="sendWhatsApp()">
+            <i data-lucide="message-circle"></i> WhatsApp
+        </button>
+        <button class="tonal-btn" onclick="sendEmail()">
+            <i data-lucide="mail-plus"></i> Email
+        </button>
+        <button class="tonal-btn" onclick="toggleLogoFormat()">
+            <i data-lucide="image"></i> Toggle Logo
+        </button>
+    </div>
+
+    <div class="letter-wrapper">
+        <div class="letter-container" id="letter-content">
+            <div class="top-accent"></div>
+            <div class="content-wrapper">
+                
+                <!-- Header -->
+                <div class="header">
+                    <div class="logo-section">
+                        <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
+                    </div>
+                    <div class="contact-details" contenteditable="true">
+                        <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                        <div class="contact-line">
+                            <span>Karaparamba, Calicut, Kozhikode, Kerala, India, 673010</span> <i data-lucide="map-pin"></i>
+                        </div>
+                        <div class="contact-line">
+                            <span>India: 9947290770 | UAE: +971 555252018</span> <i data-lucide="phone"></i>
+                        </div>
+                        <div class="contact-line">
+                            <span>inspiregoa800@gmail.com | www.inspirego.com</span> <i data-lucide="globe"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editable Letter Body -->
+                <div class="letter-body" contenteditable="true" onblur="saveLetter()">
+                    <div class="letter-meta">
+                        <div><strong>Ref No:</strong> <span id="let-ref">IG-2026-LTR01</span></div>
+                        <div><strong>Date:</strong> <span id="let-date">09 Oct 2026</span></div>
+                    </div>
+
+                    <div class="letter-to" id="let-to">
+                        <strong>To,</strong><br>
+                        Mr. John Doe<br>
+                        ABC Corporation Ltd.<br>
+                        Dubai, United Arab Emirates
+                    </div>
+
+                    <div class="letter-subject" id="let-subject">
+                        Subject: Proposal for Corporate Travel & Holiday Packages
+                    </div>
+
+                    <div class="letter-text">
+                        <p>Dear Mr. John,</p>
+                        <p>Greetings from InspireGo Travel & Tourism!</p>
+                        <p>We are delighted to present our comprehensive corporate travel solutions tailored specifically for your organization. At InspireGo, we specialize in providing seamless and cost-effective travel management, including flight bookings, premium hotel accommodations, visa processing, and curated tour packages across the UAE and global destinations.</p>
+                        <p>Attached to this letter are the detailed itineraries and exclusive corporate rates we have negotiated for your team. We are confident that our dedicated support and expertise will add significant value to your corporate travel requirements.</p>
+                        <p>Please feel free to reach out to us at any time to discuss this proposal further. We look forward to establishing a long and fruitful partnership with you.</p>
+                        <p>Thank you for considering InspireGo Travel & Tourism as your trusted travel partner.</p>
+                    </div>
+
+                    <div class="letter-signoff">
+                        <p>Sincerely,</p>
+                        <div class="signature-space"></div>
+                        <p>
+                            <strong>Mohammed Shanid</strong><br>
+                            Managing Director<br>
+                            InspireGo Travel & Tourism
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="footer" contenteditable="true">
+                <span><i data-lucide="plane"></i> Flight Tickets</span> | 
+                <span><i data-lucide="building"></i> Hotel Bookings</span> | 
+                <span><i data-lucide="file-text"></i> Visa Services</span> | 
+                <span><i data-lucide="map"></i> Tour Packages</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <h2><i data-lucide="file-signature"></i> Saved Official Letters</h2>
+        <table class="dash-tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Ref No</th>
+                    <th>Date</th>
+                    <th>Recipient</th>
+                    <th>Subject</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dashboard-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+            applySavedLogoFormat();
+            renderDashboard();
+        };
+
+        function toggleLogoFormat() {
+            const logo = document.getElementById('company-logo');
+            if (logo.classList.contains('format-horizontal')) {
+                logo.classList.replace('format-horizontal', 'format-standard');
+                localStorage.setItem('inspirego_logo_format', 'standard');
+            } else {
+                logo.classList.replace('format-standard', 'format-horizontal');
+                localStorage.setItem('inspirego_logo_format', 'horizontal');
+            }
+        }
+
+        function applySavedLogoFormat() {
+            const savedFormat = localStorage.getItem('inspirego_logo_format');
+            const logo = document.getElementById('company-logo');
+            if (savedFormat === 'horizontal') {
+                logo.classList.replace('format-standard', 'format-horizontal');
+            }
+        }
+
+        function saveLetter() {
+            const refNo = document.getElementById('let-ref').innerText.trim() || 'Draft-' + Date.now();
+            const date = document.getElementById('let-date').innerText.trim();
+            const toElement = document.getElementById('let-to').innerText.split('\n');
+            const recipient = toElement.length > 1 ? toElement[1].trim() : 'Unknown';
+            const subject = document.getElementById('let-subject').innerText.replace('Subject:', '').trim();
+            const htmlContent = document.getElementById('letter-content').innerHTML;
+            
+            let letters = JSON.parse(localStorage.getItem('inspirego_letters_db')) || [];
+            const existingIndex = letters.findIndex(l => l.id === refNo);
+            
+            const letterData = { id: refNo, date: date, recipient: recipient, subject: subject, html: htmlContent };
+            if(existingIndex >= 0) { letters[existingIndex] = letterData; } else { letters.push(letterData); }
+            
+            localStorage.setItem('inspirego_letters_db', JSON.stringify(letters));
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const tbody = document.getElementById('dashboard-body');
+            tbody.innerHTML = '';
+            let letters = JSON.parse(localStorage.getItem('inspirego_letters_db')) || [];
+
+            if(letters.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No letters saved yet.</td></tr>';
+                return;
+            }
+
+            letters.forEach((l, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${l.id}</strong></td>
+                    <td>${l.date}</td>
+                    <td>${l.recipient}</td>
+                    <td><span style="display:inline-block; max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l.subject}</span></td>
+                    <td>
+                        <button class="action-btn" title="Load" onclick="loadLetter('${l.id}')"><i data-lucide="edit-3"></i></button>
+                        <button class="action-btn del" title="Delete" onclick="deleteLetter('${l.id}')"><i data-lucide="trash-2"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function loadLetter(refId) {
+            let letters = JSON.parse(localStorage.getItem('inspirego_letters_db')) || [];
+            const letter = letters.find(l => l.id === refId);
+            if(letter) {
+                document.getElementById('letter-content').innerHTML = letter.html;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+                applySavedLogoFormat();
+            }
+        }
+
+        function deleteLetter(refId) {
+            if(confirm(`Are you sure you want to delete letter ${refId}?`)) {
+                let letters = JSON.parse(localStorage.getItem('inspirego_letters_db')) || [];
+                letters = letters.filter(l => l.id !== refId);
+                localStorage.setItem('inspirego_letters_db', JSON.stringify(letters));
+                renderDashboard();
+            }
+        }
+
+        function sendWhatsApp() {
+            saveLetter();
+            const ref = document.getElementById('let-ref').innerText.trim();
+            const message = `Hello,\n\nPlease find attached the official letter (Ref: ${ref}) from InspireGo Travel & Tourism.\n\nThank you!`;
+            const phone = prompt("Enter recipient WhatsApp Number with country code:", "");
+            if (phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendEmail() {
+            saveLetter();
+            const ref = document.getElementById('let-ref').innerText.trim();
+            const sub = document.getElementById('let-subject').innerText.replace('Subject:', '').trim();
+            const email = prompt("Enter recipient Email address:", "");
+            if (email) window.location.href = `mailto:${email}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(`Hello,\n\nPlease find attached the official document (Ref: ${ref}) from InspireGo Travel & Tourism.\n\nThank you!`)}`;
+        }
+
+        function generatePDF() {
+            saveLetter(); 
+            const element = document.getElementById('letter-content');
+            const refNumber = document.getElementById('let-ref').innerText.trim() || 'Letter';
+            
+            const opt = {
+                margin:       0,
+                filename:     `InspireGo_${refNumber}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    windowWidth: 800, 
+                    scrollY: 0
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
