@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireGo Attendance Register</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #031b33; 
+            --secondary-color: #3b9cd1; 
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+            --m3-primary: #031b33;
+            --m3-on-primary: #ffffff;
+            --m3-secondary-container: #dbeafe; 
+            --m3-on-secondary-container: #023859;
+            --m3-surface-variant: #e2e8f0;
+            --m3-error: #dc2626;
+            --m3-success: #16a34a;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Material 3 Styled Toolbar */
+        .toolbar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            width: 95%;
+            max-width: 794px;
+        }
+
+        .toolbar button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
+        .primary-btn:hover { box-shadow: 0 4px 8px rgba(3, 27, 51, 0.3); transform: translateY(-1px); }
+        .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
+        .tonal-btn:hover { background-color: #bfdbfe; }
+        
+        /* Mobile Wrapper */
+        .sheet-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* STRICT A4 Size Setup */
+        .sheet-container {
+            width: 794px !important; 
+            min-height: 1123px; /* Flexible height for lots of employees */
+            min-width: 794px !important;
+            max-width: 794px !important;
+            background: white;
+            padding: 50px 40px !important; 
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        /* Watermark Background */
+        .sheet-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: 70%;
+            background-image: url('assets/logo-client.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.03; 
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content-wrapper { position: relative; z-index: 1; flex-grow: 1; }
+
+        [contenteditable="true"]:hover {
+            background-color: #fff9c4;
+            outline: 1px dashed #ccc;
+            cursor: text;
+            border-radius: 4px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .logo-section { display: flex; flex-direction: column; gap: 10px; }
+        
+        #company-logo { transition: max-width 0.3s ease; }
+        #company-logo.format-standard { max-width: 180px; }
+        #company-logo.format-horizontal { max-width: 280px; }
+
+        .company-details { font-size: 11px; color: #555; line-height: 1.4; }
+        .company-name { font-weight: 700; font-size: 14px; color: var(--primary-color); margin-bottom: 6px; }
+        
+        .sheet-title { text-align: right; }
+        .sheet-title h1 { color: var(--primary-color); font-size: 24px; margin: 0 0 10px 0; letter-spacing: 1px; }
+        .sheet-meta { display: grid; grid-template-columns: auto auto; gap: 6px 12px; font-size: 13px; text-align: right; }
+        .sheet-meta strong { color: var(--primary-color); }
+
+        /* Attendance Table */
+        table.attendance-tbl {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        
+        table.attendance-tbl th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 5px;
+            text-align: center;
+            border: 1px solid #444;
+            font-size: 12px;
+        }
+        
+        table.attendance-tbl td {
+            padding: 10px 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        
+        table.attendance-tbl td.emp-name {
+            text-align: left;
+            font-weight: 500;
+            padding-left: 10px;
+        }
+
+        .legend-section {
+            margin-top: 20px;
+            font-size: 12px;
+            display: flex;
+            gap: 20px;
+            color: #555;
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .legend-item strong { color: var(--primary-color); }
+
+        /* Actions */
+        .add-row-btn {
+            background-color: var(--m3-secondary-container);
+            color: var(--m3-on-secondary-container);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .add-row-btn:hover { background-color: #bfdbfe; }
+
+        .del-row-icon {
+            color: var(--m3-error);
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+        }
+
+        /* --- Saved Dashboard --- */
+        .dashboard-container {
+            width: 100%;
+            max-width: 794px;
+            background: white;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            overflow-x: auto;
+        }
+        .dashboard-container h2 { margin: 0 0 15px 0; font-size: 16px; color: var(--primary-color); display: flex; align-items: center; gap: 8px; }
+        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 10px; text-align: left; font-weight: 600; border-radius: 6px; }
+        table.dash-tbl td { padding: 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-color); padding: 4px; border-radius: 4px; }
+        .action-btn:hover { background-color: #f1f5f9; }
+        .action-btn.del { color: var(--m3-error); }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar, .dashboard-container, .add-row-btn, .del-row-icon, .no-print { display: none !important; }
+            .sheet-wrapper { overflow: hidden; padding: 0; display: block; }
+            .sheet-container { box-shadow: none; margin: 0; padding: 15mm !important; }
+            
+            /* Hide the Actions column in print entirely */
+            table.attendance-tbl th:last-child, 
+            table.attendance-tbl td:last-child {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <button class="primary-btn" onclick="generatePDF()">
+            <i data-lucide="download"></i> Save & PDF
+        </button>
+        <button class="tonal-btn" onclick="sendWhatsApp()">
+            <i data-lucide="message-circle"></i> WhatsApp
+        </button>
+        <button class="tonal-btn" onclick="sendEmail()">
+            <i data-lucide="mail-plus"></i> Email
+        </button>
+        <button class="tonal-btn" onclick="toggleLogoFormat()">
+            <i data-lucide="image"></i> Toggle Logo
+        </button>
+    </div>
+
+    <div class="sheet-wrapper">
+        <div class="sheet-container" id="attendance-content">
+            <div class="content-wrapper">
+                
+                <div class="header">
+                    <div class="logo-section">
+                        <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
+                        <div class="company-details" contenteditable="true">
+                            <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                            <div>Karaparamba, Calicut, Kerala, India</div>
+                        </div>
+                    </div>
+                    
+                    <div class="sheet-title">
+                        <h1>ATTENDANCE REGISTER</h1>
+                        <div class="sheet-meta">
+                            <strong>Record ID:</strong> <span id="att-id" contenteditable="true">ATT-Oct-W2</span>
+                            <strong>Date Range:</strong> <span id="att-date" contenteditable="true">Oct 05 - Oct 11, 2026</span>
+                            <strong>Department:</strong> <span contenteditable="true">All Staff</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="attendance-tbl" id="att-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="text-align: left; width: 180px;">Employee Name</th>
+                            <th>Mon</th>
+                            <th>Tue</th>
+                            <th>Wed</th>
+                            <th>Thu</th>
+                            <th>Fri</th>
+                            <th>Sat</th>
+                            <th>Sun</th>
+                            <th>Total Days</th>
+                            <th class="no-print" style="width: 40px;">Act</th>
+                        </tr>
+                    </thead>
+                    <tbody id="att-tbody">
+                        <tr>
+                            <td contenteditable="true">1</td>
+                            <td class="emp-name" contenteditable="true">Mohammed Shanid</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">H</td>
+                            <td contenteditable="true">WO</td>
+                            <td contenteditable="true">5.5</td>
+                            <td class="no-print"><i data-lucide="trash" class="del-row-icon" onclick="deleteRow(this)"></i></td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="true">2</td>
+                            <td class="emp-name" contenteditable="true">John Doe</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">A</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">P</td>
+                            <td contenteditable="true">WO</td>
+                            <td contenteditable="true">5</td>
+                            <td class="no-print"><i data-lucide="trash" class="del-row-icon" onclick="deleteRow(this)"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="add-row-btn no-print" onclick="addRow()">
+                    <i data-lucide="plus"></i> Add Employee Row
+                </button>
+
+                <div class="legend-section" contenteditable="true">
+                    <div class="legend-item"><strong>P:</strong> Present</div>
+                    <div class="legend-item"><strong>A:</strong> Absent</div>
+                    <div class="legend-item"><strong>L:</strong> Leave</div>
+                    <div class="legend-item"><strong>H:</strong> Half-Day</div>
+                    <div class="legend-item"><strong>WO:</strong> Week Off</div>
+                </div>
+                
+                <div style="margin-top: 60px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 600;">
+                    <div style="text-align: center;">
+                        <div style="border-bottom: 1px solid #333; width: 150px; height: 30px; margin-bottom: 5px;"></div>
+                        Prepared By
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="border-bottom: 1px solid #333; width: 150px; height: 30px; margin-bottom: 5px;"></div>
+                        Authorized Signatory
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <h2><i data-lucide="calendar-check"></i> Saved Attendance Records</h2>
+        <table class="dash-tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Record ID</th>
+                    <th>Date Range</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dashboard-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+            applySavedLogoFormat();
+            renderDashboard();
+            
+            // Auto-save when table is edited
+            document.getElementById('attendance-content').addEventListener('input', saveAttendance);
+        };
+
+        // --- Logo Toggle ---
+        function toggleLogoFormat() {
+            const logo = document.getElementById('company-logo');
+            if (logo.classList.contains('format-horizontal')) {
+                logo.classList.replace('format-horizontal', 'format-standard');
+                localStorage.setItem('inspirego_logo_format', 'standard');
+            } else {
+                logo.classList.replace('format-standard', 'format-horizontal');
+                localStorage.setItem('inspirego_logo_format', 'horizontal');
+            }
+        }
+        function applySavedLogoFormat() {
+            const savedFormat = localStorage.getItem('inspirego_logo_format');
+            const logo = document.getElementById('company-logo');
+            if (savedFormat === 'horizontal') {
+                logo.classList.replace('format-standard', 'format-horizontal');
+            }
+        }
+
+        // --- Table Row Management ---
+        function addRow() {
+            const tbody = document.getElementById('att-tbody');
+            const rowCount = tbody.querySelectorAll('tr').length + 1;
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td contenteditable="true">${rowCount}</td>
+                <td class="emp-name" contenteditable="true">Employee Name</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true">0</td>
+                <td class="no-print"><i data-lucide="trash" class="del-row-icon" onclick="deleteRow(this)"></i></td>
+            `;
+            tbody.appendChild(tr);
+            lucide.createIcons();
+            saveAttendance();
+        }
+
+        function deleteRow(icon) {
+            if(confirm("Delete this employee's row?")) {
+                icon.closest('tr').remove();
+                
+                // Re-number the rows
+                const rows = document.querySelectorAll('#att-tbody tr');
+                rows.forEach((row, index) => {
+                    row.cells[0].innerText = index + 1;
+                });
+                
+                saveAttendance();
+            }
+        }
+
+        // --- Data Extraction & LocalStorage ---
+        function saveAttendance() {
+            const recordId = document.getElementById('att-id').innerText.trim() || 'Record-' + Date.now();
+            const dateRange = document.getElementById('att-date').innerText.trim();
+            const htmlContent = document.getElementById('attendance-content').innerHTML;
+            const updatedDate = new Date().toLocaleString();
+            
+            let records = JSON.parse(localStorage.getItem('inspirego_attendance_db')) || [];
+            const existingIndex = records.findIndex(r => r.id === recordId);
+            
+            const data = { id: recordId, dateRange: dateRange, updated: updatedDate, html: htmlContent };
+            if(existingIndex >= 0) { records[existingIndex] = data; } else { records.push(data); }
+            
+            localStorage.setItem('inspirego_attendance_db', JSON.stringify(records));
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const tbody = document.getElementById('dashboard-body');
+            tbody.innerHTML = '';
+            let records = JSON.parse(localStorage.getItem('inspirego_attendance_db')) || [];
+
+            if(records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8;">No attendance records saved yet.</td></tr>';
+                return;
+            }
+
+            records.forEach((rec, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${rec.id}</strong></td>
+                    <td>${rec.dateRange}</td>
+                    <td>${rec.updated}</td>
+                    <td>
+                        <button class="action-btn" title="Load" onclick="loadAttendance('${rec.id}')"><i data-lucide="edit-3"></i></button>
+                        <button class="action-btn del" title="Delete" onclick="deleteAttendance('${rec.id}')"><i data-lucide="trash-2"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function loadAttendance(recordId) {
+            let records = JSON.parse(localStorage.getItem('inspirego_attendance_db')) || [];
+            const record = records.find(r => r.id === recordId);
+            if(record) {
+                document.getElementById('attendance-content').innerHTML = record.html;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+                applySavedLogoFormat();
+            }
+        }
+
+        function deleteAttendance(recordId) {
+            if(confirm(`Are you sure you want to delete ${recordId}?`)) {
+                let records = JSON.parse(localStorage.getItem('inspirego_attendance_db')) || [];
+                records = records.filter(r => r.id !== recordId);
+                localStorage.setItem('inspirego_attendance_db', JSON.stringify(records));
+                renderDashboard();
+            }
+        }
+
+        // --- Comm Tools & PDF Generation ---
+        function sendWhatsApp() {
+            saveAttendance();
+            const recId = document.getElementById('att-id').innerText.trim();
+            const dates = document.getElementById('att-date').innerText.trim();
+            const message = `Hello,\n\nPlease find attached the Employee Attendance Register (${recId}) for the period of ${dates}.\n\nThank you.`;
+            const phone = prompt("Enter Manager/HR WhatsApp Number with country code:", "");
+            if (phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendEmail() {
+            saveAttendance();
+            const recId = document.getElementById('att-id').innerText.trim();
+            const dates = document.getElementById('att-date').innerText.trim();
+            const email = prompt("Enter recipient Email address:", "");
+            if (email) window.location.href = `mailto:${email}?subject=Attendance Register: ${recId}&body=${encodeURIComponent(`Hello,\n\nPlease find attached the Employee Attendance Register (${recId}) for the period of${dates}.\n\nThank you.`)}`;
+        }
+
+        function generatePDF() {
+            saveAttendance(); 
+            const element = document.getElementById('attendance-content');
+            const recordNumber = document.getElementById('att-id').innerText.trim() || 'Attendance';
+            
+            const opt = {
+                margin:       0,
+                filename:     `InspireGo_${recordNumber}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    windowWidth: 800, // Forces desktop layout size
+                    scrollY: 0
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
