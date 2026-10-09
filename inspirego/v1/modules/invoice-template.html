@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireGo Travel Invoice</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #031b33; /* Dark blue from logo */
+            --secondary-color: #3b9cd1; /* Light blue from logo */
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e0e0e0;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .toolbar {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .toolbar button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+        .toolbar button:hover {
+            background-color: var(--primary-color);
+        }
+        /* A4 Size Setup */
+        .invoice-container {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            padding: 20mm;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        /* Editable highlight */
+        [contenteditable="true"]:hover {
+            background-color: #fff9c4;
+            outline: 1px dashed #ccc;
+            cursor: text;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .logo-section {
+            max-width: 350px;
+        }
+        .logo-section img {
+            max-width: 220px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        .company-details {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.5;
+        }
+        .company-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .contact-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .contact-line .lucide {
+            width: 14px;
+            height: 14px;
+            color: var(--secondary-color);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .invoice-title {
+            text-align: right;
+        }
+        .invoice-title h1 {
+            color: var(--primary-color);
+            font-size: 36px;
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+        }
+        .invoice-meta {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 5px 15px;
+            font-size: 14px;
+            text-align: right;
+        }
+        .invoice-meta strong {
+            color: var(--primary-color);
+        }
+
+        /* Information Section */
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .bill-to h3, .travel-details h3 {
+            color: var(--secondary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .bill-to p, .travel-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .travel-details {
+            background-color: #f4f8fb;
+            padding: 15px;
+            border-radius: 5px;
+            min-width: 250px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+        th.text-right, td.text-right {
+            text-align: right;
+        }
+        th.text-center, td.text-center {
+            text-align: center;
+        }
+
+        /* Totals */
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 40px;
+        }
+        .totals-box {
+            width: 300px;
+        }
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .totals-row.grand-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-top: 2px solid var(--primary-color);
+            padding-top: 10px;
+            margin-top: 5px;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            display: flex;
+            justify-content: space-between;
+            background-color: var(--bg-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .bank-details h3 {
+            margin: 0 0 15px 0;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        .bank-details p {
+            margin: 5px 0;
+            font-size: 13px;
+        }
+        .qr-section {
+            text-align: center;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .qr-section img {
+            width: 100px;
+            height: 100px;
+        }
+        .qr-section p {
+            margin: 8px 0 0 0;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        /* Print Settings */
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar { display: none; }
+            .invoice-container { box-shadow: none; margin: 0; padding: 15mm; width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <button onclick="generatePDF()">Download PDF</button>
+    </div>
+
+    <div class="invoice-container" id="invoice-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <!-- Logo Image -->
+                <img src="inspirego logo.pdf.png" alt="InspireGo Travel & Tourism">
+                
+                <!-- Company Details with Lucide Icons -->
+                <div class="company-details" contenteditable="true">
+                    <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                    
+                    <div class="contact-line">
+                        <i data-lucide="map-pin"></i>
+                        <span>Karaparamba, Calicut, Kozhikode,<br>Kerala, India, 673010.</span>
+                    </div>
+                    
+                    <div class="contact-line">
+                        <i data-lucide="phone"></i>
+                        <span>India: 9947290770<br>UAE: +971 555252018</span>
+                    </div>
+
+                    <div class="contact-line">
+                        <i data-lucide="mail"></i>
+                        <span>inspiregoa800@gmail.com</span>
+                    </div>
+                    
+                    <div class="contact-line">
+                        <i data-lucide="globe"></i>
+                        <span>www.inspirego.com</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <div class="invoice-meta">
+                    <strong>Invoice No:</strong> <span contenteditable="true">INV-2026-0109</span>
+                    <strong>Date:</strong> <span contenteditable="true">09 Oct 2026</span>
+                    <strong>Due Date:</strong> <span contenteditable="true">15 Oct 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="bill-to">
+                <h3>Bill To</h3>
+                <div contenteditable="true">
+                    <strong>Mr. John Doe</strong><br>
+                    123 Client Address Street<br>
+                    City, State, Zip Code<br>
+                    Phone: +971 50 123 4567<br>
+                    Email: john.doe@example.com
+                </div>
+            </div>
+            <div class="travel-details">
+                <h3>Travel Details</h3>
+                <div contenteditable="true">
+                    <p><strong>Package Name:</strong> Dubai Premium Vacation</p>
+                    <p><strong>Travel Date:</strong> 20 Oct 2026 - 25 Oct 2026</p>
+                    <p><strong>No. of Pax:</strong> 2 Adults, 1 Child</p>
+                    <p><strong>Booking Ref:</strong> IG-DXB-8890</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-right">Rate (AED)</th>
+                    <th class="text-right">Amount (AED)</th>
+                </tr>
+            </thead>
+            <tbody contenteditable="true">
+                <tr>
+                    <td>Dubai Premium Tour Package (5 Nights / 6 Days)</td>
+                    <td class="text-center">3</td>
+                    <td class="text-right">1,500.00</td>
+                    <td class="text-right">4,500.00</td>
+                </tr>
+                <tr>
+                    <td>Desert Safari & BBQ Dinner Add-on</td>
+                    <td class="text-center">3</td>
+                    <td class="text-right">250.00</td>
+                    <td class="text-right">750.00</td>
+                </tr>
+                <tr>
+                    <td>Visa Processing Fees</td>
+                    <td class="text-center">3</td>
+                    <td class="text-right">300.00</td>
+                    <td class="text-right">900.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Totals -->
+        <div class="totals-section">
+            <div class="totals-box" contenteditable="true">
+                <div class="totals-row">
+                    <span>Subtotal:</span>
+                    <span>AED 6,150.00</span>
+                </div>
+                <div class="totals-row">
+                    <span>Tax (5%):</span>
+                    <span>AED 307.50</span>
+                </div>
+                <div class="totals-row grand-total">
+                    <span>Grand Total:</span>
+                    <span>AED 6,457.50</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="payment-section">
+            <!-- Bank details updated with Emirates NBD and IBAN -->
+            <div class="bank-details" contenteditable="true">
+                <h3>Payment Details (Bank Transfer)</h3>
+                <p><strong>Bank Name:</strong> EMIRATES NBD</p>
+                <p><strong>Account Holder:</strong> INSPIRE GO TRAVEL AND TOURISM</p>
+                <p><strong>Account No:</strong> 1015941674801</p>
+                <p><strong>IBAN:</strong> AE790260001015941674801</p>
+            </div>
+            
+            <div class="qr-section">
+                <!-- QR Code automatically updates based on the UPI ID typed below -->
+                <img id="upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=inspirego@sbi&pn=InspireGo" alt="UPI QR Code">
+                <p>Scan to Pay via UPI</p>
+                <div style="font-size: 11px; margin-top: 5px;">
+                    UPI ID: <span id="upi-id" contenteditable="true" onblur="updateQR()">inspirego@sbi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer" contenteditable="true">
+            <p><strong>Terms & Conditions:</strong> 1. Payment is due within the date specified. 2. All packages are subject to cancellation policies. 3. Ensure passport validity of at least 6 months.</p>
+            <p>Thank you for choosing InspireGo Travel & Tourism! Have a safe and wonderful journey.</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Function to update QR code when UPI ID is edited
+        function updateQR() {
+            const upiId = document.getElementById('upi-id').innerText.

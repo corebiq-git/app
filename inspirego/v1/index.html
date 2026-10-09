@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F7F9FC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>COREBIQ CRM & ERP</title>
+  <link rel="icon" href="assets/logo-favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/logo-app.svg">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <link rel="stylesheet" href="css/corebiq.css">
+  <link rel="stylesheet" href="css/pwa.css">
+</head>
+<body>
+  <div class="splash-screen" id="splashScreen" role="status" aria-live="polite">
+    <div class="splash-brand">
+      <img class="splash-app-icon" src="assets/logo-app.svg" alt="">
+      <img class="splash-wordmark" src="assets/name-splash.svg" alt="COREBIQ CRM & ERP">
+    </div>
+    <span class="splash-spinner" aria-hidden="true"></span>
+  </div>
+
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <a class="brand-home" href="index.html" data-module="dashboard" aria-label="COREBIQ dashboard">
+          <img class="brand-logo" src="assets/logo-app.svg" alt="">
+          <img class="brand-wordmark" src="assets/name.svg" alt="COREBIQ CRM ERP">
+        </a>
+      </div>
+
+      <nav class="side-nav" id="sideNav">
+        <div class="nav-label">Workspace</div>
+        <button class="nav-item active" data-module="dashboard"><span class="material-symbols-rounded">home</span><span>Dashboard</span></button>
+        <button class="nav-item" data-module="company"><span class="material-symbols-rounded">domain</span><span>Company</span></button>
+        <button class="nav-item" data-module="branches"><span class="material-symbols-rounded">account_tree</span><span>Branches</span></button>
+
+        <div class="nav-label">CRM</div>
+        <button class="nav-item" data-module="clients"><span class="material-symbols-rounded">group</span><span>Clients</span></button>
+        <button class="nav-item" data-module="staff"><span class="material-symbols-rounded">badge</span><span>Staff</span></button>
+
+        <div class="nav-label">Inventory</div>
+        <button class="nav-item" data-module="products"><span class="material-symbols-rounded">inventory_2</span><span>Products</span></button>
+        <button class="nav-item" data-module="services"><span class="material-symbols-rounded">design_services</span><span>Services</span></button>
+
+        <div class="nav-label">Commerce</div>
+        <button class="nav-item" data-module="sales"><span class="material-symbols-rounded">point_of_sale</span><span>Sales</span></button>
+        <button class="nav-item" data-module="purchases"><span class="material-symbols-rounded">shopping_cart</span><span>Purchases</span></button>
+        <button class="nav-item" data-module="invoices"><span class="material-symbols-rounded">receipt_long</span><span>Invoices</span></button>
+        <a class="nav-item" href="#invoice-templates" data-module="invoice-templates" title="Open invoice template settings"><span class="material-symbols-rounded">view_agenda</span><span>Invoice Template</span></a>
+        <button class="nav-item" data-module="expenses"><span class="material-symbols-rounded">payments</span><span>Expenses</span></button>
+
+        <div class="nav-label">Finance</div>
+        <button class="nav-item" data-module="transactions"><span class="material-symbols-rounded">account_balance</span><span>Transactions</span></button>
+        <button class="nav-item" data-module="cheques"><span class="material-symbols-rounded">payments</span><span>Cheque Register</span></button>
+          <button class="nav-item" data-module="ledger"><span class="material-symbols-rounded">account_balance_wallet</span><span>Ledger</span></button>
+        <button class="nav-item" data-module="payments"><span class="material-symbols-rounded">currency_rupee</span><span>Payments</span></button>
+        <button class="nav-item" data-module="qr"><span class="material-symbols-rounded">qr_code_2</span><span>QR</span></button>
+
+        <div class="nav-label">Insights</div>
+        <button class="nav-item" data-module="reports"><span class="material-symbols-rounded">bar_chart</span><span>Reports</span></button>
+        <button class="nav-item" data-module="settings"><span class="material-symbols-rounded">settings</span><span>Settings</span></button>
+        <button class="nav-item" data-module="assistant"><span class="material-symbols-rounded">auto_awesome</span><span>COREBIQ AI</span></button>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <button class="icon-button sidebar-toggle" id="menuButton" aria-label="Toggle sidebar" title="Toggle sidebar">
+          <span class="material-symbols-rounded">menu</span>
+        </button>
+
+        <div class="search-box">
+          <input id="globalSearch" placeholder="Search anything..." autocomplete="off">
+          <button class="search-submit" id="globalSearchButton" type="button" aria-label="Search" title="Search"><span class="material-symbols-rounded">search</span></button>
+        </div>
+
+        <div class="top-actions">
+          <button class="icon-button install-button" id="installButton" title="Install COREBIQ" aria-label="Install COREBIQ" hidden><span class="material-symbols-rounded">download</span></button>
+          <button class="icon-button" id="syncButton" title="Refresh"><span class="material-symbols-rounded">sync</span></button>
+          <a class="icon-button notification" href="license.html" title="App license information" aria-label="App license information"><span class="material-symbols-rounded">notifications</span><i></i></a>
+          <div class="profile-menu-wrap">
+            <button class="avatar-button" id="profileButton" type="button" title="Account profile" aria-label="Account profile" aria-expanded="false" aria-controls="profileMenu"><span class="material-symbols-rounded">account_circle</span></button>
+            <section class="profile-menu" id="profileMenu" aria-label="Account profile" hidden>
+              <p class="profile-menu-title">Account</p>
+              <p class="profile-menu-name" id="profileName">Loading profile...</p>
+              <p class="profile-menu-email" id="profileEmail"></p>
+              <div class="profile-role-row"><span>User role</span><strong id="profileRole">User</strong></div>
+              <button class="profile-signout" id="signOutButton" type="button"><span class="material-symbols-rounded">logout</span><span>Sign out</span></button>
+            </section>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <div id="moduleContainer" class="module-container" aria-live="polite"></div>
+      </main>
+
+      <nav class="bottom-nav">
+        <button data-module="dashboard"><span class="material-symbols-rounded">home</span><small>Home</small></button>
+        <button data-module="clients"><span class="material-symbols-rounded">group</span><small>Clients</small></button>
+        <button data-module="sales"><span class="material-symbols-rounded">point_of_sale</span><small>Sales</small></button>
+        <button data-module="assistant"><span class="material-symbols-rounded">auto_awesome</span><small>AI Assistant</small></button>
+      </nav>
+    </div>
+  </div>
+
+  <section class="onboarding" id="onboarding" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" hidden>
+    <div class="onboarding-panel">
+      <img src="assets/logo-app.svg" alt="" class="onboarding-logo">
+      <p class="onboarding-eyebrow">WELCOME TO COREBIQ</p>
+      <h1 id="onboardingTitle">Business Intelligence in your Pocket</h1>
+      <p class="onboarding-copy">Run your business with COREBIQ Intelligent Workflow App.</p>
+      <div class="onboarding-actions">
+        <button class="btn btn-primary" id="onboardingStart">Get started</button>
+        <button class="btn btn-tonal" id="onboardingInstall" hidden>Install app</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
