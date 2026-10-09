@@ -11,8 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #031b33; /* Dark blue from logo */
-            --secondary-color: #3b9cd1; /* Light blue from logo */
+            --primary-color: #031b33;
+            --secondary-color: #3b9cd1;
             --text-color: #333333;
             --bg-color: #f8f9fa;
         }
@@ -29,22 +29,44 @@
         .toolbar {
             margin-bottom: 20px;
             text-align: center;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         .toolbar button {
             background-color: var(--secondary-color);
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: background 0.3s;
         }
         .toolbar button:hover {
             background-color: var(--primary-color);
         }
+        .toolbar button.danger {
+            background-color: #dc3545;
+        }
+        .toolbar button.danger:hover {
+            background-color: #c82333;
+        }
+        .toolbar select {
+            padding: 10px;
+            font-size: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        
         /* A4 Size Setup */
         .invoice-container {
             width: 210mm;
@@ -246,7 +268,7 @@
         /* Print Settings */
         @media print {
             body { background: white; padding: 0; }
-            .toolbar { display: none; }
+            .toolbar { display: none !important; }
             .invoice-container { box-shadow: none; margin: 0; padding: 15mm; width: 100%; }
         }
     </style>
@@ -254,17 +276,20 @@
 <body>
 
     <div class="toolbar">
-        <button onclick="generatePDF()">Download PDF</button>
+        <button onclick="generatePDF()">Download PDF & Save</button>
+        <select id="saved-invoices-dropdown" onchange="loadInvoice(this.value)">
+            <option value="">-- Load Saved Invoice --</option>
+        </select>
+        <button class="danger" onclick="clearSavedInvoices()">Clear Saved</button>
     </div>
 
     <div class="invoice-container" id="invoice-content">
         <!-- Header -->
         <div class="header">
             <div class="logo-section">
-                <!-- Logo Image -->
-                <img src="inspirego logo.pdf.png" alt="InspireGo Travel & Tourism">
+                <!-- Updated Logo Link -->
+                <img src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
                 
-                <!-- Company Details with Lucide Icons -->
                 <div class="company-details" contenteditable="true">
                     <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
                     
@@ -293,7 +318,7 @@
             <div class="invoice-title">
                 <h1>INVOICE</h1>
                 <div class="invoice-meta">
-                    <strong>Invoice No:</strong> <span contenteditable="true">INV-2026-0109</span>
+                    <strong>Invoice No:</strong> <span id="inv-no" contenteditable="true">INV-2026-0109</span>
                     <strong>Date:</strong> <span contenteditable="true">09 Oct 2026</span>
                     <strong>Due Date:</strong> <span contenteditable="true">15 Oct 2026</span>
                 </div>
@@ -375,7 +400,6 @@
 
         <!-- Payment Details -->
         <div class="payment-section">
-            <!-- Bank details updated with Emirates NBD and IBAN -->
             <div class="bank-details" contenteditable="true">
                 <h3>Payment Details (Bank Transfer)</h3>
                 <p><strong>Bank Name:</strong> EMIRATES NBD</p>
@@ -385,7 +409,6 @@
             </div>
             
             <div class="qr-section">
-                <!-- QR Code automatically updates based on the UPI ID typed below -->
                 <img id="upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=inspirego@sbi&pn=InspireGo" alt="UPI QR Code">
                 <p>Scan to Pay via UPI</p>
                 <div style="font-size: 11px; margin-top: 5px;">
@@ -402,10 +425,13 @@
     </div>
 
     <script>
-        // Initialize Lucide Icons
-        lucide.createIcons();
+        // Initialize Icons and Dropdown on load
+        window.onload = function() {
+            lucide.createIcons();
+            updateSavedInvoicesDropdown();
+        };
 
-        // Function to update QR code when UPI ID is edited
+        // Function to update QR code
         function updateQR() {
             const upiId = document.getElementById('upi-id').innerText.trim();
             const qrImage = document.getElementById('upi-qr');
@@ -413,20 +439,73 @@
             qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
         }
 
-        // Function to generate and download A4 PDF
-        function generatePDF() {
-            const element = document.getElementById('invoice-content');
+        // Local Storage: Save Invoice
+        function saveInvoice() {
+            const invoiceNo = document.getElementById('inv-no').innerText.trim() || 'Draft-' + Date.now();
+            const content = document.getElementById('invoice-content').innerHTML;
             
-            // PDF configuration
+            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
+            invoices[invoiceNo] = {
+                date: new Date().toLocaleString(),
+                html: content
+            };
+            
+            localStorage.setItem('inspirego_saved_invoices', JSON.stringify(invoices));
+            updateSavedInvoicesDropdown();
+        }
+
+        // Local Storage: Load Invoice
+        function loadInvoice(invoiceNo) {
+            if (!invoiceNo) return;
+            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
+            
+            if (invoices[invoiceNo]) {
+                document.getElementById('invoice-content').innerHTML = invoices[invoiceNo].html;
+                lucide.createIcons(); // Reload icons since DOM was replaced
+            }
+        }
+
+        // Local Storage: Update Dropdown List
+        function updateSavedInvoicesDropdown() {
+            const dropdown = document.getElementById('saved-invoices-dropdown');
+            dropdown.innerHTML = '<option value="">-- Load Saved Invoice --</option>';
+            
+            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
+            
+            // Reverse so newest is likely near the bottom/top based on order
+            for (const [invNo, data] of Object.entries(invoices)) {
+                let option = document.createElement('option');
+                option.value = invNo;
+                option.textContent = `${invNo} (${data.date})`;
+                dropdown.appendChild(option);
+            }
+        }
+
+        // Local Storage: Clear Storage
+        function clearSavedInvoices() {
+            if(confirm("Are you sure you want to delete all saved invoices from your browser? This cannot be undone.")) {
+                localStorage.removeItem('inspirego_saved_invoices');
+                updateSavedInvoicesDropdown();
+                alert("All saved invoices have been cleared.");
+            }
+        }
+
+        // Generate and download A4 PDF
+        function generatePDF() {
+            // Save state before downloading
+            saveInvoice();
+            
+            const element = document.getElementById('invoice-content');
+            const invoiceNumber = document.getElementById('inv-no').innerText.trim() || 'Invoice';
+            
             const opt = {
                 margin:       0,
-                filename:     'InspireGo_Invoice.pdf',
+                filename:     `InspireGo_${invoiceNumber}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Generate PDF
             html2pdf().set(opt).from(element).save();
         }
     </script>
