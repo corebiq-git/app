@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InspireGo Services Brochure</title>
+    <!-- html2pdf library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #031b33; 
+            --secondary-color: #3b9cd1; 
+            --text-color: #333333;
+            --bg-color: #f8f9fa;
+            --m3-primary: #031b33;
+            --m3-on-primary: #ffffff;
+            --m3-secondary-container: #dbeafe; 
+            --m3-on-secondary-container: #023859;
+            --m3-surface-variant: #e2e8f0;
+            --m3-error: #dc2626;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e2e8f0;
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Material 3 Styled Toolbar */
+        .toolbar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 1000;
+            width: 95%;
+            max-width: 794px;
+        }
+
+        .toolbar button {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
+        .primary-btn:hover { box-shadow: 0 4px 8px rgba(3, 27, 51, 0.3); transform: translateY(-1px); }
+        .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
+        .tonal-btn:hover { background-color: #bfdbfe; }
+        .danger-btn { background-color: #fee2e2; color: #991b1b; }
+        .danger-btn:hover { background-color: #fecaca; }
+        
+        /* Mobile Wrapper */
+        .brochure-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* STRICT A4 Size Setup */
+        .brochure-container {
+            width: 794px !important; 
+            min-height: 1123px; /* Flexible height for multiple pages */
+            min-width: 794px !important;
+            max-width: 794px !important;
+            background: white;
+            padding: 50px !important; 
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: #fff9c4;
+            outline: 1px dashed #ccc;
+            cursor: text;
+            border-radius: 4px;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        #company-logo { transition: max-width 0.3s ease; }
+        #company-logo.format-standard { max-width: 180px; }
+        #company-logo.format-horizontal { max-width: 280px; }
+
+        .company-details { font-size: 11px; color: #555; line-height: 1.4; text-align: right; }
+        .company-name { font-weight: 700; font-size: 16px; color: var(--primary-color); margin-bottom: 6px; }
+        .contact-line { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-bottom: 4px; }
+        .contact-line .lucide { width: 12px; height: 12px; color: var(--secondary-color); }
+        
+        .page-title { text-align: center; margin-bottom: 40px; }
+        .page-title h1 { color: var(--primary-color); font-size: 32px; margin: 0 0 10px 0; letter-spacing: 1px; text-transform: uppercase; }
+        .page-title p { color: var(--secondary-color); margin: 0; font-size: 16px; font-weight: 500; }
+
+        /* --- AIRPLANE WINDOW DESIGN (SERVICES GRID) --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            justify-items: center;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border: 10px solid #f1f5f9; /* Fuselage wall */
+            border-radius: 110px 110px 110px 110px; /* Outer Window Pill Shape */
+            padding: 15px;
+            box-shadow: 
+                inset 0 4px 15px rgba(0,0,0,0.06), 
+                0 10px 20px rgba(0,0,0,0.08),
+                0 0 0 1px #e2e8f0; /* Crisp outer edge */
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Inner Glass (Photo Area) */
+        .window-pane {
+            width: 100%;
+            height: 160px;
+            border-radius: 90px 90px 30px 30px;
+            overflow: hidden;
+            background: #bae6fd;
+            box-shadow: inset 0 8px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .window-pane img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        
+        .window-pane:hover img {
+            transform: scale(1.1);
+        }
+
+        .window-pane::after {
+            content: 'Click to Add Photo';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .window-pane:hover::after {
+            opacity: 1;
+        }
+
+        /* Text Area */
+        .category-title {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+        }
+
+        .sub-categories {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .sub-categories li {
+            font-size: 13px;
+            color: #475569;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            position: relative;
+        }
+        .sub-categories li:last-child {
+            border-bottom: none;
+        }
+
+        /* Delete Button for List Items */
+        .delete-sub {
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .sub-categories li:hover .delete-sub {
+            opacity: 1;
+        }
+
+        /* Card Actions (No Print) */
+        .card-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .mini-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 5px 10px;
+            font-size: 11px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .mini-btn:hover { background: #e2e8f0; }
+        .mini-btn.del-cat { color: #dc2626; background: #fee2e2; }
+        .mini-btn.del-cat:hover { background: #fecaca; }
+
+        /* Print Settings */
+        @media print {
+            body { background: white; padding: 0; }
+            .toolbar, .no-print { display: none !important; }
+            .brochure-wrapper { overflow: visible; padding: 0; display: block; }
+            .brochure-container { box-shadow: none; margin: 0; padding: 15mm !important; }
+            .service-card { break-inside: avoid; }
+            .window-pane::after { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button class="primary-btn" onclick="generatePDF()">
+            <i data-lucide="download"></i> Download Brochure
+        </button>
+        <button class="tonal-btn" onclick="addCategory()">
+            <i data-lucide="plus-circle"></i> Add Main Category
+        </button>
+        <button class="tonal-btn" onclick="toggleLogoFormat()">
+            <i data-lucide="image"></i> Toggle Logo
+        </button>
+        <button class="danger-btn" onclick="resetBrochure()">
+            <i data-lucide="refresh-cw"></i> Reset Layout
+        </button>
+    </div>
+
+    <div class="brochure-wrapper">
+        <div class="brochure-container" id="brochure-content">
+            
+            <!-- Header -->
+            <div class="header">
+                <div class="logo-section">
+                    <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
+                </div>
+                <div class="company-details" contenteditable="true" onblur="saveBrochure()">
+                    <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
+                    <div class="contact-line">
+                        <span>Karaparamba, Calicut, Kozhikode, Kerala, India</span> <i data-lucide="map-pin"></i>
+                    </div>
+                    <div class="contact-line">
+                        <span>India: 9947290770 | UAE: +971 555252018</span> <i data-lucide="phone"></i>
+                    </div>
+                    <div class="contact-line">
+                        <span>inspiregoa800@gmail.com | www.inspirego.com</span> <i data-lucide="globe"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <div class="page-title">
+                <h1 contenteditable="true" onblur="saveBrochure()">Discover Our Services</h1>
+                <p contenteditable="true" onblur="saveBrochure()">Tailored travel experiences crafted just for you</p>
+            </div>
+
+            <!-- Services Grid (Airplane Windows) -->
+            <div class="services-grid" id="services-grid">
+                <!-- Content injected via JS -->
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Hidden File Input for Image Uploads -->
+    <input type="file" id="image-uploader" accept="image/*" style="display: none;">
+
+    <script>
+        let currentImageElement = null;
+
+        // Default template if local storage is empty
+        const defaultCategories = `
+            <div class="service-card">
+                <div class="window-pane" onclick="triggerImageUpload(this)">
+                    <img src="https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=400&q=80" alt="Evisa">
+                </div>
+                <h3 class="category-title" contenteditable="true">Evisa Services</h3>
+                <ul class="sub-categories">
+                    <li><span contenteditable="true">UAE Tourist Visa</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">Saudi Multiple Entry</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">Oman E-Visa</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                </ul>
+                <div class="card-actions no-print">
+                    <button class="mini-btn" onclick="addSubCategory(this)"><i data-lucide="plus"></i> Add Sub</button>
+                    <button class="mini-btn del-cat" onclick="deleteCategory(this)"><i data-lucide="trash"></i> Delete</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="window-pane" onclick="triggerImageUpload(this)">
+                    <img src="https://images.unsplash.com/photo-1512453979436-5a5240c2a805?auto=format&fit=crop&w=400&q=80" alt="Tours">
+                </div>
+                <h3 class="category-title" contenteditable="true">Tour Packages</h3>
+                <ul class="sub-categories">
+                    <li><span contenteditable="true">Dubai Premium Vacation</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">Kerala Backwaters Tour</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">European Getaway</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                </ul>
+                <div class="card-actions no-print">
+                    <button class="mini-btn" onclick="addSubCategory(this)"><i data-lucide="plus"></i> Add Sub</button>
+                    <button class="mini-btn del-cat" onclick="deleteCategory(this)"><i data-lucide="trash"></i> Delete</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="window-pane" onclick="triggerImageUpload(this)">
+                    <img src="https://images.unsplash.com/photo-1565552643981-87c714b60098?auto=format&fit=crop&w=400&q=80" alt="Umrah">
+                </div>
+                <h3 class="category-title" contenteditable="true">Umrah Packages</h3>
+                <ul class="sub-categories">
+                    <li><span contenteditable="true">Economy Package (14 Days)</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">VIP Executive Umrah</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                    <li><span contenteditable="true">Custom Family Package</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                </ul>
+                <div class="card-actions no-print">
+                    <button class="mini-btn" onclick="addSubCategory(this)"><i data-lucide="plus"></i> Add Sub</button>
+                    <button class="mini-btn del-cat" onclick="deleteCategory(this)"><i data-lucide="trash"></i> Delete</button>
+                </div>
+            </div>
+        `;
+
+        // Initialize App
+        window.onload = function() {
+            loadBrochure();
+            applySavedLogoFormat();
+            
+            // Auto-save when user types inside contenteditable elements
+            document.getElementById('services-grid').addEventListener('input', saveBrochure);
+        };
+
+        // --- Logo Controls ---
+        function toggleLogoFormat() {
+            const logo = document.getElementById('company-logo');
+            if (logo.classList.contains('format-horizontal')) {
+                logo.classList.replace('format-horizontal', 'format-standard');
+                localStorage.setItem('inspirego_logo_format', 'standard');
+            } else {
+                logo.classList.replace('format-standard', 'format-horizontal');
+                localStorage.setItem('inspirego_logo_format', 'horizontal');
+            }
+        }
+
+        function applySavedLogoFormat() {
+            const savedFormat = localStorage.getItem('inspirego_logo_format');
+            const logo = document.getElementById('company-logo');
+            if (savedFormat === 'horizontal') {
+                logo.classList.replace('format-standard', 'format-horizontal');
+            }
+        }
+
+        // --- Local Storage Management ---
+        function saveBrochure() {
+            const gridContent = document.getElementById('services-grid').innerHTML;
+            localStorage.setItem('inspirego_brochure_db', gridContent);
+        }
+
+        function loadBrochure() {
+            const savedData = localStorage.getItem('inspirego_brochure_db');
+            const grid = document.getElementById('services-grid');
+            
+            if (savedData && savedData.trim() !== '') {
+                grid.innerHTML = savedData;
+            } else {
+                grid.innerHTML = defaultCategories;
+            }
+            lucide.createIcons();
+        }
+
+        function resetBrochure() {
+            if(confirm("Are you sure you want to reset the brochure to default categories? You will lose current changes.")) {
+                localStorage.removeItem('inspirego_brochure_db');
+                loadBrochure();
+            }
+        }
+
+        // --- DOM Manipulations (Add/Delete) ---
+        function addCategory() {
+            const grid = document.getElementById('services-grid');
+            const newCard = document.createElement('div');
+            newCard.className = 'service-card';
+            newCard.innerHTML = `
+                <div class="window-pane" onclick="triggerImageUpload(this)">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=400&q=80" alt="New Service">
+                </div>
+                <h3 class="category-title" contenteditable="true">New Category</h3>
+                <ul class="sub-categories">
+                    <li><span contenteditable="true">New Sub-category</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i></li>
+                </ul>
+                <div class="card-actions no-print">
+                    <button class="mini-btn" onclick="addSubCategory(this)"><i data-lucide="plus"></i> Add Sub</button>
+                    <button class="mini-btn del-cat" onclick="deleteCategory(this)"><i data-lucide="trash"></i> Delete</button>
+                </div>
+            `;
+            grid.appendChild(newCard);
+            lucide.createIcons();
+            saveBrochure();
+        }
+
+        function deleteCategory(btn) {
+            if(confirm("Delete this entire category?")) {
+                btn.closest('.service-card').remove();
+                saveBrochure();
+            }
+        }
+
+        function addSubCategory(btn) {
+            const ul = btn.closest('.service-card').querySelector('.sub-categories');
+            const li = document.createElement('li');
+            li.innerHTML = `<span contenteditable="true">New Option</span> <i data-lucide="x" class="delete-sub no-print" onclick="deleteSub(this)"></i>`;
+            ul.appendChild(li);
+            lucide.createIcons();
+            saveBrochure();
+        }
+
+        function deleteSub(iconBtn) {
+            iconBtn.closest('li').remove();
+            saveBrochure();
+        }
+
+        // --- Image Upload & Compression Logic ---
+        const uploader = document.getElementById('image-uploader');
+        
+        function triggerImageUpload(paneElement) {
+            currentImageElement = paneElement.querySelector('img');
+            uploader.click();
+        }
+
+        uploader.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && currentImageElement) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    // Compress image to save local storage space
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        // Max dimensions for brochure thumbnails
+                        const maxW = 400; 
+                        const maxH = 400;
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > height) { 
+                            if (width > maxW) { height *= maxW / width; width = maxW; } 
+                        } else { 
+                            if (height > maxH) { width *= maxH / height; height = maxH; } 
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        currentImageElement.src = canvas.toDataURL('image/jpeg', 0.8);
+                        saveBrochure();
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            uploader.value = ''; // Reset input
+        });
+
+        // --- PDF Generation ---
+        function generatePDF() {
+            saveBrochure(); // Ensure latest state is saved
+            
+            const element = document.getElementById('brochure-content');
+            
+            const opt = {
+                margin:       0,
+                filename:     `InspireGo_Services.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    windowWidth: 800, // Lock width for mobile users
+                    scrollY: 0
+                }, 
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save();
+        }
+    </script>
+</body>
+</html>
