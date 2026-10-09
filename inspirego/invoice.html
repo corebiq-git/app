@@ -8,17 +8,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #031b33;
-            --secondary-color: #3b9cd1;
+            /* InspireGo Brand Colors */
+            --primary-color: #031b33; 
+            --secondary-color: #3b9cd1; 
             --text-color: #333333;
             --bg-color: #f8f9fa;
+            
+            /* Material 3 UI Colors */
+            --m3-primary: #031b33;
+            --m3-on-primary: #ffffff;
+            --m3-secondary-container: #dbeafe; 
+            --m3-on-secondary-container: #023859;
+            --m3-surface-variant: #e2e8f0;
+            --m3-success: #16a34a;
+            --m3-error: #dc2626;
         }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #e0e0e0;
+            background-color: #e2e8f0;
             color: var(--text-color);
             margin: 0;
             padding: 20px;
@@ -26,291 +37,195 @@
             flex-direction: column;
             align-items: center;
         }
+
+        /* Material 3 Styled Toolbar */
         .toolbar {
             margin-bottom: 20px;
-            text-align: center;
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 12px 24px;
+            border-radius: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
         }
+
         .toolbar button {
-            background-color: var(--secondary-color);
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             border: none;
-            padding: 10px 20px;
-            font-size: 15px;
+            padding: 8px 16px;
+            font-size: 13px;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 100px;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
         }
-        .toolbar button:hover {
-            background-color: var(--primary-color);
-        }
-        .toolbar button.danger {
-            background-color: #dc3545;
-        }
-        .toolbar button.danger:hover {
-            background-color: #c82333;
-        }
-        .toolbar select {
-            padding: 10px;
-            font-size: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            outline: none;
-        }
+
+        .primary-btn { background-color: var(--m3-primary); color: var(--m3-on-primary); }
+        .primary-btn:hover { box-shadow: 0 4px 8px rgba(3, 27, 51, 0.3); transform: translateY(-1px); }
+        .tonal-btn { background-color: var(--m3-secondary-container); color: var(--m3-on-secondary-container); }
+        .tonal-btn:hover { background-color: #bfdbfe; }
         
-        /* A4 Size Setup */
+        /* A4 Size Setup (Strict 1 Page Fit) */
         .invoice-container {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm; /* Strict A4 Height */
             background: white;
-            padding: 20mm;
+            padding: 12mm 15mm; /* Reduced padding to fit 1 page */
             box-sizing: border-box;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
+            overflow: hidden; /* Prevent visual overflow */
         }
-        /* Editable highlight */
+
         [contenteditable="true"]:hover {
             background-color: #fff9c4;
             outline: 1px dashed #ccc;
             cursor: text;
+            border-radius: 4px;
         }
         
-        /* Header */
+        /* Invoice Inner Layout */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
-        .logo-section {
-            max-width: 350px;
-        }
-        .logo-section img {
-            max-width: 220px;
-            height: auto;
-            margin-bottom: 15px;
-        }
-        .company-details {
-            font-size: 12px;
-            color: #555;
-            line-height: 1.5;
-        }
-        .company-name {
-            font-weight: 700;
-            font-size: 15px;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        .contact-line {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-bottom: 6px;
-        }
-        .contact-line .lucide {
-            width: 14px;
-            height: 14px;
-            color: var(--secondary-color);
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
+        .logo-section { display: flex; flex-direction: column; gap: 10px; }
         
-        .invoice-title {
-            text-align: right;
-        }
-        .invoice-title h1 {
-            color: var(--primary-color);
-            font-size: 36px;
-            margin: 0 0 10px 0;
-            letter-spacing: 2px;
-        }
-        .invoice-meta {
-            display: grid;
-            grid-template-columns: auto auto;
-            gap: 5px 15px;
-            font-size: 14px;
-            text-align: right;
-        }
-        .invoice-meta strong {
-            color: var(--primary-color);
-        }
+        #company-logo { transition: max-width 0.3s ease; }
+        #company-logo.format-standard { max-width: 180px; }
+        #company-logo.format-horizontal { max-width: 280px; }
 
-        /* Information Section */
-        .info-section {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        .bill-to h3, .travel-details h3 {
-            color: var(--secondary-color);
-            border-bottom: 1px solid #eee;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        .bill-to p, .travel-details p {
-            margin: 5px 0;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        .travel-details {
-            background-color: #f4f8fb;
-            padding: 15px;
-            border-radius: 5px;
-            min-width: 250px;
-        }
+        .company-details { font-size: 11px; color: #555; line-height: 1.4; }
+        .company-name { font-weight: 700; font-size: 14px; color: var(--primary-color); margin-bottom: 6px; }
+        .contact-line { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+        .contact-line .lucide { width: 12px; height: 12px; color: var(--secondary-color); margin-top: 2px; }
+        
+        .invoice-title { text-align: right; }
+        .invoice-title h1 { color: var(--primary-color); font-size: 30px; margin: 0 0 8px 0; letter-spacing: 1px; }
+        .invoice-meta { display: grid; grid-template-columns: auto auto; gap: 4px 12px; font-size: 12px; text-align: right; }
+        .invoice-meta strong { color: var(--primary-color); }
 
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        th {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-        }
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-        }
-        th.text-right, td.text-right {
-            text-align: right;
-        }
-        th.text-center, td.text-center {
-            text-align: center;
-        }
+        .info-section { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .bill-to h3, .travel-details h3 { color: var(--secondary-color); border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 8px; font-size: 14px; }
+        .bill-to p, .travel-details p { margin: 4px 0; font-size: 12px; line-height: 1.4; }
+        .travel-details { background-color: #f4f8fb; padding: 12px; border-radius: 5px; min-width: 220px; }
 
-        /* Totals */
-        .totals-section {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 40px;
-        }
-        .totals-box {
-            width: 300px;
-        }
-        .totals-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        .totals-row.grand-total {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-color);
-            border-top: 2px solid var(--primary-color);
-            padding-top: 10px;
-            margin-top: 5px;
-        }
+        table.invoice-tbl { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        table.invoice-tbl th { background-color: var(--primary-color); color: white; padding: 10px; text-align: left; font-size: 12px; }
+        table.invoice-tbl td { padding: 10px; border-bottom: 1px solid #ddd; font-size: 12px; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
 
-        /* Payment Section */
-        .payment-section {
-            display: flex;
-            justify-content: space-between;
-            background-color: var(--bg-color);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-        .bank-details h3 {
-            margin: 0 0 15px 0;
-            color: var(--primary-color);
-            font-size: 16px;
-        }
-        .bank-details p {
-            margin: 5px 0;
-            font-size: 13px;
-        }
-        .qr-section {
-            text-align: center;
+        .totals-section { display: flex; justify-content: flex-end; margin-bottom: 25px; }
+        .totals-box { width: 260px; }
+        .totals-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+        .totals-row.grand-total { font-size: 16px; font-weight: 700; color: var(--primary-color); border-top: 2px solid var(--primary-color); padding-top: 8px; margin-top: 4px; }
+
+        .payment-section { display: flex; justify-content: space-between; background-color: var(--bg-color); padding: 15px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .bank-details h3 { margin: 0 0 10px 0; color: var(--primary-color); font-size: 14px; }
+        .bank-details p { margin: 4px 0; font-size: 11px; }
+        .qr-section { text-align: center; background: white; padding: 8px; border-radius: 5px; border: 1px solid #ddd; }
+        .qr-section img { width: 80px; height: 80px; }
+        .qr-section p { margin: 6px 0 0 0; font-size: 10px; font-weight: 600; }
+
+        .footer { margin-top: 20px; text-align: center; font-size: 10px; color: #777; border-top: 1px solid #eee; padding-top: 15px; }
+
+        /* --- Saved Invoices Dashboard --- */
+        .dashboard-container {
+            width: 210mm;
             background: white;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-sizing: border-box;
         }
-        .qr-section img {
-            width: 100px;
-            height: 100px;
+        .dashboard-container h2 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .qr-section p {
-            margin: 8px 0 0 0;
-            font-size: 12px;
-            font-weight: 600;
+        table.dash-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.dash-tbl th { background-color: #f1f5f9; color: #475569; padding: 12px; text-align: left; font-weight: 600; border-radius: 6px; }
+        table.dash-tbl td { padding: 12px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        
+        /* Status Toggle Pill Button */
+        .status-btn {
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
-
-        /* Footer */
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 12px;
-            color: #777;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
+        .status-paid { background-color: #dcfce7; color: var(--m3-success); }
+        .status-unpaid { background-color: #fee2e2; color: var(--m3-error); }
+        
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-color); padding: 4px; border-radius: 4px; }
+        .action-btn:hover { background-color: #f1f5f9; }
+        .action-btn.del { color: var(--m3-error); }
 
         /* Print Settings */
         @media print {
             body { background: white; padding: 0; }
-            .toolbar { display: none !important; }
-            .invoice-container { box-shadow: none; margin: 0; padding: 15mm; width: 100%; }
+            .toolbar, .dashboard-container { display: none !important; }
+            .invoice-container { box-shadow: none; margin: 0; padding: 10mm; height: 297mm; width: 210mm; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Toolbar -->
     <div class="toolbar">
-        <button onclick="generatePDF()">Download PDF & Save</button>
-        <select id="saved-invoices-dropdown" onchange="loadInvoice(this.value)">
-            <option value="">-- Load Saved Invoice --</option>
-        </select>
-        <button class="danger" onclick="clearSavedInvoices()">Clear Saved</button>
+        <button class="primary-btn" onclick="generatePDF()">
+            <i data-lucide="download"></i> Save & Download A4
+        </button>
+        <button class="tonal-btn" onclick="sendWhatsApp()">
+            <i data-lucide="message-circle"></i> WhatsApp
+        </button>
+        <button class="tonal-btn" onclick="sendEmail()">
+            <i data-lucide="mail-plus"></i> Email
+        </button>
+        <button class="tonal-btn" onclick="toggleLogoFormat()">
+            <i data-lucide="image"></i> Toggle Logo
+        </button>
     </div>
 
+    <!-- Invoice Template -->
     <div class="invoice-container" id="invoice-content">
-        <!-- Header -->
         <div class="header">
             <div class="logo-section">
-                <!-- Updated Logo Link -->
-                <img src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
-                
+                <img id="company-logo" class="format-standard" src="assets/logo-client.png" alt="InspireGo Travel & Tourism">
                 <div class="company-details" contenteditable="true">
                     <div class="company-name">INSPIRE GO TRAVEL & TOURISM</div>
-                    
                     <div class="contact-line">
-                        <i data-lucide="map-pin"></i>
-                        <span>Karaparamba, Calicut, Kozhikode,<br>Kerala, India, 673010.</span>
+                        <i data-lucide="map-pin"></i> <span>Karaparamba, Calicut, Kozhikode, Kerala, India, 673010.</span>
                     </div>
-                    
                     <div class="contact-line">
-                        <i data-lucide="phone"></i>
-                        <span>India: 9947290770<br>UAE: +971 555252018</span>
+                        <i data-lucide="phone"></i> <span>India: 9947290770 | UAE: +971 555252018</span>
                     </div>
-
                     <div class="contact-line">
-                        <i data-lucide="mail"></i>
-                        <span>inspiregoa800@gmail.com</span>
-                    </div>
-                    
-                    <div class="contact-line">
-                        <i data-lucide="globe"></i>
-                        <span>www.inspirego.com</span>
+                        <i data-lucide="mail"></i> <span>inspiregoa800@gmail.com | www.inspirego.com</span>
                     </div>
                 </div>
             </div>
@@ -319,37 +234,34 @@
                 <h1>INVOICE</h1>
                 <div class="invoice-meta">
                     <strong>Invoice No:</strong> <span id="inv-no" contenteditable="true">INV-2026-0109</span>
-                    <strong>Date:</strong> <span contenteditable="true">09 Oct 2026</span>
+                    <strong>Date:</strong> <span id="inv-date" contenteditable="true">09 Oct 2026</span>
                     <strong>Due Date:</strong> <span contenteditable="true">15 Oct 2026</span>
                 </div>
             </div>
         </div>
 
-        <!-- Info Section -->
         <div class="info-section">
             <div class="bill-to">
                 <h3>Bill To</h3>
                 <div contenteditable="true">
-                    <strong>Mr. John Doe</strong><br>
+                    <strong><span id="client-name">Mr. John Doe</span></strong><br>
                     123 Client Address Street<br>
                     City, State, Zip Code<br>
-                    Phone: +971 50 123 4567<br>
-                    Email: john.doe@example.com
+                    Phone: +971 50 123 4567
                 </div>
             </div>
             <div class="travel-details">
                 <h3>Travel Details</h3>
                 <div contenteditable="true">
-                    <p><strong>Package Name:</strong> Dubai Premium Vacation</p>
-                    <p><strong>Travel Date:</strong> 20 Oct 2026 - 25 Oct 2026</p>
-                    <p><strong>No. of Pax:</strong> 2 Adults, 1 Child</p>
-                    <p><strong>Booking Ref:</strong> IG-DXB-8890</p>
+                    <p><strong>Package:</strong> Dubai Premium Vacation</p>
+                    <p><strong>Date:</strong> 20 Oct 2026 - 25 Oct 2026</p>
+                    <p><strong>Pax:</strong> 2 Adults, 1 Child</p>
+                    <p><strong>Ref:</strong> IG-DXB-8890</p>
                 </div>
             </div>
         </div>
 
-        <!-- Items Table -->
-        <table>
+        <table class="invoice-tbl">
             <thead>
                 <tr>
                     <th>Description</th>
@@ -380,25 +292,20 @@
             </tbody>
         </table>
 
-        <!-- Totals -->
         <div class="totals-section">
             <div class="totals-box" contenteditable="true">
                 <div class="totals-row">
-                    <span>Subtotal:</span>
-                    <span>AED 6,150.00</span>
+                    <span>Subtotal:</span> <span>AED 6,150.00</span>
                 </div>
                 <div class="totals-row">
-                    <span>Tax (5%):</span>
-                    <span>AED 307.50</span>
+                    <span>Tax (5%):</span> <span>AED 307.50</span>
                 </div>
                 <div class="totals-row grand-total">
-                    <span>Grand Total:</span>
-                    <span>AED 6,457.50</span>
+                    <span>Grand Total:</span> <span id="grand-total-val">AED 6,457.50</span>
                 </div>
             </div>
         </div>
 
-        <!-- Payment Details -->
         <div class="payment-section">
             <div class="bank-details" contenteditable="true">
                 <h3>Payment Details (Bank Transfer)</h3>
@@ -407,94 +314,197 @@
                 <p><strong>Account No:</strong> 1015941674801</p>
                 <p><strong>IBAN:</strong> AE790260001015941674801</p>
             </div>
-            
             <div class="qr-section">
                 <img id="upi-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=inspirego@sbi&pn=InspireGo" alt="UPI QR Code">
                 <p>Scan to Pay via UPI</p>
-                <div style="font-size: 11px; margin-top: 5px;">
+                <div style="font-size: 9px; margin-top: 4px;">
                     UPI ID: <span id="upi-id" contenteditable="true" onblur="updateQR()">inspirego@sbi</span>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <div class="footer" contenteditable="true">
-            <p><strong>Terms & Conditions:</strong> 1. Payment is due within the date specified. 2. All packages are subject to cancellation policies. 3. Ensure passport validity of at least 6 months.</p>
+            <p><strong>Terms & Conditions:</strong> 1. Payment due within the date specified. 2. Packages subject to cancellation policies. 3. Ensure passport validity of at least 6 months.</p>
             <p>Thank you for choosing InspireGo Travel & Tourism! Have a safe and wonderful journey.</p>
         </div>
     </div>
 
+    <!-- Saved Invoices Dashboard -->
+    <div class="dashboard-container">
+        <h2><i data-lucide="layout-dashboard"></i> Saved Invoices Log</h2>
+        <table class="dash-tbl">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Invoice No</th>
+                    <th>Date</th>
+                    <th>Client Name</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="dashboard-body">
+                <!-- Data populated by JS -->
+            </tbody>
+        </table>
+    </div>
+
     <script>
-        // Initialize Icons and Dropdown on load
+        // --- Initialization ---
         window.onload = function() {
             lucide.createIcons();
-            updateSavedInvoicesDropdown();
+            applySavedLogoFormat();
+            renderDashboard();
         };
 
-        // Function to update QR code
+        // --- Logo Toggle ---
+        function toggleLogoFormat() {
+            const logo = document.getElementById('company-logo');
+            if (logo.classList.contains('format-horizontal')) {
+                logo.classList.replace('format-horizontal', 'format-standard');
+                localStorage.setItem('inspirego_logo_format', 'standard');
+            } else {
+                logo.classList.replace('format-standard', 'format-horizontal');
+                localStorage.setItem('inspirego_logo_format', 'horizontal');
+            }
+        }
+        function applySavedLogoFormat() {
+            const savedFormat = localStorage.getItem('inspirego_logo_format');
+            const logo = document.getElementById('company-logo');
+            if (savedFormat === 'horizontal') {
+                logo.classList.replace('format-standard', 'format-horizontal');
+            }
+        }
+
+        // --- Data Extraction & LocalStorage ---
+        function saveInvoice() {
+            const invoiceNo = document.getElementById('inv-no').innerText.trim() || 'Draft-' + Date.now();
+            const date = document.getElementById('inv-date').innerText.trim();
+            const clientName = document.getElementById('client-name').innerText.trim();
+            const amount = document.getElementById('grand-total-val').innerText.trim();
+            const htmlContent = document.getElementById('invoice-content').innerHTML;
+            
+            let invoices = JSON.parse(localStorage.getItem('inspirego_db')) || [];
+            
+            // Check if invoice exists, if so update it, otherwise add new
+            const existingIndex = invoices.findIndex(inv => inv.id === invoiceNo);
+            
+            const invoiceData = {
+                id: invoiceNo,
+                date: date,
+                client: clientName,
+                amount: amount,
+                status: existingIndex >= 0 ? invoices[existingIndex].status : 'unpaid', // Keep status if updating
+                html: htmlContent
+            };
+
+            if(existingIndex >= 0) {
+                invoices[existingIndex] = invoiceData;
+            } else {
+                invoices.push(invoiceData);
+            }
+            
+            localStorage.setItem('inspirego_db', JSON.stringify(invoices));
+            renderDashboard();
+        }
+
+        // --- Dashboard Logic ---
+        function renderDashboard() {
+            const tbody = document.getElementById('dashboard-body');
+            tbody.innerHTML = '';
+            let invoices = JSON.parse(localStorage.getItem('inspirego_db')) || [];
+
+            if(invoices.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">No invoices saved yet. Click "Save & Download A4" to save an invoice here.</td></tr>';
+                return;
+            }
+
+            invoices.forEach((inv, index) => {
+                const slNo = index + 1;
+                const isPaid = inv.status === 'paid';
+                const statusClass = isPaid ? 'status-paid' : 'status-unpaid';
+                const statusIcon = isPaid ? 'check-circle-2' : 'clock';
+                const statusText = isPaid ? 'Paid' : 'Not Paid';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${slNo}</td>
+                    <td><strong>${inv.id}</strong></td>
+                    <td>${inv.date}</td>
+                    <td>${inv.client}</td>
+                    <td><strong>${inv.amount}</strong></td>
+                    <td>
+                        <button class="status-btn ${statusClass}" onclick="toggleStatus('${inv.id}')">
+                            <i data-lucide="${statusIcon}" style="width:14px;height:14px;"></i> ${statusText}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="action-btn" title="Load" onclick="loadInvoice('${inv.id}')"><i data-lucide="edit-3"></i></button>
+                        <button class="action-btn del" title="Delete" onclick="deleteInvoice('${inv.id}')"><i data-lucide="trash-2"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function toggleStatus(invoiceId) {
+            let invoices = JSON.parse(localStorage.getItem('inspirego_db')) || [];
+            const index = invoices.findIndex(inv => inv.id === invoiceId);
+            if(index >= 0) {
+                invoices[index].status = invoices[index].status === 'paid' ? 'unpaid' : 'paid';
+                localStorage.setItem('inspirego_db', JSON.stringify(invoices));
+                renderDashboard();
+            }
+        }
+
+        function loadInvoice(invoiceId) {
+            let invoices = JSON.parse(localStorage.getItem('inspirego_db')) || [];
+            const invoice = invoices.find(inv => inv.id === invoiceId);
+            if(invoice) {
+                document.getElementById('invoice-content').innerHTML = invoice.html;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                lucide.createIcons();
+                applySavedLogoFormat();
+            }
+        }
+
+        function deleteInvoice(invoiceId) {
+            if(confirm(`Are you sure you want to delete ${invoiceId}?`)) {
+                let invoices = JSON.parse(localStorage.getItem('inspirego_db')) || [];
+                invoices = invoices.filter(inv => inv.id !== invoiceId);
+                localStorage.setItem('inspirego_db', JSON.stringify(invoices));
+                renderDashboard();
+            }
+        }
+
+        // --- Comm Tools & PDF Generation ---
         function updateQR() {
             const upiId = document.getElementById('upi-id').innerText.trim();
             const qrImage = document.getElementById('upi-qr');
-            const qrData = `upi://pay?pa=${upiId}&pn=InspireGo`;
-            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
+            qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${upiId}&pn=InspireGo`;
         }
 
-        // Local Storage: Save Invoice
-        function saveInvoice() {
-            const invoiceNo = document.getElementById('inv-no').innerText.trim() || 'Draft-' + Date.now();
-            const content = document.getElementById('invoice-content').innerHTML;
-            
-            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
-            invoices[invoiceNo] = {
-                date: new Date().toLocaleString(),
-                html: content
-            };
-            
-            localStorage.setItem('inspirego_saved_invoices', JSON.stringify(invoices));
-            updateSavedInvoicesDropdown();
-        }
-
-        // Local Storage: Load Invoice
-        function loadInvoice(invoiceNo) {
-            if (!invoiceNo) return;
-            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
-            
-            if (invoices[invoiceNo]) {
-                document.getElementById('invoice-content').innerHTML = invoices[invoiceNo].html;
-                lucide.createIcons(); // Reload icons since DOM was replaced
-            }
-        }
-
-        // Local Storage: Update Dropdown List
-        function updateSavedInvoicesDropdown() {
-            const dropdown = document.getElementById('saved-invoices-dropdown');
-            dropdown.innerHTML = '<option value="">-- Load Saved Invoice --</option>';
-            
-            let invoices = JSON.parse(localStorage.getItem('inspirego_saved_invoices')) || {};
-            
-            // Reverse so newest is likely near the bottom/top based on order
-            for (const [invNo, data] of Object.entries(invoices)) {
-                let option = document.createElement('option');
-                option.value = invNo;
-                option.textContent = `${invNo} (${data.date})`;
-                dropdown.appendChild(option);
-            }
-        }
-
-        // Local Storage: Clear Storage
-        function clearSavedInvoices() {
-            if(confirm("Are you sure you want to delete all saved invoices from your browser? This cannot be undone.")) {
-                localStorage.removeItem('inspirego_saved_invoices');
-                updateSavedInvoicesDropdown();
-                alert("All saved invoices have been cleared.");
-            }
-        }
-
-        // Generate and download A4 PDF
-        function generatePDF() {
-            // Save state before downloading
+        function sendWhatsApp() {
             saveInvoice();
-            
+            const invNo = document.getElementById('inv-no').innerText.trim();
+            const total = document.getElementById('grand-total-val').innerText.trim();
+            const message = `Hello,\n\nPlease find the details for your invoice ${invNo} amounting to ${total}.\n\nThank you for choosing InspireGo Travel & Tourism!`;
+            const phone = prompt("Enter customer WhatsApp Number with country code (e.g., 971501234567):", "");
+            if (phone) window.open(`https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function sendEmail() {
+            saveInvoice();
+            const invNo = document.getElementById('inv-no').innerText.trim();
+            const total = document.getElementById('grand-total-val').innerText.trim();
+            const email = prompt("Enter customer Email address:", "");
+            if (email) window.location.href = `mailto:${email}?subject=Invoice ${invNo} from InspireGo Travel & Tourism&body=${encodeURIComponent(`Hello,\n\nPlease find the details for your invoice ${invNo} amounting to${total}.\n\nThank you for choosing InspireGo Travel & Tourism!`)}`;
+        }
+
+        function generatePDF() {
+            saveInvoice(); 
             const element = document.getElementById('invoice-content');
             const invoiceNumber = document.getElementById('inv-no').innerText.trim() || 'Invoice';
             
@@ -502,7 +512,7 @@
                 margin:       0,
                 filename:     `InspireGo_${invoiceNumber}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: 794 }, // A4 width at 96 DPI to lock layout
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
