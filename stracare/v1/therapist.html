@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CMB - Therapist Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="therapist-module">
+    
+    <style>
+    :root {
+        --primary: #2563EB;
+        --primary-light: #EFF6FF;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --danger: #EF4444;
+    }
+
+        #therapist-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; }
+        #therapist-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #therapist-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #therapist-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #therapist-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #therapist-module .input-group { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #therapist-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #therapist-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #therapist-module .readonly-input { background: #F4F4F4; color: var(--text-muted); font-weight: 600; pointer-events: none; }
+
+        #therapist-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #therapist-module .btn-primary:active { opacity: 0.8; }
+        #therapist-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        
+        #therapist-module .icon-action { color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
+        #therapist-module .icon-action:hover { color: var(--primary); }
+        #therapist-module .icon-action.delete:hover { color: var(--danger); }
+
+        #therapist-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #therapist-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        #therapist-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0; }
+        
+        /* Table Responsive handles Google Sheets style scrolling */
+        #therapist-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #therapist-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #therapist-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #therapist-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #therapist-module .saas-table tr:last-child td { border-bottom: none; }
+        
+        #therapist-module .t-id { font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px; }
+
+        /* DELETED the @media (max-width: 767px) that was turning rows into cards */
+    </style>
+
+    <div class="section-title">
+        <h2 style="margin: 0;">Manage Therapists</h2>
+    </div>
+
+    <div class="form-card">
+        <form id="therapist-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="therapistDocId" value="">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Therapist ID</label>
+                    <input type="text" id="therapistIdDisplay" class="form-input readonly-input" value="Auto-Generated" readonly>
+                </div>
+                
+                <div>
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" id="therapistName" class="form-input" placeholder="e.g. Dr. Anjali V." required>
+                </div>
+
+                <div>
+                    <label class="form-label">Specialised In *</label>
+                    <input type="text" id="therapistSpec" class="form-input" placeholder="e.g. Physiotherapy, Chiropractic" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Assign Branch *</label>
+                    <select id="therapistBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="form-label">Contact No *</label>
+                    <input type="tel" id="therapistContact" class="form-input" placeholder="10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: flex-end; margin-top: 21px;">
+                    <button type="button" class="btn-outline" onclick="window.clearTherapistForm()">Clear</button>
+                    <button type="button" class="btn-primary" id="saveTherapistBtn" onclick="window.saveTherapist()">
+                        <span class="material-symbols-rounded">person_add</span> Save
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h4>Therapist Directory</h4>
+            <div style="background: #FAFAFA; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                <input type="text" id="therapistSearchInput" onkeyup="window.searchTherapists()" placeholder="Search directory..." style="border: none; background: transparent; outline: none; font-size: 13px; width: 130px;">
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Therapist Name</th>
+                        <th>Specialisation</th>
+                        <th>Branch</th>
+                        <th>Contact Info</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="therapistTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        // 1. Import from your central config instead of re-initializing Firebase
+        import { auth, db } from './firebase-config.js'; 
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        window.therapistDataCache = {};
+
+        // --- AUTHENTICATION GATEKEEPER ---
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // User is NOT logged in. Destroy the module content and show a warning.
+                document.getElementById('therapist-module').innerHTML = `
+                    <div style="text-align: center; padding: 60px 20px; background: #FEF2F2; border-radius: 16px; border: 1px solid #FCA5A5; margin-top: 20px;">
+                        <span class="material-symbols-rounded" style="font-size: 48px; color: #EF4444; margin-bottom: 12px;">gpp_bad</span>
+                        <h2 style="color: #991B1B; margin-bottom: 8px;">Access Denied</h2>
+                        <p style="color: #7F1D1D; font-size: 14px;">You must be logged into the administrative dashboard to view this module.</p>
+                    </div>
+                `;
+                return; 
+            }
+
+            // User IS logged in. Proceed with bootstrapping the module.
+            window.loadBranchesForDropdown();
+            window.loadTherapists();
+        });
+
+        // --- 1. SAFE BRANCH LOADER (WITH RBAC) ---
+        window.loadBranchesForDropdown = async function() {
+            const select = document.getElementById('therapistBranch');
+            
+            // SECURITY: If standard user, lock the dropdown to their branch only
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                select.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                select.style.pointerEvents = 'none';
+                select.style.background = 'var(--grey-med)';
+                return; 
+            }
+
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                
+                snap.forEach(doc => {
+                    const bName = doc.data().name;
+                    if(bName) branchList.push(bName);
+                });
+
+                branchList.sort();
+
+                select.innerHTML = '<option value="">Select Branch</option>';
+                branchList.forEach(bName => {
+                    const option = document.createElement('option');
+                    option.value = bName;
+                    option.text = bName;
+                    select.appendChild(option);
+                });
+            } catch(e) {
+                console.error("Error loading branches", e);
+                select.innerHTML = '<option value="">Select Branch</option>';
+            }
+        };
+
+        // --- 2. LOAD THERAPISTS (WITH RBAC) ---
+        window.loadTherapists = async function() {
+            const tableBody = document.getElementById('therapistTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Loading therapists...</td></tr>';
+
+            try {
+                let q;
+                // Admin gets all, Branch users get only their branch
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "therapists"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = collection(db, "therapists");
+                }
+
+                const querySnapshot = await getDocs(q);
+                
+                tableBody.innerHTML = ''; 
+                window.therapistDataCache = {};
+                
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">No therapists added yet.</td></tr>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const docId = docSnap.id;
+                    window.therapistDataCache[docId] = data;
+
+                    // Fallbacks to prevent crashes
+                    const safeName = data.name || 'Unknown';
+                    const safeId = data.therapistId || 'TH-000';
+                    const safeSpec = data.specialisation || 'N/A';
+                    const safeBranch = data.branch || 'N/A';
+                    const safeContact = data.contact || data.mobile || 'N/A';
+
+                    // HIDE DELETE ICON IF NOT ADMIN
+                    let deleteIconHtml = '';
+                    if (window.currentUser && window.currentUser.role === 'admin') {
+                        deleteIconHtml = `<span class="material-symbols-rounded icon-action delete" title="Remove" style="margin-left: 8px;" onclick="window.deleteTherapist('${docId}')">delete</span>`;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td data-label="Name">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="t-id">${safeId}</span>
+                                <strong>${safeName}</strong>
+                            </div>
+                        </td>
+                        <td data-label="Specialisation">${safeSpec}</td>
+                        <td data-label="Branch">${safeBranch}</td>
+                        <td data-label="Contact">+91 ${safeContact}</td>
+                        <td data-label="Actions" style="text-align: right;">
+                            <span class="material-symbols-rounded icon-action" title="Edit" onclick="window.editTherapist('${docId}')">edit</span>
+                            ${deleteIconHtml}
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Firebase Read Error:", error);
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--danger);">Error loading data. Check Firestore rules.</td></tr>';
+            }
+        }
+
+        // --- 3. LIVE SEARCH ---
+        window.searchTherapists = function() {
+            const input = document.getElementById("therapistSearchInput").value.toLowerCase();
+            const trs = document.getElementById("therapistTableBody").getElementsByTagName("tr");
+            
+            for (let i = 0; i < trs.length; i++) {
+                if (trs[i].cells.length === 1) continue; 
+                const text = trs[i].innerText.toLowerCase();
+                trs[i].style.display = text.indexOf(input) > -1 ? "" : "none";
+            }
+        }
+
+        // --- 4. EDIT & DELETE ---
+        window.editTherapist = function(docId) {
+            const data = window.therapistDataCache[docId];
+            if(!data) return;
+
+            document.getElementById('therapistDocId').value = docId;
+            document.getElementById('therapistIdDisplay').value = data.therapistId || '';
+            document.getElementById('therapistName').value = data.name || '';
+            document.getElementById('therapistSpec').value = data.specialisation || '';
+            document.getElementById('therapistBranch').value = data.branch || '';
+            document.getElementById('therapistContact').value = data.contact || data.mobile || '';
+
+            document.getElementById('saveTherapistBtn').innerHTML = '<span class="material-symbols-rounded">save</span> Update';
+            
+            const mainContent = document.getElementById('main-content');
+            if(mainContent) mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            else window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.deleteTherapist = async function(docId) {
+            if(confirm("Are you sure you want to remove this therapist?")) {
+                try {
+                    await deleteDoc(doc(db, "therapists", docId));
+                    window.loadTherapists();
+                } catch(e) {
+                    alert("Error deleting record.");
+                }
+            }
+        }
+
+        window.clearTherapistForm = function() {
+            document.getElementById('therapist-form').reset();
+            document.getElementById('therapistDocId').value = '';
+            document.getElementById('therapistIdDisplay').value = 'Auto-Generated';
+            document.getElementById('saveTherapistBtn').innerHTML = '<span class="material-symbols-rounded">person_add</span> Save';
+            
+            // Ensure branch stays locked if user is not admin
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                document.getElementById('therapistBranch').value = window.currentUser.branch;
+            }
+        }
+
+        // --- 5. SAVE / UPDATE ---
+        window.saveTherapist = async function() {
+            const saveBtn = document.getElementById('saveTherapistBtn');
+            const docId = document.getElementById('therapistDocId').value;
+            
+            const name = document.getElementById('therapistName').value;
+            const spec = document.getElementById('therapistSpec').value;
+            const branch = document.getElementById('therapistBranch').value;
+            const contact = document.getElementById('therapistContact').value;
+
+            if(!name || !spec || !branch || !contact) {
+                return alert("Please fill all required fields!");
+            }
+
+            saveBtn.innerHTML = 'Saving...';
+            saveBtn.disabled = true;
+
+            const payload = {
+                name: name,
+                specialisation: spec,
+                branch: branch,
+                contact: contact,
+                mobile: contact,
+                updatedAt: new Date()
+            };
+
+            try {
+                if(docId) {
+                    await updateDoc(doc(db, "therapists", docId), payload);
+                    alert("Therapist updated successfully!");
+                } else {
+                    payload.therapistId = "TH-" + Math.floor(Math.random() * 900 + 100);
+                    payload.createdAt = new Date();
+                    await addDoc(collection(db, "therapists"), payload);
+                    alert("New Therapist added successfully!");
+                }
+
+                window.clearTherapistForm();
+                window.loadTherapists(); 
+
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to save. Check database rules.");
+            }
+
+            saveBtn.innerHTML = '<span class="material-symbols-rounded">person_add</span> Save';
+            saveBtn.disabled = false;
+        }
+
+    </script>
+</div>
+
+</body>
+</html>

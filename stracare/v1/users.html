@@ -1,0 +1,170 @@
+<div class="module-container">
+    <div style="padding: 24px;">
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px;">User Access Management</h2>
+        
+        <div style="background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 8px;">Edit Existing User Access</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                Click "Edit" on a user in the table below to update their role or branch assignment.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Registered Email</label>
+                    <input type="email" id="editUserEmail" placeholder="Select a user below to edit..." style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: #f0f0f0; cursor: not-allowed;" disabled>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Role</label>
+                    <select id="editUserRole" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;" onchange="window.toggleBranchInput()">
+                        <option value="user">Standard User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Branch Assignment</label>
+                    <input type="text" id="editUserBranch" placeholder="e.g. Mahe" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;">
+                </div>
+            </div>
+
+            <button id="saveUserBtn" onclick="window.updateUserAccess()" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">Update User Access</button>
+            <button onclick="window.clearUserForm()" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 8px;">Cancel Edit</button>
+            <div id="userMsg" style="margin-top: 12px; font-size: 13px; font-weight: bold;"></div>
+        </div>
+
+        <div class="dash-table-wrapper">
+            <table class="saas-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #FAFAFA; border-bottom: 1px solid var(--border);">
+                        <th style="padding: 12px;">Email</th>
+                        <th style="padding: 12px;">Role</th>
+                        <th style="padding: 12px;">Branch</th>
+                        <th style="padding: 12px; text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading users...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Security check
+        if (!window.currentUser || window.currentUser.role !== 'admin') {
+            document.querySelector('.module-container').innerHTML = '<div style="padding: 40px; text-align: center; color: var(--danger);"><h3>Access Denied. Admins Only.</h3></div>';
+        } else {
+            
+            // Toggle Branch input based on role
+            window.toggleBranchInput = function() {
+                const role = document.getElementById('editUserRole').value;
+                const branchInput = document.getElementById('editUserBranch');
+                if (role === 'admin') {
+                    branchInput.value = 'ALL';
+                    branchInput.disabled = true;
+                    branchInput.style.background = '#f0f0f0';
+                } else {
+                    if (branchInput.value === 'ALL') branchInput.value = '';
+                    branchInput.disabled = false;
+                    branchInput.style.background = 'white';
+                }
+            };
+
+            window.clearUserForm = function() {
+                document.getElementById('editUserEmail').value = '';
+                document.getElementById('editUserRole').value = 'user';
+                document.getElementById('editUserBranch').value = '';
+                window.toggleBranchInput();
+                document.getElementById('userMsg').innerText = '';
+            };
+
+            // Load Users from Firestore
+            window.loadUsers = async function() {
+                const tbody = document.getElementById('usersTableBody');
+                try {
+                    const querySnapshot = await getDocs(collection(db, "users"));
+                    let html = '';
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        const badgeColor = data.role === 'admin' ? 'background: #ECFDF5; color: #10B981;' : 'background: #EFF6FF; color: #2563EB;';
+                        
+                        html += `
+                            <tr style="border-bottom: 1px solid var(--border);">
+                                <td style="padding: 12px; font-weight: bold;">${doc.id}</td>
+                                <td style="padding: 12px;"><span style="padding: 4px 8px; border-radius: 6px; font-size: 11px; text-transform: uppercase; font-weight: bold; ${badgeColor}">${data.role}</span></td>
+                                <td style="padding: 12px; font-weight: 600;">${data.branch || '-'}</td>
+                                <td style="padding: 12px; text-align: right;">
+                                    <button onclick="window.editUserRow('${doc.id}', '${data.role}', '${data.branch}')" style="color: var(--primary); background: none; border: none; cursor: pointer; font-weight: bold;">Edit</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    tbody.innerHTML = html;
+                } catch(e) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="color:red; padding: 20px;">Error loading users: ${e.message}</td></tr>`;
+                }
+            };
+
+            // Prepare form for editing existing user
+            window.editUserRow = function(email, role, branch) {
+                document.getElementById('editUserEmail').value = email;
+                document.getElementById('editUserRole').value = role;
+                document.getElementById('editUserBranch').value = branch;
+                window.toggleBranchInput();
+                
+                // Scroll to top smoothly
+                document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Update Role/Branch ONLY (Cannot create)
+            window.updateUserAccess = async function() {
+                const email = document.getElementById('editUserEmail').value;
+                const role = document.getElementById('editUserRole').value;
+                const branch = document.getElementById('editUserBranch').value.trim();
+                const btn = document.getElementById('saveUserBtn');
+                const msg = document.getElementById('userMsg');
+
+                if(!email) {
+                    msg.innerText = "Please click 'Edit' on a user from the table below first.";
+                    msg.style.color = "var(--danger)";
+                    return;
+                }
+
+                if(!branch) {
+                    msg.innerText = "Branch assignment cannot be empty.";
+                    msg.style.color = "var(--danger)";
+                    return;
+                }
+
+                btn.innerText = "Saving...";
+                btn.disabled = true;
+
+                try {
+                    // updateDoc ensures we ONLY edit existing records, we cannot accidentally create new ones here.
+                    await updateDoc(doc(db, "users", email), {
+                        role: role,
+                        branch: role === 'admin' ? 'ALL' : branch,
+                        updatedAt: new Date()
+                    });
+
+                    msg.innerText = `Successfully updated access for ${email}!`;
+                    msg.style.color = "var(--success)";
+                    
+                    window.clearUserForm();
+                    window.loadUsers();
+
+                } catch(e) {
+                    msg.innerText = "Error: " + e.message;
+                    msg.style.color = "var(--danger)";
+                } finally {
+                    btn.innerText = "Update User Access";
+                    btn.disabled = false;
+                }
+            };
+
+            window.loadUsers();
+        }
+    </script>
+</div>
