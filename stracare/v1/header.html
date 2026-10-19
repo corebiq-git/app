@@ -1,78 +1,82 @@
 <style>
     .dashboard-header {
-        min-height: 72px;
+        min-height: 64px;
         display: flex;
         align-items: center;
         gap: 16px;
-        padding: 10px 24px;
-        background: var(--surface);
-        border-bottom: 1px solid var(--outline-soft);
-        box-shadow: 0 2px 8px rgba(31, 35, 40, .04);
+        padding: 8px 24px;
+        background: var(--surface, #FFFFFF);
+        border-bottom: 1px solid var(--outline-soft, #C4C7C5);
         position: relative;
         z-index: 60;
+        font-family: "Google Sans", "Google Sans Text", Roboto, "Outfit", sans-serif;
     }
 
     .sidebar-toggle-button {
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         display: grid;
-        flex: 0 0 42px;
+        flex: 0 0 40px;
         place-items: center;
         border: 0;
-        border-radius: 50%;
+        border-radius: 50%; /* M3 Circular interaction */
         background: transparent;
-        color: #0B1F4B;
+        color: var(--text-muted, #444746);
         cursor: pointer;
-        transition: color .18s ease;
+        transition: background 0.2s, color 0.2s;
     }
 
     .sidebar-toggle-button:hover,
     .sidebar-toggle-button[aria-expanded="true"] {
-        background: transparent;
-        color: #0B1F4B;
+        background: rgba(31, 31, 31, 0.08); /* M3 Hover state */
+        color: var(--text-main, #1F1F1F);
     }
 
     .sidebar-toggle-button:focus-visible,
     .notification-button:focus-visible,
     .profile-button:focus-visible {
-        outline: 2px solid #0B1F4B;
+        outline: 2px solid var(--primary);
         outline-offset: 2px;
     }
 
     .sidebar-toggle-button .material-symbols-rounded {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .module-search {
         position: relative;
-        width: min(100%, 520px);
+        width: min(100%, 720px);
         flex: 1 1 420px;
         margin: 0;
     }
 
+    /* M3 Search Bar */
     .module-search-box {
-        height: 44px;
+        height: 48px;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 0 14px;
-        background: #F8F9FA;
-        border: 1px solid var(--primary-soft);
-        border-radius: 24px;
-        color: var(--muted);
-        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        gap: 12px;
+        padding: 0 16px;
+        background: var(--surface-container, #F0F4F9);
+        border: none;
+        border-radius: 9999px; /* Pill shape */
+        color: var(--text-muted, #444746);
+        transition: background 0.2s, box-shadow 0.2s;
     }
 
     .module-search-box:focus-within {
-        background: var(--surface);
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px var(--primary-soft);
+        background: var(--surface, #FFFFFF);
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15); /* M3 Elevation 1 */
     }
 
     .module-search-box > .material-symbols-rounded {
         flex: 0 0 auto;
-        font-size: 21px;
-        color: var(--primary);
+        font-size: 20px;
+        color: var(--text-muted, #444746);
+    }
+    
+    .module-search-box:focus-within > .material-symbols-rounded {
+        color: var(--primary, #0B1F4B);
     }
 
     .module-search-input {
@@ -82,33 +86,34 @@
         border: 0;
         outline: 0;
         background: transparent;
-        color: var(--text);
+        color: var(--text-main, #1F1F1F);
         font: inherit;
-        font-size: 14px;
+        font-size: 16px;
     }
 
     .module-search-input::placeholder {
-        color: var(--muted);
+        color: var(--text-muted, #444746);
     }
 
     .module-search-clear {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         display: none;
-        flex: 0 0 30px;
+        flex: 0 0 32px;
         align-items: center;
         justify-content: center;
         padding: 0;
         border: 0;
         border-radius: 50%;
         background: transparent;
-        color: var(--muted);
+        color: var(--text-muted, #444746);
         cursor: pointer;
+        transition: background 0.2s, color 0.2s;
     }
 
     .module-search-clear:hover {
-        background: #E9EAEC;
-        color: var(--primary);
+        background: rgba(31, 31, 31, 0.08);
+        color: var(--text-main, #1F1F1F);
     }
 
     .module-search-input:not(:placeholder-shown) ~ .module-search-clear {
@@ -116,9 +121,10 @@
     }
 
     .module-search-clear .material-symbols-rounded {
-        font-size: 19px;
+        font-size: 20px;
     }
 
+    /* M3 Floating Panel */
     .module-search-results {
         position: absolute;
         top: calc(100% + 8px);
@@ -127,11 +133,11 @@
         display: none;
         max-height: min(60vh, 420px);
         overflow-y: auto;
-        padding: 6px;
-        background: var(--surface);
-        border: 1px solid var(--outline-soft);
-        border-radius: 14px;
-        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        padding: 8px;
+        background: var(--surface, #FFFFFF);
+        border: none;
+        border-radius: 16px; /* M3 Radius */
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15); /* M3 Elevation 2 */
         z-index: 100;
     }
 
@@ -143,34 +149,36 @@
         width: 100%;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
+        gap: 12px;
+        padding: 12px 16px;
         border: 0;
-        border-radius: 9px;
+        border-radius: 9999px; /* M3 List Item Pill */
         background: transparent;
-        color: var(--text);
+        color: var(--text-main, #1F1F1F);
         text-align: left;
         cursor: pointer;
         font: inherit;
-        font-size: 13px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: background 0.2s;
     }
 
     .module-search-result:hover,
     .module-search-result:focus-visible {
         outline: 0;
-        background: #F8F9FA;
-        color: var(--primary);
+        background: rgba(31, 31, 31, 0.04);
     }
 
     .module-search-result .material-symbols-rounded {
-        color: var(--primary);
+        color: var(--text-muted, #444746);
         font-size: 20px;
     }
 
     .module-search-empty {
-        padding: 14px 12px;
-        color: var(--muted);
-        font-size: 13px;
+        padding: 16px;
+        color: var(--text-muted, #444746);
+        font-size: 14px;
+        text-align: center;
     }
 
     .header-actions {
@@ -178,20 +186,34 @@
         flex: 0 0 auto;
         display: flex;
         align-items: center;
-        gap: 9px;
+        gap: 8px;
     }
 
-    .notification-button {
+    .notification-button,
+    .profile-button {
         position: relative;
-        width: 42px;
-        height: 42px;
+        width: 40px;
+        height: 40px;
         display: grid;
         place-items: center;
         border: 0;
         border-radius: 50%;
         background: transparent;
-        color: #0B1F4B;
+        color: var(--text-muted, #444746);
         cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .notification-button:hover,
+    .profile-button:hover,
+    .profile-button[aria-expanded="true"] {
+        background: rgba(31, 31, 31, 0.08);
+        color: var(--text-main, #1F1F1F);
+    }
+
+    .notification-button .material-symbols-rounded,
+    .profile-button .material-symbols-rounded {
+        font-size: 24px;
     }
 
     .notification-button.has-unread .material-symbols-rounded {
@@ -201,18 +223,13 @@
 
     .notification-badge {
         position: absolute;
-        top: 3px;
-        right: 3px;
-        width: 10px;
-        height: 10px;
+        top: 6px;
+        right: 6px;
+        width: 8px;
+        height: 8px;
         border: 2px solid var(--surface);
         border-radius: 50%;
-        background: #D93025;
-        box-shadow: 0 0 0 0 rgba(217,48,37,.45);
-    }
-
-    .notification-button.has-unread .notification-badge {
-        animation: notification-pulse 1.8s ease-out infinite;
+        background: var(--danger, #B3261E);
     }
 
     @keyframes notification-ring {
@@ -221,58 +238,22 @@
         16%, 32%, 48% { transform: rotate(-13deg); }
     }
 
-    @keyframes notification-pulse {
-        0% { box-shadow: 0 0 0 0 rgba(217,48,37,.42); }
-        70%, 100% { box-shadow: 0 0 0 7px rgba(217,48,37,0); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
-        .notification-button.has-unread .material-symbols-rounded,
-        .notification-button.has-unread .notification-badge { animation: none; }
+        .notification-button.has-unread .material-symbols-rounded { animation: none; }
     }
 
-    .notification-button:hover {
-        background: transparent;
-        color: #0B1F4B;
-    }
-
-    .notification-button .material-symbols-rounded {
-        font-size: 22px;
-    }
-
-    .profile-button {
-        width: 42px;
-        height: 42px;
-        display: grid;
-        place-items: center;
-        border: 0;
-        border-radius: 50%;
-        background: transparent;
-        color: #0B1F4B;
-        cursor: pointer;
-    }
-
-    .profile-button:hover,
-    .profile-button[aria-expanded="true"] {
-        background: transparent;
-        color: #0B1F4B;
-    }
-
-    .profile-button .material-symbols-rounded {
-        font-size: 23px;
-    }
-
+    /* M3 Profile Floating Panel */
     .profile-menu {
         position: absolute;
-        top: calc(100% + 9px);
+        top: calc(100% + 8px);
         right: 0;
         display: none;
-        width: min(290px, calc(100vw - 24px));
-        padding: 16px;
-        background: var(--surface);
-        border: 1px solid var(--outline-soft);
-        border-radius: 14px;
-        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        width: min(320px, calc(100vw - 24px));
+        padding: 24px;
+        background: var(--surface, #FFFFFF);
+        border: none;
+        border-radius: 24px; /* M3 Large Dialog Radius */
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15); /* M3 Elevation 2 */
         z-index: 110;
     }
 
@@ -282,68 +263,74 @@
 
     .profile-name {
         margin: 0;
-        color: var(--text);
-        font-size: 15px;
-        font-weight: 700;
+        color: var(--text-main, #1F1F1F);
+        font-size: 18px;
+        font-weight: 400;
         overflow-wrap: anywhere;
     }
 
     .profile-email {
-        margin: 4px 0 12px;
-        color: var(--muted);
-        font-size: 12px;
+        margin: 4px 0 16px;
+        color: var(--text-muted, #444746);
+        font-size: 14px;
         overflow-wrap: anywhere;
     }
 
     .profile-details {
         display: grid;
         grid-template-columns: 72px minmax(0, 1fr);
-        gap: 7px 10px;
-        padding: 12px 0;
-        border-top: 1px solid var(--outline-soft);
-        border-bottom: 1px solid var(--outline-soft);
-        font-size: 12px;
+        gap: 8px 12px;
+        padding: 16px 0;
+        border-top: 1px solid var(--outline-soft, #C4C7C5);
+        border-bottom: 1px solid var(--outline-soft, #C4C7C5);
+        font-size: 13px;
     }
 
     .profile-detail-label {
-        color: var(--muted);
+        color: var(--text-muted, #444746);
+        font-weight: 500;
     }
 
     .profile-detail-value {
-        color: var(--text);
-        font-weight: 600;
+        color: var(--text-main, #1F1F1F);
+        font-weight: 500;
         overflow-wrap: anywhere;
     }
 
+    /* M3 Pill Button */
     .profile-signout {
         width: 100%;
         min-height: 40px;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        gap: 9px;
-        margin-top: 12px;
-        padding: 0 10px;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 0 24px;
         border: 0;
-        border-radius: 9px;
-        background: var(--primary-soft);
-        color: var(--primary);
+        border-radius: 9999px;
+        background: var(--primary-soft, #E8EEF7);
+        color: var(--primary, #0B1F4B);
         font: inherit;
-        font-size: 13px;
-        font-weight: 600;
+        font-size: 14px;
+        font-weight: 500;
         cursor: pointer;
+        transition: background 0.2s;
     }
 
     .profile-signout:hover {
-        background: var(--primary);
-        color: var(--surface);
+        background: rgba(11, 31, 75, 0.12); /* Soft hover state */
+    }
+
+    .profile-signout .material-symbols-rounded {
+        font-size: 18px;
     }
 
     @media (max-width: 768px) {
         .dashboard-header {
             min-height: 64px;
-            gap: 8px;
-            padding: 8px 12px;
+            gap: 12px;
+            padding: 8px 16px;
         }
 
         .sidebar-toggle-button { display: none; }
@@ -354,23 +341,17 @@
         }
 
         .module-search-box {
-            height: 42px;
-            gap: 7px;
-            padding: 0 11px;
+            height: 44px;
+            gap: 8px;
+            padding: 0 12px;
         }
 
         .module-search-input {
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .header-actions {
-            gap: 6px;
-        }
-
-        .notification-button,
-        .profile-button {
-            width: 38px;
-            height: 38px;
+            gap: 4px;
         }
     }
 </style>
@@ -384,7 +365,7 @@
         aria-expanded="true"
         title="Collapse navigation"
         onclick="window.toggleSidebarCollapse()">
-        <span class="material-symbols-rounded" aria-hidden="true">left_panel_close</span>
+        <span class="material-symbols-rounded" aria-hidden="true">menu</span>
     </button>
 
     <div class="module-search">
