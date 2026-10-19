@@ -4,210 +4,483 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>COREBIQ | APPOINTMENTS</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
 <link rel="stylesheet" href="css/corebiq.css">
 </head>
 <body>
 <div class="module-container" id="appointment-module">
 <style>
-:root{--primary:#0B1F4B;--primary-light:#E8EEF7;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--success:#10B981;--danger:#EF4444;--warning:#F59E0B;--shadow:0 2px 10px rgba(15,23,42,.06)}
-#appointment-module{font-family:Inter,sans-serif;width:100%;max-width:1120px;color:var(--text)}
-#appointment-module *{box-sizing:border-box}
-.material-symbols-rounded{font-size:20px;vertical-align:middle}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
-.title h2{font-size:27px;line-height:1.1;margin:0;font-weight:750}.title p{font-size:14px;color:var(--muted);margin:5px 0 0}
-.btn{border:1px solid var(--border);background:#fff;color:var(--text);height:40px;padding:0 12px;border-radius:10px;font-size:13px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
-.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.danger{color:var(--danger);border-color:#FECACA}.btn.blue{color:var(--primary);border-color:#CCD5E3}.btn.small{height:36px;padding:0 10px;font-size:12px}
-.new-btn{height:40px;padding:0 15px;border:0;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
-.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
-.kpi .label{font-size:12px;color:var(--muted);font-weight:600}.kpi .num{font-size:22px;font-weight:800;margin-top:3px}
-.kpi.today .num{color:var(--primary)}.kpi.done .num{color:var(--success)}.kpi.pending .num{color:var(--warning)}
-.panel{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:visible;margin-bottom:16px}
-.panel-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.panel-title{font-size:15px;font-weight:750}
-.toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.tool{position:relative}.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:10px;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#334155}.icon-btn:hover{background:#F8FAFC}
-.icon-btn.active{background:var(--primary-light);color:var(--primary);border-color:#CCD5E3}
-.dropdown{display:none;position:absolute;right:0;top:45px;min-width:190px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:6px;z-index:5000}
-.tool.open .dropdown{display:block}.drop-title{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;padding:7px 9px}.drop-item{width:100%;border:0;background:#fff;text-align:left;padding:9px;border-radius:7px;font-size:13px;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text)}.drop-item:hover{background:#F8FAFC}.drop-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
-.searchbar{display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:#FAFAFA}.searchbar.show{display:flex}.searchbox{display:flex;align-items:center;gap:6px;width:100%;background:#fff;border:1px solid var(--border);border-radius:9px;padding:0 9px}.searchbox input{height:36px;width:100%;border:0;outline:0;font-size:13px}
-.filters{display:none;padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFAFA;gap:8px;flex-wrap:wrap;align-items:center}.filters.show{display:flex}
-.form-input{width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);background:#FAFAFA;outline:none}.form-input:focus{border-color:var(--primary);background:#fff}.filter-input{width:auto;min-width:120px;height:36px;padding:7px 9px}
-.bulkbar{display:none;background:#FFF7ED;padding:10px 12px;border-bottom:1px solid #FED7AA;align-items:center;gap:8px;flex-wrap:wrap}.bulkbar.show{display:flex}.bulkbar strong{font-size:12px;color:#9A3412}
-.table-wrap{overflow-x:auto}.table{width:100%;min-width:930px;border-collapse:collapse}.table th{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:10px 12px;background:#FAFAFA;border-bottom:1px solid var(--border);white-space:nowrap}.table td{font-size:13px;padding:12px;border-bottom:1px solid var(--border);vertical-align:top}.table tr:last-child td{border-bottom:0}.patient-name{font-weight:750;font-size:14px}.sub{font-size:11px;color:var(--muted);margin-top:3px}.actions{display:flex;gap:5px;justify-content:flex-end}.act{width:32px;height:32px;border:1px solid var(--border);background:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.act:hover{background:#F8FAFC}.act.note{color:#8B5CF6}.act.inv{color:#155A90}.act.edit{color:#64748B}
-.act.download{color:#188038}.act.whatsapp{color:#128C7E}
-.no-due{color:#64748B;font-weight:700}.excess{color:#059669;font-weight:750}.due{color:#DC2626;font-weight:750}
-.badge{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:750;text-transform:uppercase}.pending{background:#FFF7ED;color:#EA580C}.reported{background:#E8EEF7;color:#0B1F4B}.completed{background:#ECFDF5;color:#059669}.rescheduled{background:#F1F5F9;color:#64748B}.cancelled{background:#FEF2F2;color:#DC2626}.cat{background:#F8FAFC;color:#334155;border:1px solid var(--border)}
-.cards{display:none;padding:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.cards.show{display:grid}.apt-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.card-top{display:flex;justify-content:space-between;gap:8px}.card-patient{display:flex;gap:8px}.card-check{padding-top:2px}.card-line{font-size:12px;color:var(--muted);margin-top:5px}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}.card-actions{display:flex;gap:6px;margin-top:10px}
-.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
-.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.52);z-index:10000;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:min(900px,100%);max-height:94vh;overflow:auto;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.22)}.modal-head{position:sticky;top:0;z-index:2;background:#fff;padding:13px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:16px;margin:0}.modal-body{padding:15px}.close{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}
-.section{border:1px solid var(--border);border-radius:11px;margin-bottom:12px;padding:12px}.section h4{font-size:13px;color:var(--primary);margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid.three{grid-template-columns:repeat(3,1fr)}.field label{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:5px}.span2{grid-column:1/-1}.location-row{display:grid;grid-template-columns:auto 1fr auto;gap:6px}.money-box{background:var(--bg);border-radius:10px;padding:10px}.form-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:3px}.readonly{background:#F8FAFC!important;border:0!important;font-weight:750}
-.notes-content{padding:15px;line-height:1.6;white-space:pre-wrap;font-size:13px;min-height:150px;background:#FAFAFA;border:1px solid var(--border);border-radius:9px}
-.public-booking-panel{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
-.public-booking-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
-.public-booking-title{font-size:15px;font-weight:750}.public-booking-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:99px;background:#EDE9FE;color:#5B21B6;font-size:11px;font-weight:800}
-.public-booking-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;padding:12px}
-.public-booking-request{border:1px solid var(--border);border-radius:12px;padding:12px;background:#FCFCFD}
-.public-booking-request-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.public-booking-request-name{font-size:14px;font-weight:750}
-.public-booking-request-meta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}
-.public-booking-actions{display:flex;gap:7px;margin-top:10px}
-.public-booking-actions .btn{height:35px;font-size:11px}
-.public-booking-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}
-.patient-match{font-size:10px;font-weight:750;border-radius:99px;padding:4px 7px;white-space:nowrap}
-.patient-match.existing{background:#ECFDF5;color:#047857}.patient-match.new{background:#E8EEF7;color:#0B1F4B}
-.confirm-box{max-width:430px}.confirm-message{font-size:13px;line-height:1.6;color:var(--muted);padding:15px}
-@media(max-width:700px){.topbar{align-items:flex-start}.title h2{font-size:22px}.new-btn span:last-child{display:none}.kpis{gap:7px}.kpi{padding:10px}.kpi .num{font-size:20px}.grid,.grid.three{grid-template-columns:1fr}.span2{grid-column:auto}.modal{padding:8px}.modal-box{max-height:96vh}.toolbar{width:100%}.panel-head{align-items:flex-start}.panel-title{width:100%}}
-@media print{#appointment-module .no-print,#appointment-module .toolbar,#appointment-module .new-btn,.kpis{display:none!important}.panel{box-shadow:none;border:0}.table{min-width:100%}}
+:root {
+  /* Material 3 / Gemini Colors */
+  --primary: #0B1F4B;
+  --primary-hover: #071630;
+  --primary-light: #E8EEF7;
+  --primary-soft: var(--primary-light);
+  --bg: #F8F9FA;
+  --surface: #FFFFFF;
+  --surface-soft: #F8F9FA;
+  --surface-container: #F0F4F9;
+  --text: #1F1F1F;
+  --text-main: var(--text);
+  --muted: #444746;
+  --border: #C4C7C5;
+  --outline-soft: var(--border);
+  --success: #146C2E;
+  --danger: #B3261E;
+  --warning: #F9AB00;
+  
+  /* Material 3 Radii */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+  
+  /* Material 3 Elevations */
+  --shadow-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --shadow-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+}
 
-/* Appointment module: match the shared reference page while keeping its tools compact. */
-#appointment-module{max-width:1200px!important;margin:0 auto!important;color:#1F1F1F!important;font-family:Inter,sans-serif!important;font-size:14px;line-height:1.5}
-#appointment-module .material-symbols-rounded{font-family:"Material Symbols Rounded"!important;font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;vertical-align:middle}
-#appointment-module .topbar{align-items:center;margin-bottom:22px}
-#appointment-module .title{display:flex;align-items:center;gap:12px}
-#appointment-module .title-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #E1E4E2;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.08)}
-#appointment-module .title-icon .material-symbols-rounded{font-size:26px}
-#appointment-module .title h2{font-size:26px!important;line-height:1.2!important;font-weight:600!important;letter-spacing:-.4px;color:#1F1F1F}
-#appointment-module .title p{font-size:14px;color:#6B7280;margin-top:4px}
-#appointment-module .topbar>div:last-child{gap:10px!important}
-#appointment-module .btn,#appointment-module .new-btn{height:42px!important;border-radius:22px!important;padding:0 17px!important;font-family:Inter,sans-serif!important;font-size:13px!important;font-weight:600!important;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
-#appointment-module .btn{border:1px solid #C4C7C5!important;background:#fff!important;color:#40454D!important}
-#appointment-module .btn:hover{background:#F7F9FC!important}
-#appointment-module .btn.primary,#appointment-module .new-btn{border:1px solid #0B1F4B!important;background:#0B1F4B!important;color:#fff!important;box-shadow:0 2px 8px rgba(11,31,75,.16)}
-#appointment-module .btn.primary:hover,#appointment-module .new-btn:hover{background:#071630!important}
-#appointment-module .new-btn .material-symbols-rounded{font-size:20px}
-#appointment-module .kpis{gap:14px;margin-bottom:18px}
-#appointment-module .kpi{padding:18px 20px;border:1px solid #E1E4E2;border-radius:18px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
-#appointment-module .kpi .label{font-size:13px;font-weight:500;color:#6B7280}
-#appointment-module .kpi .num{font-size:26px;font-weight:600;margin-top:5px;color:#1F1F1F}
-#appointment-module .kpi.today .num{color:#0B1F4B}
-#appointment-module .kpi.done .num{color:#188038}
-#appointment-module .kpi.pending .num{color:#B3261E}
-#appointment-module .public-booking-panel,#appointment-module .panel{border:1px solid #E1E4E2;border-radius:24px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
-#appointment-module .public-booking-panel{margin-bottom:18px}
-#appointment-module .public-booking-head,#appointment-module .panel-head{padding:16px 20px;border-bottom:1px solid #E1E4E2}
-#appointment-module .public-booking-title,#appointment-module .panel-title{font-size:16px;font-weight:600;color:#1F1F1F}
-#appointment-module .public-booking-count{background:#E8EEF7;color:#0B1F4B;font-size:12px}
-#appointment-module .public-booking-list{padding:16px;gap:12px}
-#appointment-module .public-booking-request{padding:15px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
-#appointment-module .public-booking-request-name{font-size:14px;font-weight:600;color:#1F1F1F}
-#appointment-module .public-booking-request-meta{font-size:12px;line-height:1.6;color:#6B7280}
-#appointment-module .public-booking-actions .btn{height:36px!important;padding:0 13px!important;border-radius:18px!important;font-size:12px!important}
-#appointment-module .patient-match.existing{background:#E8F5E9;color:#188038}
-#appointment-module .patient-match.new{background:#E8EEF7;color:#0B1F4B}
-#appointment-module .toolbar{gap:8px}
-#appointment-module .icon-btn{width:40px;height:40px;border:1px solid #E1E4E2;border-radius:12px;background:#fff;color:#5E6672;transition:background .18s ease,color .18s ease}
-#appointment-module .icon-btn:hover{background:#F0F4F9;color:#0B1F4B}
-#appointment-module .icon-btn.active{background:#E8EEF7;color:#0B1F4B;border-color:#C8D2E1}
-#appointment-module .dropdown{border:1px solid #E1E4E2;border-radius:16px;box-shadow:0 12px 30px rgba(31,35,40,.14);padding:7px}
-#appointment-module .drop-item{border-radius:10px;padding:10px;color:#40454D;font-family:Inter,sans-serif}
-#appointment-module .drop-item:hover,#appointment-module .drop-item.active{background:#F0F4F9;color:#0B1F4B}
-#appointment-module .searchbar,#appointment-module .filters{padding:12px 20px;background:#fff;border-bottom:1px solid #E1E4E2}
-#appointment-module .searchbox{border:1px solid #E1E4E2;border-radius:20px;background:#F4F7FC;padding:0 12px}
-#appointment-module .searchbox input{background:transparent;font-family:Inter,sans-serif}
-#appointment-module .form-input{border:1px solid #E1E4E2;border-radius:12px;background:#F4F7FC;color:#1F1F1F;font-family:Inter,sans-serif}
-#appointment-module .form-input:focus{border-color:#0B1F4B;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.12)}
-#appointment-module .bulkbar{background:#FFF8E1;border-bottom-color:#F9AB00}
-#appointment-module .bulkbar strong{color:#7A4F01}
-#appointment-module .table{min-width:930px}
-#appointment-module .table th{padding:13px 15px;background:#FAFBFC;color:#646A73;font-size:11px;letter-spacing:.45px}
-#appointment-module .table td{padding:14px 15px;border-bottom-color:#E1E4E2}
-#appointment-module .table tbody tr:hover{background:#FAFBFE}
-#appointment-module .patient-name{font-weight:600;color:#1F1F1F}
-#appointment-module .sub{font-size:12px;color:#6B7280}
-#appointment-module .badge{border-radius:999px;font-size:10px;letter-spacing:.2px}
-#appointment-module .pending{background:#FFF4E5;color:#8A4B08}
-#appointment-module .reported{background:#E8EEF7;color:#0B1F4B}
-#appointment-module .completed{background:#E8F5E9;color:#188038}
-#appointment-module .rescheduled{background:#F0F4F9;color:#5E6672}
-#appointment-module .cancelled{background:#FCE8E6;color:#B3261E}
-#appointment-module .cat{background:#F4F7FC;color:#40454D;border-color:#E1E4E2}
-#appointment-module .act{width:36px;height:36px;border-radius:11px;border-color:#E1E4E2}
-#appointment-module .cards{padding:16px;gap:12px}
-#appointment-module .apt-card{padding:16px;border:1px solid #E1E4E2;border-radius:18px;box-shadow:0 1px 3px rgba(31,35,40,.05)}
-#appointment-module .card-grid{border-top-color:#E1E4E2}
-#appointment-module .empty{color:#6B7280}
-#appointment-module .modal{background:rgba(31,35,40,.42);backdrop-filter:blur(3px)}
-#appointment-module .modal-box{border:1px solid #E1E4E2;border-radius:24px;box-shadow:0 20px 50px rgba(31,35,40,.2)}
-#appointment-module .modal-head{padding:17px 20px;border-bottom-color:#E1E4E2}
-#appointment-module .modal-head h3{font-size:18px!important;font-weight:600!important;color:#1F1F1F}
-#appointment-module .modal-body{padding:20px}
-#appointment-module .close{border-color:#E1E4E2;border-radius:50%;color:#5E6672}
-#appointment-module .section{padding:16px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
-#appointment-module .section h4{font-size:14px!important;font-weight:600!important;color:#0B1F4B}
-#appointment-module .field label{font-size:11px;color:#646A73;letter-spacing:.35px}
-#appointment-module .grid{gap:14px}
-#appointment-module .money-box{border:1px solid #E1E4E2;border-radius:14px;background:#F7F9FC}
-#appointment-module .readonly{background:#F0F4F9!important}
-#appointment-module .form-actions{padding-top:10px}
-#appointment-module .btn.small{height:36px!important;padding:0 13px!important;font-size:12px!important}
-#appointment-module .topbar{min-height:88px;align-items:center;margin-bottom:18px;padding:16px 20px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
-#appointment-module .appointment-toolbar{display:flex;align-items:center;gap:12px;min-height:88px;padding:16px 18px;margin-bottom:22px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
-#appointment-module .appointment-toolbar .searchbar{display:flex;flex:1;min-width:220px;padding:0;border:0;background:transparent}
-#appointment-module .appointment-toolbar .searchbox{height:48px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;padding:0 14px;color:#8290A2}
-#appointment-module .appointment-toolbar .searchbox:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
-#appointment-module .appointment-toolbar .searchbox input{height:46px;font-size:14px;color:#1F1F1F}
-#appointment-module .appointment-toolbar .searchbox input::placeholder{color:#718096}
-#appointment-module .appointment-toolbar .searchbox .close{width:30px!important;height:30px!important;border:0!important;background:transparent!important}
-#appointment-module .appointment-filter-select{position:relative;flex:0 0 170px}
-#appointment-module .appointment-filter-select.sort-select{flex-basis:180px}
-#appointment-module .appointment-filter-select select{width:100%;height:48px;padding:0 38px 0 16px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;color:#334155;font:500 14px Inter,sans-serif;appearance:none;outline:0;cursor:pointer}
-#appointment-module .appointment-filter-select select:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
-#appointment-module .appointment-filter-select .material-symbols-rounded{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:20px}
-#appointment-module .topbar .new-btn{height:48px!important;margin-left:auto;padding:0 22px!important;white-space:nowrap}
-#appointment-module .appointment-toolbar .tool{flex:0 0 auto}
-#appointment-module .appointment-toolbar .more-actions-btn{height:48px;width:48px;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672}
-#appointment-module .appointment-toolbar .more-actions-btn:hover{background:#F0F4F9;color:#0B1F4B}
-#appointment-module .panel{overflow:visible;margin-bottom:0;border-radius:26px}
-#appointment-module .panel-head{padding:15px 20px;border-bottom-color:#F0F2F5}
-#appointment-module .panel-title{font-size:15px;font-weight:600}
-#appointment-module .filters.show{display:flex}
-#appointment-module .table{min-width:900px}
-#appointment-module .table th{padding:16px 18px;background:#FAFBFC;color:#65748B;font-size:11px;letter-spacing:.55px}
-#appointment-module .table td{padding:16px 18px;vertical-align:middle}
-#appointment-module .patient-cell{display:flex;align-items:center;gap:12px;min-width:190px}
-#appointment-module .patient-avatar{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:50%;background:#E8EEF7;color:#0B1F4B;font-size:15px;font-weight:600}
-#appointment-module .patient-cell .patient-name{font-size:14px}
-#appointment-module .table tbody tr:nth-child(even){background:#FCFCFD}
-#appointment-module .table tbody tr:hover{background:#F6F9FE}
-#appointment-module .badge{padding:5px 10px;font-size:10px}
-#appointment-module .public-booking-panel{margin-top:22px}
-#appointment-module .kpis{margin-top:22px}
-@media(max-width:700px){
-  #appointment-module .topbar{align-items:center;flex-wrap:wrap;gap:10px;padding:12px;border-radius:20px}
-  #appointment-module .topbar .title{width:100%}
-  #appointment-module .title{align-items:flex-start}
-  #appointment-module .title-icon{flex-basis:42px;width:42px;height:42px;border-radius:14px}
-  #appointment-module .title h2{font-size:21px!important}
-  #appointment-module .title p{font-size:12px}
-  #appointment-module .topbar .new-btn{height:42px!important;flex:0 0 auto;margin-left:auto;padding:0 13px!important;font-size:12px!important}
-  #appointment-module .topbar .new-btn span:last-child{display:inline}
-  #appointment-module .kpis{gap:8px}
-  #appointment-module .kpi{padding:12px 13px;border-radius:15px}
-  #appointment-module .kpi .label{font-size:11px}
-  #appointment-module .kpi .num{font-size:22px}
-  #appointment-module .public-booking-head,#appointment-module .panel-head{padding:14px}
-  #appointment-module .public-booking-list{padding:12px}
-  #appointment-module .panel-head{align-items:flex-start}
-  #appointment-module .toolbar{width:100%}
-  #appointment-module .table-wrap{border-radius:0 0 24px 24px}
-  #appointment-module .modal{padding:8px}
-  #appointment-module .modal-box{max-height:96dvh;border-radius:20px}
-  #appointment-module .modal-body{padding:14px}
-  #appointment-module .section{padding:13px}
-  #appointment-module .form-actions{position:sticky;bottom:-14px;margin:0 -14px -14px;padding:12px 14px;background:#fff;border-top:1px solid #E1E4E2}
-  #appointment-module .appointment-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px;border-radius:20px}
-  #appointment-module .appointment-toolbar .searchbar{grid-column:1/-1;min-width:0}
-  #appointment-module .appointment-filter-select,#appointment-module .appointment-filter-select.sort-select{flex:auto;width:100%}
-  #appointment-module .appointment-filter-select select{height:42px;border-radius:16px;font-size:12px}
-  #appointment-module .appointment-toolbar .more-actions-btn{height:42px;width:42px}
-  #appointment-module .appointment-toolbar .searchbox{height:44px;border-radius:17px}
-  #appointment-module .appointment-toolbar .searchbox input{height:42px;font-size:13px}
-  #appointment-module .panel-head{padding:13px 14px}
-  #appointment-module .table td,#appointment-module .table th{padding:13px 12px}
-  #appointment-module .patient-avatar{flex-basis:36px;width:36px;height:36px}
+#appointment-module {
+  font-family: "Google Sans", "Google Sans Text", Roboto, "Outfit", sans-serif;
+  width: 100%;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  color: var(--text) !important;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#appointment-module * { box-sizing: border-box; }
+
+#appointment-module .material-symbols-rounded {
+  font-family: "Material Symbols Rounded" !important;
+  font-size: 20px;
+  vertical-align: middle;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Header & Typography */
+#appointment-module .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+#appointment-module .title { display: flex; align-items: center; gap: 16px; }
+#appointment-module .title-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--primary);
+}
+#appointment-module .title-icon .material-symbols-rounded { font-size: 24px; }
+#appointment-module .title h2 { font-size: 28px !important; line-height: 1.2 !important; font-weight: 400 !important; color: var(--text); margin: 0; }
+#appointment-module .title p { font-size: 14px; color: var(--muted); margin: 4px 0 0; font-weight: 400; }
+
+/* Buttons */
+#appointment-module .btn, 
+#appointment-module .new-btn {
+  height: 40px !important;
+  border-radius: var(--radius-pill) !important;
+  padding: 0 24px !important;
+  font-family: "Google Sans Text", Roboto, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border) !important;
+  background: transparent !important;
+  color: var(--primary) !important;
+}
+
+#appointment-module .btn:hover { background: rgba(11, 31, 75, 0.04) !important; }
+
+#appointment-module .btn.primary, 
+#appointment-module .new-btn {
+  border: none !important;
+  background: var(--primary) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-1) !important;
+}
+#appointment-module .btn.primary:hover, 
+#appointment-module .new-btn:hover {
+  background: var(--primary-hover) !important;
+  box-shadow: var(--shadow-2) !important;
+}
+#appointment-module .btn.danger { color: var(--danger) !important; border-color: var(--danger) !important; }
+#appointment-module .btn.danger:hover { background: rgba(179, 38, 30, 0.08) !important; }
+#appointment-module .btn.blue { color: var(--primary) !important; border-color: var(--primary) !important; }
+#appointment-module .btn.small { height: 36px !important; padding: 0 16px !important; font-size: 13px !important; }
+#appointment-module .new-btn .material-symbols-rounded { font-size: 20px; }
+
+/* KPIs */
+#appointment-module .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; margin-top: 24px; }
+#appointment-module .kpi {
+  background: var(--surface-container);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+}
+#appointment-module .kpi .label { font-size: 14px; color: var(--muted); font-weight: 500; }
+#appointment-module .kpi .num { font-size: 32px; font-weight: 400; margin-top: 8px; color: var(--text); }
+#appointment-module .kpi.today .num { color: var(--primary); }
+#appointment-module .kpi.done .num { color: var(--success); }
+#appointment-module .kpi.pending .num { color: var(--danger); }
+
+/* Panels */
+#appointment-module .panel, 
+#appointment-module .public-booking-panel {
+  background: var(--surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  overflow: visible;
+  margin-bottom: 24px;
+}
+#appointment-module .public-booking-panel { margin-top: 24px; }
+#appointment-module .panel-head, 
+#appointment-module .public-booking-head {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+#appointment-module .panel-title, 
+#appointment-module .public-booking-title { font-size: 18px; font-weight: 500; color: var(--text); margin: 0; }
+
+/* Toolbar & Icons */
+#appointment-module .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+#appointment-module .tool { position: relative; }
+#appointment-module .icon-btn, 
+#appointment-module .act {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.2s, color 0.2s;
+}
+#appointment-module .icon-btn:hover, 
+#appointment-module .act:hover {
+  background: rgba(31, 31, 31, 0.08);
+  color: var(--text);
+}
+#appointment-module .icon-btn.active {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+#appointment-module .act { width: 36px; height: 36px; }
+
+/* Dropdown */
+#appointment-module .dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  min-width: 220px;
+  background: var(--surface);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+  padding: 8px;
+  z-index: 5000;
+}
+#appointment-module .tool.open .dropdown { display: block; }
+#appointment-module .drop-title { font-size: 12px; color: var(--muted); font-weight: 500; text-transform: uppercase; padding: 8px 12px; letter-spacing: 0.5px; }
+#appointment-module .drop-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  color: var(--text);
+  transition: background 0.2s;
+}
+#appointment-module .drop-item:hover, 
+#appointment-module .drop-item.active {
+  background: rgba(31, 31, 31, 0.04);
+  color: var(--primary);
+}
+#appointment-module .drop-item .material-symbols-rounded { color: var(--muted); }
+#appointment-module .drop-item:hover .material-symbols-rounded { color: var(--primary); }
+
+/* Appointment Toolbar */
+#appointment-module .appointment-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+}
+#appointment-module .appointment-toolbar .searchbar { display: flex; flex: 1; min-width: 260px; padding: 0; border: 0; background: transparent; }
+#appointment-module .appointment-toolbar .searchbox {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-container);
+  padding: 0 16px;
+  color: var(--muted);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+#appointment-module .appointment-toolbar .searchbox:focus-within {
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+}
+#appointment-module .appointment-toolbar .searchbox input {
+  height: 48px;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 16px;
+  color: var(--text);
+  font-family: inherit;
+}
+#appointment-module .appointment-toolbar .searchbox input::placeholder { color: var(--muted); }
+#appointment-module .appointment-toolbar .searchbox .close {
+  width: 32px !important;
+  height: 32px !important;
+  border: 0 !important;
+  border-radius: 50% !important;
+  background: transparent !important;
+  color: var(--muted);
+  cursor: pointer;
+}
+#appointment-module .appointment-toolbar .searchbox .close:hover { background: rgba(31, 31, 31, 0.08) !important; color: var(--text); }
+
+#appointment-module .appointment-filter-select { position: relative; flex: 0 0 200px; }
+#appointment-module .appointment-filter-select select {
+  width: 100%;
+  height: 48px;
+  padding: 0 40px 0 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: 400 16px "Google Sans Text", sans-serif;
+  appearance: none;
+  outline: 0;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#appointment-module .appointment-filter-select select:focus {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+#appointment-module .appointment-filter-select .material-symbols-rounded {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--muted);
+}
+#appointment-module .appointment-toolbar .more-actions-btn { height: 48px; width: 48px; }
+
+/* Filters & Bulk Actions */
+#appointment-module .filters { display: none; padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--surface); gap: 12px; flex-wrap: wrap; align-items: center; }
+#appointment-module .filters.show { display: flex; }
+#appointment-module .bulkbar { display: none; background: rgba(249, 171, 0, 0.08); padding: 16px 24px; border-bottom: 1px solid rgba(249, 171, 0, 0.2); align-items: center; gap: 12px; flex-wrap: wrap; }
+#appointment-module .bulkbar.show { display: flex; }
+#appointment-module .bulkbar strong { font-size: 14px; color: #935D00; font-weight: 500; }
+
+/* Forms & Inputs */
+#appointment-module .form-input, 
+#appointment-module .filter-input {
+  width: 100%;
+  padding: 0 16px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 16px;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#appointment-module .form-input:focus { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+#appointment-module textarea.form-input { height: auto; padding: 16px; resize: vertical; }
+#appointment-module .filter-input { height: 40px; padding: 0 12px; font-size: 14px; }
+#appointment-module .readonly { background: rgba(31, 31, 31, 0.04) !important; color: rgba(31, 31, 31, 0.38) !important; border-color: rgba(31, 31, 31, 0.12) !important; font-weight: 400; }
+
+/* Tables */
+#appointment-module .table-wrap { overflow-x: auto; background: var(--surface); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+#appointment-module .table { width: 100%; min-width: 900px; border-collapse: collapse; }
+#appointment-module .table th {
+  font-size: 13px;
+  text-transform: none;
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+  padding: 16px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+#appointment-module .table td { font-size: 14px; padding: 16px 24px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+#appointment-module .table tbody tr:hover { background: var(--surface-container); }
+#appointment-module .patient-cell { display: flex; align-items: center; gap: 16px; min-width: 220px; }
+#appointment-module .patient-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  color: var(--primary);
+  font-size: 16px;
+  font-weight: 500;
+}
+#appointment-module .patient-name { font-weight: 500; font-size: 15px; color: var(--text); }
+#appointment-module .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+#appointment-module .actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* Text colors */
+#appointment-module .no-due { color: var(--success); font-weight: 500; }
+#appointment-module .excess { color: var(--primary); font-weight: 500; }
+#appointment-module .due { color: var(--danger); font-weight: 500; }
+
+/* Badges */
+#appointment-module .badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+  font-family: "Google Sans Text", sans-serif;
+  letter-spacing: 0.1px;
+}
+#appointment-module .pending { background: var(--surface-container); color: var(--text); }
+#appointment-module .reported { background: var(--primary-light); color: var(--primary); }
+#appointment-module .completed { background: rgba(20, 108, 46, 0.12); color: var(--success); }
+#appointment-module .rescheduled { background: rgba(249, 171, 0, 0.12); color: #935D00; }
+#appointment-module .cancelled { background: rgba(179, 38, 30, 0.12); color: var(--danger); }
+#appointment-module .cat { background: var(--surface-container); color: var(--text); border: none; }
+
+/* Card View */
+#appointment-module .cards { display: none; padding: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+#appointment-module .cards.show { display: grid; }
+#appointment-module .apt-card { border: none; border-radius: var(--radius-md); padding: 20px; background: var(--surface-container); transition: background 0.2s; }
+#appointment-module .apt-card:hover { background: rgba(31, 31, 31, 0.04); }
+#appointment-module .card-top { display: flex; justify-content: space-between; gap: 12px; }
+#appointment-module .card-patient { display: flex; gap: 12px; }
+#appointment-module .card-check { padding-top: 2px; }
+#appointment-module .card-line { font-size: 14px; color: var(--muted); margin-top: 8px; }
+#appointment-module .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(31, 31, 31, 0.08); }
+#appointment-module .card-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+#appointment-module .empty { text-align: center; padding: 48px 24px; color: var(--muted); font-size: 14px; }
+
+/* Modals */
+#appointment-module .modal { display: none; position: fixed; inset: 0; background: rgba(31, 31, 31, 0.4); z-index: 10000; align-items: center; justify-content: center; padding: 24px; backdrop-filter: blur(2px); }
+#appointment-module .modal.show { display: flex; }
+#appointment-module .modal-box { background: var(--surface); width: min(900px, 100%); max-height: 90vh; overflow: auto; border: none; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }
+#appointment-module .modal-head { position: sticky; top: 0; z-index: 2; background: var(--surface); padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+#appointment-module .modal-head h3 { font-size: 20px !important; font-weight: 400 !important; margin: 0; color: var(--text); }
+#appointment-module .modal-body { padding: 24px; }
+#appointment-module .close { width: 40px; height: 40px; border: none; border-radius: 50%; background: transparent; cursor: pointer; color: var(--muted); transition: background 0.2s; display: grid; place-items: center; }
+#appointment-module .close:hover { background: rgba(31, 31, 31, 0.08); color: var(--text); }
+
+/* Form Sections */
+#appointment-module .section { border: none; border-radius: var(--radius-md); margin-bottom: 24px; padding: 24px; background: var(--surface-container); }
+#appointment-module .section h4 { font-size: 16px !important; color: var(--primary); margin: 0 0 20px; font-weight: 500 !important; }
+#appointment-module .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+#appointment-module .grid.three { grid-template-columns: repeat(3, 1fr); }
+#appointment-module .field label { display: block; font-size: 13px; color: var(--muted); font-weight: 500; text-transform: none; margin-bottom: 8px; letter-spacing: 0.1px; }
+#appointment-module .span2 { grid-column: 1 / -1; }
+#appointment-module .location-row { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; }
+#appointment-module .location-row .btn { height: 56px !important; width: 56px !important; padding: 0 !important; border-radius: var(--radius-sm) !important; }
+#appointment-module .money-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; }
+#appointment-module .form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; }
+
+#appointment-module .notes-content { padding: 20px; line-height: 1.6; white-space: pre-wrap; font-size: 14px; min-height: 150px; background: var(--surface-container); border: none; border-radius: var(--radius-md); }
+
+/* Public Booking */
+#appointment-module .public-booking-count { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; padding: 0 8px; border-radius: var(--radius-pill); background: var(--primary-light); color: var(--primary); font-size: 13px; font-weight: 500; }
+#appointment-module .public-booking-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; padding: 24px; }
+#appointment-module .public-booking-request { border: none; border-radius: var(--radius-md); padding: 20px; background: var(--surface-container); }
+#appointment-module .public-booking-request-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+#appointment-module .public-booking-request-name { font-size: 16px; font-weight: 500; color: var(--text); }
+#appointment-module .public-booking-request-meta { font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+#appointment-module .public-booking-actions { display: flex; gap: 8px; margin-top: 16px; }
+#appointment-module .public-booking-actions .btn { height: 40px !important; font-size: 13px !important; padding: 0 20px !important; border-radius: var(--radius-pill) !important; }
+#appointment-module .public-booking-empty { padding: 32px; text-align: center; color: var(--muted); font-size: 14px; grid-column: 1 / -1; }
+#appointment-module .patient-match { font-size: 12px; font-weight: 500; border-radius: var(--radius-sm); padding: 6px 10px; white-space: nowrap; font-family: "Google Sans Text", sans-serif; }
+#appointment-module .patient-match.existing { background: rgba(20, 108, 46, 0.12); color: var(--success); }
+#appointment-module .patient-match.new { background: var(--primary-light); color: var(--primary); }
+
+#appointment-module .confirm-box { max-width: 480px; }
+#appointment-module .confirm-message { font-size: 15px; line-height: 1.6; color: var(--muted); padding: 24px; }
+
+/* Responsive adjustments */
+@media(max-width: 768px) {
+  #appointment-module .topbar { align-items: flex-start; flex-direction: column; gap: 16px; padding: 16px; border-radius: var(--radius-md); }
+  #appointment-module .title h2 { font-size: 24px !important; }
+  #appointment-module .topbar .new-btn { width: 100%; margin-left: 0; }
+  #appointment-module .kpis { grid-template-columns: 1fr; gap: 12px; }
+  #appointment-module .appointment-toolbar { flex-direction: column; align-items: stretch; padding: 16px; border-radius: var(--radius-md); }
+  #appointment-module .appointment-filter-select, 
+  #appointment-module .appointment-filter-select.sort-select { flex: auto; width: 100%; }
+  #appointment-module .appointment-toolbar .searchbar { min-width: 0; }
+  #appointment-module .grid, 
+  #appointment-module .grid.three { grid-template-columns: 1fr; }
+  #appointment-module .span2 { grid-column: auto; }
+  #appointment-module .modal { padding: 16px; }
+  #appointment-module .modal-box { max-height: 96dvh; border-radius: var(--radius-md); }
+  #appointment-module .modal-body { padding: 16px; }
+  #appointment-module .section { padding: 16px; }
+  #appointment-module .form-actions { position: sticky; bottom: -16px; margin: 0 -16px -16px; padding: 16px; background: var(--surface); border-top: 1px solid var(--border); }
+}
+@media print {
+  #appointment-module .no-print, 
+  #appointment-module .toolbar, 
+  #appointment-module .new-btn, 
+  #appointment-module .kpis { display: none !important; }
+  #appointment-module .panel { box-shadow: none; border: 0; }
+  #appointment-module .table { min-width: 100%; }
 }
 </style>
 
@@ -217,7 +490,7 @@
 </div>
 
 <div class="appointment-toolbar no-print">
-  <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
+  <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:32px;height:32px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:20px">close</span></button></div></div>
   <label class="appointment-filter-select" aria-label="Filter appointments by status">
     <select id="filterStatus" onchange="window.filterTable()"><option value="">All Statuses</option><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select>
     <span class="material-symbols-rounded">expand_more</span>
@@ -249,15 +522,15 @@
 <div class="panel">
   <div class="filters no-print" id="filtersBar">
     <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.filterTable()">
-    <span style="font-size:12px;color:var(--muted)">to</span>
+    <span style="font-size:14px;color:var(--muted)">to</span>
     <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.filterTable()">
     <button class="btn small" onclick="window.setFilterToday()">Today</button>
     <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
     <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
     <select id="filterBranch" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Branches</option></select>
-    <button class="icon-btn" style="width:36px;height:36px" title="Clear" onclick="window.clearFilters()"><span class="material-symbols-rounded">close</span></button>
+    <button class="icon-btn" style="width:40px;height:40px" title="Clear" onclick="window.clearFilters()"><span class="material-symbols-rounded">close</span></button>
   </div>
-  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong><button class="btn small primary" onclick="window.openSelectedNew()">New from Selected</button><button class="btn small blue" onclick="window.showBulkDate()">Move to Date</button><button class="btn small danger" onclick="window.executeBulkDelete()">Delete</button><button class="btn small" onclick="window.clearSelection()">Clear</button><span id="bulkDateArea" style="display:none"><input type="date" id="bulkDateInput" class="form-input" style="width:auto;height:36px"><button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button></span></div>
+  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong><button class="btn small primary" onclick="window.openSelectedNew()">New from Selected</button><button class="btn small blue" onclick="window.showBulkDate()">Move to Date</button><button class="btn small danger" onclick="window.executeBulkDelete()">Delete</button><button class="btn small" onclick="window.clearSelection()">Clear</button><span id="bulkDateArea" style="display:none"><input type="date" id="bulkDateInput" class="form-input" style="width:auto;height:40px"><button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button></span></div>
   <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
   <div class="table-wrap" id="listView"><table class="table"><thead><tr><th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th><th>Date & Time</th><th>Patient Details</th><th>Branch / Therapist</th><th>Therapy / Financials</th><th>Status</th><th class="no-print">Actions</th></tr></thead><tbody id="aptTableBody"></tbody></table></div>
   <div class="cards" id="cardView"></div>
@@ -316,11 +589,11 @@
           <div class="field"><label>Payment Reference / UTR</label><input id="aptPaymentReference" class="form-input"></div>
           <div class="field"><label>Payment Remarks</label><input id="aptPaymentRemarks" class="form-input"></div>
         </div>
-        <div class="grid three" style="margin-top:10px">
+        <div class="grid three" style="margin-top:20px">
           <div class="money-box field"><label>Total Fee (₹)</label><input type="number" id="aptFee" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
           <div class="money-box field"><label>Prev. Dues (OP) (₹)</label><input type="number" id="aptPrevDues" class="form-input readonly" readonly></div>
           <div class="money-box field"><label>Advance Paid (₹)</label><input type="number" id="aptAdvance" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
-          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:12px;margin-top:5px;font-weight:700"></div></div>
+          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:14px;margin-top:8px;font-weight:500"></div></div>
         </div>
       </div>
       <div class="form-actions"><button type="button" class="btn" onclick="window.resetAptForm()">Clear Form</button><button type="submit" class="btn primary" id="saveAptBtn">Save Appointment</button></div>
@@ -329,9 +602,9 @@
   </div>
 </div>
 
-<div class="modal" id="notesModal"><div class="modal-box" style="max-width:620px"><div class="modal-head"><h3>Patient Notes & Diagnosis</h3><button class="close" onclick="window.closeModal('notesModal')"><span class="material-symbols-rounded">close</span></button></div><div class="modal-body" id="printNotesArea"><h3 id="modalPatientName" style="margin:0 0 4px"></h3><div id="modalPatientMeta" class="sub" style="margin-bottom:12px"></div><div id="modalPatientNotesText" class="notes-content"></div><div class="form-actions no-print" style="margin-top:12px"><button class="btn primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span>Print Notes</button></div></div></div></div>
+<div class="modal" id="notesModal"><div class="modal-box" style="max-width:640px"><div class="modal-head"><h3>Patient Notes & Diagnosis</h3><button class="close" onclick="window.closeModal('notesModal')"><span class="material-symbols-rounded">close</span></button></div><div class="modal-body" id="printNotesArea"><h3 id="modalPatientName" style="margin:0 0 8px;font-weight:500;"></h3><div id="modalPatientMeta" class="sub" style="margin-bottom:20px"></div><div id="modalPatientNotesText" class="notes-content"></div><div class="form-actions no-print" style="margin-top:20px"><button class="btn primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span>Print Notes</button></div></div></div></div>
 
-<div class="modal" id="confirmModal"><div class="modal-box confirm-box"><div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="window.closeModal('confirmModal')"><span class="material-symbols-rounded">close</span></button></div><div class="confirm-message" id="confirmMessage"></div><div class="form-actions" style="padding:0 15px 15px"><button class="btn" onclick="window.closeModal('confirmModal')">Cancel</button><button class="btn primary" id="confirmOk">Confirm</button></div></div></div>
+<div class="modal" id="confirmModal"><div class="modal-box confirm-box"><div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="window.closeModal('confirmModal')"><span class="material-symbols-rounded">close</span></button></div><div class="confirm-message" id="confirmMessage"></div><div class="form-actions" style="padding:0 24px 24px"><button class="btn" onclick="window.closeModal('confirmModal')">Cancel</button><button class="btn primary" id="confirmOk">Confirm</button></div></div></div>
 
 <script type="module">
 import { auth, db } from './firebase-config.js';
@@ -368,7 +641,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('.tool'))closeTools()
 window.closeModal=id=>document.getElementById(id)?.classList.remove('show');
 
 onAuthStateChanged(auth,user=>{
-  if(!user){document.getElementById('appointment-module').innerHTML='<div style="padding:50px;text-align:center;color:#991B1B">Access denied. Please log in.</div>';return}
+  if(!user){document.getElementById('appointment-module').innerHTML='<div style="padding:50px;text-align:center;color:#B3261E">Access denied. Please log in.</div>';return}
   window.loadPatientsForApt()
     .then(()=>window.loadPublicBookingRequests())
     .catch(e=>{console.error('Unable to initialize public booking requests:',e);document.getElementById('publicBookingList').innerHTML='<div class="public-booking-empty" style="color:var(--danger)">Unable to load booking requests. Check Firestore permissions.</div>'});
@@ -412,7 +685,7 @@ window.calcBalance=()=>{
   const input=document.getElementById('aptBalance');
   const label=document.getElementById('aptBalanceState');
   input.value=Math.abs(n)<0.005?'0.00':money(n);
-  input.style.color=n<0?'#059669':n>0?'#DC2626':'#64748B';
+  input.style.color=n<0?'#146C2E':n>0?'#B3261E':'#444746';
   label.textContent=state.text;
   label.className=state.cls;
 };
@@ -473,8 +746,8 @@ window.renderPublicBookingRequests=()=>{
         <span class="patient-match ${matchClass}">${matchLabel}</span>
       </div>
       <div class="public-booking-actions">
-        <button class="btn primary" type="button" onclick="window.convertPublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:17px">event_available</span> Convert to Appointment</button>
-        <button class="btn" type="button" onclick="window.declinePublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:17px">close</span> Decline</button>
+        <button class="btn primary" type="button" onclick="window.convertPublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:18px">event_available</span> Convert to Appointment</button>
+        <button class="btn" type="button" onclick="window.declinePublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:18px">close</span> Decline</button>
       </div>
     </article>`;
   }).join('');
@@ -596,7 +869,7 @@ function renderAppointments(){
   const map={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'};
   list.forEach(x=>{
     const d=x.data,id=x.id,st=d.status||'Pending',ind=window.formatIndianDate(d.date);
-    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(formatTime12Hour(d.time))}</div>${d.previousDate?`<div class="sub">Prev: ${window.formatIndianDate(d.previousDate)} ${esc(formatTime12Hour(d.previousTime))}</div>`:''}</td><td><div class="patient-cell"><span class="patient-avatar" aria-hidden="true">${esc((d.name||'?').trim().charAt(0).toUpperCase())}</span><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.age?`• ${esc(d.age)} Yrs`:''}${d.gender?' • '+esc(d.gender):''}</div><span class="badge cat" style="margin-top:5px">${esc(d.category||'Normal')}</span></div></div></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.therapist||'')}</div></td><td><strong>${esc(d.duration||'--')}</strong><div class="sub">Sessions/Day: ${esc(d.sessionsPerDay||'--')}</div><div class="sub" style="color:var(--success)">Fee ₹${money(d.fee)} • Adv ₹${money(d.advance)}</div><div class="sub ${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="max-width:220px;white-space:normal;margin-top:5px">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
+    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(formatTime12Hour(d.time))}</div>${d.previousDate?`<div class="sub">Prev: ${window.formatIndianDate(d.previousDate)}${esc(formatTime12Hour(d.previousTime))}</div>`:''}</td><td><div class="patient-cell"><span class="patient-avatar" aria-hidden="true">${esc((d.name||'?').trim().charAt(0).toUpperCase())}</span><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.age?`• ${esc(d.age)} Yrs`:''}${d.gender?' • '+esc(d.gender):''}</div><span class="badge cat" style="margin-top:8px">${esc(d.category||'Normal')}</span></div></div></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.therapist||'')}</div></td><td><strong>${esc(d.duration||'--')}</strong><div class="sub">Sessions/Day: ${esc(d.sessionsPerDay||'--')}</div><div class="sub" style="color:var(--success)">Fee ₹${money(d.fee)} • Adv ₹${money(d.advance)}</div><div class="sub ${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="max-width:240px;white-space:normal;margin-top:8px">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
     tb.appendChild(tr);
     const card=document.createElement('div');card.className='apt-card';card.dataset.id=id;card.innerHTML=`<div class="card-top"><div class="card-patient"><div class="card-check"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></div><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')}</div></div></div><span class="badge ${map[st]||'pending'}">${esc(st)}</span></div><div class="card-line"><b>${ind}</b> • ${esc(formatTime12Hour(d.time))}</div><div class="card-grid"><div><div class="sub">Branch</div><b>${esc(d.branch||'')}</b></div><div><div class="sub">Therapist</div><b>${esc(d.therapist||'--')}</b></div><div><div class="sub">Fee</div><b>₹${money(d.fee)}</b></div><div><div class="sub">Balance</div><b class="${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</b></div></div><div class="card-actions">${actionHTML(id)}</div>`;
     cards.appendChild(card);
@@ -630,7 +903,7 @@ window.editAppointment=id=>{const d=window.appointmentsDataCache[id];if(d)window
 window.saveAppointment=async()=>{
   const btn=document.getElementById('saveAptBtn'),id=document.getElementById('aptDocId').value,get=x=>document.getElementById(x).value.trim(),fee=parseFloat(get('aptFee'))||0,advance=parseFloat(get('aptAdvance'))||0,prev=parseFloat(get('aptPrevDues'))||0;
   let status=get('aptStatus'),date=get('aptDate'),notes=get('aptNotes'),res=get('aptRescheduleDate');const req=['aptMobile','aptName','aptBranch','aptDate','aptTime','aptTherapist','aptCategory'];if(req.some(x=>!get(x)))return alert('Please fill all required (*) fields.');
-  const appointmentTime=get('aptTime');if(!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(appointmentTime))return alert('Appointment time must be between 9:00 AM and 9:00 PM.');
+  const appointmentTime=get('aptTime');if(!/^(0[9]|1\d|20):[0-5]\d$\vert{}^21:00$/.test(appointmentTime))return alert('Appointment time must be between 9:00 AM and 9:00 PM.');
   if(status==='Rescheduled'){if(!res)return alert('Please pick a new reschedule date.');notes=notes.replace(/\[Moved from: .*?\]/g,'').trim()+(notes.trim()?'\n':'')+`[Moved from: ${window.formatIndianDate(date)}]`;date=res}
   const payload={mobile:get('aptMobile'),name:get('aptName'),age:get('aptAge'),gender:get('aptGender'),category:get('aptCategory'),location:get('aptLocation'),patientNotes:get('aptPatientNotes'),branch:get('aptBranch'),date,time:appointmentTime,previousDate:get('aptPreviousDate'),previousTime:get('aptPreviousTime'),duration:get('aptDuration'),sessionsPerDay:get('aptSessionsPerDay'),therapist:get('aptTherapist'),status,fee,advance,balance:fee+prev-advance,prevDues:prev,notes,paymentMode:get('aptPaymentMode'),paymentReference:get('aptPaymentReference'),paymentRemarks:get('aptPaymentRemarks'),updatedAt:new Date()};
   btn.disabled=true;btn.textContent='Saving...';
@@ -670,7 +943,7 @@ window.syncTransactions=async(aptId,payload)=>{
   }
 };
 window.viewNotes=id=>{const d=window.appointmentsDataCache[id];if(!d)return;document.getElementById('modalPatientName').textContent=d.name||'';document.getElementById('modalPatientMeta').textContent=`Mobile: +91 ${d.mobile||''} | Scheduled: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)} | Doctor: ${d.therapist||'--'}`;let n='';if(d.patientNotes)n+=`[Medical History]\n${d.patientNotes}\n\n`;if(d.notes)n+=`[Diagnosis Report]\n${d.notes}`;document.getElementById('modalPatientNotesText').textContent=n||'No notes recorded for this patient.';document.getElementById('notesModal').classList.add('show')};
-window.printModalNotes=()=>{const c=document.getElementById('printNotesArea').innerHTML,w=window.open('','_blank');if(!w)return;w.document.write(`<html><head><title>Patient Report</title><style>body{font-family:Arial;padding:35px;line-height:1.6}h2{color:#155A90}</style></head><body><h2>Patient Report</h2>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()};
+window.printModalNotes=()=>{const c=document.getElementById('printNotesArea').innerHTML,w=window.open('','_blank');if(!w)return;w.document.write(`<html><head><title>Patient Report</title><style>body{font-family:Arial;padding:35px;line-height:1.6}h2{color:#0B1F4B}</style></head><body><h2>Patient Report</h2>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()};
 window.openInvoiceTemplate=async(id,action='view')=>{
   let d=window.appointmentsDataCache[id];
   if(!d){
@@ -768,7 +1041,7 @@ function parseCSV(text){const rows=[];let row=[],cell='',q=false;text=String(tex
 const norm=v=>String(v||'').trim().toLowerCase().replace(/[\s_\-\/]+/g,'');
 window.importAppointmentsCSV=async file=>{
   if(!file)return;try{const rows=parseCSV(await file.text());if(rows.length<2)throw Error('CSV contains no appointment rows.');const hm={};rows[0].forEach((h,i)=>hm[norm(h)]=i);const req=['mobile','name','branch','date','time','therapist'];const miss=req.filter(k=>hm[norm(k)]===undefined);if(miss.length)throw Error('Missing required columns: '+miss.join(', '));
-    let ok=0,fail=[];for(let ri=1;ri<rows.length;ri++){try{const r={};CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());const mobile=r.mobile.replace(/\D/g,'');if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');if(!r.name||!r.branch||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(r.time)||!r.therapist)throw Error('Required value missing or invalid date/time (time must be 9:00 AM–9:00 PM)');if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}const fee=parseFloat(r.fee)||0,adv=parseFloat(r.advance)||0,prev=parseFloat(r.prevDues)||0,payload={mobile,name:r.name,age:r.age,gender:r.gender,category:r.category||'Normal',location:r.location,patientNotes:r.patientNotes,branch:r.branch,date:r.date,time:r.time,previousDate:r.previousDate,previousTime:r.previousTime,duration:r.duration,sessionsPerDay:r.sessionsPerDay,therapist:r.therapist,status:r.status||'Pending',fee,advance:adv,balance:fee+prev-adv,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};let pq=query(collection(db,'patients'),where('mobile','==',mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'patients'),where('mobile','==',mobile),where('branch','==',window.currentUser.branch));const ps=await getDocs(pq),pdata={mobile,name:r.name,age:r.age,gender:r.gender,category:payload.category,location:r.location,notes:r.patientNotes,branch:r.branch};if(ps.empty)await addDoc(collection(db,'patients'),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);const n=await addDoc(collection(db,'appointments'),payload);try{await window.syncTransactions(n.id,payload)}catch(tx){console.error(tx)}ok++}catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}}alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);if(ok)await window.loadAppointments();window.setFilterToday()}catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('aptCsvInput').value=''}};
+    let ok=0,fail=[];for(let ri=1;ri<rows.length;ri++){try{const r={};CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());const mobile=r.mobile.replace(/\D/g,'');if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');if(!r.name\vert{}\vert{}!r.branch\vert{}\vert{}!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^(0[9]|1\d|20):[0-5]\d$\vert{}^21:00$/.test(r.time)||!r.therapist)throw Error('Required value missing or invalid date/time (time must be 9:00 AM–9:00 PM)');if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}const fee=parseFloat(r.fee)||0,adv=parseFloat(r.advance)||0,prev=parseFloat(r.prevDues)||0,payload={mobile,name:r.name,age:r.age,gender:r.gender,category:r.category||'Normal',location:r.location,patientNotes:r.patientNotes,branch:r.branch,date:r.date,time:r.time,previousDate:r.previousDate,previousTime:r.previousTime,duration:r.duration,sessionsPerDay:r.sessionsPerDay,therapist:r.therapist,status:r.status||'Pending',fee,advance:adv,balance:fee+prev-adv,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};let pq=query(collection(db,'patients'),where('mobile','==',mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'patients'),where('mobile','==',mobile),where('branch','==',window.currentUser.branch));const ps=await getDocs(pq),pdata={mobile,name:r.name,age:r.age,gender:r.gender,category:payload.category,location:r.location,notes:r.patientNotes,branch:r.branch};if(ps.empty)await addDoc(collection(db,'patients'),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);const n=await addDoc(collection(db,'appointments'),payload);try{await window.syncTransactions(n.id,payload)}catch(tx){console.error(tx)}ok++}catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}}alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);if(ok)await window.loadAppointments();window.setFilterToday()}catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('aptCsvInput').value=''}};
 window.exportAppointmentsCSV=()=>{const list=filteredAppointments();const rows=[CSV_HEADERS,...list.map(x=>{const d=x.data;return CSV_HEADERS.map(k=>d[k]??'')})];const csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`appointments-${todayISO()}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 window.exportAptPDF=()=>window.print();
 window.openBulkReschedule=window.executeBulkReschedule;
