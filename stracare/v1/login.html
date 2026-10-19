@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#F7F9FC">
+    <meta name="description" content="Sign in to your COREBIQ clinic workspace.">
+    <title>COREBIQ | Secure Login</title>
+    <link rel="stylesheet" href="css/corebiq.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0">
+    <style>
+        :root {
+            color-scheme: light;
+            --login-ink: #1F1F1F;
+            --login-muted: #5F6672;
+            --login-border: #DDE3EA;
+            --login-blue: #0B1F4B;
+            --login-blue-dark: #071630;
+            --login-blue-soft: #E8EEF7;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background:
+                radial-gradient(ellipse at 12% 12%, rgba(211, 227, 253, .58), transparent 34rem),
+                #F7F9FC;
+            color: var(--login-ink);
+            font-family: Outfit, "Google Sans", sans-serif;
+        }
+
+        button, input { font: inherit; }
+        button { -webkit-tap-highlight-color: transparent; }
+        .login-topbar {
+            width: min(100% - 48px, 1200px);
+            min-height: 76px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 18px;
+        }
+        .login-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: inherit;
+            text-decoration: none;
+        }
+        .login-logo-image { display: block; width: 38px; height: 38px; object-fit: contain; }
+        .login-name-image { display: block; width: 132px; max-height: 34px; object-fit: contain; object-position: left center; }
+
+        .login-main {
+            width: min(100% - 48px, 1100px);
+            flex: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(380px, .95fr);
+            align-items: center;
+            gap: clamp(36px, 7vw, 92px);
+            margin: 0 auto;
+            padding: 32px 0 48px;
+        }
+        .login-intro { position: relative; padding: 28px 0; }
+        .login-intro::before {
+            position: absolute;
+            z-index: -1;
+            top: 50%;
+            left: 47%;
+            width: min(40vw, 420px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(211, 227, 253, .72), rgba(232, 240, 254, .18) 58%, transparent 72%);
+            content: "";
+            transform: translate(-50%, -50%);
+        }
+        .login-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            min-height: 36px;
+            padding: 0 14px;
+            border: 1px solid #C6D9F8;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .72);
+            color: #071630;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .login-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #188038;
+            box-shadow: 0 0 0 4px rgba(24, 128, 56, .12);
+        }
+        .login-headline {
+            max-width: 560px;
+            margin: 28px 0 16px;
+            font-size: clamp(38px, 5.3vw, 62px);
+            font-weight: 500;
+            letter-spacing: -.045em;
+            line-height: 1.08;
+        }
+        .login-headline strong {
+            color: var(--login-blue);
+            font-weight: 600;
+        }
+        .login-description {
+            max-width: 460px;
+            margin: 0;
+            color: var(--login-muted);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+        .login-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+        .login-highlight {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            padding: 0 12px;
+            border: 1px solid rgba(201, 212, 228, .85);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .68);
+            color: #46505D;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .login-highlight .material-symbols-rounded { color: var(--login-blue); font-size: 18px; }
+
+        .auth-card {
+            width: 100%;
+            padding: clamp(26px, 4vw, 40px);
+            border: 1px solid rgba(211, 218, 228, .92);
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .94);
+            box-shadow: 0 2px 6px rgba(31, 35, 40, .04), 0 18px 48px rgba(31, 45, 70, .10);
+        }
+        .auth-heading { margin-bottom: 27px; }
+        .auth-heading h2 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: -.025em;
+        }
+        .login-company-name {
+            display: inline-block;
+            max-width: 100%;
+            margin-top: 5px;
+            padding: 2px 9px 4px;
+            overflow-wrap: anywhere;
+            border-radius: 9px;
+            background: var(--login-blue-soft);
+            color: var(--login-blue);
+            font-weight: 700;
+        }
+        .auth-heading p {
+            margin: 8px 0 0;
+            color: var(--login-muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .auth-field { display: block; margin-bottom: 18px; }
+        .auth-field-label {
+            display: block;
+            margin: 0 0 7px 3px;
+            color: #454B54;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .auth-input-wrap { position: relative; }
+        .auth-input {
+            width: 100%;
+            height: 54px;
+            padding: 0 16px;
+            border: 1px solid #AEB8C5;
+            border-radius: 14px;
+            outline: none;
+            background: #fff;
+            color: var(--login-ink);
+            font-size: 14px;
+            transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+        .auth-input::placeholder { color: #858D99; }
+        .auth-input:hover { border-color: #6E7886; }
+        .auth-input:focus {
+            border: 2px solid var(--login-blue);
+            padding-right: 15px;
+            padding-left: 15px;
+            box-shadow: 0 0 0 3px rgba(11, 87, 208, .12);
+        }
+        .auth-input.has-trailing { padding-right: 54px; }
+        .auth-input.has-trailing:focus { padding-right: 53px; }
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 7px;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: transparent;
+            color: #68717D;
+            cursor: pointer;
+            transform: translateY(-50%);
+        }
+        .password-toggle:hover { background: #F1F4F8; color: var(--login-blue); }
+        .password-toggle:focus-visible, .auth-action:focus-visible, .auth-submit:focus-visible,
+        .support-links a:focus-visible {
+            outline: 3px solid rgba(11, 87, 208, .35);
+            outline-offset: 2px;
+        }
+        .auth-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 3px 0 24px;
+        }
+        .remember-option {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: #505762;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .remember-option input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: var(--login-blue);
+        }
+        .auth-action {
+            padding: 7px 0;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--login-blue);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .auth-action:hover { color: var(--login-blue-dark); text-decoration: underline; }
+        .auth-submit {
+            width: 100%;
+            min-height: 52px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border-radius: 26px;
+            background: var(--login-blue);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(11, 87, 208, .2);
+            transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+        }
+        .auth-submit:hover { background: var(--login-blue-dark); box-shadow: 0 5px 14px rgba(11, 87, 208, .24); }
+        .auth-submit:active { transform: scale(.99); }
+        .auth-submit:disabled { cursor: wait; opacity: .72; }
+        .auth-error, .auth-message {
+            display: none;
+            margin: 15px 0 0;
+            padding: 11px 13px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        .auth-error { border: 1px solid #F2C5C2; background: #FFF4F3; color: #9B1C14; }
+        .auth-message { margin-bottom: 15px; }
+        .auth-message.success { display: block; border: 1px solid #B7DFBD; background: #F0F8F1; color: #176B2C; }
+        .auth-message.error { display: block; border: 1px solid #F2C5C2; background: #FFF4F3; color: #9B1C14; }
+        .back-to-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 40px;
+            margin-top: 16px;
+            padding: 0 10px;
+            border-radius: 20px;
+            color: var(--login-muted);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .back-to-login:hover { background: #F2F5F9; color: var(--login-ink); }
+        #reset-form-box { display: none; }
+        .login-footer {
+            width: min(100% - 48px, 1200px);
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px 24px;
+            margin: 0 auto;
+            border-top: 1px solid rgba(207, 215, 226, .8);
+            color: var(--login-muted);
+            font-size: 11px;
+        }
+        .login-footer p { margin: 0; }
+        .login-footer strong { color: var(--login-ink); }
+        .support-links { display: flex; align-items: center; gap: 8px; }
+        .support-links a {
+            width: 40px;
+            height: 40px;
+            display: inline-grid;
+            place-items: center;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            color: var(--login-blue);
+            text-decoration: none;
+            transition: background-color .18s ease, border-color .18s ease, transform .18s ease;
+        }
+        .support-links a:hover {
+            border-color: #C8D2E1;
+            background: #E8EEF7;
+            transform: translateY(-1px);
+        }
+        .support-links .material-symbols-rounded { font-size: 21px; }
+        .support-links a:focus-visible {
+            outline: 3px solid rgba(11, 31, 75, .3);
+            outline-offset: 2px;
+        }
+
+        #splash-screen {
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #F7F9FC;
+            transition: opacity .4s ease, visibility .4s ease;
+        }
+        .splash-dots { display: flex; gap: 6px; }
+        .splash-dots span {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--login-blue);
+            animation: splash-bounce .8s ease-in-out infinite alternate;
+        }
+        .splash-dots span:nth-child(2) { animation-delay: .15s; }
+        .splash-dots span:nth-child(3) { animation-delay: .3s; }
+        .fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+        @keyframes splash-bounce { to { transform: translateY(-6px); opacity: .45; } }
+
+        @media (max-width: 800px) {
+            .login-main {
+                width: min(100% - 36px, 520px);
+                grid-template-columns: 1fr;
+                gap: 22px;
+                padding: 28px 0 36px;
+            }
+            .login-intro { padding: 0 2px; }
+            .login-intro::before { top: 25%; left: 50%; width: 100%; }
+            .login-headline { margin: 18px 0 10px; font-size: clamp(32px, 9vw, 48px); }
+            .login-description { font-size: 14px; }
+            .login-highlights { display: none; }
+            .auth-card { border-radius: 24px; }
+            .login-footer {
+                width: min(100% - 36px, 520px);
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding: 16px 0;
+            }
+        }
+        @media (max-width: 480px) {
+            .login-topbar { width: calc(100% - 32px); min-height: 64px; }
+            .login-logo-image { width: 34px; height: 34px; }
+            .login-name-image { width: 118px; max-height: 30px; }
+            .login-main { width: calc(100% - 32px); padding-top: 20px; }
+            .login-status { min-height: 32px; font-size: 11px; }
+            .login-headline { margin-top: 16px; }
+            .auth-card { padding: 25px 20px; }
+            .auth-options { align-items: flex-start; flex-direction: column; gap: 10px; }
+            .login-footer { width: calc(100% - 32px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="splash-screen" aria-label="Loading">
+        <div class="splash-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+    </div>
+
+    <header class="login-topbar">
+        <a class="login-brand" href="login.html" aria-label="COREBIQ">
+            <img class="login-logo-image" src="assets/logo.png" alt="">
+            <img class="login-name-image" src="assets/name.png" alt="COREBIQ">
+        </a>
+    </header>
+
+    <main class="login-main">
+        <section class="login-intro" aria-labelledby="login-intro-title">
+            <div class="login-status"><span class="login-status-dot" aria-hidden="true"></span> System online and ready</div>
+            <h1 class="login-headline" id="login-intro-title">Care for your clinic.<br><strong>Clarity for your day.</strong></h1>
+            <p class="login-description">Sign in to your COREBIQ workspace to manage appointments, patients, and your clinic operations in one place.</p>
+            <div class="login-highlights" aria-label="Workspace features">
+                <span class="login-highlight"><span class="material-symbols-rounded" aria-hidden="true">event_available</span>Appointments</span>
+                <span class="login-highlight"><span class="material-symbols-rounded" aria-hidden="true">clinical_notes</span>Clinic records</span>
+                <span class="login-highlight"><span class="material-symbols-rounded" aria-hidden="true">insights</span>Daily insights</span>
+            </div>
+        </section>
+
+        <section class="auth-card" aria-label="Sign in to COREBIQ">
+            <div id="login-form-box">
+                <div class="auth-heading">
+                    <h2>Welcome back,<br><span class="login-company-name" id="login-company-name">your clinic</span></h2>
+                    <p>Sign in with your workspace account to continue.</p>
+                </div>
+                <form id="login-form" novalidate>
+                    <label class="auth-field">
+                        <span class="auth-field-label">Email address</span>
+                        <input type="email" id="loginEmail" class="auth-input" placeholder="you@example.com" autocomplete="username" aria-label="Email address">
+                    </label>
+                    <label class="auth-field">
+                        <span class="auth-field-label">Password</span>
+                        <span class="auth-input-wrap">
+                            <input type="password" id="loginPassword" class="auth-input has-trailing" placeholder="Enter your password" autocomplete="current-password" aria-label="Password">
+                            <button class="password-toggle" type="button" id="togglePassIcon" onclick="window.togglePassword()" aria-label="Show password" title="Show password">
+                                <span class="material-symbols-rounded" aria-hidden="true">visibility_off</span>
+                            </button>
+                        </span>
+                    </label>
+                    <div class="auth-options">
+                        <label class="remember-option"><input type="checkbox" id="rememberMe"><span>Remember me on this browser</span></label>
+                        <button class="auth-action" type="button" onclick="window.toggleResetView(true)">Forgot password?</button>
+                    </div>
+                    <button id="loginBtn" class="auth-submit" type="submit">
+                        <span>Sign in</span>
+                        <span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>
+                    </button>
+                    <div id="login-error" class="auth-error" role="alert" aria-live="polite">Authentication failed.</div>
+                </form>
+            </div>
+
+            <div id="reset-form-box">
+                <div class="auth-heading">
+                    <h2>Reset password</h2>
+                    <p>Enter your registered email address and we’ll send you a secure reset link.</p>
+                </div>
+                <form id="reset-form" novalidate>
+                    <label class="auth-field">
+                        <span class="auth-field-label">Email address</span>
+                        <input type="email" id="resetEmail" class="auth-input" placeholder="you@example.com" autocomplete="email" aria-label="Email address">
+                    </label>
+                    <button id="resetBtn" class="auth-submit" type="submit"><span>Send reset link</span><span class="material-symbols-rounded" aria-hidden="true">mail</span></button>
+                    <div id="reset-msg" class="auth-message" role="status" aria-live="polite"></div>
+                    <button class="back-to-login" type="button" onclick="window.toggleResetView(false)">
+                        <span class="material-symbols-rounded" aria-hidden="true">arrow_back</span> Back to sign in
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="login-footer">
+        <p>&copy; <span id="current-year"></span> All rights reserved.</p>
+        <div class="support-links">
+            <a href="mailto:support@corebiq.com?subject=COREBIQ%20Support%20Request&amp;body=Hello%20COREBIQ%20Support%2C%0A%0AI%20need%20help%20with%3A%0A%0AThank%20you."
+               aria-label="Email COREBIQ support" title="Email support">
+                <span class="material-symbols-rounded" aria-hidden="true">mail</span>
+            </a>
+            <a href="tel:+919946151111" aria-label="Call COREBIQ support" title="Call support">
+                <span class="material-symbols-rounded" aria-hidden="true">call</span>
+            </a>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { auth, db } from './firebase-config.js';
+        import {
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            setPersistence,
+            browserLocalPersistence,
+            browserSessionPersistence,
+            sendPasswordResetEmail
+        } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const companyNameCacheKey = 'corebiq-company-name';
+        const companyNameElement = document.getElementById('login-company-name');
+        let cachedCompanyName = '';
+        try {
+            cachedCompanyName = localStorage.getItem(companyNameCacheKey) || '';
+        } catch (error) {
+            console.warn('Unable to read the cached company name:', error);
+        }
+        if (cachedCompanyName) companyNameElement.textContent = cachedCompanyName;
+
+        onAuthStateChanged(auth, async user => {
+            if (!user) return;
+            try {
+                const companySnapshot = await getDoc(doc(db, 'settings', 'company_profile'));
+                const companyName = companySnapshot.exists() ? companySnapshot.data().name : '';
+                if (typeof companyName === 'string' && companyName.trim()) {
+                    const normalizedName = companyName.trim();
+                    localStorage.setItem(companyNameCacheKey, normalizedName);
+                    companyNameElement.textContent = normalizedName;
+                }
+            } catch (error) {
+                console.error('Unable to refresh the login company name:', error);
+            }
+            window.location.href = 'index.html';
+        });
+
+        window.toggleResetView = function(showReset) {
+            document.getElementById('login-form-box').style.display = showReset ? 'none' : 'block';
+            document.getElementById('reset-form-box').style.display = showReset ? 'block' : 'none';
+            const message = document.getElementById('reset-msg');
+            message.innerText = '';
+            message.className = 'auth-message';
+            if (showReset) document.getElementById('resetEmail').value = document.getElementById('loginEmail').value;
+        };
+
+        window.togglePassword = function() {
+            const input = document.getElementById('loginPassword');
+            const button = document.getElementById('togglePassIcon');
+            const icon = button.querySelector('.material-symbols-rounded');
+            const showPassword = input.type === 'password';
+            input.type = showPassword ? 'text' : 'password';
+            icon.textContent = showPassword ? 'visibility' : 'visibility_off';
+            button.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+            button.title = showPassword ? 'Hide password' : 'Show password';
+        };
+
+        window.handleLogin = async function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const error = document.getElementById('login-error');
+            const button = document.getElementById('loginBtn');
+
+            if (!email || !password) {
+                error.innerText = 'Please enter both email and password.';
+                error.style.display = 'block';
+                return;
+            }
+
+            button.innerHTML = '<span>Signing in…</span><span class="material-symbols-rounded" aria-hidden="true">progress_activity</span>';
+            button.disabled = true;
+            error.style.display = 'none';
+
+            try {
+                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (authError) {
+                error.innerText = 'Invalid credentials or user not found.';
+                error.style.display = 'block';
+                button.innerHTML = '<span>Sign in</span><span class="material-symbols-rounded" aria-hidden="true">arrow_forward</span>';
+                button.disabled = false;
+            }
+        };
+
+        window.handlePasswordReset = async function() {
+            const email = document.getElementById('resetEmail').value.trim();
+            const message = document.getElementById('reset-msg');
+            const button = document.getElementById('resetBtn');
+
+            if (!email) {
+                message.innerText = 'Please enter your email address.';
+                message.className = 'auth-message error';
+                return;
+            }
+
+            button.disabled = true;
+            button.querySelector('span:first-child').innerText = 'Sending…';
+            message.className = 'auth-message';
+            message.innerText = '';
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                message.innerText = 'Reset link sent. Please check your inbox.';
+                message.className = 'auth-message success';
+            } catch (resetError) {
+                message.innerText = 'Could not send the reset link. Check the email address and try again.';
+                message.className = 'auth-message error';
+            } finally {
+                button.querySelector('span:first-child').innerText = 'Send reset link';
+                button.disabled = false;
+            }
+        };
+
+        document.getElementById('login-form').addEventListener('submit', event => {
+            event.preventDefault();
+            window.handleLogin();
+        });
+        document.getElementById('reset-form').addEventListener('submit', event => {
+            event.preventDefault();
+            window.handlePasswordReset();
+        });
+
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        const removeSplash = () => {
+            const splash = document.getElementById('splash-screen');
+            if (splash && !splash.classList.contains('fade-out')) {
+                splash.classList.add('fade-out');
+                setTimeout(() => splash.remove(), 450);
+            }
+        };
+        window.addEventListener('load', () => setTimeout(removeSplash, 500));
+        setTimeout(removeSplash, 1800);
+    </script>
+</body>
+</html>
