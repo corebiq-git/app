@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F7F9FC">
+    <title>COREBIQ | About App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+    <link rel="stylesheet" href="css/corebiq.css">
+    <style>
+        #about-module {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 8px 0 32px;
+            font-family: Outfit, "Google Sans", sans-serif;
+        }
+
+        #about-module .about-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 20px;
+            color: var(--text, #1F1F1F);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        #about-module .about-heading-icon {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            place-items: center;
+            border-radius: 14px;
+            background: var(--primary-soft, #E8EEF7);
+            color: var(--primary, #0B1F4B);
+            font-size: 26px;
+        }
+
+        #about-module .about-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            padding: 40px;
+            border: 1px solid var(--outline-soft, #E1E4E2);
+            border-radius: var(--radius-lg, 24px);
+            background: var(--surface, #FFFFFF);
+            box-shadow: var(--shadow, 0 1px 3px rgba(31, 35, 40, .08), 0 8px 28px rgba(31, 35, 40, .05));
+            text-align: center;
+        }
+
+        #about-module .app-logo {
+            display: block;
+            width: min(220px, 80%);
+            height: auto;
+            margin: 0 0 16px;
+        }
+
+        #about-module .app-title {
+            margin: 0 0 8px;
+            color: var(--text, #1F1F1F);
+            font-size: clamp(23px, 4vw, 28px);
+            font-weight: 700;
+            letter-spacing: -.4px;
+        }
+
+        #about-module .app-subtitle {
+            max-width: 620px;
+            margin: 0 0 20px;
+            color: var(--muted, #6B7280);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        #about-module .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin: 0 0 30px;
+            padding: 7px 14px;
+            border: 1px solid var(--primary-soft, #E8EEF7);
+            border-radius: 20px;
+            background: var(--surface-soft, #F7F9FC);
+            color: var(--primary, #0B1F4B);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #about-module .version-badge .material-symbols-rounded {
+            font-size: 18px;
+        }
+
+        #about-module .features-grid {
+            display: grid;
+            width: 100%;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin: 0 0 28px;
+            text-align: left;
+        }
+
+        #about-module .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid var(--outline-soft, #E1E4E2);
+            border-radius: var(--radius-md, 16px);
+            background: var(--surface-soft, #F7F9FC);
+            transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+        }
+
+        #about-module .feature-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-soft, #E8EEF7);
+            box-shadow: 0 4px 12px rgba(11, 87, 208, .08);
+        }
+
+        #about-module .feature-icon {
+            display: grid;
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px;
+            place-items: center;
+            border-radius: 11px;
+            background: var(--primary-soft, #E8EEF7);
+            color: var(--primary, #0B1F4B);
+        }
+
+        #about-module .feature-text h2 {
+            margin: 1px 0 5px;
+            color: var(--text, #1F1F1F);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        #about-module .feature-text p {
+            margin: 0;
+            color: var(--muted, #6B7280);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        #about-module .developer-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 8px;
+            padding: 22px;
+            border: 1px solid var(--outline-soft, #E1E4E2);
+            border-radius: var(--radius-md, 16px);
+            background: var(--surface-soft, #F7F9FC);
+        }
+
+        #about-module .developer-icon {
+            margin-bottom: 2px;
+            color: var(--primary, #0B1F4B);
+            font-size: 28px;
+        }
+
+        #about-module .developer-info {
+            color: var(--muted, #6B7280);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        #about-module .developer-info strong {
+            color: var(--text, #1F1F1F);
+        }
+
+        #about-module .developer-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 18px;
+            margin-top: 8px;
+        }
+
+        #about-module .developer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--primary, #0B1F4B);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        #about-module .developer-link:hover {
+            text-decoration: underline;
+        }
+
+        #about-module .developer-link:focus-visible {
+            outline: 2px solid var(--primary, #0B1F4B);
+            outline-offset: 3px;
+            border-radius: 3px;
+        }
+
+        #about-module .developer-link .material-symbols-rounded {
+            font-size: 17px;
+        }
+
+        @media (max-width: 700px) {
+            #about-module {
+                padding-top: 0;
+            }
+
+            #about-module .about-card {
+                padding: 28px 20px;
+                border-radius: var(--radius-md, 16px);
+            }
+
+            #about-module .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 380px) {
+            #about-module .feature-item {
+                gap: 10px;
+                padding: 14px;
+            }
+
+            #about-module .developer-card {
+                padding: 18px 12px;
+            }
+        }
+
+        #about-module{max-width:1200px;padding:4px 0 32px;font-family:Inter,sans-serif;color:#1f1f1f}
+        #about-module .about-heading{gap:13px;margin:0 0 20px;color:#1f1f1f;font-size:25px;line-height:1.2;font-weight:600;letter-spacing:-.35px}
+        #about-module .about-heading-icon{width:48px;height:48px;flex-basis:48px;border:1px solid #eef0f4;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.06);font-size:24px}
+        #about-module .about-card{position:relative;align-items:stretch;padding:0;border:1px solid #e1e4e2;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06),0 12px 34px rgba(31,35,40,.05);text-align:left}
+        #about-module .about-card::before{position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#0B1F4B,#274777 60%,#AAB9D0);content:""}
+        #about-module .about-hero{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:22px;padding:35px 36px 30px;border-bottom:1px solid #f0f2f5}
+        #about-module .app-logo{width:min(190px,100%);max-height:90px;object-fit:contain;margin:0}
+        #about-module .about-hero-copy{min-width:0}
+        #about-module .app-title{margin:0 0 6px;color:#1f1f1f;font-size:27px;font-weight:650;letter-spacing:-.45px}
+        #about-module .app-subtitle{max-width:670px;margin:0 0 14px;color:#667085;font-size:13px;line-height:1.65}
+        #about-module .version-badge{margin:0;padding:7px 12px;border-color:#d2e3fc;border-radius:20px;background:#f4f7fc;color:#0B1F4B;font-size:11px}
+        #about-module .version-badge .material-symbols-rounded{font-size:17px}
+        #about-module .features-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0;padding:24px 30px 26px}
+        #about-module .feature-item{gap:12px;padding:16px;border-color:#e8edf5;border-radius:17px;background:#f8fafc;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+        #about-module .feature-item:hover{transform:translateY(-1px);border-color:#d2e3fc;background:#f4f7fc;box-shadow:0 4px 12px rgba(11,31,75,.06)}
+        #about-module .feature-icon{width:38px;height:38px;flex-basis:38px;border-radius:12px;background:#E8EEF7;color:#0B1F4B;font-size:20px}
+        #about-module .feature-text h2{margin:1px 0 5px;color:#344054;font-size:13px;font-weight:650}
+        #about-module .feature-text p{color:#667085;font-size:12px;line-height:1.55}
+        #about-module .developer-card{align-items:flex-start;gap:8px;margin:0 30px 28px;padding:19px 20px;border-color:#e1e4e2;border-radius:17px;background:#fafbfc;text-align:left}
+        #about-module .developer-icon{margin:0;color:#0B1F4B;font-size:23px}
+        #about-module .developer-info{margin:0;color:#667085;font-size:12px;line-height:1.7}
+        #about-module .developer-info strong{color:#344054}
+        #about-module .developer-links{justify-content:flex-start;gap:10px;margin-top:8px}
+        #about-module .developer-link{min-height:46px;gap:10px;padding:5px 15px 5px 7px;border:1px solid #dce3ed;border-radius:24px;background:#fff;color:#344054;font-size:12px;font-weight:600;transition:border-color .18s ease,background .18s ease,box-shadow .18s ease}
+        #about-module .developer-link:hover{border-color:#C8D2E1;background:#f8fbff;box-shadow:0 3px 10px rgba(11,31,75,.08);text-decoration:none}
+        #about-module .developer-link .contact-icon{display:grid;width:32px;height:32px;flex:0 0 32px;place-items:center;border-radius:50%;background:#E8EEF7;color:#0B1F4B}
+        #about-module .developer-link .material-symbols-rounded{font-size:17px}
+        #about-module .developer-link.contact-call .contact-icon{background:#e8f5e9;color:#188038}
+        #about-module .contact-link-label{display:block}
+        #about-module .contact-link-detail{display:block;margin-top:1px;color:#667085;font-size:10px;font-weight:450}
+
+        @media(max-width:700px){
+            #about-module{padding-top:0}
+            #about-module .about-heading{align-items:flex-start;font-size:21px}
+            #about-module .about-heading-icon{width:42px;height:42px;flex-basis:42px;border-radius:14px}
+            #about-module .about-card{border-radius:21px}
+            #about-module .about-hero{grid-template-columns:1fr;justify-items:start;gap:14px;padding:27px 20px 21px}
+            #about-module .app-logo{width:min(180px,78%);max-height:72px}
+            #about-module .app-title{font-size:24px}
+            #about-module .app-subtitle{margin-bottom:12px;font-size:12px}
+            #about-module .features-grid{grid-template-columns:1fr;gap:9px;padding:17px 15px}
+            #about-module .feature-item{padding:14px}
+            #about-module .developer-card{margin:0 15px 17px;padding:16px}
+            #about-module .developer-links{gap:7px}
+        }
+
+        @media(max-width:380px){
+            #about-module .developer-links{flex-direction:column;align-items:stretch;width:100%}
+            #about-module .developer-link{justify-content:center}
+        }
+    </style>
+</head>
+<body>
+    <main class="module-container" id="about-module">
+        <h1 class="about-heading">
+            <span class="material-symbols-rounded about-heading-icon" aria-hidden="true">info</span>
+            About Application
+        </h1>
+
+        <section class="about-card" aria-labelledby="about-app-title">
+            <div class="about-hero">
+                <img src="assets/name.png" alt="Stra Care" class="app-logo">
+                <div class="about-hero-copy">
+                    <h2 class="app-title" id="about-app-title">COREBIQ</h2>
+                    <p class="app-subtitle">
+                        The complete ERP and CRM suite engineered for streamlined clinical administration,
+                        intelligent scheduling, and seamless financial management.
+                    </p>
+                    <p class="version-badge">
+                        <span class="material-symbols-rounded" aria-hidden="true">verified</span>
+                        Version v1.2 (Stable Build)
+                    </p>
+                </div>
+            </div>
+
+            <div class="features-grid" aria-label="Application features">
+                <article class="feature-item">
+                    <span class="material-symbols-rounded feature-icon" aria-hidden="true">calendar_check</span>
+                    <div class="feature-text">
+                        <h2>Smart Scheduling</h2>
+                        <p>Manage daily timesheets, allocate therapists, and handle rescheduling workflows effortlessly.</p>
+                    </div>
+                </article>
+
+                <article class="feature-item">
+                    <span class="material-symbols-rounded feature-icon" aria-hidden="true">groups</span>
+                    <div class="feature-text">
+                        <h2>CRM Directory</h2>
+                        <p>Quickly access client details, securely log medical histories, and track branch-specific patient data.</p>
+                    </div>
+                </article>
+
+                <article class="feature-item">
+                    <span class="material-symbols-rounded feature-icon" aria-hidden="true">receipt_long</span>
+                    <div class="feature-text">
+                        <h2>Automated Financials</h2>
+                        <p>Track fees, advances, and outstanding balances with daily transaction records.</p>
+                    </div>
+                </article>
+
+                <article class="feature-item">
+                    <span class="material-symbols-rounded feature-icon" aria-hidden="true">qr_code_scanner</span>
+                    <div class="feature-text">
+                        <h2>Digital Payments</h2>
+                        <p>Generate UPI payment receipts and share them with patients via WhatsApp.</p>
+                    </div>
+                </article>
+            </div>
+
+            <footer class="developer-card">
+                <span class="material-symbols-rounded developer-icon" aria-hidden="true">domain</span>
+                <p class="developer-info">
+                    <strong>COREBIQ Business Management Platform</strong><br>
+                    Licensed to <strong>Stra Care Physiotherapy</strong>.<br>
+                    All rights reserved &copy; <span data-copyright-year>2026</span>.
+                </p>
+                <nav class="developer-links" aria-label="Developer contact links">
+                    <a class="developer-link" href="https://corebiq.com" target="_blank" rel="noopener noreferrer">
+                        <span class="material-symbols-rounded" aria-hidden="true">language</span>
+                        corebiq.com
+                    </a>
+                    <a class="developer-link contact-email" href="mailto:support@corebiq.com?subject=COREBIQ%20Support%20Request&amp;body=Hello%20COREBIQ%20Support%2C%0A%0AI%20need%20help%20with%3A%0A%0AThank%20you." aria-label="Mail COREBIQ support">
+                        <span class="contact-icon"><span class="material-symbols-rounded" aria-hidden="true">mail</span></span>
+                        <span class="contact-link-label">Mail us</span>
+                    </a>
+                    <a class="developer-link contact-call" href="tel:+919946151111" aria-label="Call COREBIQ support">
+                        <span class="contact-icon"><span class="material-symbols-rounded" aria-hidden="true">call</span></span>
+                        <span class="contact-link-label">Call us</span>
+                    </a>
+                </nav>
+            </footer>
+        </section>
+        <script>
+            (() => {
+                const copyrightYear = document.querySelector('[data-copyright-year]');
+                if (copyrightYear) {
+                    copyrightYear.textContent = new Date().getFullYear();
+                }
+            })();
+        </script>
+    </main>
+</body>
+</html>
