@@ -1,0 +1,9 @@
+{
+  "name": "COREBIQ ERP",
+  "short_name": "COREBIQ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#3476b5",
+  "icons": []
+}
