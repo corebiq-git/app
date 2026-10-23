@@ -413,3 +413,28 @@ body {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* TEMPORARY COREBIQ LAYOUT DIAGNOSTIC */
+@media (max-width: 760px) {
+  #app-container {
+    outline: 3px solid red !important;
+  }
+
+  #sidebar-container {
+    outline: 3px solid orange !important;
+  }
+
+  .main-wrapper {
+    outline: 3px solid blue !important;
+    min-width: 0 !important;
+  }
+
+  #header-container {
+    outline: 3px solid green !important;
+  }
+
+  #main-content {
+    outline: 3px solid magenta !important;
+    min-width: 0 !important;
+  }
+}
