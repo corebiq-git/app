@@ -1,4 +1,4 @@
-const CACHE="corebiq-v6";
+const CACHE="corebiq-v7";
 const CORE=[
     "./",
     "./index.html",
