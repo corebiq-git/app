@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ | Physiotherapy Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="letterhead-module">
+    <style>
+        :root {
+            /* Matched to the provided logo colors */
+            --primary: #164683; 
+            --secondary: #61913C;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --border: #E4E7EC;
+            --bg-light: #F4F7FC;
+            --stamp-green: #007B5E;
+            
+            /* Modern 50/50 horizontal split for the footer line */
+            --brand-split-gradient: linear-gradient(110deg, #61913C 50%, #164683 50%);
+        }
+
+        /* --- Global & Container --- */
+        body { background-color: #F8FAFC; margin: 0; }
+        #letterhead-module { 
+            font-family: 'Inter', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            padding: 20px;
+            box-sizing: border-box;
+            color: var(--text-main); 
+        }
+
+        /* --- Studio Toolbar --- */
+        #letterhead-module .studio-toolbar { 
+            width: 100%; 
+            max-width: 210mm;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 16px; 
+            margin-bottom: 24px; 
+            padding: 16px 24px; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            background: #fff; 
+            box-shadow: 0 4px 12px rgba(16, 24, 40, 0.05); 
+            box-sizing: border-box;
+        }
+        #letterhead-module .studio-heading { display: flex; align-items: center; gap: 16px; }
+        #letterhead-module .studio-icon { 
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
+            border-radius: 10px; background: var(--bg-light); color: var(--primary); 
+        }
+        #letterhead-module .studio-icon .material-symbols-rounded { font-size: 24px; }
+        #letterhead-module .studio-heading h1 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; }
+        #letterhead-module .studio-heading p { margin: 4px 0 0; color: #6B7280; font-size: 12px; }
+        
+        #letterhead-module .studio-actions { display: flex; align-items: center; gap: 12px; }
+        #letterhead-module .seal-select { 
+            height: 40px; padding: 0 16px; border: 1px solid #D1D5DB; border-radius: 8px; 
+            background: #fff; color: #374151; font: 500 13px 'Inter', sans-serif; outline: none; cursor: pointer;
+        }
+        #letterhead-module .seal-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22, 70, 131, 0.1); }
+        #letterhead-module .print-btn { 
+            height: 40px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px; 
+            background: var(--primary); color: white; border: none; border-radius: 8px; 
+            font-weight: 600; font-size: 13px; cursor: pointer; transition: background 0.2s;
+        }
+        #letterhead-module .print-btn:hover { background: #0E305C; }
+        #letterhead-module .print-btn .material-symbols-rounded { font-size: 18px; }
+
+        /* --- A4 Screen Canvas --- */
+        #letterhead-module .a4-canvas {
+            width: 100%;
+            max-width: 210mm; 
+            min-height: 297mm; 
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+
+        /* --- Center Watermark --- */
+        #letterhead-module .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55%; max-width: 350px;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Header Section --- */
+        #letterhead-module .letter-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15mm 20mm 6mm 10mm; 
+            box-sizing: border-box;
+            width: 100%;
+        }
+        
+        #letterhead-module .letterhead-brand { display: flex; align-items: center; gap: 12px; }
+        #letterhead-module .logo-img { width: 18mm; height: 18mm; object-fit: contain; }
+        #letterhead-module .company-name-img { width: auto; max-width: 45mm; max-height: 14mm; object-fit: contain; }
+        
+        #letterhead-module .company-info {
+            display: flex; flex-direction: column; gap: 6px; 
+            max-width: 85mm; text-align: left;
+        }
+        #letterhead-module .company-contact {
+            display: flex; align-items: flex-start; gap: 8px;
+        }
+        #letterhead-module .company-contact .material-symbols-rounded { 
+            font-size: 15px; color: var(--primary); margin-top: 1px; flex-shrink: 0;
+        }
+        #letterhead-module .company-contact-value { 
+            font-size: 11px; line-height: 1.4; color: var(--text-muted); font-weight: 500;
+            word-break: break-word;
+        }
+        #letterhead-module .address-lines { display: flex; flex-direction: column; }
+
+        /* --- Thicker Spaced Header Lines --- */
+        #letterhead-module .header-accent {
+            width: 100% !important;
+            margin: 0 !important;
+            height: 4px; 
+            background: transparent !important;
+            border-top: 3px solid var(--primary) !important;
+            border-bottom: 3px solid var(--secondary) !important;
+            box-sizing: content-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            z-index: 1;
+            position: relative;
+            display: block;
+        }
+
+        /* --- Letter Body / Report Area --- */
+        #letterhead-module .letter-body { 
+            flex: 1; 
+            padding: 10mm 20mm; 
+            position: relative; 
+            z-index: 1; 
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* --- Physiotherapy Form Styles --- */
+        #letterhead-module .report-title {
+            text-align: center;
+            font-size: 14pt;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            margin: 0 0 20px 0;
+            letter-spacing: 0.5px;
+        }
+
+        #letterhead-module .patient-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 Columns */
+            gap: 12px 24px;
+            margin-bottom: 24px;
+        }
+
+        #letterhead-module .form-group {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        #letterhead-module .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        #letterhead-module .form-group label {
+            font-weight: 600;
+            font-size: 11pt;
+            color: var(--text-main);
+            white-space: nowrap;
+            margin-bottom: 2px;
+        }
+
+        #letterhead-module .form-group input {
+            flex: 1;
+            border: none;
+            border-bottom: 1px dashed #9CA3AF;
+            background: transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 11pt;
+            color: var(--text-main);
+            padding: 2px 4px;
+            outline: none;
+            border-radius: 0;
+            min-width: 0; /* Prevents overflow */
+        }
+        #letterhead-module .form-group input:focus { border-bottom-color: var(--primary); }
+        
+        #letterhead-module .report-notes-section {
+            display: flex; flex-direction: column; flex: 1; gap: 8px;
+        }
+        #letterhead-module .report-notes-section label {
+            font-weight: 600; font-size: 11pt; color: var(--text-main);
+        }
+        #letterhead-module .report-notes-section textarea { 
+            flex: 1; width: 100%; min-height: 200px;
+            padding: 0; border: none; outline: none; resize: none;
+            font-family: 'Inter', sans-serif; font-size: 11pt; line-height: 1.7; color: var(--text-main);
+            background: transparent;
+        }
+        #letterhead-module ::placeholder { color: #9CA3AF; }
+
+        /* --- Seal Area --- */
+        #letterhead-module .letterhead-seal-area {
+            position: relative; z-index: 1;
+            display: none; justify-content: flex-end; align-items: flex-end;
+            padding: 0 20mm 15mm 20mm;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        #letterhead-module .letterhead-seal-area.visible { display: flex; }
+        #letterhead-module .seal-box-company {
+            width: 65mm; height: 26mm; border: 2px solid var(--stamp-green); border-radius: 4px;
+            color: var(--stamp-green); position: relative; overflow: hidden; font-family: "Times New Roman", serif;
+        }
+        #letterhead-module .seal-box-company .seal-name {
+            text-align: center; font-size: 17px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4mm;
+        }
+        #letterhead-module .seal-box-company .signature-line {
+            position: absolute; left: 5mm; right: 5mm; bottom: 8mm; border-top: 1.5px solid var(--stamp-green);
+        }
+        #letterhead-module .seal-box-company .seal-role {
+            position: absolute; right: 5mm; bottom: 2.5mm; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        #letterhead-module .seal-box-doctor {
+            display: flex; flex-direction: column; align-items: center; color: var(--stamp-green); font-family: Arial, sans-serif; line-height: 1.3;
+        }
+        #letterhead-module .seal-box-doctor .doc-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
+        #letterhead-module .seal-box-doctor .doc-qual { font-size: 14px; font-weight: 700; }
+        #letterhead-module .seal-box-doctor .doc-reg, #letterhead-module .seal-box-doctor .doc-role { font-size: 13px; font-weight: 700; }
+
+        /* --- Footer Section --- */
+        #letterhead-module .footer-section {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+            width: 100% !important; margin: 0 !important; margin-top: auto !important; 
+            min-height: 12mm; padding: 10px 20mm 12px 20mm;
+            background: transparent;
+            box-sizing: border-box;
+        }
+        
+        #letterhead-module .footer-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--brand-split-gradient);
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        }
+
+        #letterhead-module .footer-branches-heading {
+            padding: 3px 12px; border: 1px solid var(--primary); border-radius: 12px;
+            color: var(--primary); font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+        }
+        
+        #letterhead-module .footer-branch-names {
+            color: #1F2937;
+            font-size: 13px; 
+            font-weight: 600; 
+            text-align: center; 
+            line-height: 1.4;
+            letter-spacing: 0.5px; 
+            word-spacing: 4px; 
+        }
+
+        /* --- Responsive Screen --- */
+        @media (max-width: 768px) {
+            #letterhead-module { padding: 10px; }
+            #letterhead-module .studio-toolbar { flex-direction: column; align-items: stretch; padding: 16px; gap: 16px; }
+            #letterhead-module .studio-actions { justify-content: space-between; }
+            #letterhead-module .letter-header { flex-direction: column; gap: 20px; padding: 20px; }
+            #letterhead-module .company-info { max-width: 100%; }
+            #letterhead-module .letter-body, #letterhead-module .letterhead-seal-area, #letterhead-module .footer-section { padding-left: 20px; padding-right: 20px; }
+            #letterhead-module .patient-details-grid { grid-template-columns: 1fr; gap: 12px; } /* Stack on mobile */
+        }
+
+        /* --- Strict Print Media Queries --- */
+        @media print {
+            @page { size: 210mm 297mm; margin: 0; }
+            
+            body { background: #FFF !important; padding: 0 !important; display: block !important; margin: 0 !important; }
+            #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0 !important; overflow: visible !important; }
+            
+            #letterhead-module { padding: 0 !important; display: block !important; width: 210mm !important; margin: 0 !important; }
+            #letterhead-module .a4-canvas { 
+                box-shadow: none !important; border: 0 !important; border-radius: 0 !important; 
+                width: 210mm !important; min-height: 297mm !important; height: 297mm !important; max-height: 297mm !important;
+                margin: 0 !important; padding: 0 !important; break-after: avoid !important; overflow: hidden !important; 
+            }
+            #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
+            #letterhead-module .company-info { max-width: 85mm !important; }
+            #letterhead-module .letter-body { padding: 8mm 20mm !important; flex-grow: 1 !important; }
+            
+            /* Print rules to hide guidelines and placeholders */
+            #letterhead-module .form-group input { border-bottom: none !important; padding-left: 0 !important; }
+            #letterhead-module ::placeholder { color: transparent !important; }
+            #letterhead-module input[type="date"]::-webkit-calendar-picker-indicator { display: none !important; -webkit-appearance: none; }
+            #letterhead-module .report-notes-section textarea { min-height: 0 !important; }
+            
+            #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm 20mm !important; break-inside: avoid; }
+            #letterhead-module .footer-section { padding: 10px 20mm 12mm 20mm !important; margin-top: auto !important; width: 100% !important; }
+            #letterhead-module .header-accent { width: 100% !important; margin: 0 !important; }
+        }
+    </style>
+
+    <div class="studio-toolbar no-print">
+        <div class="studio-heading">
+            <span class="studio-icon"><span class="material-symbols-rounded" aria-hidden="true">description</span></span>
+            <div>
+                <h1>Letterhead Studio</h1>
+                <p>Compose a polished physiotherapy report on your official A4 stationery.</p>
+            </div>
+        </div>
+        <div class="studio-actions">
+            <select class="seal-select" aria-label="Add seal to letter" onchange="window.selectLetterheadSeal(this.value)">
+                <option value="">Add Seal</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+            </select>
+            <button class="print-btn" type="button" onclick="window.print()">
+                <span class="material-symbols-rounded">print</span>Print Report
+            </button>
+        </div>
+    </div>
+
+    <div class="a4-canvas">
+        <img src="assets/logo-client-display.png" class="watermark" alt="">
+        
+        <div class="letter-header">
+            <div class="letterhead-brand">
+                <img src="assets/logo-client-display.png" class="logo-img" alt="Company Logo">
+                <img src="assets/name-client-display.png" class="company-name-img" alt="Company name">
+            </div>
+            
+            <div class="company-info">
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">location_on</span>
+                    <span class="company-contact-value address-lines">
+                        <span id="letterhead-address-line-1">Loading company address…</span>
+                        <span id="letterhead-address-line-2"></span>
+                    </span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">call</span>
+                    <span id="letterhead-phone" class="company-contact-value">Loading company phone…</span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">mail</span>
+                    <span id="letterhead-email" class="company-contact-value">Loading company email…</span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">language</span>
+                    <span id="letterhead-website" class="company-contact-value">Loading company website…</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-accent" aria-hidden="true"></div>
+
+        <div class="letter-body">
+            <!-- Physiotherapy Report Form -->
+            <h2 class="report-title">PHYSIOTHERAPY ASSESSMENT REPORT</h2>
+            
+            <div class="patient-details-grid">
+                <div class="form-group">
+                    <label>Patient Name:</label>
+                    <input type="text" placeholder="Enter full name" spellcheck="false">
+                </div>
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="date">
+                </div>
+                
+                <div class="form-group">
+                    <label>Age / Gender:</label>
+                    <input type="text" placeholder="e.g., 45 / Male" spellcheck="false">
+                </div>
+                <div class="form-group">
+                    <label>Sessions / Day:</label>
+                    <input type="text" placeholder="e.g., 1 Session" spellcheck="false">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Diagnosis:</label>
+                    <input type="text" placeholder="Enter medical condition or injury" spellcheck="true">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Duration of Treatment:</label>
+                    <input type="text" placeholder="e.g., 4 Weeks (Starting from initial assessment)" spellcheck="false">
+                </div>
+            </div>
+
+            <div class="report-notes-section">
+                <label>Clinical Notes & Progress Update:</label>
+                <textarea aria-label="Clinical notes" placeholder="Start typing the clinical notes, treatment plans, and milestones here..."></textarea>
+            </div>
+        </div>
+
+        <div id="letterhead-seal-area" class="letterhead-seal-area" aria-live="polite"></div>
+        
+        <div class="footer-section" aria-label="Branch names">
+            <span class="footer-branches-heading">BRANCHES</span>
+            <span id="letterhead-branch-names" class="footer-branch-names"></span>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+
+        async function loadLetterheadCompanyDetails() {
+            try {
+                const snapshot = await getDoc(doc(db, 'settings', 'company_profile'));
+                if (!snapshot.exists()) throw new Error('Company profile has not been configured.');
+                const data = snapshot.data();
+                const formatAddressParts = values => values
+                    .filter(value => typeof value === 'string' && value.trim())
+                    .map(value => value.trim())
+                    .join(', ');
+                const addressLine1 = formatAddressParts([
+                    data.buildingNo,
+                    data.buildingName,
+                    data.area
+                ]);
+                const addressLine2 = formatAddressParts([
+                    data.district,
+                    data.state,
+                    data.country,
+                    data.postalCode
+                ]);
+                const fallbackAddress = String(data.address || '').trim();
+                const details = [
+                    ['letterhead-email', data.email],
+                    ['letterhead-phone', [data.phone1, data.phone2]
+                        .filter(value => typeof value === 'string' && value.trim())
+                        .map(value => value.trim())
+                        .join(' | ')],
+                    ['letterhead-website', data.website]
+                ];
+                document.getElementById('letterhead-address-line-1').textContent =
+                    addressLine1 || fallbackAddress || 'Not provided in Company settings.';
+                document.getElementById('letterhead-address-line-2').textContent = addressLine2;
+                details.forEach(([id, value]) => {
+                    document.getElementById(id).textContent = value || 'Not provided in Company settings.';
+                });
+            } catch (error) {
+                console.error('Could not load letterhead company details:', error);
+                ['letterhead-address-line-1', 'letterhead-email', 'letterhead-phone', 'letterhead-website'].forEach(id => {
+                    document.getElementById(id).textContent = 'Company details unavailable.';
+                });
+                document.getElementById('letterhead-address-line-2').textContent = '';
+            }
+        }
+
+        loadLetterheadCompanyDetails();
+
+        async function loadLetterheadBranchNames() {
+            const branchNames = document.getElementById('letterhead-branch-names');
+            try {
+                const snapshot = await getDocs(collection(db, 'branches'));
+                const names = snapshot.docs
+                    .map(branch => branch.data().name)
+                    .filter(name => typeof name === 'string' && name.trim())
+                    .map(name => name.trim())
+                    .sort((a, b) => a.localeCompare(b));
+                branchNames.textContent = names.join(' | ');
+            } catch (error) {
+                console.error('Could not load letterhead branch names:', error);
+                branchNames.textContent = 'Branch names unavailable.';
+            }
+        }
+
+        loadLetterheadBranchNames();
+
+        window.selectLetterheadSeal = function(sealType) {
+            const sealArea = document.getElementById('letterhead-seal-area');
+            sealArea.replaceChildren();
+            if (!sealType) {
+                sealArea.classList.remove('visible');
+                return;
+            }
+
+            const seal = document.createElement('div');
+            if (sealType === 'company') {
+                seal.className = 'seal-box-company';
+                seal.innerHTML = '<div class="seal-name">FOR STRA CARE</div><div class="signature-line"></div><div class="seal-role">Managing Partner</div>';
+            } else if (sealType === 'doctor') {
+                seal.className = 'seal-box-doctor';
+                seal.innerHTML = '<div class="doc-name">Dr. THEJASWI M.K (PT)</div><div class="doc-qual">BPT, MPT (Ortho)</div><div class="doc-reg">MIAP Reg No. L.43616</div><div class="doc-role">CEO, STRA CARE</div>';
+            } else {
+                throw new Error(`Unsupported letterhead seal: ${sealType}`);
+            }
+            sealArea.appendChild(seal);
+            sealArea.classList.add('visible');
+        };
+
+    </script>
+</div>
+</body>
+</html>
