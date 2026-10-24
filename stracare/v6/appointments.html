@@ -638,7 +638,7 @@ function filteredAppointments(){
   return a;
 }
 function actionHTML(id){
-  return `<div class="actions"><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
+  return `<div class="actions"><button class="act edit" title="Edit Appointment" aria-label="Edit Appointment" onclick="window.editAppointment('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
 }
 function renderAppointments(){
   const list=filteredAppointments(),tb=document.getElementById('aptTableBody'),cards=document.getElementById('cardView');tb.innerHTML='';cards.innerHTML='';
