@@ -33,6 +33,18 @@
 .dropdown{display:none;position:fixed;right:12px;top:60px;min-width:190px;max-width:min(280px,calc(100vw - 24px));max-height:calc(100vh - 72px);overflow-y:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:6px;z-index:5000}
 .tool.open .dropdown{display:block}.drop-title{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;padding:7px 9px}.drop-item{width:100%;border:0;background:#fff;text-align:left;padding:9px;border-radius:7px;font-size:13px;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text)}.drop-item:hover{background:#F8FAFC}.drop-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
 .bulk-date-menu{display:none;gap:6px;padding:6px 8px}.bulk-date-menu .form-input{min-width:0;flex:1;height:36px;padding:6px 8px}.bulk-date-menu .btn{flex:0 0 auto}
+.therapist-report{display:none;margin:0 0 18px;padding:18px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.therapist-report.show{display:block}.therapist-report-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.therapist-report-header h2{margin:0;color:var(--primary);font-size:20px}.therapist-report-actions{display:flex;gap:8px}
+.therapist-report-meta{margin:-10px 0 14px;color:var(--muted);font-size:12px}
+.therapist-report-group{margin:0 0 18px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.therapist-report-group h3{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:12px 14px;background:#E8EEF7;border-left:5px solid #164683;color:#0B1F4B;font-size:16px}
+.therapist-report-group h3 span{color:#475569;font-size:12px;font-weight:600}
+.therapist-report-table-wrap{overflow-x:auto}.therapist-report-table{width:100%;min-width:720px;border-collapse:collapse}
+.therapist-report-table th,.therapist-report-table td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;vertical-align:middle}
+.therapist-report-table th{background:#F8FAFC;color:#64748B;font-size:10px;text-transform:uppercase;letter-spacing:.35px}
+.therapist-report-table tr:last-child td{border-bottom:0}.therapist-report-patient{font-weight:700}.therapist-report-mobile{display:block;margin-top:3px;color:#64748B;font-size:11px}
+@media print{#appointment-module>.topbar,#appointment-module>.appointment-toolbar,#appointment-module>.panel,#appointment-module>.kpis,#appointment-module>.public-booking-panel,#appointment-module>#aptModal,#appointment-module>#notesModal,#appointment-module>#confirmModal,#appointment-module>#invoiceModal{display:none!important}#appointment-module .therapist-report{display:block!important;margin:0;padding:0;border:0;box-shadow:none}#appointment-module .therapist-report-header .therapist-report-actions{display:none!important}#appointment-module .therapist-report-group{break-inside:avoid}#appointment-module .therapist-report-group h3{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 .searchbar{display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:#FAFAFA}.searchbar.show{display:flex}.searchbox{display:flex;align-items:center;gap:6px;width:100%;background:#fff;border:1px solid var(--border);border-radius:9px;padding:0 9px}.searchbox input{height:36px;width:100%;border:0;outline:0;font-size:13px}
 .filters{display:none;padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFAFA;gap:8px;flex-wrap:wrap;align-items:center}.filters.show{display:flex}
 .form-input{width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);background:#FAFAFA;outline:none}.form-input:focus{border-color:var(--primary);background:#fff}.filter-input{width:auto;min-width:120px;height:36px;padding:7px 9px}
@@ -269,6 +281,7 @@
       <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
       <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
       <button class="drop-item" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span>Export CSV</button>
+      <button class="drop-item" onclick="window.openTherapistWiseReport()"><span class="material-symbols-rounded">clinical_notes</span>Therapist-wise Report</button>
       <div class="drop-title">Selected Appointments</div>
       <button class="drop-item" onclick="window.editSelectedAppointment()"><span class="material-symbols-rounded">edit</span>Edit Selected Appointment</button>
       <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
@@ -284,6 +297,17 @@
     </div>
   </div>
 </div>
+
+<section id="therapistWiseReport" class="therapist-report" aria-label="Therapist-wise appointment report">
+  <header class="therapist-report-header">
+    <h2>Therapist-wise Appointment Report</h2>
+    <div class="therapist-report-actions no-print">
+      <button class="btn small" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+      <button class="btn small" onclick="window.closeTherapistWiseReport()"><span class="material-symbols-rounded">arrow_back</span>Back to Appointments</button>
+    </div>
+  </header>
+  <div id="therapistWiseReportContent"></div>
+</section>
 
 <div class="panel">
   <div class="filters no-print" id="filtersBar">
@@ -637,6 +661,49 @@ function filteredAppointments(){
   a.sort((x,y)=>{const A=x.data,B=y.data;switch(sortMode){case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'doctorAsc':return String(A.therapist||'').localeCompare(String(B.therapist||''));case'balanceDesc':return (parseFloat(B.balance)||0)-(parseFloat(A.balance)||0);case'balanceAsc':return (parseFloat(A.balance)||0)-(parseFloat(B.balance)||0);case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''))||String(A.time||'').localeCompare(String(B.time||''));default:return String(B.date||'').localeCompare(String(A.date||''))||String(B.time||'').localeCompare(String(A.time||''))}});
   return a;
 }
+window.openTherapistWiseReport=()=>{
+  const appointments=filteredAppointments();
+  if(!appointments.length)return alert('No appointments are available for the current filters.');
+  const grouped=new Map();
+  appointments.forEach(({data})=>{
+    const therapist=String(data.therapist||'Unassigned').trim()||'Unassigned';
+    if(!grouped.has(therapist))grouped.set(therapist,[]);
+    grouped.get(therapist).push(data);
+  });
+  const groups=[...grouped.entries()].sort(([a],[b])=>a.localeCompare(b));
+  groups.forEach(([,items])=>items.sort((a,b)=>
+    String(a.date||'').localeCompare(String(b.date||''))||String(a.time||'').localeCompare(String(b.time||''))
+  ));
+  const reportGroups=groups.map(([therapist,items])=>`
+    <section class="therapist-report-group">
+      <h3>${esc(therapist)} <span>${items.length} appointment${items.length===1?'':'s'}</span></h3>
+      <div class="therapist-report-table-wrap">
+        <table class="therapist-report-table">
+          <thead><tr><th>Patient</th><th>Date &amp; Time</th><th>Branch</th><th>Fee</th><th>Payment Status</th><th>Appointment Status</th></tr></thead>
+          <tbody>${items.map(item=>{
+            const payment=paymentStatusDisplay(item.balance);
+            const status=String(item.status||'Pending');
+            const statusClass={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'}[status]||'pending';
+            return `<tr>
+              <td><span class="therapist-report-patient">${esc(item.name||'Unnamed patient')}</span>${item.mobile?`<span class="therapist-report-mobile">${esc(item.mobile)}</span>`:''}</td>
+              <td>${esc(window.formatIndianDate(item.date))} · ${esc(formatTime12Hour(item.time))}</td>
+              <td>${esc(item.branch||'—')}</td>
+              <td>₹${money(item.fee)}</td>
+              <td><span class="badge payment-status ${payment.cls}">${esc(payment.text)}</span></td>
+              <td><span class="badge ${statusClass}">${esc(status)}</span></td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    </section>
+  `).join('');
+  document.getElementById('therapistWiseReportContent').innerHTML=
+    `<p class="therapist-report-meta">${appointments.length} appointments · ${groups.length} therapists · Generated ${esc(new Date().toLocaleString())}</p>${reportGroups}`;
+  closeTools();
+  document.getElementById('therapistWiseReport').classList.add('show');
+  document.getElementById('therapistWiseReport').scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.closeTherapistWiseReport=()=>{const report=document.getElementById('therapistWiseReport');report.classList.remove('show');report.scrollIntoView({behavior:'smooth',block:'start'})};
 function actionHTML(id){
   return `<div class="actions"><button class="act edit" title="Edit Appointment" aria-label="Edit Appointment" onclick="window.editAppointment('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
 }
