@@ -152,11 +152,17 @@
         }
         #invoice-container .invoice-contact-row { display: flex; flex-direction: column; gap: 1mm; }
         #invoice-container .invoice-header-accent {
-            flex: 0 0 2mm;
+            flex: 0 0 10px;
             width: calc(100% + 24mm);
-            height: 2mm;
+            height: 10px;
             margin: 0 -12mm 6mm;
-            background: linear-gradient(110deg,#08784F 0%,#16A36D 47%,#159377 50%,#1D70A0 53%,#0B3C6B 100%);
+            background: linear-gradient(
+                to bottom,
+                #61913C 0 3px,
+                transparent 3px 7px,
+                #164683 7px 10px
+            );
+            border: 0;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
@@ -197,37 +203,94 @@
             text-transform: uppercase;
         }
         #invoice-container .invoice-branch-footer {
+            position: relative;
             display: flex;
-            flex: 0 0 14mm;
-            min-height: 14mm;
+            flex: 0 0 18mm;
+            min-height: 18mm;
             width: calc(100% + 24mm);
-            margin: 6mm -12mm -8mm;
-            padding: 1mm 12mm;
+            margin: 0 -12mm -8mm;
+            padding: 4mm 12mm 1mm;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 1mm;
-            background: linear-gradient(110deg,#08784F 0%,#16A36D 47%,#159377 50%,#1D70A0 53%,#0B3C6B 100%);
+            gap: 2mm;
+            background: transparent;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        #invoice-container .invoice-branch-footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(110deg,#61913C 50%,#164683 50%);
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
         #invoice-container .invoice-branches-label {
-            padding: 2px 8px;
-            border: 1px solid rgba(255,255,255,.8);
+            padding: 3px 12px;
+            border: 1px solid #164683;
             border-radius: 12px;
-            color: #fff;
+            color: #164683;
             font-size: 7pt;
             font-weight: 700;
             line-height: 1;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
         #invoice-container .invoice-branches {
-            color: #fff;
+            color: #1F2937;
             font-size: 8pt;
             font-weight: 600;
-            line-height: 1.2;
+            line-height: 1.4;
             text-align: center;
             overflow-wrap: anywhere;
+        }
+        #invoice-container .invoice-seal-area {
+            display: none;
+            flex: 0 0 auto;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 8mm;
+            width: 100%;
+            padding: 0 8mm 5mm;
+            box-sizing: border-box;
+        }
+        #invoice-container .invoice-seal-area.visible { display: flex; }
+        #invoice-container .invoice-seal-slot { display: flex; flex: 1 1 50%; min-width: 0; }
+        #invoice-container .invoice-seal-slot-right { justify-content: flex-end; }
+        #invoice-container .seal-box-company {
+            width: 65mm; height: 26mm; border: 2px solid #007B5E; border-radius: 4px;
+            color: #007B5E; position: relative; overflow: hidden; font-family: "Times New Roman", serif;
+        }
+        #invoice-container .seal-box-company .seal-name {
+            text-align: center; font-size: 17px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4mm;
+        }
+        #invoice-container .seal-box-company .signature-line {
+            position: absolute; left: 5mm; right: 5mm; bottom: 8mm; border-top: 1.5px solid #007B5E;
+        }
+        #invoice-container .seal-box-company .seal-role {
+            position: absolute; right: 5mm; bottom: 2.5mm; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        #invoice-container .seal-box-doctor {
+            display: flex; flex-direction: column; align-items: center; color: #007B5E; font-family: Arial, sans-serif; line-height: 1.3;
+        }
+        #invoice-container .seal-box-doctor .doc-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
+        #invoice-container .seal-box-doctor .doc-qual,
+        #invoice-container .seal-box-doctor .doc-reg { font-size: 14px; font-weight: 700; }
+        #invoice-container .seal-box-sincerely {
+            width: 63.5mm; color: #000; font-family: "Times New Roman", serif;
+            text-align: center; line-height: 1.3;
+        }
+        #invoice-container .seal-box-sincerely .sincerely-title { font-size: 16px; font-weight: 700; }
+        #invoice-container .seal-box-sincerely .sincerely-signature-gap { height: 14mm; }
+        #invoice-container .seal-box-sincerely .sincerely-administration,
+        #invoice-container .seal-box-sincerely .sincerely-company { font-size: 13px; font-weight: 700; }
+        #invoice-container .seal-box-payment {
+            display: flex; width: 63.5mm; min-height: 25.4mm; align-items: center; justify-content: center;
+            color: #C62828; font-family: Arial, sans-serif; font-size: 18px; font-weight: 800;
+            letter-spacing: 1px; text-align: center; text-transform: uppercase;
         }
         #invoice-container.pdf-export-mode [data-print-empty="true"],
         #invoice-container.pdf-export-mode .invoice-item-row-empty,
@@ -340,7 +403,12 @@
                 justify-content: space-between !important;
             }
             #invoice-container .invoice-header-accent,
-            #invoice-container .invoice-branch-footer {
+            #invoice-container .invoice-branch-footer::before,
+            #invoice-container .invoice-seal-area,
+            #invoice-container .seal-box-company,
+            #invoice-container .seal-box-doctor,
+            #invoice-container .seal-box-sincerely,
+            #invoice-container .seal-box-payment {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -350,7 +418,11 @@
             }
             #invoice-container .invoice-branch-footer {
                 width: calc(100% + 24mm) !important;
-                margin: 5mm -12mm -8mm !important;
+                margin: 0 -12mm -8mm !important;
+            }
+            #invoice-container .invoice-seal-area {
+                padding: 0 8mm 5mm !important;
+                break-inside: avoid;
             }
 
             [contenteditable="true"], input.clean-input {
@@ -387,9 +459,10 @@
             #invoice-container .patient-report-title { font-size: 15pt; }
             #invoice-container .invoice-branch-footer {
                 width: calc(100% + 32px);
-                margin: 6mm -16px -16px;
+                margin: 0 -16px -16px;
                 padding: 1mm 16px;
             }
+            #invoice-container .invoice-seal-area { padding: 0 8px 12px; gap: 8px; }
         }
 
         /* Optimization class for html2pdf export */
@@ -461,6 +534,32 @@
             box-shadow: 0 2px 8px rgba(16,24,40,.06);
         }
 
+        .invoice-seal-controls {
+            order: -1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            gap: 12px;
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0 4px;
+            box-sizing: border-box;
+        }
+        .invoice-seal-control { display: flex; flex-direction: column; gap: 4px; }
+        .invoice-seal-control span { color: #64748B; font-size: 10px; font-weight: 600; }
+        .invoice-seal-control select {
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            background: #fff;
+            color: #374151;
+            font: 500 13px 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+        }
+
         .invoice-toolbar::before {
             content: "Patient Report Cum Invoice";
             margin-right: auto;
@@ -507,6 +606,8 @@
             .invoice-toolbar { gap: 4px; padding: 8px; border-radius: 14px; }
             .invoice-toolbar::before { font-size: 11px; }
             .invoice-toolbar > button { width: 36px; height: 36px; }
+            .invoice-seal-controls { justify-content: flex-start; gap: 8px; }
+            .invoice-seal-control select { max-width: 42vw; padding: 0 8px; font-size: 11px; }
         }
         
         /* Toast notification */
@@ -748,10 +849,34 @@
                 </div>
             </section>
         </div>
+        <div id="invoice-seal-area" class="invoice-seal-area" aria-live="polite"></div>
         <footer class="invoice-branch-footer" aria-label="Branch names">
             <span class="invoice-branches-label">BRANCHES</span>
             <span id="invoice-branches" class="invoice-branches"></span>
         </footer>
+    </div>
+
+    <div class="invoice-seal-controls no-print" aria-label="Invoice footer seal options">
+        <label class="invoice-seal-control">
+            <span>Left Footer Seal</span>
+            <select aria-label="Left footer seal" onchange="window.selectInvoiceSeal('left', this.value)">
+                <option value="">None</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+                <option value="sincerely">Sincerely</option>
+                <option value="payment">Payment Received</option>
+            </select>
+        </label>
+        <label class="invoice-seal-control">
+            <span>Right Footer Seal</span>
+            <select aria-label="Right footer seal" onchange="window.selectInvoiceSeal('right', this.value)">
+                <option value="">None</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+                <option value="sincerely">Sincerely</option>
+                <option value="payment">Payment Received</option>
+            </select>
+        </label>
     </div>
 
     <!-- Floating Action Toolbar -->
@@ -815,6 +940,83 @@
         };
         window.showToast = showToast;
 
+        const invoiceSealSelections = { left: '', right: '' };
+        const invoiceSealProfile = {
+            companyName: 'Company name not set',
+            signatoryName: 'Authorised signatory name not set',
+            designation: 'Designation not set',
+            qualificationLicence: 'Qualification / Licence No. not set'
+        };
+
+        function createInvoiceSeal(sealType) {
+            const seal = document.createElement('div');
+            const addText = (className, text) => {
+                const element = document.createElement('div');
+                element.className = className;
+                element.textContent = text;
+                seal.appendChild(element);
+            };
+
+            if (sealType === 'company') {
+                seal.className = 'seal-box-company';
+                addText('seal-name', `FOR ${invoiceSealProfile.companyName}`);
+                const signatureLine = document.createElement('div');
+                signatureLine.className = 'signature-line';
+                seal.appendChild(signatureLine);
+                addText('seal-role', invoiceSealProfile.designation);
+            } else if (sealType === 'doctor') {
+                seal.className = 'seal-box-doctor';
+                addText('doc-name', invoiceSealProfile.signatoryName);
+                addText('doc-qual', invoiceSealProfile.designation);
+                addText('doc-reg', invoiceSealProfile.qualificationLicence);
+            } else if (sealType === 'sincerely') {
+                seal.className = 'seal-box-sincerely';
+                addText('sincerely-title', 'Sincerely');
+                const signatureGap = document.createElement('div');
+                signatureGap.className = 'sincerely-signature-gap';
+                signatureGap.setAttribute('aria-hidden', 'true');
+                seal.appendChild(signatureGap);
+                addText('sincerely-administration', 'Administration');
+                addText('sincerely-company', invoiceSealProfile.companyName);
+            } else if (sealType === 'payment') {
+                seal.className = 'seal-box-payment';
+                seal.textContent = 'Payment Received';
+            } else {
+                throw new Error(`Unsupported invoice seal: ${sealType}`);
+            }
+            return seal;
+        }
+
+        function renderInvoiceSeals() {
+            const sealArea = document.getElementById('invoice-seal-area');
+            const { left, right } = invoiceSealSelections;
+            if (!left && !right) {
+                sealArea.replaceChildren();
+                sealArea.classList.remove('visible');
+                return;
+            }
+
+            const leftSlot = document.createElement('div');
+            leftSlot.className = 'invoice-seal-slot invoice-seal-slot-left';
+            const rightSlot = document.createElement('div');
+            rightSlot.className = 'invoice-seal-slot invoice-seal-slot-right';
+            if (left) leftSlot.appendChild(createInvoiceSeal(left));
+            if (right) rightSlot.appendChild(createInvoiceSeal(right));
+            sealArea.replaceChildren(leftSlot, rightSlot);
+            sealArea.classList.add('visible');
+        }
+
+        window.selectInvoiceSeal = (side, sealType) => {
+            if (side !== 'left' && side !== 'right') {
+                throw new Error(`Unsupported invoice seal position: ${side}`);
+            }
+            if (sealType && !['company', 'doctor', 'sincerely', 'payment'].includes(sealType)) {
+                throw new Error(`Unsupported invoice seal: ${sealType}`);
+            }
+            invoiceSealSelections[side] = sealType;
+            renderInvoiceSeals();
+        };
+
         // Auto-generating UPI QR Code
         let qrTimeout;
         const updateQRCode = () => {
@@ -835,6 +1037,11 @@
 
         window.applyCompanyProfile = (profile) => {
             window.applyCorebiqSettings?.(profile);
+            invoiceSealProfile.companyName = String(profile.name || '').trim() || 'Company name not set';
+            invoiceSealProfile.signatoryName = String(profile.authorisedSignatoryName || '').trim() || 'Authorised signatory name not set';
+            invoiceSealProfile.designation = String(profile.authorisedSignatoryDesignation || '').trim() || 'Designation not set';
+            invoiceSealProfile.qualificationLicence = String(profile.authorisedSignatoryQualificationLicence || '').trim() || 'Qualification / Licence No. not set';
+            renderInvoiceSeals();
             const set = (id, value) => {
                 document.getElementById(id).textContent = value || '';
             };
@@ -1340,6 +1547,7 @@
             try {
                 const branches = await getDocs(collection(db, 'branches'));
                 const names = branches.docs
+                    .filter(branch => String(branch.data().branchId || '').trim().toUpperCase() !== 'B6')
                     .map(branch => branch.data().name)
                     .filter(name => typeof name === 'string' && name.trim())
                     .map(name => name.trim())
