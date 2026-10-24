@@ -81,6 +81,37 @@
         .seal-box-doctor .doc-reg { font-size: 14px; font-weight: 700; margin-top: 2px; }
         .seal-box-doctor .doc-role { font-size: 14px; font-weight: 700; margin-top: 2px; }
 
+        /* --- Seal 3: Sincerely --- */
+        .seal-box-sincerely {
+            display: none;
+            width: 63.5mm;
+            min-height: 35mm;
+            color: #000;
+            font-family: "Times New Roman", serif;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .seal-box-sincerely .sincerely-title { font-size: 16px; font-weight: 700; }
+        .seal-box-sincerely .sincerely-signature-gap { height: 14mm; }
+        .seal-box-sincerely .sincerely-administration,
+        .seal-box-sincerely .sincerely-company { font-size: 13px; font-weight: 700; }
+
+        /* --- Seal 4: Payment Received --- */
+        .seal-box-payment {
+            display: none;
+            width: 63.5mm;
+            min-height: 25.4mm;
+            align-items: center;
+            justify-content: center;
+            color: #C62828;
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
         /* --- Print Styles --- */
         @media print {
             body { background: white; padding: 0; }
@@ -89,7 +120,7 @@
             #main-content { padding: 0; overflow: visible; }
             
             .canvas-area { background: white; border: none; padding: 0; min-height: auto; align-items: flex-start; justify-content: flex-start; }
-            .seal-box-company, .seal-box-doctor { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .seal-box-company, .seal-box-doctor, .seal-box-sincerely, .seal-box-payment { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
     </style>
 
@@ -114,6 +145,22 @@
                 <div class="seal-option-details">
                     <span class="seal-option-title">Doctor's Seal</span>
                     <span class="seal-option-desc">Authorised signatory name / qualification or licence</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-sincerely" onclick="window.selectSeal('sincerely')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Sincerely</span>
+                    <span class="seal-option-desc">Administration and company name with space for a signature</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-payment" onclick="window.selectSeal('payment')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Payment Received</span>
+                    <span class="seal-option-desc">Red payment confirmation seal</span>
                 </div>
             </label>
         </div>
@@ -142,6 +189,17 @@
             <div class="doc-reg" id="seal-signatory-qualification">Qualification / Licence No. not set</div>
         </div>
 
+        <!-- SEAL 3: SINCERELY -->
+        <div class="seal-box-sincerely" id="seal-sincerely">
+            <div class="sincerely-title">Sincerely</div>
+            <div class="sincerely-signature-gap" aria-hidden="true"></div>
+            <div class="sincerely-administration">Administration</div>
+            <div class="sincerely-company" id="seal-sincerely-company">Company name not set</div>
+        </div>
+
+        <!-- SEAL 4: PAYMENT RECEIVED -->
+        <div class="seal-box-payment" id="seal-payment">Payment Received</div>
+
     </div>
 
     <script type="module">
@@ -163,6 +221,7 @@
                 document.getElementById('seal-signatory-name').textContent = signatoryName || 'Authorised signatory name not set';
                 document.getElementById('seal-signatory-designation').textContent = designation || 'Designation not set';
                 document.getElementById('seal-signatory-qualification').textContent = qualificationLicence || 'Qualification / Licence No. not set';
+                document.getElementById('seal-sincerely-company').textContent = companyName || 'Company name not set';
             } catch (error) {
                 console.error('Could not load seal details from the company profile:', error);
                 document.getElementById('seal-company-name').textContent = 'FOR Company details unavailable';
@@ -170,30 +229,27 @@
                 document.getElementById('seal-signatory-name').textContent = 'Company details unavailable';
                 document.getElementById('seal-signatory-designation').textContent = 'Company details unavailable';
                 document.getElementById('seal-signatory-qualification').textContent = 'Company details unavailable';
+                document.getElementById('seal-sincerely-company').textContent = 'Company details unavailable';
             }
         }
 
         loadSealCompanyDetails();
 
         window.selectSeal = function(sealType) {
-            // Reset Options UI
-            document.getElementById('opt-company').classList.remove('active');
-            document.getElementById('opt-doctor').classList.remove('active');
-            
-            // Hide all seals
-            document.getElementById('seal-company').style.display = 'none';
-            document.getElementById('seal-doctor').style.display = 'none';
+            const sealDisplays = {
+                company: 'block',
+                doctor: 'flex',
+                sincerely: 'block',
+                payment: 'flex'
+            };
+            const display = sealDisplays[sealType];
+            if (!display) throw new Error(`Unsupported seal type: ${sealType}`);
 
-            // Activate Selected
-            if(sealType === 'company') {
-                document.getElementById('opt-company').classList.add('active');
-                document.getElementById('opt-company').querySelector('input').checked = true;
-                document.getElementById('seal-company').style.display = 'block';
-            } else if (sealType === 'doctor') {
-                document.getElementById('opt-doctor').classList.add('active');
-                document.getElementById('opt-doctor').querySelector('input').checked = true;
-                document.getElementById('seal-doctor').style.display = 'flex';
-            }
+            ['company', 'doctor', 'sincerely', 'payment'].forEach(type => {
+                document.getElementById(`opt-${type}`).classList.toggle('active', type === sealType);
+                document.getElementById(`opt-${type}`).querySelector('input').checked = type === sealType;
+                document.getElementById(`seal-${type}`).style.display = type === sealType ? display : 'none';
+            });
         }
     </script>
 
