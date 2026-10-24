@@ -137,14 +137,14 @@
         }
         #letterhead-module .address-lines { display: flex; flex-direction: column; }
 
-        /* --- Thin Spaced Header Lines (Blue on top, gap, Green on bottom) --- */
+        /* --- Thicker Spaced Header Lines (Blue on top, gap, Green on bottom) --- */
         #letterhead-module .header-accent {
             width: 100% !important;
             margin: 0 !important;
-            height: 3px; /* This height controls the gap between the two lines */
+            height: 4px; /* Gap between the two lines */
             background: transparent !important;
-            border-top: 1.5px solid var(--primary) !important;
-            border-bottom: 1.5px solid var(--secondary) !important;
+            border-top: 3px solid var(--primary) !important; /* Thicker blue line */
+            border-bottom: 3px solid var(--secondary) !important; /* Thicker green line */
             box-sizing: content-box;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
