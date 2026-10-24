@@ -13,15 +13,16 @@
 <div class="module-container" id="letterhead-module">
     <style>
         :root {
-            /* Updated to match the provided logo colors */
+            /* Matched to the provided logo colors */
             --primary: #164683; 
+            --secondary: #61913C;
             --text-main: #1F2937;
             --text-muted: #4B5563;
             --border: #E4E7EC;
             --bg-light: #F4F7FC;
             --stamp-green: #007B5E;
             
-            /* Modern 50/50 hard split with a sleek 110deg angle */
+            /* Modern 50/50 horizontal split for the footer line */
             --brand-split-gradient: linear-gradient(110deg, #61913C 50%, #164683 50%);
         }
 
@@ -136,12 +137,15 @@
         }
         #letterhead-module .address-lines { display: flex; flex-direction: column; }
 
-        /* --- Gradient Accent Line --- */
+        /* --- Thin Spaced Header Lines (Blue on top, gap, Green on bottom) --- */
         #letterhead-module .header-accent {
             width: 100% !important;
             margin: 0 !important;
-            height: 6px;
-            background: var(--brand-split-gradient);
+            height: 3px; /* This height controls the gap between the two lines */
+            background: transparent !important;
+            border-top: 1.5px solid var(--primary) !important;
+            border-bottom: 1.5px solid var(--secondary) !important;
+            box-sizing: content-box;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             z-index: 1;
@@ -197,22 +201,33 @@
         #letterhead-module .seal-box-doctor .doc-qual { font-size: 14px; font-weight: 700; }
         #letterhead-module .seal-box-doctor .doc-reg, #letterhead-module .seal-box-doctor .doc-role { font-size: 13px; font-weight: 700; }
 
-        /* --- Footer Section --- */
+        /* --- Footer Section (Transparent BG, Split Top Line) --- */
         #letterhead-module .footer-section {
             position: relative; z-index: 1;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            width: 100% !important; margin: 0 !important; margin-top: auto !important; /* Locks to bottom */
-            min-height: 12mm; padding: 6px 20mm 8px 20mm;
-            background: var(--brand-split-gradient);
-            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+            width: 100% !important; margin: 0 !important; margin-top: auto !important; 
+            min-height: 12mm; padding: 10px 20mm 12px 20mm;
+            background: transparent;
             box-sizing: border-box;
         }
-        #letterhead-module .footer-branches-heading {
-            padding: 3px 12px; border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 12px;
-            color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+        
+        /* Modern split green/blue accent line across the top of the footer */
+        #letterhead-module .footer-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--brand-split-gradient);
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
         }
+
+        #letterhead-module .footer-branches-heading {
+            padding: 3px 12px; border: 1px solid var(--primary); border-radius: 12px;
+            color: var(--primary); font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+        }
+        
         #letterhead-module .footer-branch-names {
-            color: #fff; 
+            color: #1F2937; /* Dark gray for readability on white */
             font-size: 13px; 
             font-weight: 600; 
             text-align: center; 
@@ -233,7 +248,6 @@
 
         /* --- Strict Print Media Queries --- */
         @media print {
-            /* Hardcodes exact dimensions to force Portrait */
             @page { size: 210mm 297mm; margin: 0; }
             
             body { background: #FFF !important; padding: 0 !important; display: block !important; margin: 0 !important; }
@@ -256,7 +270,7 @@
             #letterhead-module .letter-body textarea::placeholder { color: transparent !important; }
             
             #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm 20mm !important; break-inside: avoid; }
-            #letterhead-module .footer-section { padding: 5mm 20mm 7mm 20mm !important; margin-top: auto !important; width: 100% !important; }
+            #letterhead-module .footer-section { padding: 10px 20mm 12mm 20mm !important; margin-top: auto !important; width: 100% !important; }
             #letterhead-module .header-accent { width: 100% !important; margin: 0 !important; }
         }
     </style>
