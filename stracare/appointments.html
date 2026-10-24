@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <title>COREBIQ | APPOINTMENTS</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
 <link rel="stylesheet" href="css/corebiq.css">
 </head>
 <body>
 <div class="module-container" id="appointment-module">
 <style>
-:root{--primary:#2563EB;--primary-light:#EFF6FF;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--success:#10B981;--danger:#EF4444;--warning:#F59E0B;--shadow:0 2px 10px rgba(15,23,42,.06)}
+:root{--primary:#0B1F4B;--primary-light:#E8EEF7;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--success:#10B981;--danger:#EF4444;--warning:#F59E0B;--shadow:0 2px 10px rgba(15,23,42,.06)}
 #appointment-module{font-family:Inter,sans-serif;width:100%;max-width:1120px;color:var(--text)}
 #appointment-module *{box-sizing:border-box}
 .material-symbols-rounded{font-size:20px;vertical-align:middle}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
 .title h2{font-size:27px;line-height:1.1;margin:0;font-weight:750}.title p{font-size:14px;color:var(--muted);margin:5px 0 0}
 .btn{border:1px solid var(--border);background:#fff;color:var(--text);height:40px;padding:0 12px;border-radius:10px;font-size:13px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
-.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.danger{color:var(--danger);border-color:#FECACA}.btn.blue{color:var(--primary);border-color:#BFDBFE}.btn.small{height:36px;padding:0 10px;font-size:12px}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.danger{color:var(--danger);border-color:#FECACA}.btn.blue{color:var(--primary);border-color:#CCD5E3}.btn.small{height:36px;padding:0 10px;font-size:12px}
 .new-btn{height:40px;padding:0 15px;border:0;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
 .kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
@@ -29,17 +29,30 @@
 .panel-title{font-size:15px;font-weight:750}
 .toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tool{position:relative}.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:10px;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#334155}.icon-btn:hover{background:#F8FAFC}
-.icon-btn.active{background:var(--primary-light);color:var(--primary);border-color:#BFDBFE}
-.dropdown{display:none;position:absolute;right:0;top:45px;min-width:190px;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:6px;z-index:5000}
+.icon-btn.active{background:var(--primary-light);color:var(--primary);border-color:#CCD5E3}
+.dropdown{display:none;position:fixed;right:12px;top:60px;min-width:190px;max-width:min(280px,calc(100vw - 24px));max-height:calc(100vh - 72px);overflow-y:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:6px;z-index:5000}
 .tool.open .dropdown{display:block}.drop-title{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;padding:7px 9px}.drop-item{width:100%;border:0;background:#fff;text-align:left;padding:9px;border-radius:7px;font-size:13px;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text)}.drop-item:hover{background:#F8FAFC}.drop-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
+.bulk-date-menu{display:none;gap:6px;padding:6px 8px}.bulk-date-menu .form-input{min-width:0;flex:1;height:36px;padding:6px 8px}.bulk-date-menu .btn{flex:0 0 auto}
+.therapist-report{display:none;margin:0 0 18px;padding:18px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.therapist-report.show{display:block}.therapist-report-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.therapist-report-header h2{margin:0;color:var(--primary);font-size:20px}.therapist-report-actions{display:flex;gap:8px}
+.therapist-report-meta{margin:-10px 0 14px;color:var(--muted);font-size:12px}
+.therapist-report-group{margin:0 0 18px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.therapist-report-group h3{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:12px 14px;background:#E8EEF7;border-left:5px solid #164683;color:#0B1F4B;font-size:16px}
+.therapist-report-group h3 span{color:#475569;font-size:12px;font-weight:600}
+.therapist-report-table-wrap{overflow-x:auto}.therapist-report-table{width:100%;min-width:720px;border-collapse:collapse}
+.therapist-report-table th,.therapist-report-table td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;vertical-align:middle}
+.therapist-report-table th{background:#F8FAFC;color:#64748B;font-size:10px;text-transform:uppercase;letter-spacing:.35px}
+.therapist-report-table tr:last-child td{border-bottom:0}.therapist-report-patient{font-weight:700}.therapist-report-mobile{display:block;margin-top:3px;color:#64748B;font-size:11px}
+@media print{#appointment-module>.topbar,#appointment-module>.appointment-toolbar,#appointment-module>.panel,#appointment-module>.kpis,#appointment-module>.public-booking-panel,#appointment-module>#aptModal,#appointment-module>#notesModal,#appointment-module>#confirmModal,#appointment-module>#invoiceModal{display:none!important}#appointment-module .therapist-report{display:block!important;margin:0;padding:0;border:0;box-shadow:none}#appointment-module .therapist-report-header .therapist-report-actions{display:none!important}#appointment-module .therapist-report-group{break-inside:avoid}#appointment-module .therapist-report-group h3{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
 .searchbar{display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:#FAFAFA}.searchbar.show{display:flex}.searchbox{display:flex;align-items:center;gap:6px;width:100%;background:#fff;border:1px solid var(--border);border-radius:9px;padding:0 9px}.searchbox input{height:36px;width:100%;border:0;outline:0;font-size:13px}
 .filters{display:none;padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFAFA;gap:8px;flex-wrap:wrap;align-items:center}.filters.show{display:flex}
 .form-input{width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);background:#FAFAFA;outline:none}.form-input:focus{border-color:var(--primary);background:#fff}.filter-input{width:auto;min-width:120px;height:36px;padding:7px 9px}
 .bulkbar{display:none;background:#FFF7ED;padding:10px 12px;border-bottom:1px solid #FED7AA;align-items:center;gap:8px;flex-wrap:wrap}.bulkbar.show{display:flex}.bulkbar strong{font-size:12px;color:#9A3412}
 .table-wrap{overflow-x:auto}.table{width:100%;min-width:930px;border-collapse:collapse}.table th{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:10px 12px;background:#FAFAFA;border-bottom:1px solid var(--border);white-space:nowrap}.table td{font-size:13px;padding:12px;border-bottom:1px solid var(--border);vertical-align:top}.table tr:last-child td{border-bottom:0}.patient-name{font-weight:750;font-size:14px}.sub{font-size:11px;color:var(--muted);margin-top:3px}.actions{display:flex;gap:5px;justify-content:flex-end}.act{width:32px;height:32px;border:1px solid var(--border);background:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.act:hover{background:#F8FAFC}.act.note{color:#8B5CF6}.act.inv{color:#155A90}.act.edit{color:#64748B}
 .act.download{color:#188038}.act.whatsapp{color:#128C7E}
-.no-due{color:#64748B;font-weight:700}.excess{color:#059669;font-weight:750}.due{color:#DC2626;font-weight:750}
-.badge{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:750;text-transform:uppercase}.pending{background:#FFF7ED;color:#EA580C}.reported{background:#EFF6FF;color:#2563EB}.completed{background:#ECFDF5;color:#059669}.rescheduled{background:#F1F5F9;color:#64748B}.cancelled{background:#FEF2F2;color:#DC2626}.cat{background:#F8FAFC;color:#334155;border:1px solid var(--border)}
+#appointment-module .no-due{color:#64748B;font-weight:700}#appointment-module .excess{color:#059669;font-weight:750}#appointment-module .due{color:#DC2626;font-weight:750}
+.badge{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:750;text-transform:uppercase}.pending{background:#FFF7ED;color:#EA580C}.reported{background:#E8EEF7;color:#0B1F4B}.completed{background:#ECFDF5;color:#059669}.rescheduled{background:#F1F5F9;color:#64748B}.cancelled{background:#FEF2F2;color:#DC2626}.cat{background:#F8FAFC;color:#334155;border:1px solid var(--border)}
 .cards{display:none;padding:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.cards.show{display:grid}.apt-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.card-top{display:flex;justify-content:space-between;gap:8px}.card-patient{display:flex;gap:8px}.card-check{padding-top:2px}.card-line{font-size:12px;color:var(--muted);margin-top:5px}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}.card-actions{display:flex;gap:6px;margin-top:10px}
 .empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
 .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.52);z-index:10000;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:min(900px,100%);max-height:94vh;overflow:auto;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.22)}.modal-head{position:sticky;top:0;z-index:2;background:#fff;padding:13px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:16px;margin:0}.modal-body{padding:15px}.close{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}
@@ -57,18 +70,265 @@
 .public-booking-actions .btn{height:35px;font-size:11px}
 .public-booking-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 .patient-match{font-size:10px;font-weight:750;border-radius:99px;padding:4px 7px;white-space:nowrap}
-.patient-match.existing{background:#ECFDF5;color:#047857}.patient-match.new{background:#EFF6FF;color:#1D4ED8}
+.patient-match.existing{background:#ECFDF5;color:#047857}.patient-match.new{background:#E8EEF7;color:#0B1F4B}
 .confirm-box{max-width:430px}.confirm-message{font-size:13px;line-height:1.6;color:var(--muted);padding:15px}
 @media(max-width:700px){.topbar{align-items:flex-start}.title h2{font-size:22px}.new-btn span:last-child{display:none}.kpis{gap:7px}.kpi{padding:10px}.kpi .num{font-size:20px}.grid,.grid.three{grid-template-columns:1fr}.span2{grid-column:auto}.modal{padding:8px}.modal-box{max-height:96vh}.toolbar{width:100%}.panel-head{align-items:flex-start}.panel-title{width:100%}}
 @media print{#appointment-module .no-print,#appointment-module .toolbar,#appointment-module .new-btn,.kpis{display:none!important}.panel{box-shadow:none;border:0}.table{min-width:100%}}
+
+/* Appointment module: match the shared reference page while keeping its tools compact. */
+#appointment-module{max-width:1200px!important;margin:0 auto!important;color:#1F1F1F!important;font-family:Inter,sans-serif!important;font-size:14px;line-height:1.5}
+#appointment-module .material-symbols-rounded{font-family:"Material Symbols Rounded"!important;font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;vertical-align:middle}
+#appointment-module .topbar{position:static;align-items:center;margin-bottom:22px}
+#appointment-module .title{display:flex;align-items:center;gap:12px}
+#appointment-module .title-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #E1E4E2;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.08)}
+#appointment-module .title-icon .material-symbols-rounded{font-size:26px}
+#appointment-module .title h2{font-size:26px!important;line-height:1.2!important;font-weight:600!important;letter-spacing:-.4px;color:#1F1F1F}
+#appointment-module .title p{font-size:14px;color:#6B7280;margin-top:4px}
+#appointment-module .topbar>div:last-child{gap:10px!important}
+#appointment-module .btn,#appointment-module .new-btn{height:42px!important;border-radius:22px!important;padding:0 17px!important;font-family:Inter,sans-serif!important;font-size:13px!important;font-weight:600!important;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+#appointment-module .btn{border:1px solid #C4C7C5!important;background:#fff!important;color:#40454D!important}
+#appointment-module .btn:hover{background:#F7F9FC!important}
+#appointment-module .btn.primary,#appointment-module .new-btn{border:1px solid #0B1F4B!important;background:#0B1F4B!important;color:#fff!important;box-shadow:0 2px 8px rgba(11,31,75,.16)}
+#appointment-module .btn.primary:hover,#appointment-module .new-btn:hover{background:#071630!important}
+#appointment-module .new-btn .material-symbols-rounded{font-size:20px}
+#appointment-module .kpis{gap:14px;margin-bottom:18px}
+#appointment-module .kpi{padding:18px 20px;border:1px solid #E1E4E2;border-radius:18px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
+#appointment-module .kpi .label{font-size:13px;font-weight:500;color:#6B7280}
+#appointment-module .kpi .num{font-size:26px;font-weight:600;margin-top:5px;color:#1F1F1F}
+#appointment-module .kpi.today .num{color:#0B1F4B}
+#appointment-module .kpi.done .num{color:#188038}
+#appointment-module .kpi.pending .num{color:#B3261E}
+#appointment-module .public-booking-panel,#appointment-module .panel{border:1px solid #E1E4E2;border-radius:24px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
+#appointment-module .public-booking-panel{margin-bottom:18px}
+#appointment-module .public-booking-head,#appointment-module .panel-head{padding:16px 20px;border-bottom:1px solid #E1E4E2}
+#appointment-module .public-booking-title,#appointment-module .panel-title{font-size:16px;font-weight:600;color:#1F1F1F}
+#appointment-module .public-booking-count{background:#E8EEF7;color:#0B1F4B;font-size:12px}
+#appointment-module .public-booking-list{padding:16px;gap:12px}
+#appointment-module .public-booking-request{padding:15px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
+#appointment-module .public-booking-request-name{font-size:14px;font-weight:600;color:#1F1F1F}
+#appointment-module .public-booking-request-meta{font-size:12px;line-height:1.6;color:#6B7280}
+#appointment-module .public-booking-actions .btn{height:36px!important;padding:0 13px!important;border-radius:18px!important;font-size:12px!important}
+#appointment-module .patient-match.existing{background:#E8F5E9;color:#188038}
+#appointment-module .patient-match.new{background:#E8EEF7;color:#0B1F4B}
+#appointment-module .toolbar{gap:8px}
+#appointment-module .icon-btn{width:40px;height:40px;border:1px solid #E1E4E2;border-radius:12px;background:#fff;color:#5E6672;transition:background .18s ease,color .18s ease}
+#appointment-module .icon-btn:hover{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .icon-btn.active{background:#E8EEF7;color:#0B1F4B;border-color:#C8D2E1}
+#appointment-module .dropdown{border:1px solid #E1E4E2;border-radius:16px;box-shadow:0 12px 30px rgba(31,35,40,.14);padding:7px}
+#appointment-module .drop-item{border-radius:10px;padding:10px;color:#40454D;font-family:Inter,sans-serif}
+#appointment-module .drop-item:hover,#appointment-module .drop-item.active{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .searchbar,#appointment-module .filters{padding:12px 20px;background:#fff;border-bottom:1px solid #E1E4E2}
+#appointment-module .searchbox{border:1px solid #E1E4E2;border-radius:20px;background:#F4F7FC;padding:0 12px}
+#appointment-module .searchbox input{background:transparent;font-family:Inter,sans-serif}
+#appointment-module .form-input{border:1px solid #E1E4E2;border-radius:12px;background:#F4F7FC;color:#1F1F1F;font-family:Inter,sans-serif}
+#appointment-module .form-input:focus{border-color:#0B1F4B;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.12)}
+#appointment-module .bulkbar{background:#FFF8E1;border-bottom-color:#F9AB00}
+#appointment-module .bulkbar strong{color:#7A4F01}
+#appointment-module .table{min-width:930px}
+#appointment-module .table th{padding:13px 15px;background:#FAFBFC;color:#646A73;font-size:11px;letter-spacing:.45px}
+#appointment-module .table td{padding:14px 15px;border-bottom-color:#E1E4E2}
+#appointment-module .table tbody tr:hover{background:#FAFBFE}
+#appointment-module .patient-name{font-weight:600;color:#1F1F1F}
+#appointment-module .sub{font-size:12px;color:#6B7280}
+#appointment-module .badge{border-radius:999px;font-size:10px;letter-spacing:.2px}
+#appointment-module .payment-status{margin-top:4px}
+#appointment-module .payment-paid,#appointment-module .payment-excess{color:#188038}
+#appointment-module .badge.payment-paid,#appointment-module .badge.payment-excess{background:#E8F5E9}
+#appointment-module .payment-not-paid{color:#B3261E}
+#appointment-module .badge.payment-not-paid{background:#FCE8E6}
+#appointment-module .pending{background:#FFF4E5;color:#8A4B08}
+#appointment-module .reported{background:#E8EEF7;color:#0B1F4B}
+#appointment-module .completed{background:#E8F5E9;color:#188038}
+#appointment-module .rescheduled{background:#F0F4F9;color:#5E6672}
+#appointment-module .cancelled{background:#FCE8E6;color:#B3261E}
+#appointment-module .cat{background:#F4F7FC;color:#40454D;border-color:#E1E4E2}
+#appointment-module .act{width:36px;height:36px;border-radius:11px;border-color:#E1E4E2}
+#appointment-module .cards{padding:16px;gap:12px}
+#appointment-module .apt-card{padding:16px;border:1px solid #E1E4E2;border-radius:18px;box-shadow:0 1px 3px rgba(31,35,40,.05)}
+#appointment-module .card-grid{border-top-color:#E1E4E2}
+#appointment-module .empty{color:#6B7280}
+#appointment-module .modal{background:rgba(31,35,40,.42);backdrop-filter:blur(3px)}
+#appointment-module .modal-box{border:1px solid #E1E4E2;border-radius:24px;box-shadow:0 20px 50px rgba(31,35,40,.2)}
+#appointment-module .modal-head{padding:17px 20px;border-bottom-color:#E1E4E2}
+#appointment-module .modal-head h3{font-size:18px!important;font-weight:600!important;color:#1F1F1F}
+#appointment-module .modal-body{padding:20px}
+#appointment-module .close{border-color:#E1E4E2;border-radius:50%;color:#5E6672}
+#appointment-module .section{padding:16px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
+#appointment-module .section h4{font-size:14px!important;font-weight:600!important;color:#0B1F4B}
+#appointment-module .field label{font-size:11px;color:#646A73;letter-spacing:.35px}
+#appointment-module .grid{gap:14px}
+#appointment-module .money-box{border:1px solid #E1E4E2;border-radius:14px;background:#F7F9FC}
+#appointment-module .readonly{background:#F0F4F9!important}
+#appointment-module .form-actions{padding-top:10px}
+#appointment-module .btn.small{height:36px!important;padding:0 13px!important;font-size:12px!important}
+#appointment-module .topbar{min-height:88px;align-items:center;margin-bottom:18px;padding:16px 20px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+#appointment-module .appointment-toolbar{display:flex;align-items:center;gap:12px;min-height:88px;padding:16px 18px;margin-bottom:22px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+#appointment-module .appointment-toolbar .searchbar{display:flex;flex:1;min-width:220px;padding:0;border:0;background:transparent}
+#appointment-module .appointment-toolbar .searchbox{height:48px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;padding:0 14px;color:#8290A2}
+#appointment-module .appointment-toolbar .searchbox:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+#appointment-module .appointment-toolbar .searchbox input{height:46px;font-size:14px;color:#1F1F1F}
+#appointment-module .appointment-toolbar .searchbox input::placeholder{color:#718096}
+#appointment-module .appointment-toolbar .searchbox .close{width:30px!important;height:30px!important;border:0!important;background:transparent!important}
+#appointment-module .appointment-filter-select{position:relative;flex:0 0 170px}
+#appointment-module .appointment-filter-select.sort-select{flex-basis:180px}
+#appointment-module .appointment-filter-select select{width:100%;height:48px;padding:0 38px 0 16px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;color:#334155;font:500 14px Inter,sans-serif;appearance:none;outline:0;cursor:pointer}
+#appointment-module .appointment-filter-select select:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+#appointment-module .appointment-filter-select .material-symbols-rounded{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:20px}
+#appointment-module .topbar .new-btn{height:48px!important;margin-left:auto;padding:0 22px!important;white-space:nowrap}
+#appointment-module .appointment-toolbar .tool{flex:0 0 auto}
+#appointment-module .appointment-toolbar .more-actions-btn{height:48px;width:48px;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672}
+#appointment-module .appointment-toolbar .more-actions-btn:hover{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .panel{overflow:visible;margin-bottom:0;border-radius:26px}
+#appointment-module .panel-head{padding:15px 20px;border-bottom-color:#F0F2F5}
+#appointment-module .panel-title{font-size:15px;font-weight:600}
+#appointment-module .filters.show{display:flex}
+#appointment-module .table{min-width:900px}
+#appointment-module .table th{padding:16px 18px;background:#FAFBFC;color:#65748B;font-size:11px;letter-spacing:.55px}
+#appointment-module .table td{padding:16px 18px;vertical-align:middle}
+#appointment-module .patient-cell{display:flex;align-items:center;gap:12px;min-width:190px}
+#appointment-module .patient-avatar{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:50%;background:#E8EEF7;color:#0B1F4B;font-size:15px;font-weight:600}
+#appointment-module .patient-cell .patient-name{font-size:14px}
+#appointment-module .table tbody tr:nth-child(even){background:#FCFCFD}
+#appointment-module .table tbody tr:hover{background:#F6F9FE}
+#appointment-module .badge{padding:5px 10px;font-size:10px}
+#appointment-module .public-booking-panel{margin-top:22px}
+#appointment-module .kpis{margin-top:22px}
+@media(max-width:700px){
+  #appointment-module .topbar{align-items:flex-start;flex-wrap:wrap;gap:10px;padding:12px;border-radius:20px}
+  #appointment-module .topbar .title{width:auto;flex:1 1 100%;min-width:0}
+  #appointment-module .title{align-items:flex-start}
+  #appointment-module .title-icon{flex-basis:42px;width:42px;height:42px;border-radius:14px}
+  #appointment-module .title h2{font-size:21px!important}
+  #appointment-module .title p{font-size:12px}
+  #appointment-module .topbar .new-btn{height:42px!important;flex:0 0 auto;margin-left:auto;padding:0 13px!important;font-size:12px!important;white-space:nowrap}
+  #appointment-module .topbar .new-btn span:last-child{display:inline}
+  #appointment-module .kpis{gap:8px}
+  #appointment-module .kpi{padding:12px 13px;border-radius:15px}
+  #appointment-module .kpi .label{font-size:11px}
+  #appointment-module .kpi .num{font-size:22px}
+  #appointment-module .public-booking-head,#appointment-module .panel-head{padding:14px}
+  #appointment-module .public-booking-list{padding:12px}
+  #appointment-module .panel-head{align-items:flex-start}
+  #appointment-module .toolbar{width:100%}
+  #appointment-module .table-wrap{border-radius:0 0 24px 24px}
+  #appointment-module .modal{padding:8px}
+  #appointment-module .modal-box{width:100%;max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));border-radius:20px;overscroll-behavior:contain}
+  #appointment-module .modal-body{padding:14px}
+  #appointment-module #add-appointment-form{min-width:0}
+  #appointment-module #add-appointment-form .grid,
+  #appointment-module #add-appointment-form .grid.three{grid-template-columns:minmax(0,1fr);width:100%}
+  #appointment-module #add-appointment-form .field{min-width:0}
+  #appointment-module #add-appointment-form .form-input{display:block;width:100%;min-width:0;min-height:44px}
+  #appointment-module #add-appointment-form textarea.form-input{min-height:80px}
+  #appointment-module #add-appointment-form .location-row{grid-template-columns:44px minmax(0,1fr) 44px;gap:6px}
+  #appointment-module #add-appointment-form .location-row .btn{width:44px;min-width:44px;padding:0!important}
+  #appointment-module #add-appointment-form .money-box{min-width:0}
+  #appointment-module #add-appointment-form .form-actions{position:sticky;bottom:-14px;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:0 -14px -14px;padding:12px 14px max(12px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #E1E4E2}
+  #appointment-module #add-appointment-form .form-actions .btn{width:100%;min-width:0;min-height:44px;padding:0 10px!important;white-space:normal;line-height:1.2}
+  #appointment-module .public-booking-actions{flex-wrap:wrap}
+  #appointment-module .public-booking-actions .btn{flex:1 1 120px;min-height:40px}
+  #appointment-module .bulkbar{align-items:stretch}
+  #appointment-module .bulkbar .btn{flex:1 1 120px;min-height:40px}
+  #appointment-module #bulkDateArea[style*="inline-flex"]{display:flex!important;flex:1 1 100%;gap:8px;min-width:0}
+  #appointment-module #bulkDateArea .form-input{flex:1;min-width:0}
+  #appointment-module #bulkDateArea .btn{flex:0 0 auto}
+  #appointment-module .appointment-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px;border-radius:20px}
+  #appointment-module .appointment-toolbar .searchbar{grid-column:1/-1;min-width:0}
+  #appointment-module .appointment-filter-select,#appointment-module .appointment-filter-select.sort-select{flex:auto;width:100%}
+  #appointment-module .appointment-filter-select select{height:42px;border-radius:16px;font-size:12px}
+  #appointment-module .appointment-toolbar .more-actions-btn{height:42px;width:42px}
+  #appointment-module .appointment-toolbar .searchbox{height:44px;border-radius:17px}
+  #appointment-module .appointment-toolbar .searchbox input{height:42px;font-size:13px}
+  #appointment-module .panel-head{padding:13px 14px}
+  #appointment-module .table td,#appointment-module .table th{padding:13px 12px}
+  #appointment-module .patient-avatar{flex-basis:36px;width:36px;height:36px}
+}
+@media(max-width:380px){
+  #appointment-module .title p{max-width:100%;line-height:1.4}
+  #appointment-module .topbar .new-btn{height:40px!important;padding:0 10px!important}
+  #appointment-module .topbar .new-btn span:last-child{display:none}
+  #appointment-module .topbar .new-btn{width:40px;justify-content:center}
+  #appointment-module .kpi{padding:10px 8px}
+  #appointment-module .kpi .label{font-size:10px;line-height:1.25}
+  #appointment-module #add-appointment-form .form-actions{grid-template-columns:1fr}
+}
 </style>
 
 <div class="topbar">
-  <div class="title"><h2>Appointments & Scheduling</h2><p id="todayLabel"></p></div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <a class="btn no-print" href="public-booking.html" target="_blank" rel="noopener noreferrer"><span class="material-symbols-rounded">open_in_new</span><span>Public Booking Page</span></a>
-    <button class="new-btn" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">add</span><span>New Appointment</span></button>
+  <div class="title"><span class="title-icon"><span class="material-symbols-rounded">calendar_month</span></span><div><h2>Appointments &amp; Scheduling</h2><p>Plan visits, review bookings, and manage your daily schedule. <span id="todayLabel"></span></p></div></div>
+  <button class="new-btn" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">add</span><span>New Appointment</span></button>
+</div>
+
+<div class="appointment-toolbar no-print">
+  <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
+  <label class="appointment-filter-select" aria-label="Filter appointments by status">
+    <select id="filterStatus" onchange="window.filterTable()"><option value="">All Statuses</option><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select>
+    <span class="material-symbols-rounded">expand_more</span>
+  </label>
+  <label class="appointment-filter-select sort-select" aria-label="Sort appointments">
+    <select id="aptSortSelect" onchange="window.setSort(this.value)"><option value="dateDesc">Date: Newest first</option><option value="dateAsc">Date: Oldest first</option><option value="nameAsc">Patient: A–Z</option><option value="doctorAsc">Therapist: A–Z</option><option value="balanceDesc">Balance: High–Low</option><option value="balanceAsc">Balance: Low–High</option></select>
+    <span class="material-symbols-rounded">sort</span>
+  </label>
+  <div class="tool" id="moreTool">
+    <button class="icon-btn more-actions-btn" title="More Actions" aria-label="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
+    <div class="dropdown">
+      <div class="drop-title">View &amp; Actions</div>
+      <button class="drop-item active" id="viewListBtn" onclick="window.setView('list')"><span class="material-symbols-rounded">view_list</span>List View</button>
+      <button class="drop-item" id="viewCardBtn" onclick="window.setView('card')"><span class="material-symbols-rounded">grid_view</span>Card View</button>
+      <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>More Filters</button>
+      <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
+      <button class="drop-item" onclick="window.clearFilters();window.toggleTool('moreTool')"><span class="material-symbols-rounded">close</span>Clear All</button>
+      <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
+      <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
+      <button class="drop-item" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span>Export CSV</button>
+      <button class="drop-item" onclick="window.openTherapistWiseReport()"><span class="material-symbols-rounded">clinical_notes</span>Therapist-wise Report</button>
+      <div class="drop-title">Selected Appointments</div>
+      <button class="drop-item" onclick="window.editSelectedAppointment()"><span class="material-symbols-rounded">edit</span>Edit Selected Appointment</button>
+      <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
+      <button class="drop-item" onclick="window.executeBulkReschedule()"><span class="material-symbols-rounded">event_repeat</span>Move Selected to Date</button>
+      <button class="drop-item" onclick="window.executeBulkDelete()"><span class="material-symbols-rounded">delete</span>Bulk Delete</button>
+      <div id="bulkDateArea" class="bulk-date-menu">
+        <input type="date" id="bulkDateInput" class="form-input" aria-label="New date for selected appointments">
+        <button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button>
+      </div>
+      <button class="drop-item" onclick="window.clearSelection();window.toggleTool('moreTool')"><span class="material-symbols-rounded">deselect</span>Clear Selection</button>
+      <div class="drop-title">Other</div>
+      <button class="drop-item" onclick="window.exportAptPDF()"><span class="material-symbols-rounded">picture_as_pdf</span>Print / PDF</button>
+    </div>
   </div>
+</div>
+
+<section id="therapistWiseReport" class="therapist-report" aria-label="Therapist-wise appointment report">
+  <header class="therapist-report-header">
+    <h2>Therapist-wise Appointment Report</h2>
+    <div class="therapist-report-actions no-print">
+      <button class="btn small" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+      <button class="btn small" onclick="window.closeTherapistWiseReport()"><span class="material-symbols-rounded">arrow_back</span>Back to Appointments</button>
+    </div>
+  </header>
+  <div id="therapistWiseReportContent"></div>
+</section>
+
+<div class="panel">
+  <div class="filters no-print" id="filtersBar">
+    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.filterTable()">
+    <span style="font-size:12px;color:var(--muted)">to</span>
+    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.filterTable()">
+    <button class="btn small" onclick="window.setFilterToday()">Today</button>
+    <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
+    <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
+    <select id="filterBranch" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Branches</option></select>
+  </div>
+  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong></div>
+  <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
+  <div class="table-wrap" id="listView"><table class="table"><thead><tr><th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th><th>Date & Time</th><th>Patient Details</th><th>Branch / Therapist</th><th>Therapy / Financials</th><th>Status</th><th class="no-print">Actions</th></tr></thead><tbody id="aptTableBody"></tbody></table></div>
+  <div class="cards" id="cardView"></div>
+</div>
+
+<div class="kpis">
+  <div class="kpi today"><div class="label">Today's Appointment</div><div class="num" id="kpiToday">0</div></div>
+  <div class="kpi done"><div class="label">Completed</div><div class="num" id="kpiCompleted">0</div></div>
+  <div class="kpi pending"><div class="label">Pending</div><div class="num" id="kpiPending">0</div></div>
 </div>
 
 <section class="public-booking-panel">
@@ -78,85 +338,6 @@
   </header>
   <div id="publicBookingList" class="public-booking-list"><div class="public-booking-empty">Loading public booking requests…</div></div>
 </section>
-
-<div class="kpis">
-  <div class="kpi today"><div class="label">Today's Appointment</div><div class="num" id="kpiToday">0</div></div>
-  <div class="kpi done"><div class="label">Completed</div><div class="num" id="kpiCompleted">0</div></div>
-  <div class="kpi pending"><div class="label">Pending</div><div class="num" id="kpiPending">0</div></div>
-</div>
-
-<div class="panel">
-  <div class="panel-head">
-    <div class="panel-title">Schedule Directory</div>
-    <div class="toolbar no-print">
-      <div class="tool" id="searchTool">
-        <button class="icon-btn" title="Search" onclick="window.toggleTool('searchTool')"><span class="material-symbols-rounded">search</span></button>
-      </div>
-      <div class="tool" id="viewTool">
-        <button class="icon-btn" title="View Type" onclick="window.toggleTool('viewTool')"><span class="material-symbols-rounded">view_agenda</span></button>
-        <div class="dropdown"><div class="drop-title">View Type</div>
-          <button class="drop-item active" id="viewListBtn" onclick="window.setView('list')"><span class="material-symbols-rounded">view_list</span>List View</button>
-          <button class="drop-item" id="viewCardBtn" onclick="window.setView('card')"><span class="material-symbols-rounded">grid_view</span>Card View</button>
-          <button class="drop-item" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">edit_note</span>Form / New Appointment</button>
-        </div>
-      </div>
-      <div class="tool" id="sortTool">
-        <button class="icon-btn" title="Sort" onclick="window.toggleTool('sortTool')"><span class="material-symbols-rounded">sort</span></button>
-        <div class="dropdown"><div class="drop-title">Sort</div>
-          <button class="drop-item" onclick="window.setSort('dateDesc')">Date: Newest first</button>
-          <button class="drop-item" onclick="window.setSort('dateAsc')">Date: Oldest first</button>
-          <button class="drop-item" onclick="window.setSort('nameAsc')">Patient: A–Z</button>
-          <button class="drop-item" onclick="window.setSort('doctorAsc')">Therapist: A–Z</button>
-          <button class="drop-item" onclick="window.setSort('balanceDesc')">Balance: High–Low</button>
-          <button class="drop-item" onclick="window.setSort('balanceAsc')">Balance: Low–High</button>
-        </div>
-      </div>
-      <div class="tool" id="filterTool">
-        <button class="icon-btn" title="Filter" onclick="window.toggleTool('filterTool')"><span class="material-symbols-rounded">filter_list</span></button>
-        <div class="dropdown"><div class="drop-title">Filter</div>
-          <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>Date / Status / Branch</button>
-          <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
-          <button class="drop-item" onclick="window.clearFilters()"><span class="material-symbols-rounded">filter_alt_off</span>Clear Filters</button>
-        </div>
-      </div>
-      <div class="tool" id="importTool">
-        <button class="icon-btn" title="Import Appointment Data" onclick="window.toggleTool('importTool')"><span class="material-symbols-rounded">upload_file</span></button>
-        <div class="dropdown"><div class="drop-title">Appointment Data</div>
-          <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
-          <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
-        </div>
-      </div>
-      <div class="tool">
-        <button class="icon-btn" title="Export CSV" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span></button>
-      </div>
-      <div class="tool">
-        <button class="icon-btn" title="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
-        <div class="dropdown" id="moreTool"><div class="drop-title">Actions</div>
-          <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
-          <button class="drop-item" onclick="window.executeBulkReschedule()"><span class="material-symbols-rounded">event_repeat</span>Move Selected to Date</button>
-          <button class="drop-item" onclick="window.executeBulkDelete()"><span class="material-symbols-rounded">delete</span>Bulk Delete</button>
-          <button class="drop-item" onclick="window.exportAptPDF()"><span class="material-symbols-rounded">picture_as_pdf</span>Print / PDF</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="searchbar no-print" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search patient, mobile, therapist, branch..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
-  <div class="filters no-print" id="filtersBar">
-    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.filterTable()">
-    <span style="font-size:12px;color:var(--muted)">to</span>
-    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.filterTable()">
-    <button class="btn small" onclick="window.setFilterToday()">Today</button>
-    <select id="filterStatus" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Statuses</option><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select>
-    <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
-    <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
-    <select id="filterBranch" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Branches</option></select>
-    <button class="icon-btn" style="width:36px;height:36px" title="Clear" onclick="window.clearFilters()"><span class="material-symbols-rounded">close</span></button>
-  </div>
-  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong><button class="btn small primary" onclick="window.openSelectedNew()">New from Selected</button><button class="btn small blue" onclick="window.showBulkDate()">Move to Date</button><button class="btn small danger" onclick="window.executeBulkDelete()">Delete</button><button class="btn small" onclick="window.clearSelection()">Clear</button><span id="bulkDateArea" style="display:none"><input type="date" id="bulkDateInput" class="form-input" style="width:auto;height:36px"><button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button></span></div>
-  <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
-  <div class="table-wrap" id="listView"><table class="table"><thead><tr><th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th><th>Date & Time</th><th>Patient Details</th><th>Branch / Therapist</th><th>Therapy / Financials</th><th>Status</th><th class="no-print">Actions</th></tr></thead><tbody id="aptTableBody"></tbody></table></div>
-  <div class="cards" id="cardView"></div>
-</div>
 
 <div class="modal" id="aptModal">
   <div class="modal-box">
@@ -192,16 +373,14 @@
         </div>
       </div>
       <div class="section"><h4>3. Payment Details</h4>
-        <div class="grid three">
-          <div class="field"><label>Payment Mode</label><select id="aptPaymentMode" class="form-input"><option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option><option>Mixed</option><option>Credit</option></select></div>
+        <div class="grid three" style="margin-top:10px">
+          <div class="money-box field"><label>Fee (₹)</label><input type="number" id="aptFee" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="money-box field"><label>Receipt Received Today (₹)</label><input type="number" id="aptAdvance" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="field" id="aptPaymentModeField" style="display:none"><label>Mode (Cash / Bank Ledger)</label><select id="aptPaymentMode" class="form-input"><option>Cash</option><optgroup label="Bank Ledger"><option>UPI</option><option>Card</option><option>Bank Transfer</option></optgroup><option>Mixed</option><option>Credit</option></select></div>
+          <div class="money-box field"><label>Previous O/S (₹)</label><input type="number" id="aptPrevDues" class="form-input readonly" readonly></div>
+          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:12px;margin-top:5px;font-weight:700"></div></div>
           <div class="field"><label>Payment Reference / UTR</label><input id="aptPaymentReference" class="form-input"></div>
           <div class="field"><label>Payment Remarks</label><input id="aptPaymentRemarks" class="form-input"></div>
-        </div>
-        <div class="grid three" style="margin-top:10px">
-          <div class="money-box field"><label>Total Fee (₹)</label><input type="number" id="aptFee" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
-          <div class="money-box field"><label>Prev. Dues (OP) (₹)</label><input type="number" id="aptPrevDues" class="form-input readonly" readonly></div>
-          <div class="money-box field"><label>Advance Paid (₹)</label><input type="number" id="aptAdvance" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
-          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:12px;margin-top:5px;font-weight:700"></div></div>
         </div>
       </div>
       <div class="form-actions"><button type="button" class="btn" onclick="window.resetAptForm()">Clear Form</button><button type="submit" class="btn primary" id="saveAptBtn">Save Appointment</button></div>
@@ -224,6 +403,7 @@ let allAppointments=[]; let viewMode='list'; let sortMode='dateDesc'; let confir
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const money=v=>(parseFloat(v)||0).toFixed(2);
+const displayMoney=v=>window.formatCorebiqCurrency?window.formatCorebiqCurrency(v):`₹${money(v)}`;
 const formatTime12Hour=value=>{
   const match=String(value||'').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?$/i);
   if(!match)return value||'';
@@ -238,8 +418,14 @@ const formatTime12Hour=value=>{
 function balanceDisplay(v){
   const n=Number(v)||0;
   if(Math.abs(n)<0.005) return {text:'No Due',cls:'no-due'};
-  if(n<0) return {text:`Excess ₹${money(Math.abs(n))}`,cls:'excess'};
-  return {text:`Due ₹${money(n)}`,cls:'due'};
+  if(n<0) return {text:`Excess ${displayMoney(Math.abs(n))}`,cls:'excess'};
+  return {text:`Due ${displayMoney(n)}`,cls:'due'};
+}
+function paymentStatusDisplay(v){
+  const n=Number(v)||0;
+  if(Math.abs(n)<0.005) return {text:'Paid',cls:'payment-paid',detail:''};
+  if(n<0) return {text:'Excess',cls:'payment-excess',detail:displayMoney(Math.abs(n))};
+  return {text:'Not Paid',cls:'payment-not-paid',detail:`Due ${displayMoney(n)}`};
 }
 const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 window.formatIndianDate=dateStr=>{if(!dateStr)return'';const p=String(dateStr).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:dateStr};
@@ -287,13 +473,19 @@ window.handlePatientSelect=async()=>{
 window.calcBalance=()=>{
   const f=parseFloat(document.getElementById('aptFee').value)||0;
   const a=parseFloat(document.getElementById('aptAdvance').value)||0;
+  document.getElementById('aptPaymentModeField').style.display=a>0?'':'none';
   const p=parseFloat(document.getElementById('aptPrevDues').value)||0;
   const n=f+p-a;
   const state=balanceDisplay(n);
   const input=document.getElementById('aptBalance');
   const label=document.getElementById('aptBalanceState');
+  const previousInput=document.getElementById('aptPrevDues');
+  const previousState=balanceDisplay(p);
+  previousInput.classList.remove('due','excess','no-due');
+  previousInput.classList.add(previousState.cls);
+  input.classList.remove('due','excess','no-due');
+  input.classList.add(state.cls);
   input.value=Math.abs(n)<0.005?'0.00':money(n);
-  input.style.color=n<0?'#059669':n>0?'#DC2626':'#64748B';
   label.textContent=state.text;
   label.className=state.cls;
 };
@@ -307,6 +499,7 @@ window.resetAptForm=()=>{
   document.getElementById('aptPrevDues').value='0.00';document.getElementById('aptBalance').value='0.00';document.getElementById('aptBalanceState').textContent='No Due';document.getElementById('aptBalanceState').className='no-due';document.getElementById('saveAptBtn').textContent='Save Appointment';document.getElementById('formTitle').textContent='New Appointment';
   document.getElementById('aptDate').value=todayISO();document.getElementById('aptRescheduleDate').value='';document.getElementById('reschedule-container').style.display='none';
   if(window.currentUser&&window.currentUser.role!=='admin')document.getElementById('aptBranch').value=window.currentUser.branch;
+  window.calcBalance();
 };
 window.openAppointmentForm=()=>{closeTools();window.resetAptForm();document.getElementById('aptModal').classList.add('show');setTimeout(()=>document.getElementById('aptMobile').focus(),80)};
 window.closeAppointmentForm=()=>document.getElementById('aptModal').classList.remove('show');
@@ -468,18 +661,61 @@ function filteredAppointments(){
   a.sort((x,y)=>{const A=x.data,B=y.data;switch(sortMode){case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'doctorAsc':return String(A.therapist||'').localeCompare(String(B.therapist||''));case'balanceDesc':return (parseFloat(B.balance)||0)-(parseFloat(A.balance)||0);case'balanceAsc':return (parseFloat(A.balance)||0)-(parseFloat(B.balance)||0);case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''))||String(A.time||'').localeCompare(String(B.time||''));default:return String(B.date||'').localeCompare(String(A.date||''))||String(B.time||'').localeCompare(String(A.time||''))}});
   return a;
 }
+window.openTherapistWiseReport=()=>{
+  const appointments=filteredAppointments();
+  if(!appointments.length)return alert('No appointments are available for the current filters.');
+  const grouped=new Map();
+  appointments.forEach(({data})=>{
+    const therapist=String(data.therapist||'Unassigned').trim()||'Unassigned';
+    if(!grouped.has(therapist))grouped.set(therapist,[]);
+    grouped.get(therapist).push(data);
+  });
+  const groups=[...grouped.entries()].sort(([a],[b])=>a.localeCompare(b));
+  groups.forEach(([,items])=>items.sort((a,b)=>
+    String(a.date||'').localeCompare(String(b.date||''))||String(a.time||'').localeCompare(String(b.time||''))
+  ));
+  const reportGroups=groups.map(([therapist,items])=>`
+    <section class="therapist-report-group">
+      <h3>${esc(therapist)} <span>${items.length} appointment${items.length===1?'':'s'}</span></h3>
+      <div class="therapist-report-table-wrap">
+        <table class="therapist-report-table">
+          <thead><tr><th>Patient</th><th>Date &amp; Time</th><th>Branch</th><th>Fee</th><th>Payment Status</th><th>Appointment Status</th></tr></thead>
+          <tbody>${items.map(item=>{
+            const payment=paymentStatusDisplay(item.balance);
+            const status=String(item.status||'Pending');
+            const statusClass={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'}[status]||'pending';
+            return `<tr>
+              <td><span class="therapist-report-patient">${esc(item.name||'Unnamed patient')}</span>${item.mobile?`<span class="therapist-report-mobile">${esc(item.mobile)}</span>`:''}</td>
+              <td>${esc(window.formatIndianDate(item.date))} · ${esc(formatTime12Hour(item.time))}</td>
+              <td>${esc(item.branch||'—')}</td>
+              <td>₹${money(item.fee)}</td>
+              <td><span class="badge payment-status ${payment.cls}">${esc(payment.text)}</span></td>
+              <td><span class="badge ${statusClass}">${esc(status)}</span></td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    </section>
+  `).join('');
+  document.getElementById('therapistWiseReportContent').innerHTML=
+    `<p class="therapist-report-meta">${appointments.length} appointments · ${groups.length} therapists · Generated ${esc(new Date().toLocaleString())}</p>${reportGroups}`;
+  closeTools();
+  document.getElementById('therapistWiseReport').classList.add('show');
+  document.getElementById('therapistWiseReport').scrollIntoView({behavior:'smooth',block:'start'});
+};
+window.closeTherapistWiseReport=()=>{const report=document.getElementById('therapistWiseReport');report.classList.remove('show');report.scrollIntoView({behavior:'smooth',block:'start'})};
 function actionHTML(id){
-  return `<div class="actions"><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
+  return `<div class="actions"><button class="act edit" title="Edit Appointment" aria-label="Edit Appointment" onclick="window.editAppointment('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
 }
 function renderAppointments(){
   const list=filteredAppointments(),tb=document.getElementById('aptTableBody'),cards=document.getElementById('cardView');tb.innerHTML='';cards.innerHTML='';
   if(!list.length){tb.innerHTML='<tr><td colspan="7" class="empty">No appointments match the current filters.</td></tr>';cards.innerHTML='<div class="empty" style="grid-column:1/-1">No appointments match the current filters.</div>';updateSelectionBar();return}
   const map={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'};
   list.forEach(x=>{
-    const d=x.data,id=x.id,st=d.status||'Pending',ind=window.formatIndianDate(d.date);
-    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(formatTime12Hour(d.time))}</div>${d.previousDate?`<div class="sub">Prev: ${window.formatIndianDate(d.previousDate)} ${esc(formatTime12Hour(d.previousTime))}</div>`:''}</td><td><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.age?`• ${esc(d.age)} Yrs`:''}${d.gender?' • '+esc(d.gender):''}</div><span class="badge cat" style="margin-top:5px">${esc(d.category||'Normal')}</span></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.therapist||'')}</div></td><td><strong>${esc(d.duration||'--')}</strong><div class="sub">Sessions/Day: ${esc(d.sessionsPerDay||'--')}</div><div class="sub" style="color:var(--success)">Fee ₹${money(d.fee)} • Adv ₹${money(d.advance)}</div><div class="sub ${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="max-width:220px;white-space:normal;margin-top:5px">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
+    const d=x.data,id=x.id,st=d.status||'Pending',ind=window.formatIndianDate(d.date),payment=paymentStatusDisplay(d.balance),balance=balanceDisplay(d.balance);
+    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(formatTime12Hour(d.time))}</div>${d.previousDate?`<div class="sub">Prev: ${window.formatIndianDate(d.previousDate)} ${esc(formatTime12Hour(d.previousTime))}</div>`:''}</td><td><div class="patient-cell"><span class="patient-avatar" aria-hidden="true">${esc((d.name||'?').trim().charAt(0).toUpperCase())}</span><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.age?`• ${esc(d.age)} Yrs`:''}${d.gender?' • '+esc(d.gender):''}</div><span class="badge cat" style="margin-top:5px">${esc(d.category||'Normal')}</span></div></div></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.therapist||'')}</div></td><td><span class="badge payment-status ${payment.cls}">${payment.text}</span><div class="sub">Fee ₹${money(d.fee)} • Adv ₹${money(d.advance)}</div><div class="sub">Balance: <span class="${balance.cls}">${esc(balance.text)}</span></div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="max-width:220px;white-space:normal;margin-top:5px">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
     tb.appendChild(tr);
-    const card=document.createElement('div');card.className='apt-card';card.dataset.id=id;card.innerHTML=`<div class="card-top"><div class="card-patient"><div class="card-check"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></div><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')}</div></div></div><span class="badge ${map[st]||'pending'}">${esc(st)}</span></div><div class="card-line"><b>${ind}</b> • ${esc(formatTime12Hour(d.time))}</div><div class="card-grid"><div><div class="sub">Branch</div><b>${esc(d.branch||'')}</b></div><div><div class="sub">Therapist</div><b>${esc(d.therapist||'--')}</b></div><div><div class="sub">Fee</div><b>₹${money(d.fee)}</b></div><div><div class="sub">Balance</div><b class="${balanceDisplay(d.balance).cls}">${balanceDisplay(d.balance).text}</b></div></div><div class="card-actions">${actionHTML(id)}</div>`;
+    const card=document.createElement('div');card.className='apt-card';card.dataset.id=id;card.innerHTML=`<div class="card-top"><div class="card-patient"><div class="card-check"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></div><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')}</div></div></div><span class="badge ${map[st]||'pending'}">${esc(st)}</span></div><div class="card-line"><b>${ind}</b> • ${esc(formatTime12Hour(d.time))}</div><div class="sub" style="margin-top:10px">Payment Status</div><span class="badge payment-status ${payment.cls}">${payment.text}</span><div class="card-grid"><div><div class="sub">Branch</div><b>${esc(d.branch||'')}</b></div><div><div class="sub">Therapist</div><b>${esc(d.therapist||'--')}</b></div><div><div class="sub">Fee / Advance</div><b>₹${money(d.fee)} / ₹${money(d.advance)}</b></div><div><div class="sub">Balance</div><b class="${balance.cls}">${esc(balance.text)}</b></div></div><div class="card-actions">${actionHTML(id)}</div>`;
     cards.appendChild(card);
   });
   updateSelectionBar();
@@ -489,13 +725,19 @@ window.setFilterToday=()=>{const s=todayISO();document.getElementById('filterDat
 window.clearFilters=()=>{document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';document.getElementById('filterStatus').value='';document.getElementById('filterCategory').value='';document.getElementById('filterPayment').value='';if(!window.currentUser||window.currentUser.role==='admin')document.getElementById('filterBranch').value='';document.getElementById('aptSearchInput').value='';window.setFilterToday()};
 window.showFilters=()=>{closeTools();document.getElementById('filtersBar').classList.add('show')};
 window.setView=m=>{viewMode=m;document.getElementById('listView').style.display=m==='list'?'block':'none';document.getElementById('cardView').classList.toggle('show',m==='card');document.getElementById('viewListBtn').classList.toggle('active',m==='list');document.getElementById('viewCardBtn').classList.toggle('active',m==='card');closeTools()};
-window.setSort=m=>{sortMode=m;renderAppointments();closeTools()};
+window.setSort=m=>{sortMode=m;const select=document.getElementById('aptSortSelect');if(select)select.value=m;renderAppointments();closeTools()};
 window.updateSelectionBar=()=>{
   const ids=[...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value);document.getElementById('selectedCount').textContent=new Set(ids).size;document.getElementById('bulkBar').classList.toggle('show',ids.length>0);
 };
 window.clearSelection=()=>{document.querySelectorAll('.apt-checkbox').forEach(x=>x.checked=false);document.getElementById('selectAll').checked=false;window.updateSelectionBar()};
 window.toggleAllCheckboxes=m=>{document.querySelectorAll('.apt-row .apt-checkbox,.apt-card .apt-checkbox').forEach(x=>x.checked=m.checked);window.updateSelectionBar()};
 function selectedIds(){return [...new Set([...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value))]}
+window.editSelectedAppointment=()=>{
+  const ids=selectedIds();closeTools();
+  if(ids.length!==1)return alert('Please select exactly one appointment to edit.');
+  if(!window.appointmentsDataCache[ids[0]])return alert('Selected appointment data not found. Please reload the appointments.');
+  window.editAppointment(ids[0]);
+};
 window.openSelectedNew=()=>{
   const ids=selectedIds();if(!ids.length)return alert('Please select at least one appointment first.');
   const d=window.appointmentsDataCache[ids[0]];if(!d)return;
@@ -524,27 +766,135 @@ window.saveAppointment=async()=>{
   }catch(e){console.error(e);alert('Failed to save appointment. Check your database permissions.')}finally{btn.disabled=false;btn.textContent=id?'Update Appointment':'Save Appointment'}
 };
 window.syncTransactions=async(aptId,payload)=>{
-  let q=query(collection(db,'transactions'),where('linkedAptId','==',aptId));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'transactions'),where('linkedAptId','==',aptId),where('branch','==',window.currentUser.branch));const s=await getDocs(q);let sale=null,receipt=null;s.forEach(d=>{if(d.data().type==='Sales')sale=d.id;if(d.data().type==='Receipt')receipt=d.id});const mode=payload.paymentMode||'Cash';
-  if(parseFloat(payload.fee)>0){const x={date:payload.date,type:'Sales',mobile:payload.mobile,name:payload.name,mode,ref:'Auto-Bill',cashIn:0,cashOut:parseFloat(payload.fee),notes:'Consultation / Therapy Billed',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};sale?await updateDoc(doc(db,'transactions',sale),x):await addDoc(collection(db,'transactions'),{...x,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()})}
-  if(parseFloat(payload.advance)>0){const x={date:payload.date,type:'Receipt',mobile:payload.mobile,name:payload.name,mode,ref:payload.paymentReference||'Auto-Advance',cashIn:parseFloat(payload.advance),cashOut:0,notes:payload.paymentRemarks||'Advance Received',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};receipt?await updateDoc(doc(db,'transactions',receipt),x):await addDoc(collection(db,'transactions'),{...x,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()})}
+  let linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',aptId));
+  if(window.currentUser&&window.currentUser.role!=='admin'){
+    linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',aptId),where('branch','==',window.currentUser.branch));
+  }
+  const snapshot=await getDocs(linkedQuery);
+  let sale=null,receipt=null,receiptData=null;
+  snapshot.forEach(transactionDoc=>{
+    const data=transactionDoc.data();
+    const type=String(data.type||'').toLowerCase();
+    if(type==='sales'&&!sale)sale=transactionDoc.id;
+    if(type==='receipt'&&!receipt){receipt=transactionDoc.id;receiptData=data}
+  });
+  const mode=payload.paymentMode||'Cash';
+  const invoiceNo=payload.invoiceNo||`INV-${aptId}`;
+  const fee=Number(payload.fee)||0;
+  if(sale||fee>0){
+    const salePayload={date:payload.date,type:'Sales',mobile:payload.mobile,name:payload.name,mode,ref:'Auto-Bill',invoiceNo,cashIn:0,cashOut:fee,notes:fee>0?'Consultation / Therapy Billed':'Appointment bill voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
+    if(sale)await updateDoc(doc(db,'transactions',sale),salePayload);
+    else if(fee>0)await addDoc(collection(db,'transactions'),{...salePayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()});
+  }
+  const advance=Number(payload.advance)||0;
+  if(receipt||advance>0){
+    const receiptDate=receiptData&&Number(receiptData.cashIn||0)===advance&&receiptData.date?receiptData.date:todayISO();
+    const receiptPayload={date:receiptDate,type:'Receipt',mobile:payload.mobile,name:payload.name,mode,ref:payload.paymentReference||'Auto-Advance',cashIn:advance,cashOut:0,notes:advance>0?(payload.paymentRemarks||'Appointment receipt received today'):'Appointment receipt voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
+    if(receipt)await updateDoc(doc(db,'transactions',receipt),receiptPayload);
+    else if(advance>0)await addDoc(collection(db,'transactions'),{...receiptPayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()});
+  }
 };
 window.viewNotes=id=>{const d=window.appointmentsDataCache[id];if(!d)return;document.getElementById('modalPatientName').textContent=d.name||'';document.getElementById('modalPatientMeta').textContent=`Mobile: +91 ${d.mobile||''} | Scheduled: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)} | Doctor: ${d.therapist||'--'}`;let n='';if(d.patientNotes)n+=`[Medical History]\n${d.patientNotes}\n\n`;if(d.notes)n+=`[Diagnosis Report]\n${d.notes}`;document.getElementById('modalPatientNotesText').textContent=n||'No notes recorded for this patient.';document.getElementById('notesModal').classList.add('show')};
 window.printModalNotes=()=>{const c=document.getElementById('printNotesArea').innerHTML,w=window.open('','_blank');if(!w)return;w.document.write(`<html><head><title>Patient Report</title><style>body{font-family:Arial;padding:35px;line-height:1.6}h2{color:#155A90}</style></head><body><h2>Patient Report</h2>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()};
 window.openInvoiceTemplate=async(id,action='view')=>{
-  const d=window.appointmentsDataCache[id];if(!d)return alert('Appointment data not found.');
+  let d=window.appointmentsDataCache[id];
+  if(!d){
+    try{
+      const appointmentSnapshot=await getDoc(doc(db,'appointments',id));
+      if(appointmentSnapshot.exists())d=appointmentSnapshot.data();
+    }catch(error){
+      console.error('Could not load appointment for invoice:',error);
+      return alert('Could not load appointment data for this invoice. Check your database access.');
+    }
+  }
+  if(!d)return alert('Appointment data not found.');
   const diagnosisNotes=[d.diagnosis,d.notes].filter((value,index,array)=>value&&array.indexOf(value)===index).join('\n');
+  let invoiceData={...d,invoiceNo:d.invoiceNo||`INV-${id}`,billDate:new Date().toISOString()};
+  let invoiceLinkError='',patientLinkError='';
+  if(d.mobile){
+    try{
+      let patientQuery=query(collection(db,'patients'),where('mobile','==',d.mobile));
+      if(window.currentUser&&window.currentUser.role!=='admin'){
+        patientQuery=query(
+          collection(db,'patients'),
+          where('mobile','==',d.mobile),
+          where('branch','==',window.currentUser.branch)
+        );
+      }else if(d.branch){
+        patientQuery=query(
+          collection(db,'patients'),
+          where('mobile','==',d.mobile),
+          where('branch','==',d.branch)
+        );
+      }
+      let patientSnapshot=await getDocs(patientQuery);
+      if(patientSnapshot.empty&&window.currentUser?.role==='admin'&&d.branch){
+        patientSnapshot=await getDocs(query(collection(db,'patients'),where('mobile','==',d.mobile)));
+      }
+      const patient=patientSnapshot.docs[0]?.data();
+      if(patient){
+        invoiceData={
+          ...invoiceData,
+          patientId:patient.patientId||invoiceData.patientId,
+          name:patient.name||invoiceData.name,
+          age:patient.age||invoiceData.age,
+          gender:patient.gender||invoiceData.gender,
+          category:patient.category||invoiceData.category,
+          mobile:patient.mobile||invoiceData.mobile,
+          email:patient.email||invoiceData.email,
+          address:patient.address||patient.location||invoiceData.address||invoiceData.location,
+          location:patient.address||patient.location||invoiceData.location||invoiceData.address,
+          patientNotes:invoiceData.patientNotes||patient.notes
+        };
+      }else{
+        patientLinkError='Patient profile was not found. Invoice uses appointment details.';
+      }
+    }catch(error){
+      console.error('Could not link patient profile to invoice:',error);
+      patientLinkError='Patient profile details could not be linked. Invoice uses appointment details.';
+    }
+  }else{
+    patientLinkError='Patient mobile number is missing; patient profile could not be linked.';
+  }
+  try{
+    let linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',id));
+    if(window.currentUser&&window.currentUser.role!=='admin'){
+      linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',id),where('branch','==',window.currentUser.branch));
+    }
+    const linkedSnapshot=await getDocs(linkedQuery);
+    let billed=0,advance=0,hasSales=false,hasReceipts=false;
+    linkedSnapshot.forEach(transactionDoc=>{
+      const transaction=transactionDoc.data();
+      const type=String(transaction.type||'').toLowerCase();
+      if(type==='sales'){
+        hasSales=true;
+        billed+=Number(transaction.cashOut)||0;
+        invoiceData.invoiceNo=transaction.invoiceNo||invoiceData.invoiceNo;
+        invoiceData.billDate=transaction.date||invoiceData.billDate;
+      }else if(type==='receipt'){
+        hasReceipts=true;
+        advance+=Number(transaction.cashIn)||0;
+      }
+    });
+    invoiceData.fee=hasSales?billed:Number(d.fee??d.totalFee)||0;
+    invoiceData.advance=hasReceipts?advance:Number(d.advance)||0;
+  }catch(error){
+    console.error('Unable to load linked sales and receipt records for invoice:',error);
+    invoiceLinkError='Sales and receipt details could not be loaded. Invoice uses appointment amounts.';
+  }
   const payload={
     appointment:{
-      ...d,
+      ...invoiceData,
       id,
       appointmentId:id,
-      billDate:new Date().toISOString(),
       serviceName:d.serviceName||d.service||d.duration||'Therapy Session',
       diagnosis:diagnosisNotes,
       invoiceNotes:[diagnosisNotes,d.patientNotes].filter(Boolean).join('\n\n')
     },
     company:{},
-    companyProfileError:false
+    companyProfileError:false,
+    invoiceLinkError,
+    patientLinkError
   };
   try{
     const snap=await getDoc(doc(db,'settings','company_profile'));
@@ -554,9 +904,25 @@ window.openInvoiceTemplate=async(id,action='view')=>{
     console.error('Unable to load company profile for invoice:',e);
     payload.companyProfileError='Invoice opened, but company profile details could not be loaded. Check Firestore permissions.';
   }
-  window.pendingInvoicePayload={payload,action};
+  const invoiceFrame=document.getElementById('invoice-frame');
+  if(!invoiceFrame)return alert('Invoice template is unavailable. Please reload the dashboard and try again.');
+  window.pendingInvoicePayload=null;
+  let payloadStored=false;
+  try{
+    const invoiceUrl=new URL('template-invoice.html',window.location.href);
+    invoiceUrl.searchParams.set('invoiceRequest',`${Date.now()}`);
+    if(action==='download')invoiceUrl.searchParams.set('action','download');
+    sessionStorage.setItem('bizodit.invoicePayload',JSON.stringify(payload));
+    invoiceFrame.dataset.ready='false';
+    invoiceFrame.src=invoiceUrl.href;
+    payloadStored=true;
+  }catch(error){
+    console.error('Could not prepare invoice data for the template:',error);
+    try{sessionStorage.removeItem('bizodit.invoicePayload')}catch(storageError){console.error('Could not clear unsent invoice data:',storageError)}
+    window.pendingInvoicePayload={payload,action};
+  }
   window.switchView('view-invoice',null);
-  window.dispatchInvoicePayload();
+  if(!payloadStored)window.dispatchInvoicePayload();
 };
 window.printInvoice=id=>window.openInvoiceTemplate(id);
 window.downloadInvoice=id=>window.openInvoiceTemplate(id,'download');
@@ -567,7 +933,7 @@ window.sendInvoiceWhatsApp=id=>{
   if(phone.length===10)phone='91'+phone;
   if(!/^91\d{10}$/.test(phone))return alert('Patient mobile number must be a valid 10-digit Indian number.');
   const amount=money(d.fee),paid=money(d.advance),balance=balanceDisplay(d.balance).text;
-  const message=`Hello ${d.name||''}, here are your invoice details (Invoice INV-${id}):\nAppointment: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)}\nService: ${d.duration||'Therapy session'}\nFee: ₹${amount}\nAdvance paid: ₹${paid}\nBalance: ${balance}`;
+  const message=`Hello ${d.name||''}, here are your invoice details (Invoice INV-${id}):\nAppointment: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)}\nService: ${d.duration||'Therapy session'}\nFee: ${displayMoney(amount)}\nAdvance paid: ${displayMoney(paid)}\nBalance: ${balance}`;
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,'_blank','noopener');
 };
 window.executeBulkDelete=async()=>{
