@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ | Letterhead</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="letterhead-module">
+    <style>
+    :root {
+        --primary: #0B1F4B;
+        --text-main: #1F2937;
+        --text-muted: #667085;
+        --border: #E4E7EC;
+        --bg-light: #F4F7FC;
+        --stamp-green: #007B5E;
+        --brand-split-gradient: linear-gradient(110deg, #08784F 0%, #16A36D 47%, #159377 50%, #1D70A0 53%, #0B3C6B 100%);
+    }
+
+        #letterhead-module { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 1200px; margin: 0 auto; color:var(--text-main); }
+
+        /* --- A4 Screen Canvas (Mobile Responsive) --- */
+        #letterhead-module .a4-canvas {
+            width: 100%;
+            max-width: 210mm; /* Exact A4 width */
+            min-height: 297mm; /* Exact A4 height */
+            background: #FFFFFF;
+            padding: 20mm; /* A4 Margin */
+            border: 1px solid #E4E7EC;
+            box-shadow: 0 18px 50px rgba(16,24,40,.12),0 2px 8px rgba(16,24,40,.06);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 24px;
+            overflow: hidden; /* Contains the watermark */
+        }
+
+        /* --- Center Watermark --- */
+        #letterhead-module .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%; /* Scales dynamically with the page */
+            max-width: 400px;
+            height: auto;
+            opacity: 0.045; /* Low opacity */
+            pointer-events: none; /* Prevents it from blocking clicks on the text area */
+            z-index: 0;
+        }
+
+        /* Elevate content above watermark */
+        #letterhead-module .letter-header,
+        #letterhead-module .letter-body,
+        #letterhead-module .footer-section {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Header --- */
+        #letterhead-module .letter-header {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+            align-items: center;
+            border-bottom: 0;
+            padding-bottom: 18px;
+            margin: 0 -10mm 8px;
+            gap: 8mm;
+            width: calc(100% + 20mm);
+        }
+        #letterhead-module .header-accent { position:relative;z-index:1;width:calc(100% + 40mm);height:8px;margin:0 -20mm 26px;border-radius:0;background:var(--brand-split-gradient);-webkit-print-color-adjust:exact;print-color-adjust:exact; }
+        #letterhead-module .letterhead-brand{display:flex;align-items:center;justify-self:start;gap:3mm;min-width:0}
+        #letterhead-module .logo-img { display:block;flex:0 0 18mm;width:18mm;height:18mm;max-width:18mm;max-height:18mm;object-fit:contain;object-position:left center; }
+        #letterhead-module .company-name-img { display:block;width:auto;max-width:42mm;max-height:14mm;height:auto;object-fit:contain;object-position:left center; }
+        #letterhead-module .company-info { display:flex;min-width:0;flex-direction:column;align-items:flex-start;justify-self:end;gap:6px;width:82mm;max-width:100%;text-align:left!important;font-size:13px;color:#344054;line-height:1.45; }
+        #letterhead-module .company-contact { display:flex;align-items:flex-start;justify-content:flex-start;gap:7px;width:100%;max-width:100%;overflow-wrap:anywhere;text-align:left!important; }
+        #letterhead-module .company-contact .material-symbols-rounded { flex:0 0 18px;font-size:18px;line-height:1.45;color:#155A90; }
+        #letterhead-module .company-contact-value { min-width:0;max-width:100%;font-size:13px;line-height:1.45;text-align:left!important; }
+        #letterhead-module .company-contact-pair{display:grid;grid-template-columns:max-content max-content;justify-content:start;column-gap:8mm;width:100%;max-width:100%}
+        #letterhead-module .company-contact-pair .company-contact{min-width:0}
+        #letterhead-module .email-website-pair{grid-template-columns:max-content;row-gap:3px}
+        #letterhead-module .address-lines{display:flex;flex-direction:column;gap:2px}
+        #letterhead-module .address-line{display:block}
+
+        /* --- Content --- */
+        #letterhead-module .letter-body { flex: 1; margin-bottom: 24px; }
+        #letterhead-module .letter-body textarea { 
+            box-sizing:border-box;width:100%;height:100%;min-height:200px;
+            padding:4px 0;border:0;outline:none;resize:none;
+            font-family:Inter,sans-serif;font-size:11pt;line-height:1.65;font-weight:400;color:#344054;
+            background:transparent;
+        }
+        #letterhead-module .letter-body textarea::placeholder{color:#98A2B3}
+
+        #letterhead-module .footer-section { position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-sizing:border-box;flex:0 0 48px;min-height:48px;width:calc(100% + 40mm);padding:4px 20mm;margin:18px -20mm -20mm;border-radius:0;background:var(--brand-split-gradient);-webkit-print-color-adjust:exact;print-color-adjust:exact; }
+        #letterhead-module .footer-branches-heading{display:inline-flex;align-items:center;justify-content:center;padding:3px 10px;border:1px solid rgba(255,255,255,.8);border-radius:12px;color:#fff;font-size:9px;font-weight:700;line-height:1;text-align:center;letter-spacing:1.2px;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+        #letterhead-module .footer-branch-names{color:#fff;font-size:12px;font-weight:600;line-height:1.25;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.35);overflow-wrap:anywhere}
+
+        /* --- Screen Control Action --- */
+        #letterhead-module .studio-toolbar { width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;padding:15px 18px;border:1px solid #E4E7EC;border-radius:20px;background:#fff;box-shadow:0 2px 8px rgba(16,24,40,.04); }
+        #letterhead-module .studio-heading{display:flex;align-items:center;gap:12px;min-width:0}
+        #letterhead-module .studio-icon{width:44px;height:44px;flex:none;display:grid;place-items:center;border:1px solid #E6ECF5;border-radius:15px;background:#F7F9FC;color:#0B1F4B}
+        #letterhead-module .studio-icon .material-symbols-rounded{font-size:23px}
+        #letterhead-module .studio-heading h1{margin:0;color:#1F2937;font-size:16px;line-height:1.3;font-weight:650;letter-spacing:-.2px}
+        #letterhead-module .studio-heading p{margin:3px 0 0;color:#667085;font-size:11px}
+        #letterhead-module .studio-actions{display:flex;align-items:center;gap:9px}
+        #letterhead-module .seal-select{min-height:42px;padding:0 34px 0 16px;border:1px solid #D0D5DD;border-radius:22px;outline:0;background:#fff;color:#344054;font:600 12px Inter,sans-serif}
+        #letterhead-module .seal-select:focus{border-color:#8394B3;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #letterhead-module .print-btn { min-height:42px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 20px;background:var(--primary);color:white;border:1px solid var(--primary);border-radius:22px;font-weight:600;cursor:pointer;font-size:12px;box-shadow:0 2px 8px rgba(11,31,75,.16); }
+        #letterhead-module .print-btn:hover { background:#071630; }
+        #letterhead-module .print-btn .material-symbols-rounded{font-size:18px}
+        #letterhead-module .letterhead-seal-area{position:relative;z-index:1;display:none;justify-content:flex-end;align-items:flex-end;flex:0 0 auto;margin-top:18px}
+        #letterhead-module .letterhead-seal-area.visible{display:flex}
+        #letterhead-module .seal-box-company{width:63.5mm;height:25.4mm;border:2px solid var(--stamp-green);border-radius:4px;background:transparent;color:var(--stamp-green);position:relative;overflow:hidden;font-family:"Times New Roman",serif}
+        #letterhead-module .seal-box-company .seal-name{text-align:center;font-size:18px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;margin-top:4mm;line-height:1}
+        #letterhead-module .seal-box-company .signature-line{position:absolute;left:5mm;right:5mm;bottom:8mm;border-top:1.5px solid var(--stamp-green)}
+        #letterhead-module .seal-box-company .seal-role{position:absolute;right:5mm;bottom:2.5mm;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--stamp-green)}
+        #letterhead-module .seal-box-doctor{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--stamp-green);font-family:Arial,Helvetica,sans-serif;text-align:center;line-height:1.4}
+        #letterhead-module .seal-box-doctor .doc-name{font-size:17px;font-weight:800;letter-spacing:.5px}
+        #letterhead-module .seal-box-doctor .doc-qual{font-size:15px;font-weight:700}
+        #letterhead-module .seal-box-doctor .doc-reg,#letterhead-module .seal-box-doctor .doc-role{font-size:14px;font-weight:700;margin-top:2px}
+
+        /* --- Strict Print Media Queries --- */
+        @media (max-width: 768px) {
+            #letterhead-module { padding: 0px; }
+            #letterhead-module .studio-toolbar{align-items:flex-start;padding:12px;border-radius:17px}
+            #letterhead-module .studio-icon{width:40px;height:40px;border-radius:13px}
+            #letterhead-module .studio-heading h1{font-size:14px}
+            #letterhead-module .studio-heading p{max-width:250px;line-height:1.45}
+            #letterhead-module .studio-actions{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+            #letterhead-module .seal-select{min-height:38px;max-width:160px;font-size:11px}
+            #letterhead-module .print-btn{min-height:38px;padding:0 13px}
+            #letterhead-module .a4-canvas { box-shadow:0 8px 24px rgba(16,24,40,.08);border:1px solid #E4E7EC;border-radius:5px;padding:28px 24px;min-height:900px;height:auto; }
+            #letterhead-module .letter-header { grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:center;gap:4mm;padding-bottom:14px;margin:0 -12px 21px;width:calc(100% + 24px); }
+            #letterhead-module .header-accent{width:calc(100% + 48px);height:7px;margin:0 -24px 20px}
+            #letterhead-module .letterhead-brand{gap:2mm}
+            #letterhead-module .logo-img{flex-basis:18mm;width:18mm;height:18mm;max-width:18mm;max-height:18mm}
+            #letterhead-module .company-name-img{max-width:35mm;max-height:12mm}
+            #letterhead-module .company-info{gap:5px;font-size:12px;line-height:1.4}
+            #letterhead-module .company-name-img{max-width:45mm;max-height:12mm}
+            #letterhead-module .company-contact .material-symbols-rounded{flex-basis:16px;font-size:16px}
+            #letterhead-module .company-contact-value{font-size:12px;line-height:1.4}
+            #letterhead-module .company-info{width:82mm;max-width:100%}
+            #letterhead-module .company-contact-pair{column-gap:5mm}
+            #letterhead-module .letter-body textarea{font-size:11px;min-height:300px}
+            #letterhead-module .footer-section{flex-basis:42px;min-height:42px;width:calc(100% + 48px);padding:0 24px;margin:14px -24px -28px}
+            #letterhead-module .footer-branches-heading{font-size:8px}
+            #letterhead-module .footer-branch-names{font-size:10px}
+            #letterhead-module .letterhead-seal-area{margin-top:14px}
+        }
+
+        @media print {
+            @page { size:A4 portrait; margin:0; }
+            body { background: #FFF !important; padding: 0 !important; display: block !important; }
+            #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0 !important; overflow: visible !important; }
+            #letterhead-module { display:block!important;width:210mm!important;max-width:none!important;margin:0!important;padding:0!important; }
+            #letterhead-module .studio-toolbar{display:none!important}
+            #letterhead-module .a4-canvas { box-sizing:border-box!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;position:relative!important;break-after:avoid!important;page-break-after:avoid!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:15mm 20mm!important;margin:0!important;max-width:none!important;width:210mm!important;min-width:210mm!important;min-height:297mm!important;height:297mm!important;max-height:297mm!important;overflow:hidden!important; }
+            #letterhead-module .a4-canvas::before{display:none!important}
+            #letterhead-module .letter-header{display:grid!important;grid-template-columns:minmax(0,2fr) minmax(0,3fr)!important;align-items:center!important;gap:6mm!important;padding:0 0 5mm!important;margin:0 -10mm 2mm!important;width:calc(100% + 20mm)!important}
+            #letterhead-module .letterhead-brand{gap:2mm}
+            #letterhead-module .logo-img{flex-basis:18mm!important;width:18mm!important;height:18mm!important;max-width:18mm!important;max-height:18mm!important}
+            #letterhead-module .company-info{width:82mm;max-width:100%;align-items:flex-start!important;justify-self:end;gap:1.2mm!important;text-align:left!important;font-size:9pt!important;line-height:1.35!important}
+            #letterhead-module .company-name-img{max-width:38mm!important;max-height:14mm!important;object-position:left center!important}
+            #letterhead-module .company-contact .material-symbols-rounded{flex-basis:4mm;font-size:11pt!important}
+            #letterhead-module .company-contact{justify-content:flex-start!important;text-align:left!important}
+            #letterhead-module .company-contact-value{max-width:100%!important;font-size:9pt!important;line-height:1.35!important;text-align:left!important}
+            #letterhead-module .company-contact-pair{column-gap:5mm}
+            #letterhead-module .header-accent{flex:0 0 2mm;width:calc(100% + 40mm)!important;height:2mm!important;margin:0 -20mm 8mm!important}
+            #letterhead-module .letter-body{flex:1 1 auto;min-height:0;margin:0 0 4mm!important;overflow:hidden}
+            #letterhead-module .letter-body textarea{display:block;width:100%;height:100%;min-height:0!important;max-height:100%;overflow:hidden;resize:none;font-size:11pt;line-height:1.55}
+            #letterhead-module .letterhead-seal-area{flex:0 0 auto;min-height:25.4mm;margin:0 0 5mm!important;break-inside:avoid;page-break-inside:avoid}
+            #letterhead-module .seal-box-company{flex:0 0 25.4mm}
+            #letterhead-module .footer-section{flex:0 0 14mm;min-height:14mm;width:calc(100% + 40mm)!important;padding:1mm 20mm;margin:0 -20mm -15mm!important}
+            #letterhead-module .footer-branches-heading{font-size:7pt}
+            #letterhead-module .footer-branch-names{font-size:8pt;line-height:1.2}
+            #letterhead-module .header-accent,
+            #letterhead-module .footer-section{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+        }
+    </style>
+
+    <div class="studio-toolbar no-print">
+        <div class="studio-heading">
+            <span class="studio-icon"><span class="material-symbols-rounded" aria-hidden="true">description</span></span>
+            <div><h1>Letterhead Studio</h1><p>Compose a polished letter on your official A4 stationery.</p></div>
+        </div>
+        <div class="studio-actions">
+            <select class="seal-select" aria-label="Add seal to letter" onchange="window.selectLetterheadSeal(this.value)">
+                <option value="">Add Seal</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+            </select>
+            <button class="print-btn" type="button" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print Letter</button>
+        </div>
+    </div>
+
+    <div class="a4-canvas">
+        
+        <!-- Background Watermark Logo -->
+        <img src="assets/logo-client-display.png" class="watermark" alt="">
+        
+        <div class="letter-header">
+            <div class="letterhead-brand">
+                <img src="assets/logo-client-display.png" class="logo-img" alt="Company Logo">
+                <img src="assets/name-client-display.png" class="company-name-img" alt="Company name">
+            </div>
+            <div class="company-info">
+                <div class="company-contact address-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">location_on</span>
+                    <span class="company-contact-value address-lines">
+                        <span id="letterhead-address-line-1" class="address-line">Loading company address…</span>
+                        <span id="letterhead-address-line-2" class="address-line"></span>
+                    </span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">call</span>
+                    <span id="letterhead-phone" class="company-contact-value">Loading company phone…</span>
+                </div>
+                <div class="company-contact-pair email-website-pair">
+                    <div class="company-contact">
+                        <span class="material-symbols-rounded" aria-hidden="true">mail</span>
+                        <span id="letterhead-email" class="company-contact-value">Loading company email…</span>
+                    </div>
+                    <div class="company-contact">
+                        <span class="material-symbols-rounded" aria-hidden="true">language</span>
+                        <span id="letterhead-website" class="company-contact-value">Loading company website…</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-accent" aria-hidden="true"></div>
+
+        <div class="letter-body">
+            <textarea aria-label="Letter body"></textarea>
+        </div>
+
+        <div id="letterhead-seal-area" class="letterhead-seal-area" aria-live="polite"></div>
+        <div class="footer-section" aria-label="Branch names">
+            <span class="footer-branches-heading">BRANCHES</span>
+            <span id="letterhead-branch-names" class="footer-branch-names"></span>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+
+        async function loadLetterheadCompanyDetails() {
+            try {
+                const snapshot = await getDoc(doc(db, 'settings', 'company_profile'));
+                if (!snapshot.exists()) throw new Error('Company profile has not been configured.');
+                const data = snapshot.data();
+                const formatAddressParts = values => values
+                    .filter(value => typeof value === 'string' && value.trim())
+                    .map(value => value.trim())
+                    .join(', ');
+                const addressLine1 = formatAddressParts([
+                    data.buildingNo,
+                    data.buildingName,
+                    data.area
+                ]);
+                const addressLine2 = formatAddressParts([
+                    data.district,
+                    data.state,
+                    data.country,
+                    data.postalCode
+                ]);
+                const fallbackAddress = String(data.address || '').trim();
+                const details = [
+                    ['letterhead-email', data.email],
+                    ['letterhead-phone', [data.phone1, data.phone2]
+                        .filter(value => typeof value === 'string' && value.trim())
+                        .map(value => value.trim())
+                        .join(' | ')],
+                    ['letterhead-website', data.website]
+                ];
+                document.getElementById('letterhead-address-line-1').textContent =
+                    addressLine1 || fallbackAddress || 'Not provided in Company settings.';
+                document.getElementById('letterhead-address-line-2').textContent = addressLine2;
+                details.forEach(([id, value]) => {
+                    document.getElementById(id).textContent = value || 'Not provided in Company settings.';
+                });
+            } catch (error) {
+                console.error('Could not load letterhead company details:', error);
+                ['letterhead-address-line-1', 'letterhead-email', 'letterhead-phone', 'letterhead-website'].forEach(id => {
+                    document.getElementById(id).textContent = 'Company details unavailable.';
+                });
+                document.getElementById('letterhead-address-line-2').textContent = '';
+            }
+        }
+
+        loadLetterheadCompanyDetails();
+
+        async function loadLetterheadBranchNames() {
+            const branchNames = document.getElementById('letterhead-branch-names');
+            try {
+                const snapshot = await getDocs(collection(db, 'branches'));
+                const names = snapshot.docs
+                    .map(branch => branch.data().name)
+                    .filter(name => typeof name === 'string' && name.trim())
+                    .map(name => name.trim())
+                    .sort((a, b) => a.localeCompare(b));
+                branchNames.textContent = names.join(' | ');
+            } catch (error) {
+                console.error('Could not load letterhead branch names:', error);
+                branchNames.textContent = 'Branch names unavailable.';
+            }
+        }
+
+        loadLetterheadBranchNames();
+
+        window.selectLetterheadSeal = function(sealType) {
+            const sealArea = document.getElementById('letterhead-seal-area');
+            sealArea.replaceChildren();
+            if (!sealType) {
+                sealArea.classList.remove('visible');
+                return;
+            }
+
+            const seal = document.createElement('div');
+            if (sealType === 'company') {
+                seal.className = 'seal-box-company';
+                seal.innerHTML = '<div class="seal-name">FOR STRA CARE</div><div class="signature-line"></div><div class="seal-role">Managing Partner</div>';
+            } else if (sealType === 'doctor') {
+                seal.className = 'seal-box-doctor';
+                seal.innerHTML = '<div class="doc-name">Dr. THEJASWI M.K (PT)</div><div class="doc-qual">BPT, MPT (Ortho)</div><div class="doc-reg">MIAP Reg No. L.43616</div><div class="doc-role">CEO, STRA CARE</div>';
+            } else {
+                throw new Error(`Unsupported letterhead seal: ${sealType}`);
+            }
+            sealArea.appendChild(seal);
+            sealArea.classList.add('visible');
+        };
+
+    </script>
+</div>
+</body>
+</html>
