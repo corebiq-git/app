@@ -13,13 +13,16 @@
 <div class="module-container" id="letterhead-module">
     <style>
         :root {
-            --primary: #0B1F4B;
+            /* Updated to match the provided logo colors */
+            --primary: #164683; 
             --text-main: #1F2937;
             --text-muted: #4B5563;
             --border: #E4E7EC;
             --bg-light: #F4F7FC;
             --stamp-green: #007B5E;
-            --brand-split-gradient: linear-gradient(110deg, #08784F 0%, #16A36D 47%, #159377 50%, #1D70A0 53%, #0B3C6B 100%);
+            
+            /* Modern 50/50 hard split with a sleek 110deg angle */
+            --brand-split-gradient: linear-gradient(110deg, #61913C 50%, #164683 50%);
         }
 
         /* --- Global & Container --- */
@@ -65,25 +68,26 @@
             height: 40px; padding: 0 16px; border: 1px solid #D1D5DB; border-radius: 8px; 
             background: #fff; color: #374151; font: 500 13px 'Inter', sans-serif; outline: none; cursor: pointer;
         }
-        #letterhead-module .seal-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(11,31,75,.1); }
+        #letterhead-module .seal-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(22, 70, 131, 0.1); }
         #letterhead-module .print-btn { 
             height: 40px; display: inline-flex; align-items: center; gap: 8px; padding: 0 20px; 
             background: var(--primary); color: white; border: none; border-radius: 8px; 
             font-weight: 600; font-size: 13px; cursor: pointer; transition: background 0.2s;
         }
-        #letterhead-module .print-btn:hover { background: #071630; }
+        #letterhead-module .print-btn:hover { background: #0E305C; }
         #letterhead-module .print-btn .material-symbols-rounded { font-size: 18px; }
 
         /* --- A4 Screen Canvas (Mobile Responsive) --- */
         #letterhead-module .a4-canvas {
             width: 100%;
-            max-width: 210mm; /* Exact A4 width */
-            min-height: 297mm; /* Exact A4 height */
+            max-width: 210mm; 
+            min-height: 297mm; 
             background: #FFFFFF;
             border: 1px solid var(--border);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
+            align-items: stretch; /* Forces children to stretch full width */
             position: relative;
             overflow: hidden; 
             box-sizing: border-box;
@@ -107,7 +111,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 15mm 20mm 6mm 10mm; /* Adjusted left padding to move logo left */
+            padding: 15mm 20mm 6mm 10mm; 
             box-sizing: border-box;
             width: 100%;
         }
@@ -124,7 +128,7 @@
             display: flex; align-items: flex-start; gap: 8px;
         }
         #letterhead-module .company-contact .material-symbols-rounded { 
-            font-size: 15px; color: #155A90; margin-top: 1px; flex-shrink: 0;
+            font-size: 15px; color: var(--primary); margin-top: 1px; flex-shrink: 0;
         }
         #letterhead-module .company-contact-value { 
             font-size: 11px; line-height: 1.4; color: var(--text-muted); font-weight: 500;
@@ -134,13 +138,15 @@
 
         /* --- Gradient Accent Line --- */
         #letterhead-module .header-accent {
-            width: 100%;
+            width: 100% !important;
+            margin: 0 !important;
             height: 6px;
             background: var(--brand-split-gradient);
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             z-index: 1;
             position: relative;
+            display: block;
         }
 
         /* --- Letter Body --- */
@@ -152,6 +158,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            width: 100%;
         }
         #letterhead-module .letter-body textarea { 
             flex: 1; width: 100%; min-height: 250px;
@@ -167,6 +174,7 @@
             display: none; justify-content: flex-end; align-items: flex-end;
             padding: 0 20mm 15mm 20mm;
             box-sizing: border-box;
+            width: 100%;
         }
         #letterhead-module .letterhead-seal-area.visible { display: flex; }
         #letterhead-module .seal-box-company {
@@ -193,7 +201,8 @@
         #letterhead-module .footer-section {
             position: relative; z-index: 1;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            width: 100%; min-height: 12mm; padding: 6px 20mm 8px 20mm;
+            width: 100% !important; margin: 0 !important; margin-top: auto !important; /* Locks to bottom */
+            min-height: 12mm; padding: 6px 20mm 8px 20mm;
             background: var(--brand-split-gradient);
             -webkit-print-color-adjust: exact; print-color-adjust: exact;
             box-sizing: border-box;
@@ -204,12 +213,12 @@
         }
         #letterhead-module .footer-branch-names {
             color: #fff; 
-            font-size: 13px; /* Increased font size */
-            font-weight: 600; /* Increased font weight */
+            font-size: 13px; 
+            font-weight: 600; 
             text-align: center; 
             line-height: 1.4;
-            letter-spacing: 0.5px; /* Added spacing */
-            word-spacing: 4px; /* Increased gap between texts */
+            letter-spacing: 0.5px; 
+            word-spacing: 4px; 
         }
 
         /* --- Responsive Screen --- */
@@ -224,28 +233,31 @@
 
         /* --- Strict Print Media Queries --- */
         @media print {
-            @page { size: A4 portrait; margin: 0; }
-            body { background: #FFF !important; padding: 0 !important; display: block !important; }
+            /* Hardcodes exact dimensions to force Portrait */
+            @page { size: 210mm 297mm; margin: 0; }
+            
+            body { background: #FFF !important; padding: 0 !important; display: block !important; margin: 0 !important; }
             #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
             .main-wrapper { flex: 1; display: block; overflow: visible; }
             #main-content { padding: 0 !important; overflow: visible !important; }
             
-            #letterhead-module { padding: 0 !important; display: block !important; width: 210mm !important; }
+            #letterhead-module { padding: 0 !important; display: block !important; width: 210mm !important; margin: 0 !important; }
             #letterhead-module .a4-canvas { 
                 box-shadow: none !important; border: 0 !important; border-radius: 0 !important; 
-                width: 210mm !important; height: 297mm !important; max-height: 297mm !important;
-                margin: 0 !important; break-after: avoid !important; overflow: hidden !important; 
+                width: 210mm !important; min-height: 297mm !important; height: 297mm !important; max-height: 297mm !important;
+                margin: 0 !important; padding: 0 !important; break-after: avoid !important; overflow: hidden !important; 
             }
             #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
             #letterhead-module .company-info { max-width: 85mm !important; }
-            #letterhead-module .letter-body { padding: 8mm 20mm !important; }
+            #letterhead-module .letter-body { padding: 8mm 20mm !important; flex-grow: 1 !important; }
             #letterhead-module .letter-body textarea { min-height: 0 !important; }
             
             /* Hide the placeholder text when printing */
             #letterhead-module .letter-body textarea::placeholder { color: transparent !important; }
             
             #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm 20mm !important; break-inside: avoid; }
-            #letterhead-module .footer-section { padding: 5mm 20mm 7mm 20mm !important; }
+            #letterhead-module .footer-section { padding: 5mm 20mm 7mm 20mm !important; margin-top: auto !important; width: 100% !important; }
+            #letterhead-module .header-accent { width: 100% !important; margin: 0 !important; }
         }
     </style>
 
@@ -270,7 +282,6 @@
     </div>
 
     <div class="a4-canvas">
-        <!-- Background Watermark Logo -->
         <img src="assets/logo-client-display.png" class="watermark" alt="">
         
         <div class="letter-header">
@@ -316,7 +327,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT SECTION REMAINS COMPLETELY UNCHANGED -->
     <script type="module">
         import { db } from './firebase-config.js';
         import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
