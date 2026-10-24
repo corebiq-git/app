@@ -107,7 +107,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            padding: 15mm 20mm 6mm 20mm; /* Top, Right, Bottom, Left */
+            padding: 15mm 20mm 6mm 10mm; /* Adjusted left padding to move logo left */
             box-sizing: border-box;
             width: 100%;
         }
@@ -193,7 +193,7 @@
         #letterhead-module .footer-section {
             position: relative; z-index: 1;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            width: 100%; min-height: 12mm; padding: 4px 20mm 6px 20mm;
+            width: 100%; min-height: 12mm; padding: 6px 20mm 8px 20mm;
             background: var(--brand-split-gradient);
             -webkit-print-color-adjust: exact; print-color-adjust: exact;
             box-sizing: border-box;
@@ -203,7 +203,13 @@
             color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
         }
         #letterhead-module .footer-branch-names {
-            color: #fff; font-size: 11px; font-weight: 500; text-align: center; line-height: 1.3;
+            color: #fff; 
+            font-size: 13px; /* Increased font size */
+            font-weight: 600; /* Increased font weight */
+            text-align: center; 
+            line-height: 1.4;
+            letter-spacing: 0.5px; /* Added spacing */
+            word-spacing: 4px; /* Increased gap between texts */
         }
 
         /* --- Responsive Screen --- */
@@ -230,12 +236,16 @@
                 width: 210mm !important; height: 297mm !important; max-height: 297mm !important;
                 margin: 0 !important; break-after: avoid !important; overflow: hidden !important; 
             }
-            #letterhead-module .letter-header { padding: 15mm 20mm 5mm 20mm !important; flex-direction: row !important; gap: 0 !important; }
+            #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
             #letterhead-module .company-info { max-width: 85mm !important; }
             #letterhead-module .letter-body { padding: 8mm 20mm !important; }
             #letterhead-module .letter-body textarea { min-height: 0 !important; }
+            
+            /* Hide the placeholder text when printing */
+            #letterhead-module .letter-body textarea::placeholder { color: transparent !important; }
+            
             #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm 20mm !important; break-inside: avoid; }
-            #letterhead-module .footer-section { padding: 4mm 20mm 6mm 20mm !important; }
+            #letterhead-module .footer-section { padding: 5mm 20mm 7mm 20mm !important; }
         }
     </style>
 
