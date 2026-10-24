@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ | Invoice Template</title>
+    <meta name="theme-color" content="#0B1F4B">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter and Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet" href="css/corebiq.css">
+    <script type="module" src="./corebiq-locale.js"></script>
+
+    <!-- html2pdf.js for direct 1-click PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        :root {
+            /* Material 3 inspired tokens */
+            --md-sys-color-primary: #0B1F4B;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #E8EEF7;
+            --md-sys-color-on-primary-container: #071630;
+            --md-sys-color-surface: #f4f7fc;
+            --md-sys-color-surface-container: #ffffff;
+            --md-sys-color-outline-variant: #c4c7c5;
+            --md-sys-color-error: #ba1a1a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--md-sys-color-surface);
+            color: #1f1f1f;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 12px 16px 24px;
+            gap: 12px;
+        }
+
+        /* Responsive Screen View setup */
+        #invoice-container {
+            width: 100%;
+            max-width: 210mm;
+            min-height: auto;
+            background: white;
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        #invoice-container::before {
+            content: "";
+            position: absolute;
+            inset: 50% auto auto 50%;
+            width: 125mm;
+            height: 125mm;
+            transform: translate(-50%, -50%);
+            background: url("assets/logo-client-display.png") center / contain no-repeat;
+            opacity: 0.06;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        #invoice-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        #invoice-container .invoice-letterhead {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+            align-items: center;
+            gap: 8mm;
+            margin: 0 -10mm 0;
+            width: calc(100% + 20mm);
+            padding: 0 0 5mm;
+        }
+        #invoice-container .invoice-brand {
+            display: flex;
+            align-items: center;
+            justify-self: start;
+            gap: 3mm;
+            min-width: 0;
+        }
+        #invoice-container .invoice-logo {
+            display: block;
+            flex: 0 0 18mm;
+            width: 18mm;
+            height: 18mm;
+            object-fit: contain;
+            object-position: left center;
+        }
+        #invoice-container .invoice-company-name {
+            display: block;
+            width: auto;
+            max-width: 42mm;
+            max-height: 14mm;
+            object-fit: contain;
+            object-position: left center;
+        }
+        #invoice-container .invoice-company-info {
+            display: flex;
+            min-width: 0;
+            width: 82mm;
+            max-width: 100%;
+            justify-self: end;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.2mm;
+            color: #344054;
+            font-size: 9pt;
+            line-height: 1.35;
+            text-align: left;
+        }
+        #invoice-container .invoice-company-contact {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            align-items: flex-start;
+            gap: 7px;
+            overflow-wrap: anywhere;
+            text-align: left;
+        }
+        #invoice-container .invoice-company-contact .material-symbols-outlined {
+            flex: 0 0 4mm;
+            color: #155A90;
+            font-size: 11pt;
+            line-height: 1.35;
+        }
+        #invoice-container .invoice-company-contact-value {
+            min-width: 0;
+            max-width: 100%;
+            font-size: 9pt;
+            line-height: 1.35;
+        }
+        #invoice-container .invoice-address-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        #invoice-container .invoice-contact-row { display: flex; flex-direction: column; gap: 1mm; }
+        #invoice-container .invoice-header-accent {
+            flex: 0 0 10px;
+            width: calc(100% + 24mm);
+            height: 10px;
+            margin: 0 -12mm 6mm;
+            background: linear-gradient(
+                to bottom,
+                #61913C 0 3px,
+                transparent 3px 7px,
+                #164683 7px 10px
+            );
+            border: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        #invoice-container .patient-report-title {
+            margin: 0;
+            color: #0B1F4B;
+            font-size: 17pt;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -.2px;
+        }
+        #invoice-container .patient-report-field { min-width: 0; }
+        #invoice-container .patient-report-label {
+            margin-bottom: 2px;
+            color: #667085;
+            font-size: 8pt;
+            font-weight: 700;
+            letter-spacing: .45px;
+            text-transform: uppercase;
+        }
+        #invoice-container .patient-report-value {
+            min-height: 18px;
+            color: #1F2937;
+            font-size: 10pt;
+            line-height: 1.4;
+        }
+        #invoice-container .patient-report-detail {
+            min-height: 42px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        #invoice-container .fee-summary-title {
+            margin-bottom: 7px;
+            color: #0B1F4B;
+            font-size: 10pt;
+            font-weight: 700;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+        #bank-details-container { justify-content: flex-start; gap: 10px; }
+        #bank-details-container .bank-details-copy { min-width: 0; }
+        #bank-details-container .bank-detail-row,
+        #bank-details-container #upi-detail-row {
+            display: grid;
+            grid-template-columns: 58px 8px minmax(0, 1fr);
+            align-items: start;
+            column-gap: 2px;
+        }
+        #bank-details-container .bank-detail-label {
+            width: auto;
+            white-space: nowrap;
+            text-align: left;
+        }
+        #bank-details-container .bank-detail-colon {
+            text-align: center;
+        }
+        #bank-details-container .bank-detail-row > span:last-child,
+        #bank-details-container #upi-detail-row > span:last-child {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+        #bank-details-container #upi-qr-container {
+            order: -1;
+            width: 72px;
+            height: 72px;
+        }
+        #invoice-container .invoice-branch-footer {
+            position: relative;
+            display: flex;
+            flex: 0 0 18mm;
+            min-height: 18mm;
+            width: calc(100% + 24mm);
+            margin: 0 -12mm -8mm;
+            padding: 4mm 12mm 1mm;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2mm;
+            background: transparent;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        #invoice-container .invoice-branch-footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(110deg,#61913C 50%,#164683 50%);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        #invoice-container .invoice-branches-label {
+            padding: 3px 12px;
+            border: 1px solid #164683;
+            border-radius: 12px;
+            color: #164683;
+            font-size: 7pt;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 1.5px;
+        }
+        #invoice-container .invoice-branches {
+            color: #1F2937;
+            font-size: 8pt;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+        #invoice-container .invoice-seal-area {
+            display: none;
+            flex: 0 0 auto;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 8mm;
+            width: 100%;
+            padding: 0 8mm 5mm;
+            box-sizing: border-box;
+        }
+        #invoice-container .invoice-seal-area.visible { display: flex; }
+        #invoice-container .invoice-seal-slot { display: flex; flex: 1 1 50%; min-width: 0; }
+        #invoice-container .invoice-seal-slot-right { justify-content: flex-end; }
+        #invoice-container .seal-box-company {
+            width: 65mm; height: 26mm; border: 2px solid #007B5E; border-radius: 4px;
+            color: #007B5E; position: relative; overflow: hidden; font-family: "Times New Roman", serif;
+        }
+        #invoice-container .seal-box-company .seal-name {
+            text-align: center; font-size: 17px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4mm;
+        }
+        #invoice-container .seal-box-company .signature-line {
+            position: absolute; left: 5mm; right: 5mm; bottom: 8mm; border-top: 1.5px solid #007B5E;
+        }
+        #invoice-container .seal-box-company .seal-role {
+            position: absolute; right: 5mm; bottom: 2.5mm; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        #invoice-container .seal-box-doctor {
+            display: flex; flex-direction: column; align-items: center; color: #007B5E; font-family: Arial, sans-serif; line-height: 1.3;
+        }
+        #invoice-container .seal-box-doctor .doc-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
+        #invoice-container .seal-box-doctor .doc-qual,
+        #invoice-container .seal-box-doctor .doc-reg { font-size: 14px; font-weight: 700; }
+        #invoice-container .seal-box-sincerely {
+            width: 63.5mm; color: #000; font-family: "Times New Roman", serif;
+            text-align: center; line-height: 1.3;
+        }
+        #invoice-container .seal-box-sincerely .sincerely-title { font-size: 16px; font-weight: 700; }
+        #invoice-container .seal-box-sincerely .sincerely-signature-gap { height: 14mm; }
+        #invoice-container .seal-box-sincerely .sincerely-administration,
+        #invoice-container .seal-box-sincerely .sincerely-company { font-size: 13px; font-weight: 700; }
+        #invoice-container .seal-box-payment {
+            display: flex; width: 63.5mm; min-height: 25.4mm; align-items: center; justify-content: center;
+            color: #C62828; font-family: Arial, sans-serif; font-size: 18px; font-weight: 800;
+            letter-spacing: 1px; text-align: center; text-transform: uppercase;
+        }
+        #invoice-container.pdf-export-mode [data-print-empty="true"],
+        #invoice-container.pdf-export-mode .invoice-item-row-empty,
+        #invoice-container.pdf-export-mode.invoice-items-empty,
+        #invoice-container.pdf-export-mode .invoice-items-empty,
+        #invoice-container.pdf-export-mode .no-print,
+        #invoice-container.pdf-export-mode input.clean-input:placeholder-shown,
+        #invoice-container.pdf-export-mode [contenteditable="true"]:empty::before {
+            display: none !important;
+        }
+        @media print {
+            #invoice-container [data-print-empty="true"],
+            #invoice-container .invoice-item-row-empty,
+            #invoice-container .invoice-items-empty {
+                display: none !important;
+            }
+            #invoice-container .no-print {
+                display: none !important;
+            }
+            #invoice-container input.clean-input:placeholder-shown {
+                display: none !important;
+            }
+        }
+
+        /* Styling for editable elements */
+        [contenteditable="true"] {
+            outline: none;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+            padding: 1px 3px;
+            margin: -1px -3px;
+            border: 1px dashed transparent;
+            display: inline-block;
+            min-width: 15px;
+        }
+
+        [contenteditable="true"]:hover {
+            background-color: rgba(211, 227, 253, 0.3);
+            border-color: rgba(11, 87, 208, 0.3);
+        }
+
+        [contenteditable="true"]:focus {
+            background-color: var(--md-sys-color-primary-container);
+            border-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary-container);
+            border-style: solid;
+        }
+
+        [contenteditable="true"]:empty::before {
+            content: attr(data-placeholder);
+            color: #9ca3af;
+            pointer-events: none;
+        }
+
+        /* Custom clean inputs */
+        input.clean-input {
+            width: 100%;
+            background: transparent;
+            border: 1px dashed transparent;
+            outline: none;
+            transition: all 0.2s;
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+        
+        input.clean-input:hover {
+            background-color: rgba(211, 227, 253, 0.3);
+            border-color: rgba(11, 87, 208, 0.3);
+        }
+
+        input.clean-input:focus {
+            background-color: var(--md-sys-color-primary-container);
+            border-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary-container);
+            border-style: solid;
+        }
+
+        /* Strict A4 Print Rules - Guaranteed 1 Page Fit */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0mm;
+            }
+            html, body {
+                width: 210mm !important;
+                height: 297mm !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                overflow: hidden !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            
+            #invoice-container {
+                width: 210mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
+                margin: 0 !important;
+                padding: 8mm 12mm !important; /* Tighter padding for exact single page fit */
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                transform: none !important;
+                box-sizing: border-box !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+            #invoice-container .invoice-header-accent,
+            #invoice-container .invoice-branch-footer::before,
+            #invoice-container .invoice-seal-area,
+            #invoice-container .seal-box-company,
+            #invoice-container .seal-box-doctor,
+            #invoice-container .seal-box-sincerely,
+            #invoice-container .seal-box-payment {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #invoice-container .invoice-header-accent {
+                width: calc(100% + 24mm) !important;
+                margin: 0 -12mm 5mm !important;
+            }
+            #invoice-container .invoice-branch-footer {
+                width: calc(100% + 24mm) !important;
+                margin: 0 -12mm -8mm !important;
+            }
+            #invoice-container .invoice-seal-area {
+                padding: 0 8mm 5mm !important;
+                break-inside: avoid;
+            }
+
+            [contenteditable="true"], input.clean-input {
+                padding: 0 !important;
+                margin: 0 !important;
+                border: none !important;
+                background: transparent !important;
+            }
+
+            [contenteditable="true"]:empty::before {
+                content: none !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            #invoice-container .invoice-letterhead {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 4mm;
+                margin: 0 0 0;
+                width: 100%;
+            }
+            #invoice-container .invoice-brand { gap: 2mm; }
+            #invoice-container .invoice-company-info {
+                width: 100%;
+                justify-self: stretch;
+                font-size: 10px;
+            }
+            #invoice-container .invoice-company-contact-value { font-size: 10px; }
+            #invoice-container .invoice-company-contact .material-symbols-outlined { font-size: 15px; }
+            #invoice-container .invoice-header-accent {
+                width: calc(100% + 32px);
+                margin: 0 -16px 16px;
+            }
+            #invoice-container .patient-report-title { font-size: 15pt; }
+            #invoice-container .invoice-branch-footer {
+                width: calc(100% + 32px);
+                margin: 0 -16px -16px;
+                padding: 1mm 16px;
+            }
+            #invoice-container .invoice-seal-area { padding: 0 8px 12px; gap: 8px; }
+        }
+
+        /* Optimization class for html2pdf export */
+        .pdf-export-mode {
+            width: 210mm !important;
+            height: 296mm !important;
+            padding: 8mm 12mm !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Material 3 Button styling */
+        .m3-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 13px;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+        
+        .m3-btn:active {
+            transform: scale(0.96);
+        }
+
+        .m3-btn-primary {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+
+        .m3-btn-primary:hover {
+            background-color: #0B1F4B;
+        }
+
+        .m3-btn-secondary {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        .m3-btn-secondary:hover {
+            background-color: #c0d5f8;
+        }
+
+        .invoice-toolbar {
+            position: static !important;
+            inset: auto !important;
+            transform: none !important;
+            order: -1;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            width: 100%;
+            max-width: 210mm;
+            box-sizing: border-box;
+            margin: 0 auto;
+            padding: 10px 14px;
+            border: 1px solid #e4e7ec;
+            border-radius: 18px;
+            background: rgba(255,255,255,.97);
+            box-shadow: 0 2px 8px rgba(16,24,40,.06);
+        }
+
+        .invoice-seal-controls {
+            order: -1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            gap: 12px;
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0 4px;
+            box-sizing: border-box;
+        }
+        .invoice-seal-control { display: flex; flex-direction: column; gap: 4px; }
+        .invoice-seal-control span { color: #64748B; font-size: 10px; font-weight: 600; }
+        .invoice-seal-control select {
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            background: #fff;
+            color: #374151;
+            font: 500 13px 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .invoice-toolbar::before {
+            content: "Patient Report Cum Invoice";
+            margin-right: auto;
+            color: #1f2937;
+            font-size: 14px;
+            font-weight: 650;
+        }
+
+        .invoice-toolbar > button {
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border-radius: 50%;
+        }
+
+        .invoice-toolbar > button:focus-visible {
+            outline: 3px solid rgba(11, 87, 208, .35);
+            outline-offset: 2px;
+        }
+
+        #download-invoice-btn.download-requested {
+            box-shadow: 0 0 0 3px rgba(11, 87, 208, .2);
+        }
+
+        #download-invoice-btn:disabled {
+            cursor: wait;
+            opacity: .65;
+        }
+
+        .invoice-toolbar > button > span:not(.material-symbols-outlined) {
+            display: none;
+        }
+
+        .invoice-toolbar > button:nth-child(2) {
+            display: none;
+        }
+
+        .invoice-toolbar > button:nth-child(3) { order: 2; }
+        .invoice-toolbar > button:nth-child(5) { order: 3; }
+        .invoice-toolbar > button:nth-child(4) { order: 4; }
+
+        @media (max-width: 520px) {
+            body { padding: 8px 8px 18px; gap: 8px; }
+            .invoice-toolbar { gap: 4px; padding: 8px; border-radius: 14px; }
+            .invoice-toolbar::before { font-size: 11px; }
+            .invoice-toolbar > button { width: 36px; height: 36px; }
+            .invoice-seal-controls { justify-content: flex-start; gap: 8px; }
+            .invoice-seal-control select { max-width: 42vw; padding: 0 8px; font-size: 11px; }
+        }
+        
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: #313033;
+            color: #f4eff4;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="py-0 sm:py-6 px-0 sm:px-4">
+
+    <div id="invoice-container" class="shadow-2xl sm:rounded-[1.5rem] p-4 sm:p-8 flex flex-col mx-auto">
+        
+        <header id="invoice-letterhead" class="invoice-letterhead">
+            <div class="invoice-brand">
+                <img src="assets/logo-client-display.png" alt="Company logo" class="invoice-logo">
+                <img src="assets/name-client-display.png" alt="Company name" class="invoice-company-name">
+                <span id="company-name" class="sr-only" data-no-translate></span>
+                <span id="company-tagline" class="sr-only" data-no-translate></span>
+            </div>
+            <div class="invoice-company-info">
+                <div class="invoice-company-contact invoice-address-contact">
+                    <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                    <div class="invoice-company-contact-value invoice-address-lines">
+                        <span id="company-address-line-1"></span>
+                        <span id="company-address-line-2"></span>
+                    </div>
+                </div>
+                <div class="invoice-company-contact invoice-phone-contact">
+                    <span class="material-symbols-outlined" aria-hidden="true">call</span>
+                    <div id="company-phone" class="invoice-company-contact-value"></div>
+                </div>
+                <div class="invoice-contact-row">
+                    <div class="invoice-company-contact invoice-email-contact">
+                        <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+                        <div id="company-email" class="invoice-company-contact-value"></div>
+                    </div>
+                    <div class="invoice-company-contact invoice-website-contact">
+                        <span class="material-symbols-outlined" aria-hidden="true">language</span>
+                        <div id="company-website" class="invoice-company-contact-value"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="invoice-header-accent" aria-hidden="true"></div>
+
+        <!-- Main Content Area -->
+        <div class="flex-grow flex flex-col justify-between">
+            <div>
+                <section class="mb-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                    <h1 class="patient-report-title">Patient Report Cum Invoice</h1>
+                    <div id="invoice-meta" class="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px] bg-blue-50/40 p-3 rounded-xl border border-blue-50">
+                        <span class="text-gray-500 font-medium">Invoice No:</span>
+                        <span id="invoice-no" contenteditable="true" data-placeholder="Invoice number" aria-label="Invoice number" class="font-bold text-gray-900 text-right"></span>
+                        <span class="text-gray-500 font-medium">Date:</span>
+                        <span id="invoice-date" contenteditable="true" data-placeholder="Invoice date" aria-label="Invoice date" class="font-semibold text-gray-900 text-right"></span>
+                        <span class="text-gray-500 font-medium">Due Date:</span>
+                        <span id="due-date" contenteditable="true" data-placeholder="Due date" aria-label="Due date" class="font-semibold text-gray-900 text-right"></span>
+                    </div>
+                </section>
+
+                <section class="patient-report-section mb-4 rounded-xl border border-gray-100 bg-white p-3">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3">
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Patient Name</div>
+                            <div id="client-name" contenteditable="true" data-placeholder="Patient name" aria-label="Patient name" class="patient-report-value font-semibold"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Age &amp; Gender</div>
+                            <div id="client-meta" contenteditable="true" data-placeholder="Age and gender" aria-label="Patient age and gender" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Duration of Treatment</div>
+                            <div id="patient-duration" contenteditable="true" data-placeholder="Treatment duration" aria-label="Duration of treatment" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Sessions Per Day</div>
+                            <div id="patient-sessions-per-day" contenteditable="true" data-placeholder="Number of sessions per day" aria-label="Number of sessions per day" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field col-span-2 sm:col-span-4">
+                            <div class="patient-report-label">Report in Detail</div>
+                            <div id="patient-report-detail" contenteditable="true" data-placeholder="Enter patient report details" aria-label="Patient report details" class="patient-report-value patient-report-detail"></div>
+                        </div>
+                        <div class="patient-report-field col-span-2 sm:col-span-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-gray-100 pt-2">
+                            <div id="client-phone-row" class="flex items-center gap-1 text-[11px] text-gray-600">
+                                <span class="material-symbols-outlined text-[15px] text-blue-600">phone_iphone</span>
+                                <span id="client-phone" contenteditable="true" data-placeholder="Phone number" aria-label="Patient phone" class="font-medium text-blue-700"></span>
+                            </div>
+                            <div id="client-email-row" class="flex items-center gap-1 text-[11px] text-gray-600">
+                                <span class="material-symbols-outlined text-[15px] text-blue-600">mail</span>
+                                <span id="client-email" contenteditable="true" data-placeholder="Email address" aria-label="Patient email" class="font-medium text-blue-700"></span>
+                            </div>
+                            <div id="client-address" class="text-[11px] text-gray-600" contenteditable="true" data-placeholder="Patient address" aria-label="Patient address"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="appointment-details" class="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]" style="display:none">
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Appointment</div>
+                        <div id="appointment-schedule" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Branch</div>
+                        <div id="appointment-branch" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Therapist</div>
+                        <div id="appointment-therapist" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Category / Status</div>
+                        <div id="appointment-status" class="font-semibold text-gray-700"></div>
+                    </div>
+                </section>
+
+                <!-- Table Section -->
+                <section class="invoice-items-section mb-4 overflow-x-auto">
+                    <table class="w-full text-left border-collapse" id="invoice-table">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Description</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-16">Qty</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-24">Rate (₹)</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-28">Amount (₹)</th>
+                                <th class="py-1.5 px-1 w-6 no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="text-[12px] text-gray-800 divide-y divide-gray-100">
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="py-1.5 px-2 align-top">
+                                    <input type="text" class="clean-input font-medium text-gray-900" placeholder="Item description">
+                                    <input type="text" class="clean-input text-[11px] text-gray-500" placeholder="Additional details (optional)">
+                                </td>
+                                <td class="py-1.5 px-2 text-right align-top">
+                                    <input type="number" class="clean-input text-right qty-input" value="1" min="0" step="1" onchange="calculateTotals()">
+                                </td>
+                                <td class="py-1.5 px-2 text-right align-top">
+                                    <input type="number" class="clean-input text-right rate-input" value="0" min="0" step="0.01" onchange="calculateTotals()">
+                                </td>
+                                <td class="py-1.5 px-2 text-right font-medium text-gray-900 amount-cell align-top pt-2">0.00</td>
+                                <td class="py-1.5 px-1 text-center align-top pt-1.5 no-print">
+                                    <button onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition-colors p-0.5 rounded-full" title="Remove item">
+                                        <span class="material-symbols-outlined text-[15px]">close</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button onclick="addRow()" class="no-print mt-2 flex items-center gap-1 text-[12px] font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full transition-colors">
+                        <span class="material-symbols-outlined text-[15px]">add</span>
+                        Add Line Item
+                    </button>
+                </section>
+
+                <section class="w-full max-w-sm ml-auto bg-white p-3 rounded-xl border border-gray-200 mb-4">
+                    <div class="fee-summary-title">Fee and Charges</div>
+                    <div class="flex justify-between items-center mb-1 text-[12px]">
+                        <span id="fee-label" class="text-gray-600 font-medium">Fee</span>
+                        <span id="subtotal-amount" class="text-gray-800 font-semibold">₹ 0.00</span>
+                    </div>
+                    <div id="advance-paid-row" class="hidden flex justify-between items-center mb-1.5 text-[12px]">
+                        <span class="text-gray-600 font-medium">Advance Received</span>
+                        <span id="advance-paid-amount" class="text-gray-800 font-semibold"></span>
+                    </div>
+                    <div id="previous-dues-row" class="hidden flex justify-between items-center mb-1 text-[12px]">
+                        <span class="text-gray-600 font-medium">Past Due</span>
+                        <span id="previous-dues-amount" class="text-gray-800 font-semibold"></span>
+                    </div>
+                    <div class="h-px bg-blue-200/80 w-full mb-1.5"></div>
+                    <div class="flex justify-between items-center">
+                        <span id="total-label" class="text-xs font-bold text-gray-900" style="color: var(--md-sys-color-primary);">Pending Due</span>
+                        <span id="total-amount" class="text-base font-bold text-gray-900" style="color: var(--md-sys-color-primary);">₹ 0.00</span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer Summary & Bank Details Section -->
+            <section class="grid grid-cols-12 gap-4 items-end mt-2">
+                <!-- Left Column: Bank Details & UPI -->
+                <div class="col-span-12 sm:col-span-7 flex flex-col gap-2">
+                    <div id="bank-details-container" class="p-2.5 bg-transparent rounded-xl border border-gray-200 flex items-center justify-between gap-2">
+                        <div class="bank-details-copy flex-1 text-[11px] space-y-0.5">
+                            <h3 class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Bank Details</h3>
+                            <div id="account-name-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Name</span><span class="bank-detail-colon text-gray-500">:</span><span id="account-name" class="font-bold text-gray-800" data-no-translate></span></div>
+                            <div id="bank-name-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Bank</span><span class="bank-detail-colon text-gray-500">:</span><span id="bank-name" class="font-semibold text-gray-800"></span></div>
+                            <div id="account-number-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Account No</span><span class="bank-detail-colon text-gray-500">:</span><span id="account-number" class="font-semibold text-gray-800"></span></div>
+                            <div id="ifsc-code-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">IFSC</span><span class="bank-detail-colon text-gray-500">:</span><span id="ifsc-code" class="font-semibold text-gray-800"></span></div>
+                            <div id="upi-detail-row" class="bank-detail-row mt-1 pt-0.5 border-t border-gray-200/60">
+                                <span class="bank-detail-label text-gray-500">UPI ID</span>
+                                <span class="bank-detail-colon text-gray-500">:</span>
+                                <span id="upi-id" class="font-bold text-green-700"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Auto-generated UPI QR Code Box -->
+                        <div id="upi-qr-container" class="w-20 h-20 bg-white p-1 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center flex-shrink-0">
+                            <img id="upi-qr" alt="UPI QR Code" class="w-full h-full object-contain" hidden>
+                            <span class="text-[7px] text-gray-400 uppercase tracking-wider font-bold">Scan to Pay</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-span-12 sm:col-span-5">
+                    <div class="text-right">
+                        <div class="w-32 ml-auto border-b border-gray-300 mb-1"></div>
+                        <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Authorized Signature</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="invoice-seal-area" class="invoice-seal-area" aria-live="polite"></div>
+        <footer class="invoice-branch-footer" aria-label="Branch names">
+            <span class="invoice-branches-label">BRANCHES</span>
+            <span id="invoice-branches" class="invoice-branches"></span>
+        </footer>
+    </div>
+
+    <div class="invoice-seal-controls no-print" aria-label="Invoice footer seal options">
+        <label class="invoice-seal-control">
+            <span>Right Footer Seal</span>
+            <select aria-label="Right footer seal" onchange="window.selectInvoiceSeal(this.value)">
+                <option value="">None</option>
+                <option value="payment">Payment Received</option>
+            </select>
+        </label>
+    </div>
+
+    <!-- Floating Action Toolbar -->
+    <div class="invoice-toolbar no-print fixed bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-2.5 py-2 rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.15)] border border-gray-200 z-40" role="toolbar" aria-label="Invoice actions">
+        <button onclick="window.parent.postMessage({type:'corebiq:invoice:back'}, window.location.origin === 'null' ? '*' : window.location.origin)" class="m3-btn m3-btn-secondary" title="Back to appointments" aria-label="Back to appointments">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Appointments</span>
+        </button>
+        
+        <!-- View / Print Button -->
+        <button onclick="handlePrint()" class="m3-btn m3-btn-secondary" title="View / Print A4 PDF Layout" aria-label="View or print invoice">
+            <span class="material-symbols-outlined text-[18px]">visibility</span>
+            <span>View</span>
+        </button>
+
+        <!-- Direct Download PDF Button -->
+        <button id="download-invoice-btn" onclick="downloadPDF()" class="m3-btn m3-btn-secondary" title="Download invoice PDF" aria-label="Download invoice PDF">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span>Download PDF</span>
+        </button>
+
+        <!-- Send Email Button -->
+        <button onclick="sendEmail()" class="m3-btn m3-btn-secondary" title="Send Invoice via Email" aria-label="Send invoice by email">
+            <span class="material-symbols-outlined text-[18px]">mail</span>
+            <span>Email</span>
+        </button>
+
+        <!-- Send WhatsApp Button -->
+        <button onclick="sendWhatsApp()" class="m3-btn m3-btn-primary bg-[#25D366] hover:bg-[#1ebe57] text-white" title="Send Invoice via WhatsApp" aria-label="Send invoice via WhatsApp">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
+            </svg>
+            <span>WhatsApp</span>
+        </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastMessage" class="toast">
+        <span class="material-symbols-outlined" id="toastIcon">info</span>
+        <span id="toastText">Action completed</span>
+    </div>
+
+    <script>
+        // Currency formatter
+        const formatCurrency = amount => window.formatCorebiqNumber
+            ? window.formatCorebiqNumber(amount)
+            : amount.toFixed(2);
+
+        // Toast Notification
+        const showToast = (message, isError = false) => {
+            const toast = document.getElementById('toastMessage');
+            const toastText = document.getElementById('toastText');
+            const icon = document.getElementById('toastIcon');
+            
+            toastText.textContent = message;
+            toast.style.backgroundColor = isError ? 'var(--md-sys-color-error)' : '#313033';
+            icon.textContent = isError ? 'error' : 'check_circle';
+            
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        };
+        window.showToast = showToast;
+
+        const invoiceSealSelections = { right: '' };
+        const invoiceSealProfile = {
+            companyName: 'Company name not set',
+            signatoryName: 'Authorised signatory name not set',
+            designation: 'Designation not set',
+            qualificationLicence: 'Qualification / Licence No. not set'
+        };
+
+        function createInvoiceSeal(sealType) {
+            const seal = document.createElement('div');
+            const addText = (className, text) => {
+                const element = document.createElement('div');
+                element.className = className;
+                element.textContent = text;
+                seal.appendChild(element);
+            };
+
+            if (sealType === 'company') {
+                seal.className = 'seal-box-company';
+                addText('seal-name', `FOR ${invoiceSealProfile.companyName}`);
+                const signatureLine = document.createElement('div');
+                signatureLine.className = 'signature-line';
+                seal.appendChild(signatureLine);
+                addText('seal-role', invoiceSealProfile.designation);
+            } else if (sealType === 'doctor') {
+                seal.className = 'seal-box-doctor';
+                addText('doc-name', invoiceSealProfile.signatoryName);
+                addText('doc-qual', invoiceSealProfile.designation);
+                addText('doc-reg', invoiceSealProfile.qualificationLicence);
+            } else if (sealType === 'sincerely') {
+                seal.className = 'seal-box-sincerely';
+                addText('sincerely-title', 'Sincerely');
+                const signatureGap = document.createElement('div');
+                signatureGap.className = 'sincerely-signature-gap';
+                signatureGap.setAttribute('aria-hidden', 'true');
+                seal.appendChild(signatureGap);
+                addText('sincerely-administration', 'Administration');
+                addText('sincerely-company', invoiceSealProfile.companyName);
+            } else if (sealType === 'payment') {
+                seal.className = 'seal-box-payment';
+                seal.textContent = 'Payment Received';
+            } else {
+                throw new Error(`Unsupported invoice seal: ${sealType}`);
+            }
+            return seal;
+        }
+
+        function renderInvoiceSeals() {
+            const sealArea = document.getElementById('invoice-seal-area');
+            const { right } = invoiceSealSelections;
+            if (!right) {
+                sealArea.replaceChildren();
+                sealArea.classList.remove('visible');
+                return;
+            }
+
+            const rightSlot = document.createElement('div');
+            rightSlot.className = 'invoice-seal-slot invoice-seal-slot-right';
+            rightSlot.appendChild(createInvoiceSeal(right));
+            sealArea.replaceChildren(rightSlot);
+            sealArea.classList.add('visible');
+        }
+
+        window.selectInvoiceSeal = sealType => {
+            if (sealType && sealType !== 'payment') {
+                throw new Error(`Unsupported invoice seal: ${sealType}`);
+            }
+            invoiceSealSelections.right = sealType;
+            renderInvoiceSeals();
+        };
+
+        // Auto-generating UPI QR Code
+        let qrTimeout;
+        const updateQRCode = () => {
+            clearTimeout(qrTimeout);
+            qrTimeout = setTimeout(() => {
+                const upiElement = document.getElementById('upi-id');
+                const rawUpiId = upiElement.innerText.trim();
+                if (!rawUpiId) return;
+                const companyName = document.getElementById('company-name').textContent.trim();
+                const uri = `upi://pay?pa=${encodeURIComponent(rawUpiId)}&pn=${encodeURIComponent(companyName)}&cu=INR`;
+                const encodedUri = encodeURIComponent(uri);
+                
+                const qrImage = document.getElementById('upi-qr');
+                qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodedUri}&margin=0`;
+                qrImage.hidden = false;
+            }, 400);
+        };
+
+        window.applyCompanyProfile = (profile) => {
+            window.applyCorebiqSettings?.(profile);
+            invoiceSealProfile.companyName = String(profile.name || '').trim() || 'Company name not set';
+            invoiceSealProfile.signatoryName = String(profile.authorisedSignatoryName || '').trim() || 'Authorised signatory name not set';
+            invoiceSealProfile.designation = String(profile.authorisedSignatoryDesignation || '').trim() || 'Designation not set';
+            invoiceSealProfile.qualificationLicence = String(profile.authorisedSignatoryQualificationLicence || '').trim() || 'Qualification / Licence No. not set';
+            renderInvoiceSeals();
+            const set = (id, value) => {
+                document.getElementById(id).textContent = value || '';
+            };
+            const formatAddressParts = values => values
+                .filter(value => typeof value === 'string' && value.trim())
+                .map(value => value.trim())
+                .join(', ');
+            const addressLine1 = formatAddressParts([
+                profile.buildingNo,
+                profile.buildingName,
+                profile.area
+            ]);
+            const addressLine2 = formatAddressParts([
+                profile.district,
+                profile.state,
+                profile.country,
+                profile.postalCode
+            ]);
+            set('company-name', profile.name);
+            set('company-tagline', profile.tagline);
+            set('company-address-line-1', addressLine1 || profile.address);
+            set('company-address-line-2', addressLine2);
+            set('company-phone', [profile.phone1, profile.phone2].filter(Boolean).join(' | '));
+            set('company-email', profile.email);
+            set('company-website', profile.website);
+            set('account-name', profile.accName);
+            set('account-number', profile.accNo);
+            set('ifsc-code', profile.ifsc);
+            set('upi-id', profile.upi);
+            set('bank-name', profile.bankName);
+            document.getElementById('bank-name-row').style.display = profile.bankName ? 'flex' : 'none';
+            document.getElementById('upi-detail-row').style.display = profile.upi ? 'flex' : 'none';
+            document.getElementById('upi-qr-container').style.display = profile.upi ? 'flex' : 'none';
+            updateQRCode();
+        };
+
+        // Recalculate totals
+        const calculateTotals = () => {
+            const tbody = document.getElementById('table-body');
+            const rows = tbody.querySelectorAll('tr');
+            let subtotal = 0;
+
+            rows.forEach(row => {
+                const qtyInput = row.querySelector('.qty-input');
+                const rateInput = row.querySelector('.rate-input');
+                const amountCell = row.querySelector('.amount-cell');
+
+                if (qtyInput && rateInput && amountCell) {
+                    const qty = parseFloat(qtyInput.value) || 0;
+                    const rate = parseFloat(rateInput.value) || 0;
+                    const amount = qty * rate;
+                    
+                    amountCell.textContent = formatCurrency(amount);
+                    subtotal += amount;
+                }
+            });
+
+            document.getElementById('subtotal-amount').textContent = `₹ ${formatCurrency(subtotal)}`;
+
+            const appointment = window.invoicePayload?.appointment;
+            const isAppointmentInvoice = Boolean(appointment);
+            const previousDues = isAppointmentInvoice ? Number(appointment.prevDues ?? appointment.previousDues) || 0 : 0;
+            const advance = isAppointmentInvoice ? Number(appointment.advance) || 0 : 0;
+            const balanceDue = isAppointmentInvoice
+                ? subtotal + previousDues - advance
+                : subtotal;
+            document.getElementById('fee-label').textContent = isAppointmentInvoice ? 'Fee' : 'Subtotal';
+            document.getElementById('previous-dues-amount').textContent = `₹ ${formatCurrency(previousDues)}`;
+            document.getElementById('advance-paid-amount').textContent = `₹ ${formatCurrency(advance)}`;
+            document.getElementById('previous-dues-row').classList.toggle('hidden', !isAppointmentInvoice);
+            document.getElementById('advance-paid-row').classList.toggle('hidden', !isAppointmentInvoice);
+            document.getElementById('total-label').textContent = isAppointmentInvoice
+                ? balanceDue < 0 ? 'Credit Balance' : 'Pending Due'
+                : 'Total Amount';
+            document.getElementById('total-amount').textContent =
+                `₹ ${formatCurrency(isAppointmentInvoice && balanceDue < 0 ? Math.abs(balanceDue) : balanceDue)}`;
+        };
+
+        // Add line item
+        const addRow = () => {
+            const tbody = document.getElementById('table-body');
+            const tr = document.createElement('tr');
+            tr.className = 'group hover:bg-gray-50/50 transition-colors';
+            
+            tr.innerHTML = `
+                <td class="py-1.5 px-2 align-top">
+                    <input type="text" class="clean-input font-medium text-gray-900" placeholder="Item description">
+                    <input type="text" class="clean-input text-[11px] text-gray-500" placeholder="Additional details (optional)">
+                </td>
+                <td class="py-1.5 px-2 text-right align-top">
+                    <input type="number" class="clean-input text-right qty-input" value="1" min="0" step="1" onchange="calculateTotals()" onkeyup="calculateTotals()">
+                </td>
+                <td class="py-1.5 px-2 text-right align-top">
+                    <input type="number" class="clean-input text-right rate-input" value="0.00" min="0" step="0.01" onchange="calculateTotals()" onkeyup="calculateTotals()">
+                </td>
+                <td class="py-1.5 px-2 text-right font-medium text-gray-900 amount-cell align-top pt-2">
+                    0.00
+                </td>
+                <td class="py-1.5 px-1 text-center align-top pt-1.5 no-print">
+                    <button onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition-colors p-0.5 rounded-full" title="Remove item">
+                        <span class="material-symbols-outlined text-[15px]">close</span>
+                    </button>
+                </td>
+            `;
+            
+            tbody.appendChild(tr);
+            const firstInput = tr.querySelector('input');
+            if (firstInput) firstInput.focus();
+        };
+
+        // Remove line item
+        const removeRow = (btn) => {
+            const tbody = document.getElementById('table-body');
+            if (tbody.querySelectorAll('tr').length <= 1) {
+                showToast("Cannot remove the last line item.", true);
+                return;
+            }
+            
+            const row = btn.closest('tr');
+            row.style.opacity = '0';
+            row.style.transform = 'translateX(-10px)';
+            row.style.transition = 'all 0.2s ease';
+            
+            setTimeout(() => {
+                row.remove();
+                calculateTotals();
+            }, 200);
+        };
+
+        const setPrintEmpty = (element, isEmpty) => {
+            if (!element) return;
+            element.dataset.printEmpty = String(isEmpty);
+        };
+
+        const prepareInvoiceOutput = () => {
+            const container = document.getElementById('invoice-container');
+            container.querySelectorAll('.patient-report-field').forEach(field => {
+                const values = field.querySelectorAll('.patient-report-value, [contenteditable="true"]');
+                setPrintEmpty(field, !Array.from(values).some(value => value.textContent.trim()));
+            });
+
+            const meta = document.getElementById('invoice-meta');
+            const metaChildren = Array.from(meta.children);
+            for (let index = 0; index < metaChildren.length; index += 2) {
+                const label = metaChildren[index];
+                const value = metaChildren[index + 1];
+                const isEmpty = !value?.textContent.trim();
+                setPrintEmpty(label, isEmpty);
+                setPrintEmpty(value, isEmpty);
+            }
+            setPrintEmpty(meta, !meta.querySelector('[data-print-empty="false"]'));
+
+            [
+                ['.invoice-address-contact', ['company-address-line-1', 'company-address-line-2']],
+                ['.invoice-phone-contact', ['company-phone']],
+                ['.invoice-email-contact', ['company-email']],
+                ['.invoice-website-contact', ['company-website']]
+            ].forEach(([selector, ids]) => {
+                const contact = container.querySelector(selector);
+                setPrintEmpty(contact, ids.every(id => !document.getElementById(id).textContent.trim()));
+            });
+            const contactRow = container.querySelector('.invoice-contact-row');
+            setPrintEmpty(contactRow, Array.from(contactRow.children).every(contact => contact.dataset.printEmpty === 'true'));
+
+            const rows = Array.from(document.querySelectorAll('#table-body tr'));
+            rows.forEach(row => {
+                const description = row.querySelector('td:first-child input:nth-of-type(1)')?.value.trim();
+                const details = row.querySelector('td:first-child input:nth-of-type(2)')?.value.trim();
+                const rate = Number(row.querySelector('.rate-input')?.value) || 0;
+                row.classList.toggle('invoice-item-row-empty', !description && !details && rate <= 0);
+            });
+            const hasItems = rows.some(row => !row.classList.contains('invoice-item-row-empty'));
+            container.querySelector('.invoice-items-section').classList.toggle('invoice-items-empty', !hasItems);
+
+            const bankValues = ['account-name', 'bank-name', 'account-number', 'ifsc-code', 'upi-id'];
+            setPrintEmpty(
+                document.getElementById('bank-details-container'),
+                bankValues.every(id => !document.getElementById(id).textContent.trim())
+            );
+            [
+                ['account-name-row', 'account-name'],
+                ['bank-name-row', 'bank-name'],
+                ['account-number-row', 'account-number'],
+                ['ifsc-code-row', 'ifsc-code'],
+                ['upi-detail-row', 'upi-id'],
+                ['upi-qr-container', 'upi-id']
+            ].forEach(([rowId, valueId]) => {
+                setPrintEmpty(
+                    document.getElementById(rowId),
+                    !document.getElementById(valueId).textContent.trim()
+                );
+            });
+            setPrintEmpty(
+                document.getElementById('client-phone-row'),
+                !document.getElementById('client-phone').textContent.trim()
+            );
+            setPrintEmpty(
+                document.getElementById('client-email-row'),
+                !document.getElementById('client-email').textContent.trim()
+            );
+            setPrintEmpty(
+                document.getElementById('client-address'),
+                !document.getElementById('client-address').textContent.trim()
+            );
+
+            const appointmentCards = Array.from(document.querySelectorAll('#appointment-details > div'));
+            appointmentCards.forEach(card => {
+                const value = card.querySelector('[id]');
+                setPrintEmpty(card, !value?.textContent.trim() || value.textContent.trim() === '—');
+            });
+            setPrintEmpty(
+                document.getElementById('appointment-details'),
+                appointmentCards.every(card => card.dataset.printEmpty === 'true')
+            );
+            setPrintEmpty(
+                container.querySelector('.invoice-branch-footer'),
+                !document.getElementById('invoice-branches').textContent.trim()
+            );
+        };
+
+        const clearInvoiceOutputState = () => {
+            const container = document.getElementById('invoice-container');
+            container.querySelectorAll('[data-print-empty]').forEach(element => delete element.dataset.printEmpty);
+            container.querySelectorAll('.invoice-item-row-empty').forEach(row => row.classList.remove('invoice-item-row-empty'));
+            container.querySelector('.invoice-items-section').classList.remove('invoice-items-empty');
+        };
+
+        window.addEventListener('beforeprint', prepareInvoiceOutput);
+        window.addEventListener('afterprint', clearInvoiceOutputState);
+
+        // Action 1: View / Print A4 PDF
+        const handlePrint = () => {
+            calculateTotals();
+            prepareInvoiceOutput();
+            window.print();
+        };
+
+        // Action 2: Direct PDF Download via html2pdf
+        const downloadPDF = async () => {
+            calculateTotals();
+            const downloadButton = document.getElementById('download-invoice-btn');
+            downloadButton?.classList.remove('download-requested');
+            if (typeof html2pdf !== 'function') {
+                showToast("PDF download is unavailable. Use View / Print instead.", true);
+                return;
+            }
+            const element = document.getElementById('invoice-container');
+            const invoiceNo = document.getElementById('invoice-no').innerText.trim();
+            const safeInvoiceNo = (invoiceNo || 'Invoice')
+                .replace(/[<>:"/\\|?*\u0000-\u001F]/g, '-')
+                .replace(/\s+/g, '_')
+                .replace(/-+/g, '-')
+                .replace(/^[.]+|[.]+$/g, '') || 'Invoice';
+
+            if (downloadButton?.disabled) return;
+            if (downloadButton) downloadButton.disabled = true;
+            showToast("Preparing PDF download...");
+
+            const opt = {
+                margin:       0,
+                filename:     `Invoice_${safeInvoiceNo}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            try {
+                prepareInvoiceOutput();
+                element.classList.add('pdf-export-mode');
+                await html2pdf().set(opt).from(element).save();
+                showToast("PDF downloaded successfully!");
+            } catch (error) {
+                console.error('Invoice PDF download failed:', error);
+                showToast("PDF download failed. Use View / Print and save as PDF.", true);
+            } finally {
+                element.classList.remove('pdf-export-mode');
+                clearInvoiceOutputState();
+                if (downloadButton) downloadButton.disabled = false;
+            }
+        };
+
+        // Action 3: Send via Email
+        const sendEmail = () => {
+            const clientEmail = document.getElementById('client-email')?.innerText.trim() || '';
+            const clientName = document.getElementById('client-name').innerText.trim() || 'Customer';
+            const invoiceNo = document.getElementById('invoice-no').innerText.trim();
+            const totalAmount = document.getElementById('total-amount').innerText.trim();
+            const companyName = document.getElementById('company-name').innerText.trim();
+            const bankDetails = [
+                document.getElementById('account-name').innerText.trim(),
+                document.getElementById('bank-name').innerText.trim(),
+                document.getElementById('account-number').innerText.trim(),
+                document.getElementById('ifsc-code').innerText.trim(),
+                document.getElementById('upi-id').innerText.trim()
+            ].filter(Boolean).join('\n');
+
+            if (!clientEmail || !clientEmail.includes('@')) {
+                showToast("Please provide a valid client email address.", true);
+                return;
+            }
+
+            const subject = encodeURIComponent(`Invoice ${invoiceNo}${companyName ? ` - ${companyName}` : ''}`);
+            const body = encodeURIComponent(
+                `Dear ${clientName},\n\nInvoice ${invoiceNo}\nTotal Amount: ${totalAmount}\n\n` +
+                (bankDetails ? `Payment Details:\n${bankDetails}\n\n` : '') +
+                `Regards${companyName ? `,\n${companyName}` : ''}`
+            );
+
+            window.location.href = `mailto:${clientEmail}?subject=${subject}&body=${body}`;
+            showToast("Opening email client...");
+        };
+
+        // Action 4: Send via WhatsApp
+        const sendWhatsApp = () => {
+            const clientPhoneRaw = document.getElementById('client-phone').innerText;
+            const clientName = document.getElementById('client-name').innerText.trim() || 'Customer';
+            const invoiceNo = document.getElementById('invoice-no').innerText.trim();
+            const totalAmount = document.getElementById('total-amount').innerText.trim();
+            const companyName = document.getElementById('company-name').innerText.trim();
+            const bankDetails = [
+                document.getElementById('account-name').innerText.trim(),
+                document.getElementById('bank-name').innerText.trim(),
+                document.getElementById('account-number').innerText.trim(),
+                document.getElementById('ifsc-code').innerText.trim(),
+                document.getElementById('upi-id').innerText.trim()
+            ].filter(Boolean).join(' | ');
+            
+            let clientPhone = clientPhoneRaw.replace(/\D/g, '');
+            if (clientPhone.length === 11 && clientPhone.startsWith('0')) clientPhone = clientPhone.slice(1);
+            if (clientPhone.length === 10) clientPhone = `91${clientPhone}`;
+
+            if (!/^91\d{10}$/.test(clientPhone)) {
+                showToast("Please enter a valid client mobile number.", true);
+                return;
+            }
+
+            const message = `Hello ${clientName},\n\nInvoice ${invoiceNo}${companyName ? ` from ${companyName}` : ''}: ${totalAmount}${bankDetails ? `\n\nPayment Details:\n${bankDetails}` : ''}`;
+            const encodedMessage = encodeURIComponent(message);
+            
+            window.open(`https://wa.me/${clientPhone}?text=${encodedMessage}`, '_blank');
+            showToast("Opening WhatsApp...");
+        };
+
+        const formatInvoiceDate = (value) => {
+            if (!value) return '';
+            const date = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+                ? new Date(`${value}T00:00:00`)
+                : new Date(value);
+            if (Number.isNaN(date.getTime())) return '';
+            return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        };
+
+        const formatInvoiceTime = (value) => {
+            const match = String(value || '').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?$/i);
+            if (!match) return value || '';
+            let hours = Number(match[1]);
+            const minutes = match[2];
+            const meridiem = match[3]?.toUpperCase();
+            if (meridiem) return hours >= 1 && hours <= 12 ? `${String(hours).padStart(2, '0')}:${minutes} ${meridiem}` : value;
+            if (hours > 23) return value;
+            const period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            return `${String(hours).padStart(2, '0')}:${minutes} ${period}`;
+        };
+
+        const applyAppointmentData = (appointment = {}) => {
+            const set = (id, value) => {
+                document.getElementById(id).textContent = value == null ? '' : String(value);
+            };
+            const firstRow = document.querySelector('#table-body tr');
+            const descriptionInput = firstRow?.querySelector('td:first-child input:nth-of-type(1)');
+            const notesInput = firstRow?.querySelector('td:first-child input:nth-of-type(2)');
+            const quantityInput = firstRow?.querySelector('.qty-input');
+            const rateInput = firstRow?.querySelector('.rate-input');
+            set('invoice-no', appointment.invoiceNo || appointment.billNo || (appointment.id ? `INV-${appointment.id}` : ''));
+            set('invoice-date', formatInvoiceDate(appointment.billDate || new Date()));
+            set('client-name', appointment.patientName || appointment.name);
+            set('client-address', appointment.location || appointment.address);
+            set('client-phone', appointment.mobile || appointment.mobileNo || appointment.phone);
+            set('client-email', appointment.email);
+            set('patient-duration', appointment.duration);
+            set('patient-sessions-per-day', appointment.sessionsPerDay);
+            set('patient-report-detail', appointment.invoiceNotes || [appointment.diagnosis, appointment.notes, appointment.patientNotes].filter(Boolean).join('\n\n'));
+            document.getElementById('client-email-row').style.display = appointment.email ? 'flex' : 'none';
+            const patientMeta = [appointment.age ? `${appointment.age} years` : '', appointment.gender].filter(Boolean).join(' · ');
+            set('client-meta', patientMeta);
+            document.getElementById('appointment-details').style.display = 'grid';
+            const schedule = [formatInvoiceDate(appointment.date), formatInvoiceTime(appointment.time)].filter(Boolean).join(' · ');
+            set('appointment-schedule', schedule);
+            set('appointment-branch', appointment.branch || '—');
+            set('appointment-therapist', appointment.therapist || '—');
+            set('appointment-status', [appointment.category, appointment.status].filter(Boolean).join(' · ') || '—');
+            if (descriptionInput) descriptionInput.value = appointment.invoiceDescription || appointment.serviceName || appointment.service || appointment.duration || 'Therapy Session';
+            if (notesInput) notesInput.value = appointment.invoiceNotes || [appointment.diagnosis || appointment.notes, appointment.patientNotes].filter(Boolean).join('\n\n');
+            if (quantityInput) quantityInput.value = '1';
+            if (rateInput) rateInput.value = String(Number(appointment.fee ?? appointment.totalFee ?? 0));
+            if (rateInput) rateInput.dispatchEvent(new Event('input', { bubbles: true }));
+            calculateTotals();
+        };
+
+        const promptForInvoiceDownload = () => {
+            const downloadButton = document.getElementById('download-invoice-btn');
+            window.scrollTo(0, 0);
+            downloadButton?.classList.add('download-requested');
+            downloadButton?.focus({ preventScroll: true });
+            showToast('Invoice is ready. Select the download icon at the top to save it.');
+        };
+
+        window.invoicePayload = null;
+        let storedInvoicePayload = sessionStorage.getItem('bizodit.invoicePayload');
+        if (!storedInvoicePayload && window.name.startsWith('corebiq-invoice:')) {
+            storedInvoicePayload = window.name.slice('corebiq-invoice:'.length);
+            window.name = '';
+        }
+        if (storedInvoicePayload) {
+            try {
+                window.invoicePayload = JSON.parse(storedInvoicePayload);
+                sessionStorage.removeItem('bizodit.invoicePayload');
+            } catch (error) {
+                console.error('Invoice data could not be read:', error);
+                showToast('Invoice data could not be read.', true);
+            }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.invoicePayload) {
+                applyAppointmentData(window.invoicePayload.appointment || {});
+                if (window.invoicePayload.invoiceLinkError) showToast(window.invoicePayload.invoiceLinkError, true);
+                if (window.invoicePayload.patientLinkError) showToast(window.invoicePayload.patientLinkError, true);
+            } else {
+                document.getElementById('invoice-date').textContent = formatInvoiceDate(new Date());
+            }
+            calculateTotals();
+            
+            document.querySelectorAll('.qty-input, .rate-input').forEach(input => {
+                input.addEventListener('input', calculateTotals);
+            });
+            if (new URLSearchParams(window.location.search).get('action') === 'download') {
+                promptForInvoiceDownload();
+            }
+        });
+
+        window.addEventListener('message', event => {
+            if (event.source !== window.parent) return;
+            if (window.location.origin !== 'null' && event.origin !== window.location.origin) return;
+            if (event.data?.type !== 'corebiq:invoice' || !event.data.payload) return;
+
+            window.invoicePayload = event.data.payload;
+            const appointment = window.invoicePayload.appointment || {};
+            if (!document.querySelector('#table-body tr')) {
+                console.error('Invoice line item row is missing; appointment data was not applied.');
+                showToast('Invoice line item is unavailable. Reload the invoice and try again.', true);
+                return;
+            }
+            applyAppointmentData(appointment);
+            if (window.applyCompanyProfile && window.invoicePayload.company) {
+                window.applyCompanyProfile(window.invoicePayload.company);
+            }
+            if (window.invoicePayload.companyProfileError) {
+                showToast(window.invoicePayload.companyProfileError, true);
+            }
+            if (window.invoicePayload.invoiceLinkError) {
+                showToast(window.invoicePayload.invoiceLinkError, true);
+            }
+            if (window.invoicePayload.patientLinkError) {
+                showToast(window.invoicePayload.patientLinkError, true);
+            }
+            if (event.data.action === 'download') promptForInvoiceDownload();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.parent.postMessage(
+                { type: 'corebiq:invoice:ready' },
+                window.location.origin === 'null' ? '*' : window.location.origin
+            );
+        }, { once: true });
+    </script>
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+
+        const loadCompanyProfile = async () => {
+            const cachedProfile = window.invoicePayload?.company;
+            if (cachedProfile) window.applyCompanyProfile(cachedProfile);
+            try {
+                const profile = await getDoc(doc(db, 'settings', 'company_profile'));
+                if (!profile.exists()) {
+                    if (!cachedProfile) window.showToast('Company profile was not found.', true);
+                } else {
+                    window.applyCompanyProfile(profile.data());
+                }
+            } catch (error) {
+                console.error('Company profile could not be loaded:', error);
+                window.showToast(cachedProfile
+                    ? 'Using company profile loaded with this invoice; refresh failed.'
+                    : 'Company profile could not be loaded.', true);
+            }
+        };
+        loadCompanyProfile();
+
+        const loadInvoiceBranches = async () => {
+            try {
+                const branches = await getDocs(collection(db, 'branches'));
+                const names = branches.docs
+                    .filter(branch => String(branch.data().branchId || '').trim().toUpperCase() !== 'B6')
+                    .map(branch => branch.data().name)
+                    .filter(name => typeof name === 'string' && name.trim())
+                    .map(name => name.trim())
+                    .sort((a, b) => a.localeCompare(b));
+                document.getElementById('invoice-branches').textContent = names.join(' | ');
+            } catch (error) {
+                console.error('Invoice branch names could not be loaded:', error);
+                document.getElementById('invoice-branches').textContent = 'Branch names unavailable.';
+                window.showToast('Branch names could not be loaded.', true);
+            }
+        };
+        loadInvoiceBranches();
+    </script>
+</body>
+</html>
