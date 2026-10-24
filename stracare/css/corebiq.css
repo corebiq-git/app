@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap");
+
 :root{
-  --primary:#0B57D0;
-  --primary-hover:#0842A0;
-  --primary-soft:#D3E3FD;
+  --primary:#0B1F4B;
+  --primary-hover:#071630;
+  --primary-soft:#E8EEF7;
   --surface:#FFFFFF;
   --surface-soft:#F7F9FC;
   --surface-container:#F0F4F9;
@@ -36,7 +38,7 @@ body{overflow-x:hidden}
 .app-main{margin-left:252px;min-width:0;flex:1}
 .topbar{height:72px;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--outline-soft);display:flex;align-items:center;gap:14px;padding:10px 22px;position:sticky;top:0;z-index:40}
 .search-box{height:48px;max-width:620px;flex:1;display:flex;align-items:center;gap:10px;background:#F3F6FA;border:1px solid transparent;border-radius:24px;padding:0 15px;color:#687383}
-.search-box:focus-within{background:#fff;border-color:#AFC5E9;box-shadow:0 0 0 3px #E7EFFB}
+.search-box:focus-within{background:#fff;border-color:#C8D2E1;box-shadow:0 0 0 3px #E8EEF7}
 .search-box input{border:0;outline:0;background:transparent;width:100%;font-size:15px;color:var(--text)}
 .search-box kbd{font-size:11px;padding:4px 7px;border:1px solid var(--outline-soft);border-radius:6px;color:#777;background:#fff;white-space:nowrap}
 .top-actions{display:flex;gap:7px;margin-left:auto}
@@ -58,8 +60,8 @@ body{overflow-x:hidden}
 .btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:var(--primary-hover)}
 .btn-tonal{background:var(--primary-soft);color:var(--primary)}
 .btn-outline{background:#fff;color:#40454D;border:1px solid var(--outline)}
-:is(.company-module-tabs,.crm-module-tabs) .btn[aria-current="page"]{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(105deg,#4285F4 0%,#34A853 36%,#FBBC04 68%,#EA4335 100%) border-box;border:1px solid transparent;color:#1A73E8;box-shadow:0 2px 8px rgba(66,133,244,.12)}
-:is(.company-module-tabs,.crm-module-tabs) .btn:not([aria-current="page"]):hover{background:#F1F6FF;color:#1A73E8;border-color:#C6DAFC}
+:is(.company-module-tabs,.crm-module-tabs) .btn[aria-current="page"]{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(105deg,#0B1F4B 0%,#274777 55%,#7890B4 100%) border-box;border:1px solid transparent;color:#0B1F4B;box-shadow:0 2px 8px rgba(11,31,75,.12)}
+:is(.company-module-tabs,.crm-module-tabs) .btn:not([aria-current="page"]):hover{background:#F3F6FA;color:#0B1F4B;border-color:#C8D2E1}
 :is(.crm-module-header,.company-module-header) .page-title h1{color:#68717D;font-weight:500}
 .btn-danger{background:#FDE8E7;color:var(--danger)}
 .card{background:#fff;border:1px solid var(--outline-soft);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
@@ -93,8 +95,7 @@ textarea.form-control{height:auto;padding:12px;resize:vertical}
 @media(max-width:760px){
   .sidebar{display:none}.sidebar.open{display:block;width:280px;box-shadow:10px 0 35px rgba(0,0,0,.15)}
   .app-main{margin-left:0}.topbar{height:64px;padding:8px 12px}.mobile-menu{display:grid}.top-actions .icon-button:nth-child(2){display:none}.search-box kbd{display:none}
-  .content{padding:12px 10px 90px}.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:72px;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1px solid var(--outline-soft);z-index:45;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom)}
-  .bottom-nav button{background:transparent;color:#4B4F55;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:70px;cursor:pointer}.bottom-nav .material-symbols-rounded{font-size:24px}.bottom-nav small{font-size:11px}
+  .content{padding:12px 10px 90px}
   .page-header{align-items:center}.page-title h1{font-size:22px}.page-title p{display:none}.actions{width:100%}.actions .btn{flex:1}
   .card{border-radius:18px}.form-grid{grid-template-columns:1fr;gap:14px}.form-group.span-2{grid-column:span 1}.system-grid{grid-template-columns:1fr 1fr}.form-section{padding:18px 14px}
   .stats{grid-template-columns:1fr 1fr;gap:9px}.stat-card{padding:14px}.stat-value{font-size:23px}
@@ -114,3 +115,162 @@ textarea.form-control{height:auto;padding:12px;resize:vertical}
 .erp-info-card .btn{height:36px;border-radius:10px;padding:0 13px}
 @media(max-width:900px){.erp-module-header{align-items:flex-start;flex-direction:column}.erp-module-tabs{max-width:100%;width:100%;justify-content:flex-start;flex-wrap:nowrap}.erp-info-grid{grid-template-columns:1fr}}
 @media(max-width:760px){.erp-module-tabs .btn{height:38px;padding:0 12px}.erp-info-card{grid-template-columns:auto 1fr}.erp-info-card .btn{grid-column:2;justify-self:start}}
+
+/* Shared module design system */
+:root{
+  --primary:#0B1F4B!important;
+  --primary-hover:#071630!important;
+  --primary-soft:#E8EEF7!important;
+  --primary-light:var(--primary-soft)!important;
+  --surface:#FFFFFF!important;
+  --surface-soft:#F7F9FC!important;
+  --surface-container:#F0F4F9!important;
+  --bg:var(--surface-soft)!important;
+  --text:#1F1F1F!important;
+  --text-main:var(--text)!important;
+  --muted:#6B7280!important;
+  --text-muted:var(--muted)!important;
+  --secondary:var(--muted)!important;
+  --outline:#C4C7C5!important;
+  --outline-soft:#E1E4E2!important;
+  --border:var(--outline-soft)!important;
+  --grey-light:var(--surface-container)!important;
+  --grey-med:var(--outline)!important;
+  --success:#188038!important;
+  --danger:#B3261E!important;
+  --warning:#F9AB00!important;
+  --shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)!important;
+  --shadow-sm:var(--shadow)!important;
+  --radius-sm:10px!important;
+  --radius-md:16px!important;
+  --radius-lg:24px!important;
+}
+
+.module-container{
+  --ledger-primary:var(--primary)!important;
+  --ledger-text:var(--text)!important;
+  --ledger-muted:var(--muted)!important;
+  --ledger-border:var(--outline-soft)!important;
+  color:var(--text);
+  font-family:Outfit,"Google Sans",sans-serif!important;
+  font-size:14px;
+  line-height:1.5;
+}
+
+.module-container h1{font-size:24px!important;line-height:1.2!important;font-weight:600!important}
+.module-container h2{font-size:18px!important;line-height:1.3!important;font-weight:600!important}
+.module-container h3{font-size:16px!important;line-height:1.35!important;font-weight:600!important}
+.module-container h4,.module-container h5,.module-container h6{font-size:14px!important;line-height:1.4!important;font-weight:600!important}
+
+.module-container :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),select,textarea){
+  border-color:var(--outline)!important;
+  border-radius:10px!important;
+  color:var(--text)!important;
+  font-family:Outfit,"Google Sans",sans-serif!important;
+  font-size:14px!important;
+}
+
+.module-container :is(input,select,textarea):focus{
+  border-color:var(--primary)!important;
+  box-shadow:0 0 0 3px var(--primary-soft)!important;
+  outline:0;
+}
+
+.module-container button{
+  border-radius:10px!important;
+  font-family:Outfit,"Google Sans",sans-serif!important;
+  font-size:14px!important;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) button:not(:where(.icon-btn,.icon-button,.act,.report-icon-btn,.branch-row-action,.patient-modal-close,.task-icon-button,.drop-item,.btn-tap,.day-cell)){
+  min-height:40px;
+  border:1px solid var(--outline)!important;
+  border-radius:999px!important;
+  background:var(--surface)!important;
+  color:var(--primary)!important;
+  font-weight:600;
+  box-shadow:none!important;
+  transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .18s ease;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) button:not(:where(.icon-btn,.icon-button,.act,.report-icon-btn,.branch-row-action,.patient-modal-close,.task-icon-button,.drop-item,.btn-tap,.day-cell)):hover{
+  border-color:var(--primary)!important;
+  background:var(--primary-soft)!important;
+  color:var(--primary)!important;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[id*="save" i],
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[id*="add" i],
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[onclick*="save" i],
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[onclick*="add" i],
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(.new-btn,.txn-add-btn,#task-new-button,.patient-action-button.primary),
+.module-container:is(#attendance-module) .btn-primary[onclick*="openAttModal" i]{
+  border-color:var(--primary)!important;
+  background:var(--primary)!important;
+  color:#FFFFFF!important;
+  box-shadow:0 2px 8px rgba(11,31,75,.14)!important;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[id*="save" i]:hover,
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[id*="add" i]:hover,
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[onclick*="save" i]:hover,
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(button,a)[onclick*="add" i]:hover,
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) :is(.new-btn,.txn-add-btn,#task-new-button,.patient-action-button.primary):hover,
+.module-container:is(#attendance-module) .btn-primary[onclick*="openAttModal" i]:hover{
+  border-color:var(--primary-hover)!important;
+  background:var(--primary-hover)!important;
+  color:#FFFFFF!important;
+  box-shadow:0 3px 10px rgba(11,31,75,.20)!important;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) button:not(:where(.icon-btn,.icon-button,.act,.report-icon-btn,.branch-row-action,.patient-modal-close,.task-icon-button,.drop-item,.btn-tap,.day-cell)):focus-visible{
+  outline:3px solid var(--primary-soft);
+  outline-offset:2px;
+}
+
+.module-container:is(#about-module,#appointment-module,#calendar-module,#company-module,#cash-ledger-module,#contacts-module,#branches-module,#estimate-module,#licence-module,#ledger-module,#bank-ledger-module,#letterhead-module,#transaction-module,#export-module,#upi-qr-module,#patient-module,#attendance-module,#my-task-module,#privacy-module,#updates-module,#seal-module,#staff-module,#therapist-module) button.btn-danger{
+  border:1px solid var(--danger)!important;
+  border-radius:999px!important;
+  background:var(--surface)!important;
+  color:var(--danger)!important;
+  box-shadow:none!important;
+}
+
+.module-container :is(.card,.form-card,.table-container,.table-wrapper,.panel,.section-card,.stat-card,.info-card,.modern-card,.about-card,.developer-card,.ledger-card,.ledger-panel){
+  border-color:var(--outline-soft)!important;
+  border-radius:var(--radius-md)!important;
+  box-shadow:var(--shadow)!important;
+}
+
+.module-container :is(.form-card,.form-section,.company-form-section,.form-panel,.task-panel,.panel,.public-booking-panel,.ledger-panel,.table-container,.table-wrapper,.table-wrap,.report-table-wrap,.dash-table-wrapper){
+  background:#FFFFFF!important;
+  border:1px solid var(--outline)!important;
+  border-radius:var(--radius-md)!important;
+  box-shadow:none!important;
+}
+
+.module-container :is(.form-section,.company-form-section){
+  border-bottom:1px solid var(--outline)!important;
+}
+
+.module-container :is(.form-card,.form-panel,.form-section,.company-form-section,.task-panel) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not(:disabled),select:not(:disabled),textarea:not(:disabled)){
+  background:#FFFFFF!important;
+  border:1px solid var(--outline)!important;
+}
+
+.module-container :is(.table-container,.table-wrapper,.table-wrap,.report-table-wrap,.dash-table-wrapper,.ledger-panel) table{
+  background:#FFFFFF!important;
+}
+
+.module-container :is(.table-container,.table-wrapper,.table-wrap,.report-table-wrap,.dash-table-wrapper,.ledger-panel) th{
+  background:#FFFFFF!important;
+}
+
+.module-container :is(.stat-value,.ledger-card strong){
+  font-size:clamp(16px,2vw,24px)!important;
+}
+
+@media(max-width:600px){
+  .module-container h1{font-size:22px!important}
+  .module-container h2{font-size:17px!important}
+}
