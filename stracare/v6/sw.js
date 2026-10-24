@@ -1,13 +1,11 @@
-const CACHE="corebiq-v4";
+const CACHE="corebiq-v6";
 const CORE=[
     "./",
     "./index.html",
     "./login.html",
     "./manifest.webmanifest",
-    "./assets/favicon-32.png",
-    "./assets/apple-touch-icon.png",
-    "./assets/app-icon-192.png",
-    "./assets/app-icon-512.png",
+    "./assets/favicon.png",
+    "./assets/app-icon.png",
     "./assets/logo-client-display.png",
     "./assets/name-client-display.png",
     "./assets/logo.png",
