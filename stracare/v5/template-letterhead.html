@@ -64,7 +64,9 @@
         #letterhead-module .studio-heading h1 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; }
         #letterhead-module .studio-heading p { margin: 4px 0 0; color: #6B7280; font-size: 12px; }
         
-        #letterhead-module .studio-actions { display: flex; align-items: center; gap: 12px; }
+        #letterhead-module .studio-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        #letterhead-module .seal-control { display: flex; flex-direction: column; gap: 4px; }
+        #letterhead-module .seal-control-label { color: var(--text-muted); font-size: 10px; font-weight: 600; }
         #letterhead-module .seal-select { 
             height: 40px; padding: 0 16px; border: 1px solid #D1D5DB; border-radius: 8px; 
             background: #fff; color: #374151; font: 500 13px 'Inter', sans-serif; outline: none; cursor: pointer;
@@ -137,15 +139,19 @@
         }
         #letterhead-module .address-lines { display: flex; flex-direction: column; }
 
-        /* --- Thicker Spaced Header Lines (Blue on top, gap, Green on bottom) --- */
+        /* --- Full-width green and blue header lines --- */
         #letterhead-module .header-accent {
             width: 100% !important;
             margin: 0 !important;
-            height: 4px; /* Gap between the two lines */
-            background: transparent !important;
-            border-top: 3px solid var(--primary) !important; /* Thicker blue line */
-            border-bottom: 3px solid var(--secondary) !important; /* Thicker green line */
-            box-sizing: content-box;
+            height: 10px;
+            background: linear-gradient(
+                to bottom,
+                #61913C 0 3px,
+                transparent 3px 7px,
+                #164683 7px 10px
+            ) !important;
+            border: 0 !important;
+            box-sizing: border-box;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
             z-index: 1;
@@ -175,12 +181,14 @@
         /* --- Seal Area --- */
         #letterhead-module .letterhead-seal-area {
             position: relative; z-index: 1;
-            display: none; justify-content: flex-end; align-items: flex-end;
-            padding: 0 20mm 15mm 20mm;
+            display: none; justify-content: space-between; align-items: flex-end; gap: 8mm;
+            padding: 0 20mm 10mm;
             box-sizing: border-box;
             width: 100%;
         }
         #letterhead-module .letterhead-seal-area.visible { display: flex; }
+        #letterhead-module .letterhead-seal-slot { display: flex; flex: 1 1 50%; min-width: 0; }
+        #letterhead-module .letterhead-seal-slot-right { justify-content: flex-end; }
         #letterhead-module .seal-box-company {
             width: 65mm; height: 26mm; border: 2px solid var(--stamp-green); border-radius: 4px;
             color: var(--stamp-green); position: relative; overflow: hidden; font-family: "Times New Roman", serif;
@@ -200,6 +208,19 @@
         #letterhead-module .seal-box-doctor .doc-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
         #letterhead-module .seal-box-doctor .doc-qual { font-size: 14px; font-weight: 700; }
         #letterhead-module .seal-box-doctor .doc-reg, #letterhead-module .seal-box-doctor .doc-role { font-size: 13px; font-weight: 700; }
+        #letterhead-module .seal-box-sincerely {
+            width: 63.5mm; color: #000; font-family: "Times New Roman", serif;
+            text-align: center; line-height: 1.3;
+        }
+        #letterhead-module .seal-box-sincerely .sincerely-title { font-size: 16px; font-weight: 700; }
+        #letterhead-module .seal-box-sincerely .sincerely-signature-gap { height: 14mm; }
+        #letterhead-module .seal-box-sincerely .sincerely-administration,
+        #letterhead-module .seal-box-sincerely .sincerely-company { font-size: 13px; font-weight: 700; }
+        #letterhead-module .seal-box-payment {
+            display: flex; width: 63.5mm; min-height: 25.4mm; align-items: center; justify-content: center;
+            color: #C62828; font-family: Arial, sans-serif; font-size: 18px; font-weight: 800;
+            letter-spacing: 1px; text-align: center; text-transform: uppercase;
+        }
 
         /* --- Footer Section (Transparent BG, Split Top Line) --- */
         #letterhead-module .footer-section {
@@ -240,10 +261,11 @@
         @media (max-width: 768px) {
             #letterhead-module { padding: 10px; }
             #letterhead-module .studio-toolbar { flex-direction: column; align-items: stretch; padding: 16px; gap: 16px; }
-            #letterhead-module .studio-actions { justify-content: space-between; }
+            #letterhead-module .studio-actions { justify-content: flex-start; }
             #letterhead-module .letter-header { flex-direction: column; gap: 20px; padding: 20px; }
             #letterhead-module .company-info { max-width: 100%; }
             #letterhead-module .letter-body, #letterhead-module .letterhead-seal-area, #letterhead-module .footer-section { padding-left: 20px; padding-right: 20px; }
+            #letterhead-module .letterhead-seal-area { gap: 12px; }
         }
 
         /* --- Strict Print Media Queries --- */
@@ -269,7 +291,7 @@
             /* Hide the placeholder text when printing */
             #letterhead-module .letter-body textarea::placeholder { color: transparent !important; }
             
-            #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm 20mm !important; break-inside: avoid; }
+            #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm !important; break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             #letterhead-module .footer-section { padding: 10px 20mm 12mm 20mm !important; margin-top: auto !important; width: 100% !important; }
             #letterhead-module .header-accent { width: 100% !important; margin: 0 !important; }
         }
@@ -284,11 +306,26 @@
             </div>
         </div>
         <div class="studio-actions">
-            <select class="seal-select" aria-label="Add seal to letter" onchange="window.selectLetterheadSeal(this.value)">
-                <option value="">Add Seal</option>
-                <option value="company">Company Seal</option>
-                <option value="doctor">Doctor's Seal</option>
-            </select>
+            <label class="seal-control">
+                <span class="seal-control-label">Left Footer Seal</span>
+                <select class="seal-select" aria-label="Left footer seal" onchange="window.selectLetterheadSeal('left', this.value)">
+                    <option value="">None</option>
+                    <option value="company">Company Seal</option>
+                    <option value="doctor">Doctor's Seal</option>
+                    <option value="sincerely">Sincerely</option>
+                    <option value="payment">Payment Received</option>
+                </select>
+            </label>
+            <label class="seal-control">
+                <span class="seal-control-label">Right Footer Seal</span>
+                <select class="seal-select" aria-label="Right footer seal" onchange="window.selectLetterheadSeal('right', this.value)">
+                    <option value="">None</option>
+                    <option value="company">Company Seal</option>
+                    <option value="doctor">Doctor's Seal</option>
+                    <option value="sincerely">Sincerely</option>
+                    <option value="payment">Payment Received</option>
+                </select>
+            </label>
             <button class="print-btn" type="button" onclick="window.print()">
                 <span class="material-symbols-rounded">print</span>Print Letter
             </button>
@@ -334,7 +371,7 @@
         </div>
 
         <div id="letterhead-seal-area" class="letterhead-seal-area" aria-live="polite"></div>
-        
+
         <div class="footer-section" aria-label="Branch names">
             <span class="footer-branches-heading">BRANCHES</span>
             <span id="letterhead-branch-names" class="footer-branch-names"></span>
@@ -345,11 +382,23 @@
         import { db } from './firebase-config.js';
         import { collection, doc, getDoc, getDocs } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
 
+        const letterheadSealSelections = { left: '', right: '' };
+        const letterheadSealProfile = {
+            companyName: 'Company name not set',
+            signatoryName: 'Authorised signatory name not set',
+            designation: 'Designation not set',
+            qualificationLicence: 'Qualification / Licence No. not set'
+        };
+
         async function loadLetterheadCompanyDetails() {
             try {
                 const snapshot = await getDoc(doc(db, 'settings', 'company_profile'));
                 if (!snapshot.exists()) throw new Error('Company profile has not been configured.');
                 const data = snapshot.data();
+                letterheadSealProfile.companyName = String(data.name || '').trim() || 'Company name not set';
+                letterheadSealProfile.signatoryName = String(data.authorisedSignatoryName || '').trim() || 'Authorised signatory name not set';
+                letterheadSealProfile.designation = String(data.authorisedSignatoryDesignation || '').trim() || 'Designation not set';
+                letterheadSealProfile.qualificationLicence = String(data.authorisedSignatoryQualificationLicence || '').trim() || 'Qualification / Licence No. not set';
                 const formatAddressParts = values => values
                     .filter(value => typeof value === 'string' && value.trim())
                     .map(value => value.trim())
@@ -386,7 +435,11 @@
                     document.getElementById(id).textContent = 'Company details unavailable.';
                 });
                 document.getElementById('letterhead-address-line-2').textContent = '';
+                Object.keys(letterheadSealProfile).forEach(key => {
+                    letterheadSealProfile[key] = 'Company details unavailable.';
+                });
             }
+            renderLetterheadSeals();
         }
 
         loadLetterheadCompanyDetails();
@@ -396,6 +449,7 @@
             try {
                 const snapshot = await getDocs(collection(db, 'branches'));
                 const names = snapshot.docs
+                    .filter(branch => String(branch.data().branchId || '').trim().toUpperCase() !== 'B6')
                     .map(branch => branch.data().name)
                     .filter(name => typeof name === 'string' && name.trim())
                     .map(name => name.trim())
@@ -409,26 +463,70 @@
 
         loadLetterheadBranchNames();
 
-        window.selectLetterheadSeal = function(sealType) {
+        function createLetterheadSeal(sealType) {
+            const seal = document.createElement('div');
+            const addText = (className, text) => {
+                const element = document.createElement('div');
+                element.className = className;
+                element.textContent = text;
+                seal.appendChild(element);
+            };
+
+            if (sealType === 'company') {
+                seal.className = 'seal-box-company';
+                addText('seal-name', `FOR ${letterheadSealProfile.companyName}`);
+                const signatureLine = document.createElement('div');
+                signatureLine.className = 'signature-line';
+                seal.appendChild(signatureLine);
+                addText('seal-role', letterheadSealProfile.designation);
+            } else if (sealType === 'doctor') {
+                seal.className = 'seal-box-doctor';
+                addText('doc-name', letterheadSealProfile.signatoryName);
+                addText('doc-qual', letterheadSealProfile.designation);
+                addText('doc-reg', letterheadSealProfile.qualificationLicence);
+            } else if (sealType === 'sincerely') {
+                seal.className = 'seal-box-sincerely';
+                addText('sincerely-title', 'Sincerely');
+                const signatureGap = document.createElement('div');
+                signatureGap.className = 'sincerely-signature-gap';
+                signatureGap.setAttribute('aria-hidden', 'true');
+                seal.appendChild(signatureGap);
+                addText('sincerely-administration', 'Administration');
+                addText('sincerely-company', letterheadSealProfile.companyName);
+            } else if (sealType === 'payment') {
+                seal.className = 'seal-box-payment';
+                seal.textContent = 'Payment Received';
+            } else {
+                throw new Error(`Unsupported letterhead seal: ${sealType}`);
+            }
+            return seal;
+        }
+
+        function renderLetterheadSeals() {
             const sealArea = document.getElementById('letterhead-seal-area');
-            sealArea.replaceChildren();
-            if (!sealType) {
+            const { left, right } = letterheadSealSelections;
+            if (!left && !right) {
+                sealArea.replaceChildren();
                 sealArea.classList.remove('visible');
                 return;
             }
 
-            const seal = document.createElement('div');
-            if (sealType === 'company') {
-                seal.className = 'seal-box-company';
-                seal.innerHTML = '<div class="seal-name">FOR STRA CARE</div><div class="signature-line"></div><div class="seal-role">Managing Partner</div>';
-            } else if (sealType === 'doctor') {
-                seal.className = 'seal-box-doctor';
-                seal.innerHTML = '<div class="doc-name">Dr. THEJASWI M.K (PT)</div><div class="doc-qual">BPT, MPT (Ortho)</div><div class="doc-reg">MIAP Reg No. L.43616</div><div class="doc-role">CEO, STRA CARE</div>';
-            } else {
-                throw new Error(`Unsupported letterhead seal: ${sealType}`);
-            }
-            sealArea.appendChild(seal);
+            const leftSlot = document.createElement('div');
+            leftSlot.className = 'letterhead-seal-slot letterhead-seal-slot-left';
+            const rightSlot = document.createElement('div');
+            rightSlot.className = 'letterhead-seal-slot letterhead-seal-slot-right';
+            if (left) leftSlot.appendChild(createLetterheadSeal(left));
+            if (right) rightSlot.appendChild(createLetterheadSeal(right));
+            sealArea.replaceChildren(leftSlot, rightSlot);
             sealArea.classList.add('visible');
+        }
+
+        window.selectLetterheadSeal = function(side, sealType) {
+            if (side !== 'left' && side !== 'right') {
+                throw new Error(`Unsupported letterhead seal position: ${side}`);
+            }
+            letterheadSealSelections[side] = sealType;
+            renderLetterheadSeals();
         };
 
     </script>
