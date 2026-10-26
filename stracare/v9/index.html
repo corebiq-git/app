@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>COREBIQ | Clinic Management Dashboard</title>
+<meta name="theme-color" content="#0B1F4B">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/app-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+<style>
+:root{
+    --primary-light: var(--primary-soft);
+    --bg: #FAFAFB;
+    --text-main: var(--text);
+    --text-muted: var(--muted);
+    --border: var(--outline-soft);
+    --warning: var(--primary);
+    --secondary: var(--primary);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent}
+html,body{
+    display:flex;
+    height:100%;
+    height:100dvh;
+    width:100vw;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--text-main);
+}
+#app-container{
+    display:flex;
+    height:100%;
+    height:100dvh;
+    width:100vw;
+    overflow:hidden;
+    visibility:hidden;
+}
+#sidebar-container{
+    width:260px;
+    flex:0 0 260px;
+    height:100%;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    overflow-y:auto;
+    transition:width .25s ease,flex-basis .25s ease,transform .3s ease;
+    z-index:1000;
+}
+#sidebar-container.is-collapsed{width:84px;flex-basis:84px}
+.main-wrapper{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+    height:100%;
+}
+#header-container{flex-shrink:0}
+#bottomnav-container{display:none;flex-shrink:0}
+#main-content{
+    flex:1;
+    overflow-y:auto;
+    padding:24px;
+    background:#FAFAFB;
+    -webkit-overflow-scrolling:touch;
+}
+#invoice-frame{display:block;width:100%;height:calc(100dvh - 160px);min-height:680px;border:0;background:transparent}
+.view-section{display:none;animation:fadeIn .3s ease-in-out}
+.view-section.active{display:block}
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+.dashboard-attendance-appointments-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:stretch;
+    gap:20px;
+    margin-bottom:24px;
+}
+.dashboard-attendance-appointments-row > .dash-card{min-width:0;margin:0}
+.dash-top-row{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    margin-bottom:24px;
+}
+.dash-card{
+    background:var(--surface);
+    border-radius:16px;
+    padding:24px;
+    box-shadow:0 5px 14px rgba(31,35,40,.10),0 14px 28px rgba(31,35,40,.06);
+    border:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    border-top:3px solid var(--primary-soft);
+    transition:transform .2s ease,box-shadow .2s ease;
+}
+.dash-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 9px 20px rgba(31,35,40,.13),0 20px 36px rgba(31,35,40,.08);
+}
+.dash-welcome-card{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:16px;
+    margin-bottom:22px;
+    padding:22px 26px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:20px;
+    background:linear-gradient(120deg,#081A3A 0%,#0B1F4B 48%,#17447B 100%);
+    box-shadow:0 14px 32px rgba(11,31,75,.22),0 3px 8px rgba(11,31,75,.12);
+}
+.dash-welcome-card::after{
+    position:absolute;
+    z-index:-1;
+    top:-112px;
+    right:-48px;
+    width:300px;
+    height:300px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(112,165,232,.18) 0%,rgba(112,165,232,.06) 48%,transparent 70%);
+    content:"";
+    pointer-events:none;
+}
+.dash-welcome-copy{min-width:0}
+.dash-welcome-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:7px;
+    color:#C8DCFA;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+.dash-welcome-eyebrow .material-symbols-rounded{font-size:18px;color:#AFCDF7}
+.dash-welcome-title{
+    margin:0;
+    color:#FFFFFF;
+    font-size:clamp(22px,2.7vw,30px);
+    font-weight:700;
+    line-height:1.15;
+    overflow-wrap:anywhere;
+}
+.dash-welcome-company{
+    margin:10px 0 0;
+    color:rgba(235,243,255,.82);
+    font-size:14px;
+    font-weight:600;
+}
+.dashboard-quick-tools{
+    margin:0 0 22px;
+    padding:18px;
+    border:1px solid #E6E8EF;
+    border-radius:20px;
+    background:#FFFFFF;
+    box-shadow:0 2px 8px rgba(31,35,40,.05),0 8px 20px rgba(31,35,40,.035);
+}
+.dashboard-quick-tools-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 13px}
+.dashboard-quick-tools-title{display:flex;align-items:center;gap:8px;margin:0;color:#202633;font-size:15px;font-weight:700;letter-spacing:-.2px}
+.dashboard-quick-tools-title .material-symbols-rounded{color:#5B6475;font-size:19px}
+.dashboard-quick-tools-hint{color:#7A8190;font-size:11px}
+.dashboard-quick-tools-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.dashboard-quick-tool{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    min-width:0;
+    min-height:68px;
+    padding:11px 13px;
+    border:1px solid #E7E9F0;
+    border-radius:16px;
+    background:#FFFFFF;
+    color:#293142;
+    text-align:left;
+    cursor:pointer;
+    transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+.dashboard-quick-tool:hover{transform:translateY(-2px);border-color:#D6D9E4;background:#FAFAFD;box-shadow:0 4px 12px rgba(31,35,40,.07)}
+.dashboard-quick-tool:focus-visible{outline:3px solid rgba(79,95,170,.25);outline-offset:2px}
+.dashboard-quick-tool-icon{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border-radius:13px;background:#F0F2F8;color:#455A91}
+.dashboard-quick-tool:nth-child(2) .dashboard-quick-tool-icon{background:#EAF4EE;color:#397454}
+.dashboard-quick-tool:nth-child(3) .dashboard-quick-tool-icon{background:#F1EDFA;color:#72549C}
+.dashboard-quick-tool:nth-child(4) .dashboard-quick-tool-icon{background:#EAF3FA;color:#3F6F91}
+.dashboard-quick-tool:nth-child(5) .dashboard-quick-tool-icon{background:#FFF2E6;color:#A65E2E}
+.dashboard-quick-tool-icon .material-symbols-rounded{font-size:21px}
+.dashboard-quick-tool-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.dashboard-quick-tool-name{overflow:hidden;color:#293142;font-size:12px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
+.dashboard-quick-tool-description{overflow:hidden;color:#7A8190;font-size:10px;text-overflow:ellipsis;white-space:nowrap}
+.dashboard-period-control{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    min-height:40px;
+    padding:0 12px;
+    border:1px solid #FFFFFF;
+    border-radius:12px;
+    background:#FFFFFF;
+    color:#0B1F4B;
+}
+.dashboard-period-control .material-symbols-rounded{font-size:19px}
+.dashboard-period-select{
+    max-width:148px;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:#0B1F4B;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+.dashboard-period-select option{color:#0B1F4B;background:#FFFFFF}
+.dashboard-period-control:focus-within{border-color:#C8D2E1;box-shadow:0 0 0 3px rgba(11,31,75,.12)}
+.dashboard-finance-summary{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding-top:15px;
+    border-top:1px solid rgba(255,255,255,.20);
+}
+.dashboard-as-of{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0;
+    color:#FFFFFF;
+}
+.dashboard-clock-item{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    min-height:36px;
+    padding:0 11px;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:10px;
+    background:rgba(255,255,255,.08);
+    -webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(8px);
+}
+.dashboard-clock-item .material-symbols-rounded{
+    color:#AFCDF7;
+    font-size:17px;
+}
+.dashboard-clock-item time{
+    color:rgba(245,249,255,.94);
+    font-size:12px;
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+}
+.dashboard-clock-time time{
+    color:#FFFFFF;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.025em;
+}
+.dashboard-sales-total{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.dashboard-sales-total-label{color:var(--text-muted);font-size:11px;font-weight:600}
+.dashboard-sales-total-value{color:var(--primary);font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+.card-title{
+    font-size:14px;
+    font-weight:700;
+    color:var(--text-main);
+    margin-bottom:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.sales-trend-card{margin-bottom:24px}
+.sales-trend-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px}
+.sales-trend-heading .card-title{margin:0}
+.sales-trend-total{display:flex;flex-direction:column;align-items:flex-end;gap:2px;text-align:right}
+.sales-trend-total-label{color:var(--text-muted);font-size:11px;font-weight:600}
+.sales-trend-total-value{color:var(--primary);font-size:21px;font-weight:700;font-variant-numeric:tabular-nums}
+.sales-trend-caption{margin:-3px 0 12px;color:var(--text-muted);font-size:12px}
+.sales-trend-chart{height:190px;width:100%;position:relative}
+.fin-stat-container{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    flex:1;
+    justify-content:center;
+}
+.attendance-overview .fin-stat-container{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+.fin-stat{
+    padding:16px;
+    border-radius:12px;
+    background:#FAFAFA;
+    border:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.fin-stat.alert{background:#FEF2F2;border-color:#FECACA}
+.fin-stat.success-box{background:#F0FDF4;border-color:#BBF7D0}
+.fin-stat-info{display:flex;flex-direction:column}
+.fin-label{
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    margin-bottom:4px;
+    letter-spacing:.5px;
+}
+.fin-amount{font-size:24px;font-weight:800;color:var(--text-main)}
+.fin-stat.alert .fin-amount{color:#D93025}
+.fin-stat.success-box .fin-amount{color:#188038}
+.fin-icon{font-size:32px;color:var(--border)}
+.fin-stat.alert .fin-icon{color:#B3261E}
+.fin-stat.success-box .fin-icon{color:#188038}
+.chart-container{
+    position:relative;
+    height:180px;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:16px;
+}
+.mini-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini-stat{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 12px;
+    border-radius:8px;
+    background:var(--surface-soft);
+    border:1px solid var(--border);
+}
+.schedule-status-stat{
+    background:#0B1F4B;
+    border-color:#0B1F4B;
+}
+.schedule-status-stat .mini-stat-label,
+.schedule-status-stat .mini-stat-val{color:#FFFFFF}
+.schedule-status-stat .mini-stat-label{gap:7px}
+.schedule-status-stat svg{width:15px;height:15px;flex:none}
+.mini-stat:nth-child(1),.mini-stat:nth-child(2),.mini-stat:nth-child(3),.mini-stat:nth-child(4){border-color:var(--border)}
+.mini-stat-label{
+    font-size:11px;
+    font-weight:600;
+    color:var(--text-muted);
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.dot{width:8px;height:8px;border-radius:50%}
+.mini-stat-val{font-size:13px;font-weight:700;color:var(--text-main)}
+.calendar-week-card{margin-bottom:24px}
+.cal-header-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+.cal-nav-btn{
+    background:var(--surface-soft);
+    border:1px solid var(--border);
+    border-radius:9px;
+    font-size:20px;
+    color:var(--primary);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:4px;
+}
+.cal-nav-btn:hover{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.cal-month-title{font-size:14px;font-weight:700;color:var(--text-main)}
+.calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:10px;
+    text-align:center;
+}
+.cal-day{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    min-width:0;
+    min-height:72px;
+    padding:8px 0;
+    border-radius:12px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s;
+    border:1px solid transparent;
+    position:relative;
+    background:#F8FAFC;
+    color:var(--text-main);
+    font:inherit;
+    text-align:center;
+    appearance:none;
+}
+.cal-day-name{
+    padding:0;
+    font-size:10px;
+    font-weight:600;
+    color:var(--text-muted);
+}
+.cal-day-number{font-size:16px;font-weight:700;color:var(--text-main)}
+.cal-day.active .cal-day-name,.cal-day.active .cal-day-number{color:#fff}
+.cal-day.today:not(.active){border-color:var(--primary);background:#fff}
+.cal-day.today:not(.active) .cal-day-number{color:var(--primary)}
+.cal-day:not(.empty):hover{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.cal-day:not(.empty):hover .cal-day-number{color:var(--primary)}
+.cal-day.active:hover .cal-day-number,.cal-day.active:hover .cal-day-name{color:var(--primary)}
+.calendar-week-card .cal-header-row{margin-bottom:12px}
+.calendar-week-card .cal-month-title{font-size:13px}
+.calendar-week-card .cal-day.has-event::after{
+    bottom:5px;
+    width:4px;
+    height:4px;
+}
+.cal-day.active{
+    background:var(--primary);
+    color:#fff;
+    font-weight:700;
+    box-shadow:0 4px 12px rgba(11,31,75,.2);
+}
+.cal-day.has-event::after{
+    content:'';
+    position:absolute;
+    bottom:4px;
+    left:50%;
+    transform:translateX(-50%);
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    background:#B3261E;
+}
+.cal-day.active.has-event::after{background:#fff}
+
+.dash-table-wrapper{
+    position:relative;
+    background:var(--surface);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--border);
+    overflow:hidden;
+    width:100%;
+    margin-bottom:40px;
+}
+.dash-table-wrapper::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:3px;
+    background:var(--primary);
+    z-index:1;
+}
+.table-responsive{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.saas-table{
+    width:100%;
+    min-width:800px;
+    border-collapse:collapse;
+    text-align:left;
+}
+.saas-table th{
+    padding:14px 20px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--text-muted);
+    text-transform:uppercase;
+    background:var(--surface-soft);
+    border-bottom:1px solid var(--border);
+    letter-spacing:.5px;
+}
+.saas-table td{
+    padding:16px 20px;
+    font-size:13px;
+    font-weight:500;
+    border-bottom:1px solid var(--border);
+    color:var(--text-main);
+    vertical-align:middle;
+    white-space:nowrap;
+}
+.saas-table tr:last-child td{border-bottom:none}
+.saas-table tbody tr:hover{background:#F7F9FF}
+.badge{
+    padding:4px 10px;
+    border-radius:6px;
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    display:inline-block;
+    white-space:nowrap;
+}
+.badge-pending{background:#FFF1F0;color:#C5221F;border:1px solid #F5D5D3}
+.badge-completed{background:#E8F5E9;color:#188038;border:1px solid #B7DFBD}
+.badge-rescheduled{background:#FFF1F0;color:#C5221F;border:1px solid #F5D5D3}
+.badge-cancelled{background:#FFF8E7;color:#9A6700;border:1px solid #F5E5C8}
+
+.balance-no-due{color:#188038!important;font-weight:700}
+.balance-due{color:#D93025!important;font-weight:700}
+.balance-excess{color:var(--primary)!important;font-weight:700}
+
+.dashboard-today-button{
+    color:var(--primary);
+    cursor:pointer;
+    font-size:20px;
+    background:var(--surface-soft);
+    padding:4px;
+    border-radius:8px;
+    border:1px solid var(--border);
+}
+.dashboard-today-button:hover{background:var(--primary-soft)}
+.schedule-table-heading{
+    padding:16px 24px;
+    border-bottom:1px solid var(--border);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--surface-soft);
+    gap:12px;
+}
+.dashboard-view-all{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 16px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--surface-soft);
+    color:var(--primary);
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+.dashboard-view-all:hover{background:var(--primary-soft);border-color:var(--primary)}
+
+.dash-error{
+    display:none;
+    background:#FEF2F2;
+    border:1px solid #FCA5A5;
+    color:var(--danger);
+    padding:12px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:20px;
+    align-items:center;
+    gap:8px;
+}
+
+#calc-popup-container{
+    display:none;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:320px;
+    height:480px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 10px 40px rgba(0,0,0,.25);
+    border:1px solid var(--border);
+    z-index:10000;
+    resize:both;
+    overflow:hidden;
+    flex-direction:column;
+    min-width:250px;
+    min-height:350px;
+}
+#calc-popup-header{
+    background:var(--surface);
+    color:var(--text-main);
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:move;
+    border-bottom:1px solid var(--border);
+    user-select:none;
+}
+
+@media(max-width:768px){
+    #sidebar-container{
+        position:fixed;
+        z-index:1000;
+        top:0;
+        left:0;
+        transform:translateX(-100%);
+        width:280px;
+        flex-basis:280px;
+        height:100%;
+        box-shadow:5px 0 15px rgba(0,0,0,.1);
+    }
+    #sidebar-container.is-collapsed{width:84px;flex-basis:84px}
+    #sidebar-container.open{transform:translateX(0)}
+    #bottomnav-container{display:block}
+    #main-content{padding:16px;padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+    #calc-popup-container{
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        bottom:auto;
+        right:auto;
+        resize:none;
+        width:min(92vw,360px);
+        height:min(76dvh,560px);
+    }
+    .dash-top-row{grid-template-columns:1fr;gap:12px}
+    .dash-card{padding:16px;border-radius:12px}
+    .dash-welcome-card{gap:14px;padding:19px;border-radius:16px}
+    .dashboard-quick-tools{padding:14px;border-radius:16px}
+    .dashboard-quick-tools-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .dashboard-quick-tool{min-height:64px;padding:9px}
+    .dashboard-quick-tool:last-child{grid-column:1/-1}
+    .dashboard-finance-summary{align-items:center}
+    .sales-trend-heading{align-items:flex-start}
+    .dashboard-period-control{width:max-content;max-width:100%}
+    .sales-trend-chart{height:170px}
+}
+@media(max-width:480px){
+    .dashboard-attendance-appointments-row{grid-template-columns:1fr;gap:12px}
+
+    .dashboard-finance-summary{align-items:flex-start;flex-direction:column;gap:10px}
+    .dashboard-period-control{align-self:flex-end}
+}
+</style>
+</head>
+
+<body>
+<div id="app-container">
+
+    <div id="sidebar-container"></div>
+
+    <div class="main-wrapper">
+        <div id="header-container"></div>
+
+        <main id="main-content">
+
+            <div id="view-dashboard" class="view-section active">
+
+                <div id="dash-error-banner" class="dash-error">
+                    <span class="material-symbols-rounded">error</span>
+                    <span id="dash-error-text">Database connection failed.</span>
+                </div>
+
+                <section class="dash-welcome-card" aria-label="Dashboard welcome">
+                    <div class="dash-welcome-copy">
+                        <div class="dash-welcome-eyebrow">
+                            <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+                            Welcome back,
+                        </div>
+                        <h2 class="dash-welcome-title" id="dash-company-name" data-no-translate>Loading company...</h2>
+                        <p class="dash-welcome-company">Here is your financial overview</p>
+                    </div>
+                    <div class="dashboard-finance-summary">
+                        <div class="dashboard-as-of" aria-label="Current date and time">
+                            <span class="dashboard-clock-item">
+                                <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
+                                <time id="dashboard-as-of-date">Loading date...</time>
+                            </span>
+                            <span class="dashboard-clock-item dashboard-clock-time">
+                                <span class="material-symbols-rounded" aria-hidden="true">schedule</span>
+                                <time id="dashboard-as-of-time">--:--:--</time>
+                            </span>
+                        </div>
+                        <label class="dashboard-period-control" for="dashboard-period">
+                            <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
+                            <select id="dashboard-period" class="dashboard-period-select" aria-label="Financial overview period" onchange="window.updateDashboardSales()">
+                                <option value="today">Today</option>
+                                <option value="this-week">This week</option>
+                                <option value="this-month">This month</option>
+                                <option value="this-fy">This FY</option>
+                                <option value="this-year">This year</option>
+                            </select>
+                        </label>
+                    </div>
+                </section>
+
+                <section class="dash-card calendar-week-card" aria-label="Current week calendar">
+                    <div class="cal-header-row">
+                        <div class="cal-month-title" id="calMonthDisplay">This week</div>
+                        <button class="dashboard-view-all" type="button" onclick="window.setCalToToday()">
+                            <span class="material-symbols-rounded" style="font-size:16px">today</span> Today
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </section>
+
+                <div class="dashboard-attendance-appointments-row" aria-label="Attendance and appointment summaries">
+                    <div class="dash-card attendance-overview">
+                        <div class="card-title">Today's Attendance Overview</div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Present / Half-Day</div>
+                                    <div class="fin-amount" id="dashPresent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
+                            </div>
+
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">On Leave / Absent</div>
+                                    <div class="fin-amount" id="dashAbsent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">event_busy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">Appointments Overview</div>
+                        <div class="chart-container">
+                            <canvas id="apptDonutChart"></canvas>
+                        </div>
+
+                        <div class="mini-stats-grid">
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    Pending
+                                </div>
+                                <div class="mini-stat-val" id="dashPending">0</div>
+                            </div>
+
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                    Completed
+                                </div>
+                                <div class="mini-stat-val" id="dashCompleted">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="dashboard-quick-tools" aria-labelledby="dashboard-quick-tools-title">
+                    <div class="dashboard-quick-tools-head">
+                        <h2 class="dashboard-quick-tools-title" id="dashboard-quick-tools-title">
+                            <span class="material-symbols-rounded" aria-hidden="true">grid_view</span>
+                            Quick Tools
+                        </h2>
+                        <span class="dashboard-quick-tools-hint">Common actions</span>
+                    </div>
+                    <div class="dashboard-quick-tools-grid">
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-appointments', null)" aria-label="Open Appointments">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">event_note</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Appointments</span><span class="dashboard-quick-tool-description">View and manage visits</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-attendance', null)" aria-label="Open Attendance">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Attendance</span><span class="dashboard-quick-tool-description">Staff attendance</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-transaction', null)" aria-label="Open Transactions">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">receipt_long</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Transactions</span><span class="dashboard-quick-tool-description">Payments and receipts</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-qr', null)" aria-label="Open Payment QR">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">qr_code_scanner</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Payment QR</span><span class="dashboard-quick-tool-description">Create a UPI payment QR</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.openDashboardPendingDues()" aria-label="View Pending Dues">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">account_balance_wallet</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Pending Dues</span><span class="dashboard-quick-tool-description">Find unpaid balances</span></span>
+                        </button>
+                    </div>
+                </section>
+
+
+
+                <div class="dash-top-row">
+
+                    <div class="dash-card">
+                        <div class="card-title">
+                            Financial Summary
+                            <span id="dashboard-finance-period-label" style="font-size:11px;font-weight:600;color:var(--text-muted)">Today</span>
+                        </div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Revenue</div>
+                                    <div class="fin-amount" id="dashboard-revenue-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">payments</span>
+                            </div>
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Received</div>
+                                    <div class="fin-amount" id="dashboard-received-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">south_west</span>
+                            </div>
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Due</div>
+                                    <div class="fin-amount" id="dashboard-due-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">account_balance_wallet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <section class="dash-card sales-trend-card" aria-label="Sales trend">
+                    <div class="sales-trend-heading">
+                        <div>
+                            <div class="card-title">Sales trend</div>
+                            <p class="sales-trend-caption" id="sales-trend-caption">Daily billed sales for today</p>
+                        </div>
+                        <div class="sales-trend-total">
+                            <span class="sales-trend-total-label">Sales · <span id="dashboard-sales-period-label">Today</span></span>
+                            <span class="sales-trend-total-value" id="dashboard-sales-total">₹0.00</span>
+                        </div>
+                    </div>
+                    <div class="sales-trend-chart">
+                        <canvas id="salesTrendChart" role="img" aria-label="Sales trend chart"></canvas>
+                    </div>
+                </section>
+
+
+
+                <div class="dash-table-wrapper">
+                    <div class="schedule-table-heading">
+                        <h4 style="font-size:14px;font-weight:700;margin:0;color:var(--text-main)">
+                            Schedule for:
+                            <span id="dashListTitle" style="color:var(--primary)">Today</span>
+                        </h4>
+
+                        <button class="dashboard-view-all"
+                                onclick="window.switchView('view-appointments',null)">
+                            View Full Module
+                            <span class="material-symbols-rounded" style="font-size:16px">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="saas-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient Details</th>
+                                    <th>Branch & Therapist</th>
+                                    <th>Financial Status</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashAptTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align:center;padding:30px;font-size:13px;color:var(--text-muted);display:block;width:100%">
+                                        Loading live schedule...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Dynamically loaded application modules -->
+            <div id="view-patients" class="view-section"></div>
+            <div id="view-corebiq-ai" class="view-section"></div>
+            <div id="view-contacts" class="view-section"></div>
+            <div id="view-appointments" class="view-section"></div>
+            <div id="view-public-booking" class="view-section">
+                <iframe
+                    src="public-booking.html"
+                    title="Public appointment booking page"
+                    style="display:block;width:100%;height:calc(100vh - 112px);min-height:640px;border:0;border-radius:16px;background:#f7f7fb"
+                ></iframe>
+            </div>
+            <div id="view-my-tasks" class="view-section"></div>
+            <div id="view-invoice" class="view-section">
+                <iframe
+                    id="invoice-frame"
+                    src="template-invoice.html"
+                    title="Appointment invoice template"
+                    onload="this.dataset.ready='true';window.dispatchInvoicePayload?.()"
+                ></iframe>
+            </div>
+            <div id="view-transaction" class="view-section"></div>
+            <div id="view-cash-ledger" class="view-section"></div>
+            <div id="view-bank-ledger" class="view-section"></div>
+            <div id="view-ledgers" class="view-section"></div>
+            <div id="view-branches" class="view-section"></div>
+            <div id="view-therapist" class="view-section"></div>
+            <div id="view-calender" class="view-section"></div>
+            <div id="view-staff" class="view-section"></div>
+            <div id="view-attendance" class="view-section"></div>
+            <div id="view-users" class="view-section"></div>
+            <div id="view-clinic-details" class="view-section"></div>
+            <div id="view-company" class="view-section"></div>
+            <div id="view-letterhead" class="view-section"></div>
+            <div id="view-report" class="view-section"></div>
+            <div id="view-seal" class="view-section"></div>
+            <div id="view-qr" class="view-section"></div>
+            <div id="view-updates" class="view-section"></div>
+            <div id="view-licenceinfo" class="view-section"></div>
+            <div id="view-aboutapp" class="view-section"></div>
+            <div id="view-privacy" class="view-section"></div>
+            <div id="view-backup" class="view-section"></div>
+            <div id="view-calc" class="view-section"></div>
+
+        </main>
+
+        <div id="bottomnav-container"></div>
+    </div>
+
+    <!-- Calculator popup -->
+    <div id="calc-popup-container">
+        <div id="calc-popup-header">
+            <span style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px">
+                <span class="material-symbols-rounded" style="font-size:20px;color:var(--primary)">calculate</span>
+                Calculator
+            </span>
+            <span class="material-symbols-rounded"
+                  style="cursor:pointer;font-size:20px"
+                  onclick="window.toggleCalculator()">close</span>
+        </div>
+
+        <div id="calc-popup-content"
+             style="flex:1;padding:0;overflow-y:auto;overflow-x:hidden;height:100%">
+        </div>
+    </div>
+
+</div>
+
+<script type="module">
+import './corebiq-locale.js';
+import { auth, db } from './firebase-config.js';
+import {
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    query,
+    where
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import {
+    onAuthStateChanged,
+    signOut
+} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+/* -------------------------------------------------------
+   GLOBAL STATE
+------------------------------------------------------- */
+window.currentUser = null;
+window.allApts = [];
+window.aptDatesSet = new Set();
+window.apptChartInstance = null;
+window.addEventListener('corebiq:settings-changed', () => {
+    if (window.salesTrendChartInstance && typeof window.updateDashboardSales === 'function') {
+        window.updateDashboardSales();
+    }
+});
+
+/* Local-date helper: avoids UTC date shifting in India/other timezones. */
+window.getLocalDateString = function(date = new Date()) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+};
+
+window.formatTime12Hour = function(value) {
+    const match = String(value || '').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?$/i);
+    if (!match) return value || '--:--';
+
+    let hours = Number(match[1]);
+    const minutes = match[2];
+    const meridiem = match[3]?.toUpperCase();
+    if (meridiem) {
+        if (hours < 1 || hours > 12) return value;
+        return `${String(hours).padStart(2, '0')}:${minutes} ${meridiem}`;
+    }
+    if (hours > 23) return value;
+
+    const period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    return `${String(hours).padStart(2, '0')}:${minutes} ${period}`;
+};
+
+window.selectedDateStr = window.getLocalDateString();
+
+window.pendingInvoicePayload = null;
+window.dispatchInvoicePayload = function() {
+    const frame = document.getElementById('invoice-frame');
+    if (!frame || frame.dataset.ready !== 'true' || !window.pendingInvoicePayload) return;
+
+    frame.contentWindow.postMessage({
+        type: 'corebiq:invoice',
+        payload: window.pendingInvoicePayload.payload,
+        action: window.pendingInvoicePayload.action
+    }, window.location.origin === 'null' ? '*' : window.location.origin);
+    window.pendingInvoicePayload = null;
+};
+
+window.openBlankInvoiceTemplate = function(element) {
+    window.pendingInvoicePayload = null;
+    const frame = document.getElementById('invoice-frame');
+    if (frame) {
+        frame.dataset.ready = 'false';
+        frame.src = 'template-invoice.html';
+    }
+    window.switchView('view-invoice', element);
+};
+
+window.addEventListener('message', event => {
+    const invoiceFrame = document.getElementById('invoice-frame');
+    if (event.source !== invoiceFrame?.contentWindow) return;
+    if (event.data?.type === 'corebiq:invoice:ready') {
+        invoiceFrame.dataset.ready = 'true';
+        window.dispatchInvoicePayload();
+        return;
+    }
+    if (event.data?.type === 'corebiq:invoice:back') {
+        window.switchView('view-appointments', null);
+    }
+});
+
+document.getElementById('invoice-frame')?.addEventListener('load', event => {
+    event.currentTarget.dataset.ready = 'true';
+    window.dispatchInvoicePayload();
+});
+
+/* -------------------------------------------------------
+   MODULE MAP
+------------------------------------------------------- */
+window.cmAppFileMap = {
+    "view-patients": "patients.html",
+    "view-corebiq-ai": "corebiq-ai.html",
+    "view-contacts": "contacts.html",
+    "view-appointments": "appointments.html",
+    "view-my-tasks": "my-task.html",
+    "view-transaction": "transaction.html",
+    "view-cash-ledger": "cash.html",
+    "view-bank-ledger": "bank.html",
+    "view-ledgers": "ledgers.html",
+    "view-branches": "branches.html",
+    "view-therapist": "therapist.html",
+    "view-calender": "calender.html",
+    "view-staff": "staff.html",
+    "view-attendance": "attendance.html",
+    "view-users": "users.html",
+    "view-clinic-details": "clinic-details.html",
+    "view-company": "company.html",
+    "view-letterhead": "template-letterhead.html",
+    "view-report": "template-report.html",
+    "view-seal": "template-seal.html",
+    "view-qr": "qr.html",
+    "view-updates": "updates.html",
+    "view-licenceinfo": "licenceinfo.html",
+    "view-aboutapp": "aboutapp.html",
+    "view-privacy": "privacy.html",
+    "view-backup": "backup.html",
+    "view-calc": "calc.html"
+};
+
+/* -------------------------------------------------------
+   ERROR BANNER
+------------------------------------------------------- */
+window.onerror = function(message, source, lineno) {
+    const errDiv = document.getElementById('dash-error-banner');
+    const errText = document.getElementById('dash-error-text');
+
+    if (errDiv && errText) {
+        errDiv.style.display = 'flex';
+        errText.innerText = `Error at Line ${lineno || '?'}: ${message}`;
+    }
+    return false;
+};
+
+/* -------------------------------------------------------
+   LOGOUT / AUTH GATE
+------------------------------------------------------- */
+window.handleLogout = async function() {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error("Error signing out:", error);
+        alert("Unable to sign out. Please try again.");
+    }
+};
+
+window.loadDashboardCompanyName = async function() {
+    const companyElement = document.getElementById('dash-company-name');
+    if (!companyElement || !window.currentUser) return;
+
+    companyElement.textContent = 'Loading company...';
+
+    try {
+        const companySnapshot = await getDoc(doc(db, 'settings', 'company_profile'));
+        if (!companySnapshot.exists()) {
+            companyElement.textContent = 'Company profile not configured';
+            return;
+        }
+
+        const companyProfile = companySnapshot.data();
+        window.applyCorebiqSettings?.(companyProfile);
+        const companyName = companyProfile.name;
+        if (typeof companyName === 'string' && companyName.trim()) {
+            const normalizedName = companyName.trim();
+            companyElement.textContent = normalizedName;
+            try {
+                localStorage.setItem('corebiq-company-name', normalizedName);
+            } catch (storageError) {
+                console.warn('Unable to cache the dashboard company name:', storageError);
+            }
+        } else {
+            companyElement.textContent = 'Company name not configured';
+        }
+    } catch (error) {
+        console.error('Unable to load dashboard company name:', error);
+        companyElement.textContent = 'Company profile unavailable';
+    }
+};
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+        window.location.replace('./login.html');
+        return;
+    }
+
+    try {
+        const emailLower = (user.email || '').toLowerCase();
+        if (!emailLower) throw new Error("Authenticated account has no email.");
+
+        const userDocRef = doc(db, "users", emailLower);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+            throw new Error("No database access found. Contact Administrator.");
+        }
+
+        const userData = userDoc.data();
+
+        window.currentUser = {
+            email: emailLower,
+            name: userData.name || userData.fullName || user.displayName || emailLower,
+            role: userData.role || "user",
+            branch: userData.branch || "Unknown"
+        };
+        window.updateHeaderProfile();
+
+        const app = document.getElementById('app-container');
+        if (app) app.style.visibility = 'visible';
+        window.loadDashboardCompanyName();
+
+        /* Sidebar is loaded separately; hide the Users item after it appears too. */
+        window.applyRoleVisibility();
+
+        if (window.fetchDashboardData) {
+            window.fetchDashboardData();
+        }
+
+    } catch (error) {
+        console.error(error);
+        try { await signOut(auth); } catch (_) {}
+        alert(error.message || "Unable to authenticate.");
+    }
+});
+
+/* -------------------------------------------------------
+   ROLE VISIBILITY
+------------------------------------------------------- */
+window.applyRoleVisibility = function() {
+    if (!window.currentUser || window.currentUser.role === 'admin') return;
+
+    const selectors = [
+        '#nav-users-btn',
+        '[data-target="view-users"]',
+        '[onclick*="view-users"]'
+    ];
+
+    selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+            el.style.display = 'none';
+        });
+    });
+};
+
+window.updateSidebarCollapseControl = function() {
+    const sidebar = document.getElementById('sidebar-container');
+    const button = document.getElementById('sidebar-toggle-button');
+    if (!sidebar || !button) return;
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const isExpanded = isMobile
+        ? sidebar.classList.contains('open')
+        : !sidebar.classList.contains('is-collapsed');
+    const icon = button.querySelector('.material-symbols-rounded');
+    button.setAttribute('aria-expanded', String(isExpanded));
+    const actionLabel = isMobile
+        ? (isExpanded ? 'Close navigation' : 'Open navigation')
+        : (isExpanded ? 'Collapse navigation' : 'Expand navigation');
+    button.setAttribute('aria-label', actionLabel);
+    button.title = actionLabel;
+    if (icon) {
+        icon.textContent = isMobile
+            ? (isExpanded ? 'menu_open' : 'menu')
+            : (isExpanded ? 'left_panel_close' : 'left_panel_open');
+    }
+
+    sidebar.querySelectorAll('.nav-link[data-target]').forEach(link => {
+        const label = link.cloneNode(true);
+        label.querySelectorAll('.material-symbols-rounded').forEach(item => item.remove());
+        const text = label.textContent.trim().replace(/\s+/g, ' ');
+        link.setAttribute('aria-label', text);
+        if (!isMobile && sidebar.classList.contains('is-collapsed')) {
+            link.title = text;
+        } else {
+            link.removeAttribute('title');
+        }
+    });
+};
+
+window.toggleSidebarCollapse = function() {
+    const sidebar = document.getElementById('sidebar-container');
+    if (!sidebar) return;
+
+    if (window.matchMedia('(max-width: 768px)').matches) {
+        sidebar.classList.toggle('open');
+    } else {
+        sidebar.classList.toggle('is-collapsed');
+    }
+    window.updateSidebarCollapseControl();
+};
+
+/* -------------------------------------------------------
+   MENU
+------------------------------------------------------- */
+window.toggleMenu = function() {
+    const sidebar = document.getElementById('sidebar-container');
+    if (sidebar) {
+        const isOpen = sidebar.classList.toggle('open');
+        const menuButton = document.querySelector('.bottom-nav-item[aria-label="Open menu"]');
+        if (menuButton) {
+            menuButton.setAttribute('aria-expanded', String(isOpen));
+        }
+        window.updateSidebarCollapseControl();
+    }
+};
+window.toggleSidebar = window.toggleMenu;
+
+/* -------------------------------------------------------
+   DATE FORMATTERS
+   Internal values remain YYYY-MM-DD.
+   Display values are DD-MM-YYYY.
+------------------------------------------------------- */
+window.formatIndianDate = function(dateStr) {
+    if (!dateStr) return '';
+
+    if (dateStr instanceof Date) {
+        const d = dateStr;
+        return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`;
+    }
+
+    const value = String(dateStr);
+
+    const isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (isoMatch) {
+        return `${isoMatch[3]}-${isoMatch[2]}-${isoMatch[1]}`;
+    }
+
+    const slashMatch = value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if (slashMatch) {
+        return `${slashMatch[1].padStart(2,'0')}-${slashMatch[2].padStart(2,'0')}-${slashMatch[3]}`;
+    }
+
+    return value;
+};
+
+/* -------------------------------------------------------
+   COMPONENT LOADER
+   Cache-busted so changed header/sidebar/bottomnav files
+   are not trapped behind browser/CDN cache.
+------------------------------------------------------- */
+window.fetchFresh = async function(filename) {
+    const separator = filename.includes('?') ? '&' : '?';
+    const url = `${filename}${separator}v=${Date.now()}`;
+
+    return fetch(url, {
+        cache: 'no-store',
+        headers: {
+            'Cache-Control': 'no-cache'
+        }
+    });
+};
+
+window.moduleHtmlCache = new Map();
+window.getModuleHtml = function(filename) {
+    if (!window.moduleHtmlCache.has(filename)) {
+        const request = window.fetchFresh(filename)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`File fetch failed: HTTP ${response.status}`);
+                }
+                return response.text();
+            })
+            .catch(error => {
+                window.moduleHtmlCache.delete(filename);
+                throw error;
+            });
+        window.moduleHtmlCache.set(filename, request);
+    }
+    return window.moduleHtmlCache.get(filename);
+};
+
+window.prefetchModule = function(targetId) {
+    const filename = window.cmAppFileMap[targetId];
+    if (filename && !window.moduleHtmlCache.has(filename)) {
+        window.getModuleHtml(filename).catch(error => {
+            console.error(`Error preloading ${filename}:`, error);
+        });
+    }
+};
+
+document.addEventListener('pointerover', event => {
+    const link = event.target.closest('#sidebar-container [data-target^="view-"]');
+    if (link) window.prefetchModule(link.dataset.target);
+});
+document.addEventListener('focusin', event => {
+    const link = event.target.closest('#sidebar-container [data-target^="view-"]');
+    if (link) window.prefetchModule(link.dataset.target);
+});
+
+window.loadComponent = async function(elementId, filename) {
+    try {
+        const response = await window.fetchFresh(filename);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const element = document.getElementById(elementId);
+        if (!element) return;
+
+        element.innerHTML = await response.text();
+
+        window.applyRoleVisibility();
+
+        if (filename === 'header.html') {
+            window.updateGlobalClock();
+            window.updateHeaderProfile();
+            window.updateSidebarCollapseControl();
+            window.updateNotificationBell();
+        }
+
+        if (filename === 'sidebar.html') {
+            window.updateSidebarCollapseControl();
+            window.applyModuleShortcuts();
+        }
+    } catch (error) {
+        console.error(`Error loading ${filename}:`, error);
+    }
+};
+
+window.COREBIQ_APP_VERSION = 'v1.2';
+window.COREBIQ_UPDATES_READ_KEY = 'corebiq-updates-viewed-version';
+window.COREBIQ_MODULE_SHORTCUTS = {
+    'view-dashboard': '1',
+    'view-contacts': 'C',
+    'view-my-tasks': 'M',
+    'view-patients': 'P',
+    'view-appointments': 'A',
+    'view-public-booking': 'B',
+    'view-calender': 'K',
+    'view-transaction': '2',
+    'view-cash-ledger': 'H',
+    'view-bank-ledger': 'N',
+    'view-ledgers': 'G',
+    'view-qr': 'Q',
+    'view-therapist': 'R',
+    'view-staff': 'S',
+    'view-attendance': 'J',
+    'view-calc': 'X',
+    'view-invoice': 'I',
+    'view-letterhead': 'W',
+    'view-report': 'O',
+    'view-seal': 'Z',
+    'view-backup': '3',
+    'view-branches': '4',
+    'view-company': 'Y',
+    'view-clinic-details': 'V',
+    'view-users': 'U',
+    'view-corebiq-ai': '5',
+    'view-updates': '6',
+    'view-licenceinfo': '7',
+    'view-aboutapp': '8',
+    'view-privacy': '9'
+};
+
+window.applyModuleShortcuts = function() {
+    Object.entries(window.COREBIQ_MODULE_SHORTCUTS).forEach(([target, key]) => {
+        const link = document.querySelector(`#sidebar-container [data-target="${target}"]`);
+        if (!link) return;
+        link.setAttribute('aria-keyshortcuts', `Alt+${key}`);
+        if (link.querySelector('.nav-shortcut')) return;
+        const hint = document.createElement('kbd');
+        hint.className = 'nav-shortcut';
+        hint.textContent = `Alt+${key}`;
+        hint.setAttribute('aria-hidden', 'true');
+        link.appendChild(hint);
+    });
+};
+
+window.updateNotificationBell = function() {
+    const button = document.getElementById('notification-button');
+    const badge = document.getElementById('notif-badge');
+    if (!button || !badge) return;
+
+    let isUnread = true;
+    try {
+        isUnread = localStorage.getItem(window.COREBIQ_UPDATES_READ_KEY) !== window.COREBIQ_APP_VERSION;
+    } catch (error) {
+        console.error('Could not read app update notification state:', error);
+    }
+
+    button.classList.toggle('has-unread', isUnread);
+    button.setAttribute('aria-label', isUnread ? 'App updates: new update' : 'App updates');
+    button.title = isUnread ? 'New app update' : 'App updates';
+    badge.hidden = !isUnread;
+};
+
+window.openAppUpdates = function() {
+    window.switchView('view-updates', null);
+};
+
+window.addEventListener('storage', event => {
+    if (event.key === window.COREBIQ_UPDATES_READ_KEY) {
+        window.updateNotificationBell();
+    }
+});
+
+window.updateHeaderProfile = function() {
+    const user = window.currentUser;
+    if (!user) return;
+
+    const values = {
+        'profile-name': user.name || user.email,
+        'profile-email': user.email,
+        'profile-role': user.role,
+        'profile-branch': user.branch
+    };
+
+    Object.entries(values).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value || '—';
+    });
+};
+
+window.toggleProfileMenu = function(forceOpen) {
+    const menu = document.getElementById('profile-menu');
+    const button = document.getElementById('profile-button');
+    if (!menu || !button) return;
+
+    const shouldOpen = typeof forceOpen === 'boolean'
+        ? forceOpen
+        : !menu.classList.contains('open');
+    menu.classList.toggle('open', shouldOpen);
+    button.setAttribute('aria-expanded', String(shouldOpen));
+};
+
+window.searchModules = function(query) {
+    const results = document.getElementById('module-search-results');
+    const input = document.getElementById('module-search-input');
+    if (!results || !input) return;
+
+    const normalizedQuery = query.trim().toLocaleLowerCase();
+    results.replaceChildren();
+
+    if (!normalizedQuery) {
+        results.classList.remove('open');
+        input.setAttribute('aria-expanded', 'false');
+        return;
+    }
+
+    const links = Array.from(
+        document.querySelectorAll('#sidebar-container [data-target^="view-"]')
+    ).filter(link => link.offsetParent !== null);
+    const matches = links.map(link => {
+        const labelElement = link.cloneNode(true);
+        labelElement.querySelectorAll('.material-symbols-rounded').forEach(icon => icon.remove());
+
+        return {
+            id: link.getAttribute('data-target'),
+            label: labelElement.textContent.trim().replace(/\s+/g, ' '),
+            icon: link.querySelector('.material-symbols-rounded')?.textContent.trim() || 'apps'
+        };
+    }).filter(item => item.id && item.label.toLocaleLowerCase().includes(normalizedQuery));
+
+    if (!matches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'module-search-empty';
+        empty.textContent = 'No matching modules found.';
+        results.appendChild(empty);
+    } else {
+        matches.forEach(item => {
+            const option = document.createElement('button');
+            option.type = 'button';
+            option.className = 'module-search-result';
+            option.setAttribute('role', 'option');
+
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-rounded';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.textContent = item.icon;
+
+            const label = document.createElement('span');
+            label.textContent = item.label;
+
+            option.append(icon, label);
+            option.addEventListener('click', () => window.openModuleFromSearch(item.id));
+            results.appendChild(option);
+        });
+    }
+
+    results.classList.add('open');
+    input.setAttribute('aria-expanded', 'true');
+};
+
+window.clearModuleSearch = function() {
+    const input = document.getElementById('module-search-input');
+    if (!input) return;
+
+    input.value = '';
+    window.searchModules('');
+    input.focus();
+};
+
+window.openModuleFromSearch = function(targetId) {
+    const navElement = document.querySelector(
+        `#sidebar-container [data-target="${targetId}"]`
+    );
+
+    if (navElement && navElement.offsetParent === null) return;
+
+    window.switchView(targetId, navElement || null);
+    const input = document.getElementById('module-search-input');
+    if (input) input.value = '';
+    window.searchModules('');
+    input?.blur();
+};
+
+window.handleModuleSearchKeydown = function(event) {
+    if (event.key === 'Escape') {
+        window.searchModules('');
+        return;
+    }
+
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        const firstResult = document.querySelector(
+            '#module-search-results .module-search-result'
+        );
+        firstResult?.click();
+    }
+};
+
+/* -------------------------------------------------------
+   CALCULATOR POPUP
+------------------------------------------------------- */
+window.toggleCalculator = function() {
+    const popup = document.getElementById('calc-popup-container');
+    if (!popup) return;
+
+    if (popup.style.display === 'flex') {
+        popup.style.display = 'none';
+        document.querySelector('[data-nav-action="calculator"]')?.setAttribute('aria-pressed', 'false');
+        return;
+    }
+
+    popup.style.display = 'flex';
+    document.querySelector('[data-nav-action="calculator"]')?.setAttribute('aria-pressed', 'true');
+
+    const contentDiv = document.getElementById('calc-popup-content');
+
+    if (contentDiv && contentDiv.innerHTML.trim() === '') {
+        contentDiv.innerHTML =
+            '<iframe src="calc.html?v=' + Date.now() +
+            '" style="width:100%;height:100%;border:none;background:transparent"></iframe>';
+    }
+};
+
+window.toggleSupportMenu = function(event) {
+    event?.stopPropagation();
+    const button = document.getElementById('support-button');
+    const menu = document.getElementById('support-menu');
+    if (!button || !menu) return;
+    const isOpen = menu.classList.toggle('open');
+    button.setAttribute('aria-expanded', String(isOpen));
+};
+
+window.openDashboardPendingDues = async function() {
+    window.dashboardPendingDuesRequested = true;
+    await window.switchView(
+        'view-appointments',
+        document.querySelector('#sidebar-container [data-target="view-appointments"]')
+    );
+    if (
+        window.dashboardPendingDuesRequested &&
+        typeof window.showPendingDues === 'function'
+    ) {
+        window.dashboardPendingDuesRequested = false;
+        window.showPendingDues();
+    }
+};
+
+function dragElement(elmnt) {
+    if (!elmnt) return;
+
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    const header = document.getElementById(elmnt.id + "-header");
+
+    if (!header) return;
+
+    header.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+        if (window.innerWidth <= 768) return;
+
+        e = e || window.event;
+        e.preventDefault();
+
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+        elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        elmnt.style.bottom = "auto";
+        elmnt.style.right = "auto";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
+}
+
+/* -------------------------------------------------------
+   DYNAMIC MODULE LOADER
+   Loads module HTML on demand and reuses its in-memory fetch cache.
+   Keeps relative imports working from /development/.
+------------------------------------------------------- */
+window.switchView = async function(targetId, navElement) {
+
+    if (targetId === 'view-calc') {
+        window.toggleCalculator();
+        return;
+    }
+
+    document
+        .querySelectorAll('.nav-link, .nav-item, .bottom-nav-item')
+        .forEach(el => el.classList.remove('active'));
+
+    if (
+        navElement &&
+        !navElement.classList.contains('close-menu-btn')
+    ) {
+        navElement.classList.add('active');
+    }
+    document.querySelectorAll('.bottom-nav-item').forEach(item => {
+        const target = item.getAttribute('onclick')?.match(/switchView\('([^']+)'/)?.[1];
+        const isActive = target === targetId;
+        item.classList.toggle('active', isActive);
+        if (isActive) {
+            item.setAttribute('aria-current', 'page');
+        } else {
+            item.removeAttribute('aria-current');
+        }
+    });
+
+    document
+        .querySelectorAll('.view-section')
+        .forEach(el => el.classList.remove('active'));
+
+    const targetDiv = document.getElementById(targetId);
+    if (!targetDiv) return;
+
+    if (
+        window.innerWidth <= 768 &&
+        document.getElementById('sidebar-container')?.classList.contains('open')
+    ) {
+        window.toggleMenu();
+    }
+
+    if (targetId === 'view-invoice') {
+        targetDiv.classList.add('active');
+        window.dispatchInvoicePayload();
+        return;
+    }
+
+    if (targetId === 'view-dashboard') {
+        targetDiv.classList.add('active');
+
+        if (window.fetchDashboardData) {
+            window.fetchDashboardData();
+        }
+
+        return;
+    }
+
+    if (targetDiv.querySelector('iframe')) {
+        targetDiv.classList.add('active');
+        return;
+    }
+
+    const filename = window.cmAppFileMap[targetId];
+
+    if (!filename) {
+        targetDiv.innerHTML =
+            '<div style="padding:40px;text-align:center;color:var(--danger)">Module mapping not found.</div>';
+        targetDiv.classList.add('active');
+        return;
+    }
+
+    /* First load: fetch the module. */
+    if (
+        targetDiv.dataset.loaded !== 'true' &&
+        targetDiv.dataset.loading !== 'true'
+    ) {
+
+        targetDiv.innerHTML =
+            '<div style="text-align:center;padding:40px;color:var(--primary)">Loading module...</div>';
+
+        targetDiv.classList.add('active');
+        targetDiv.dataset.loading = 'true';
+
+        try {
+            const htmlText = await window.getModuleHtml(filename);
+
+            if (!targetDiv.classList.contains('active')) {
+                delete targetDiv.dataset.loading;
+                return;
+            }
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlText, 'text/html');
+
+            const moduleContent =
+                doc.querySelector('.module-container') || doc.body;
+
+            targetDiv.innerHTML = '';
+
+            /* Move children instead of accidentally losing body content. */
+            if (moduleContent === doc.body) {
+                Array.from(moduleContent.childNodes).forEach(node => {
+                    targetDiv.appendChild(node);
+                });
+            } else {
+                targetDiv.appendChild(moduleContent);
+            }
+
+            /* Preserve module-specific styles declared in the fetched page head. */
+            doc.head.querySelectorAll('style').forEach(style => {
+                targetDiv.prepend(style.cloneNode(true));
+            });
+
+            /* Re-create scripts so dynamically inserted modules execute. */
+            targetDiv.querySelectorAll('script').forEach(oldScript => {
+                const newScript = document.createElement('script');
+
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+
+                newScript.appendChild(
+                    document.createTextNode(oldScript.innerHTML)
+                );
+
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+
+            targetDiv.dataset.loaded = 'true';
+            delete targetDiv.dataset.loading;
+
+        } catch (error) {
+
+            delete targetDiv.dataset.loading;
+            console.error(`Error loading ${filename}:`, error);
+
+            targetDiv.innerHTML = `
+                <div style="
+                    text-align:center;
+                    padding:40px;
+                    color:var(--danger);
+                    background:#FEF2F2;
+                    border-radius:12px;
+                    border:1px solid #FEE2E2;
+                ">
+                    <span class="material-symbols-rounded" style="font-size:32px;margin-bottom:8px">error</span>
+                    <br>
+                    <b>Module Not Found.</b>
+                    <br>
+                    Ensure the file <b>${filename}</b> exists in the /development/ folder.
+                    <br><br>
+                    <button
+                        onclick="window.switchView('${targetId}',null)"
+                        style="
+                            border:1px solid var(--border);
+                            background:#fff;
+                            border-radius:8px;
+                            padding:8px 14px;
+                            cursor:pointer;
+                            font-weight:600;
+                        ">
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+
+    } else {
+        targetDiv.classList.add('active');
+    }
+
+};
+
+/* -------------------------------------------------------
+   CHART
+------------------------------------------------------- */
+window.renderChart = function(
+    pending,
+    completed,
+    rescheduled,
+    cancelled
+) {
+    try {
+        if (typeof Chart === 'undefined') return;
+
+        const canvas = document.getElementById('apptDonutChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        if (window.apptChartInstance) {
+            window.apptChartInstance.destroy();
+        }
+
+        const total =
+            pending +
+            completed +
+            rescheduled +
+            cancelled;
+
+        const dataValues =
+            total === 0
+                ? [1]
+                : [pending, completed, rescheduled, cancelled];
+
+        const bgColors =
+            total === 0
+            ? ['#E8EAF0']
+            : ['#AAB9D0', '#0B1F4B', '#0B1F4B', '#6B7280'];
+
+        const labels =
+            total === 0
+                ? ['No Data']
+                : ['Pending', 'Completed', 'Rescheduled', 'Cancelled'];
+
+        window.apptChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: bgColors,
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '75%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: total > 0 }
+                }
+            }
+        });
+
+    } catch (e) {
+        console.warn("Chart rendering skipped:", e);
+    }
+};
+
+/* -------------------------------------------------------
+   CALENDAR
+------------------------------------------------------- */
+window.renderCalendar = function() {
+    const title = document.getElementById('calMonthDisplay');
+    const grid = document.getElementById('calendarGrid');
+
+    if (!title || !grid) return;
+
+    const today = new Date();
+    const weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+    const weekEnd = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + 6);
+    const formatRangeDate = date => new Intl.DateTimeFormat('en-IN', {
+        day: 'numeric',
+        month: 'short'
+    }).format(date);
+    title.textContent = `${formatRangeDate(weekStart)} – ${formatRangeDate(weekEnd)} ${weekEnd.getFullYear()}`;
+
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    grid.innerHTML = weekdays.map((weekday, index) => {
+        const date = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + index);
+        const dateKey = window.getLocalDateString(date);
+        const classes = [
+            'cal-day',
+            dateKey === window.selectedDateStr ? 'active' : '',
+            dateKey === window.getLocalDateString(today) ? 'today' : '',
+            window.aptDatesSet.has(dateKey) ? 'has-event' : ''
+        ].filter(Boolean).join(' ');
+        const ariaLabel = new Intl.DateTimeFormat('en-IN', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+        return `<button type="button" class="${classes}" onclick="window.selectDate('${dateKey}')" aria-label="${ariaLabel}" aria-pressed="${dateKey === window.selectedDateStr}">
+            <span class="cal-day-name">${weekday}</span>
+            <span class="cal-day-number">${date.getDate()}</span>
+        </button>`;
+    }).join('');
+};
+
+window.selectDate = function(dateStr) {
+    window.selectedDateStr = dateStr;
+    window.renderCalendar();
+    window.renderLiveTable();
+};
+
+window.setCalToToday = function() {
+    const today = new Date();
+    window.selectDate(window.getLocalDateString(today));
+};
+
+/* -------------------------------------------------------
+   BALANCE DISPLAY
+   0  => No Due
+   >0 => Due ₹...
+   <0 => Excess ₹...
+------------------------------------------------------- */
+window.getBalanceDisplay = function(value) {
+    const balance = Number(value || 0);
+
+    if (Math.abs(balance) < 0.005) {
+        return {
+            text: 'No Due',
+            className: 'balance-no-due'
+        };
+    }
+
+    if (balance > 0) {
+        return {
+            text: `Due ₹${balance.toFixed(2)}`,
+            className: 'balance-due'
+        };
+    }
+
+    return {
+        text: `Excess ₹${Math.abs(balance).toFixed(2)}`,
+        className: 'balance-excess'
+    };
+};
+
+/* -------------------------------------------------------
+   LIVE DASHBOARD TABLE
+------------------------------------------------------- */
+window.renderLiveTable = function() {
+
+    const tableBody =
+        document.getElementById('dashAptTableBody');
+
+    if (!tableBody) return;
+
+    const todayStr =
+        window.getLocalDateString();
+
+    const title =
+        document.getElementById('dashListTitle');
+
+    if (title) {
+        title.innerText =
+            window.selectedDateStr === todayStr
+                ? "Today"
+                : window.formatIndianDate(window.selectedDateStr);
+    }
+
+    const dayApts =
+        window.allApts.filter(
+            a => a.date === window.selectedDateStr
+        );
+
+    if (dayApts.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="5"
+                    style="text-align:center;padding:40px;color:var(--text-muted);font-size:13px;display:block;width:100%">
+                    No appointments scheduled for this date.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    let rowsHtml = '';
+
+    dayApts.forEach(data => {
+
+        let badgeClass = 'badge-pending';
+
+        const st =
+            (data.status || '').toLowerCase();
+
+        if (st === 'completed') {
+            badgeClass = 'badge-completed';
+        } else if (st === 'rescheduled') {
+            badgeClass = 'badge-rescheduled';
+        } else if (st === 'cancelled') {
+            badgeClass = 'badge-cancelled';
+        }
+
+        const balance =
+            window.getBalanceDisplay(data.balance);
+
+        rowsHtml += `
+            <tr>
+                <td>
+                    <strong style="color:var(--text-main);font-size:14px">
+                        ${window.formatTime12Hour(data.time)}
+                    </strong>
+                </td>
+
+                <td>
+                    <strong style="font-size:14px;display:block;margin-bottom:2px">
+                        ${data.name || 'Unknown'}
+                    </strong>
+                    <span style="font-size:12px;color:var(--text-muted);font-weight:600">
+                        +91 ${data.mobile || ''}
+                    </span>
+                </td>
+
+                <td>
+                    <strong style="font-size:13px;color:var(--primary);display:block;margin-bottom:2px">
+                        ${data.branch || ''}
+                    </strong>
+                    <span style="font-size:12px;color:var(--text-muted);font-weight:600">
+                        Dr. ${data.therapist || 'N/A'}
+                    </span>
+                </td>
+
+                <td>
+                    <span style="font-size:12px;color:var(--text-muted);font-weight:600">
+                        Fee: ₹${Number(data.fee || 0).toFixed(2)}
+                    </span>
+                    <br>
+                    <strong class="${balance.className}" style="font-size:13px">
+                        ${balance.text}
+                    </strong>
+                </td>
+
+                <td>
+                    <span class="badge ${badgeClass}">
+                        ${data.status || 'Pending'}
+                    </span>
+                </td>
+            </tr>
+        `;
+    });
+
+    tableBody.innerHTML = rowsHtml;
+};
+
+/* -------------------------------------------------------
+   GLOBAL CLOCK
+------------------------------------------------------- */
+window.updateGlobalClock = function() {
+    const now = new Date();
+    const dateElement = document.getElementById('dashboard-as-of-date');
+    const timeElement = document.getElementById('dashboard-as-of-time');
+    if (!dateElement || !timeElement) return;
+
+    dateElement.textContent = new Intl.DateTimeFormat('en-IN', {
+        weekday: 'short',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    }).format(now);
+    dateElement.dateTime = [
+        now.getFullYear(),
+        String(now.getMonth() + 1).padStart(2, '0'),
+        String(now.getDate()).padStart(2, '0')
+    ].join('-');
+    timeElement.textContent = new Intl.DateTimeFormat('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    }).format(now);
+    timeElement.dateTime = now.toISOString();
+};
+
+window.dashboardTransactions = [];
+
+window.getDashboardSalesPeriod = function(period, now = new Date()) {
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    let start = new Date(today);
+    let end = new Date(today);
+
+    if (period === 'this-week') {
+        start.setDate(start.getDate() - ((start.getDay() + 6) % 7));
+    } else if (period === 'this-month') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+    } else if (period === 'this-fy') {
+        const fiscalYearStart = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+        start = new Date(fiscalYearStart, 3, 1);
+    } else if (period === 'this-year') {
+        start = new Date(now.getFullYear(), 0, 1);
+    }
+
+    end = new Date(today);
+    return { start, end, period };
+};
+
+window.getDashboardDateKey = function(value) {
+    if (!value) return '';
+    if (value instanceof Date && !Number.isNaN(value.getTime())) {
+        return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
+    }
+    if (typeof value.toDate === 'function') {
+        return window.getDashboardDateKey(value.toDate());
+    }
+    const match = String(value).match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return match ? `${match[1]}-${match[2]}-${match[3]}` : '';
+};
+
+window.renderSalesTrend = function(transactions, period, range, total) {
+    if (typeof Chart === 'undefined') return;
+    const canvas = document.getElementById('salesTrendChart');
+    if (!canvas) return;
+    if (window.salesTrendChartInstance) window.salesTrendChartInstance.destroy();
+
+    const pad = value => String(value).padStart(2, '0');
+    const start = range.start;
+    const end = range.end;
+    let chartEnd = new Date(end);
+    const labels = [];
+    const values = [];
+    const totalsByBucket = new Map();
+    const todayMode = period === 'today';
+    const fiscalOrAnnual = period === 'this-fy' || period === 'this-year';
+
+    if (todayMode) {
+        for (let hour = 0; hour < 24; hour++) {
+            labels.push(hour % 3 === 0 ? `${pad(hour)}:00` : '');
+            values.push(0);
+        }
+    } else if (fiscalOrAnnual) {
+        chartEnd = period === 'this-fy'
+            ? new Date(start.getFullYear() + 1, 2, 31)
+            : new Date(start.getFullYear(), 11, 31);
+        let month = new Date(start.getFullYear(), start.getMonth(), 1);
+        while (month <= chartEnd) {
+            labels.push(month.toLocaleString(window.corebiqLocale?.() || 'en-IN', { month: 'short' }));
+            values.push(0);
+            month = new Date(month.getFullYear(), month.getMonth() + 1, 1);
+        }
+    } else {
+        if (period === 'this-week') {
+            chartEnd.setDate(chartEnd.getDate() + (6 - ((chartEnd.getDay() + 6) % 7)));
+        } else if (period === 'this-month') {
+            chartEnd = new Date(end.getFullYear(), end.getMonth() + 1, 0);
+        }
+        const day = new Date(start);
+        while (day <= chartEnd) {
+            labels.push(`${pad(day.getDate())} ${day.toLocaleString(window.corebiqLocale?.() || 'en-IN', { month: 'short' })}`);
+            values.push(0);
+            day.setDate(day.getDate() + 1);
+        }
+    }
+
+    transactions.forEach(transaction => {
+        if (String(transaction.type || '').toLowerCase() !== 'sales') return;
+        const dateKey = window.getDashboardDateKey(transaction.date);
+        if (!dateKey) return;
+
+        const [year, month, day] = dateKey.split('-').map(Number);
+        const transactionDay = new Date(year, month - 1, day);
+        if (transactionDay < start || transactionDay > end) return;
+
+        const amount = Number(transaction.cashOut) || 0;
+        let bucket;
+        if (todayMode) {
+            let createdAt = transaction.createdAt;
+            if (createdAt && typeof createdAt.toDate === 'function') createdAt = createdAt.toDate();
+            const hour = createdAt instanceof Date && !Number.isNaN(createdAt.getTime())
+                ? createdAt.getHours()
+                : 12;
+            bucket = hour;
+        } else if (fiscalOrAnnual) {
+            bucket = `${transactionDay.getFullYear()}-${transactionDay.getMonth()}`;
+        } else {
+            bucket = dateKey;
+        }
+        totalsByBucket.set(bucket, (totalsByBucket.get(bucket) || 0) + amount);
+    });
+
+    if (todayMode) {
+        totalsByBucket.forEach((amount, hour) => { values[hour] += amount; });
+    } else if (fiscalOrAnnual) {
+        const month = new Date(start.getFullYear(), start.getMonth(), 1);
+        values.forEach((_, index) => {
+            const key = `${month.getFullYear()}-${month.getMonth()}`;
+            values[index] = totalsByBucket.get(key) || 0;
+            month.setMonth(month.getMonth() + 1);
+        });
+    } else {
+        let day = new Date(start);
+        values.forEach((_, index) => {
+            const key = `${day.getFullYear()}-${pad(day.getMonth() + 1)}-${pad(day.getDate())}`;
+            values[index] = totalsByBucket.get(key) || 0;
+            day.setDate(day.getDate() + 1);
+        });
+    }
+
+    const currency = value => window.formatCorebiqCurrency
+        ? window.formatCorebiqCurrency(value)
+        : `₹${Number(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    window.salesTrendChartInstance = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Sales',
+                data: values,
+                borderColor: '#0B1F4B',
+                backgroundColor: 'rgba(11, 87, 208, .10)',
+                borderWidth: 2,
+                pointRadius: todayMode ? 0 : 2,
+                pointHoverRadius: 4,
+                pointBackgroundColor: '#0B1F4B',
+                fill: true,
+                tension: .35
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: context => ` Sales: ${currency(context.parsed.y)}` } }
+            },
+            scales: {
+                x: { grid: { display: false }, ticks: { maxTicksLimit: 8, color: '#6B7280', font: { size: 10 } } },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(107, 114, 128, .12)' },
+                    ticks: {
+                        maxTicksLimit: 5,
+                        color: '#6B7280',
+                        font: { size: 10 },
+                        callback: value => window.formatCorebiqCurrency
+                            ? window.formatCorebiqCurrency(value)
+                            : `₹${Number(value).toLocaleString('en-IN')}`
+                    }
+                }
+            }
+        }
+    });
+    canvas.setAttribute('aria-label', `Sales trend. Total sales for selected period: ${currency(total)}.`);
+};
+
+window.updateDashboardSales = function() {
+    const periodSelect = document.getElementById('dashboard-period');
+    const period = periodSelect ? periodSelect.value : 'today';
+    const range = window.getDashboardSalesPeriod(period);
+    const isToday = period === 'today';
+    const label = periodSelect ? periodSelect.options[periodSelect.selectedIndex].text : 'Today';
+    const currency = value => window.formatCorebiqCurrency
+        ? window.formatCorebiqCurrency(value)
+        : `₹${Number(value || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const rangeTransactions = window.dashboardTransactions.filter(transaction => {
+        const dateKey = window.getDashboardDateKey(transaction.date);
+        if (!dateKey) return false;
+        const [year, month, day] = dateKey.split('-').map(Number);
+        const date = new Date(year, month - 1, day);
+        return date >= range.start && date <= range.end;
+    });
+    const salesTransactions = rangeTransactions.filter(transaction =>
+        String(transaction.type || '').toLowerCase() === 'sales'
+    );
+    const total = salesTransactions.reduce((sum, transaction) => sum + (Number(transaction.cashOut) || 0), 0);
+    const received = rangeTransactions
+        .filter(transaction => String(transaction.type || '').toLowerCase() === 'receipt')
+        .reduce((sum, transaction) => sum + (Number(transaction.cashIn) || 0), 0);
+    const totalElement = document.getElementById('dashboard-sales-total');
+    const periodLabel = document.getElementById('dashboard-sales-period-label');
+    const caption = document.getElementById('sales-trend-caption');
+    const financeLabel = document.getElementById('dashboard-finance-period-label');
+    const revenueElement = document.getElementById('dashboard-revenue-total');
+    const receivedElement = document.getElementById('dashboard-received-total');
+    const dueElement = document.getElementById('dashboard-due-total');
+    if (revenueElement) revenueElement.textContent = currency(total);
+    if (receivedElement) receivedElement.textContent = currency(received);
+    if (dueElement) dueElement.textContent = currency(total - received);
+    if (financeLabel) financeLabel.textContent = label;
+    if (totalElement) totalElement.textContent = currency(total);
+    if (periodLabel) periodLabel.textContent = label;
+    if (caption) caption.textContent = `${isToday ? 'Hourly' : (period === 'this-fy' || period === 'this-year' ? 'Monthly' : 'Daily')} billed sales for ${label.toLowerCase()}`;
+    window.renderSalesTrend(salesTransactions, period, range, total);
+    window.updateDashboardAppointmentSummary(range);
+};
+
+window.updateDashboardAppointmentSummary = function(range) {
+    if (!range || !Array.isArray(window.allApts)) return;
+
+    const counts = { pending: 0, completed: 0, rescheduled: 0, cancelled: 0 };
+    window.allApts.forEach(appointment => {
+        const dateKey = window.getDashboardDateKey(appointment.date);
+        if (!dateKey) return;
+        const [year, month, day] = dateKey.split('-').map(Number);
+        const appointmentDate = new Date(year, month - 1, day);
+        if (appointmentDate < range.start || appointmentDate > range.end) return;
+
+        const status = String(appointment.status || '').toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(counts, status)) counts[status]++;
+    });
+
+    document.getElementById('dashPending').innerText = counts.pending;
+    document.getElementById('dashCompleted').innerText = counts.completed;
+    window.renderChart(counts.pending, counts.completed, counts.rescheduled, counts.cancelled);
+};
+
+/* -------------------------------------------------------
+   DASHBOARD FIRESTORE DATA
+------------------------------------------------------- */
+window.fetchDashboardData = async function() {
+
+    if (!window.currentUser) return;
+
+    try {
+
+        const errBanner =
+            document.getElementById('dash-error-banner');
+
+        if (errBanner) {
+            errBanner.style.display = 'none';
+        }
+
+        /* -----------------------------------------------
+           APPOINTMENTS
+        ------------------------------------------------ */
+        let qApt;
+
+        if (window.currentUser.role === 'admin') {
+            qApt =
+                query(collection(db, "appointments"));
+        } else {
+            qApt =
+                query(
+                    collection(db, "appointments"),
+                    where(
+                        "branch",
+                        "==",
+                        window.currentUser.branch
+                    )
+                );
+        }
+
+        const snapApt =
+            await getDocs(qApt);
+
+        window.allApts = [];
+        window.aptDatesSet.clear();
+
+        snapApt.forEach(docSnap => {
+
+            const data = docSnap.data();
+
+            window.allApts.push({
+                ...data,
+                id: docSnap.id
+            });
+
+            if (data.date) {
+                window.aptDatesSet.add(data.date);
+            }
+
+        });
+
+        window.allApts.sort((a,b) => {
+
+            const dateCompare =
+                String(b.date || '').localeCompare(
+                    String(a.date || '')
+                );
+
+            if (dateCompare !== 0) {
+                return dateCompare;
+            }
+
+            return String(a.time || '').localeCompare(
+                String(b.time || '')
+            );
+        });
+
+        window.renderCalendar();
+        window.renderLiveTable();
+
+        /* -----------------------------------------------
+           FINANCIAL SALES OVERVIEW
+        ------------------------------------------------ */
+        let qTransactions;
+        if (window.currentUser.role === 'admin') {
+            qTransactions = query(collection(db, "transactions"));
+        } else {
+            qTransactions = query(
+                collection(db, "transactions"),
+                where("branch", "==", window.currentUser.branch)
+            );
+        }
+
+        const snapTransactions = await getDocs(qTransactions);
+        window.dashboardTransactions = snapTransactions.docs.map(docSnap => docSnap.data());
+        window.updateDashboardSales();
+
+        /* -----------------------------------------------
+           TODAY'S ATTENDANCE
+        ------------------------------------------------ */
+        const todayStr =
+            window.getLocalDateString();
+
+        let qAtt;
+
+        if (window.currentUser.role === 'admin') {
+            qAtt =
+                query(
+                    collection(db, "daily_attendance"),
+                    where("date", "==", todayStr)
+                );
+        } else {
+            qAtt =
+                query(
+                    collection(db, "daily_attendance"),
+                    where("date", "==", todayStr),
+                    where(
+                        "branch",
+                        "==",
+                        window.currentUser.branch
+                    )
+                );
+        }
+
+        const snapAtt =
+            await getDocs(qAtt);
+
+        let attPresent = 0;
+        let attAbsent = 0;
+
+        snapAtt.forEach(docSnap => {
+
+            const status =
+                (docSnap.data().status || '').toLowerCase();
+
+            if (
+                status === 'present' ||
+                status === 'half-day'
+            ) {
+                attPresent++;
+            } else if (
+                status === 'absent' ||
+                status === 'leave'
+            ) {
+                attAbsent++;
+            }
+        });
+
+        const dAttPresent =
+            document.getElementById('dashPresent');
+
+        if (dAttPresent) {
+            dAttPresent.innerText = attPresent;
+        }
+
+        const dAttAbsent =
+            document.getElementById('dashAbsent');
+
+        if (dAttAbsent) {
+            dAttAbsent.innerText = attAbsent;
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard Load Error:",
+            error
+        );
+
+        const errorBanner =
+            document.getElementById('dash-error-banner');
+
+        const errorText =
+            document.getElementById('dash-error-text');
+
+        if (errorBanner) {
+            errorBanner.style.display = 'flex';
+        }
+
+        if (errorText) {
+            errorText.innerText =
+                "Data Sync Error: " +
+                (error.message || "Unknown error");
+        }
+    }
+};
+
+/* -------------------------------------------------------
+   BOOTSTRAP
+------------------------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('resize', window.updateSidebarCollapseControl);
+
+    document.addEventListener('click', event => {
+        if (!event.target.closest('.support-actions')) {
+            const supportMenu = document.getElementById('support-menu');
+            const supportButton = document.getElementById('support-button');
+            supportMenu?.classList.remove('open');
+            supportButton?.setAttribute('aria-expanded', 'false');
+        }
+
+        if (!event.target.closest('.header-actions')) {
+            window.toggleProfileMenu(false);
+        }
+
+        if (!event.target.closest('.module-search')) {
+            window.searchModules('');
+        }
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            document.getElementById('support-menu')?.classList.remove('open');
+            document.getElementById('support-button')?.setAttribute('aria-expanded', 'false');
+            window.toggleProfileMenu(false);
+        }
+
+        if (
+            !event.altKey ||
+            event.ctrlKey ||
+            event.metaKey ||
+            event.shiftKey ||
+            event.defaultPrevented ||
+            event.repeat ||
+            event.target instanceof Element &&
+                event.target.closest('input, textarea, select, [contenteditable="true"]')
+        ) return;
+
+        const key = event.key.toUpperCase();
+        const targetId = Object.entries(window.COREBIQ_MODULE_SHORTCUTS)
+            .find(([, shortcut]) => shortcut === key)?.[0];
+        if (targetId) {
+            const navElement = document.querySelector(
+                `#sidebar-container [data-target="${targetId}"]`
+            );
+            if (navElement && navElement.offsetParent !== null) {
+                event.preventDefault();
+                navElement.click();
+                return;
+            }
+        }
+    });
+
+    dragElement(
+        document.getElementById(
+            "calc-popup-container"
+        )
+    );
+
+    /*
+       Load shared components with cache-busting.
+       These do NOT render the appointment module.
+       appointments.html is loaded only by switchView().
+    */
+    window.loadComponent(
+        'header-container',
+        'header.html'
+    );
+
+    window.loadComponent(
+        'sidebar-container',
+        'sidebar.html'
+    ).then(() => window.applyModuleShortcuts());
+
+    window.loadComponent(
+        'bottomnav-container',
+        'bottomnav.html'
+    );
+
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+        navigator.serviceWorker.register('./sw.js').catch(error => {
+            console.error('Service worker registration failed:', error);
+        });
+    }
+
+    window.updateGlobalClock();
+    setInterval(
+        window.updateGlobalClock,
+        1000
+    );
+
+    /* If sidebar finishes after authentication, apply role again. */
+    setTimeout(
+        window.applyRoleVisibility,
+        300
+    );
+    setTimeout(
+        window.applyRoleVisibility,
+        1000
+    );
+});
+</script>
+
+</body>
+</html>
