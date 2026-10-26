@@ -106,6 +106,107 @@
             #monthTable th, #monthTable td { border: 1px solid #000; font-size: 9px; padding: 3px; }
             #monthTable th { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
+    
+        /* Performance and mobile stability patch */
+        #attendance-module { min-width: 0; }
+        #attendance-module .table-container { min-width: 0; }
+        #attendance-module .table-responsive {
+            max-width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            contain: content;
+        }
+        #attendance-module .saas-table,
+        #attendance-module #monthTable { table-layout: auto; }
+        #attendance-module .summary-dashboard { min-width: 0; }
+        #attendance-module .modal-overlay {
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
+        #attendance-module .modal-container {
+            min-height: 0;
+            overscroll-behavior: contain;
+        }
+        #attendance-module .modal-body {
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        #attendance-module button,
+        #attendance-module input,
+        #attendance-module select,
+        #attendance-module textarea { touch-action: manipulation; }
+        @media (max-width: 767px) {
+            #attendance-module { padding-left: 0; padding-right: 0; }
+            #attendance-module .section-title {
+                align-items: stretch;
+                margin-bottom: 16px;
+                font-size: 16px;
+            }
+            #attendance-module .section-title > div {
+                width: 100%;
+                display: grid !important;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px !important;
+            }
+            #attendance-module .section-title button {
+                justify-content: center;
+                padding: 10px 8px;
+                min-width: 0;
+                font-size: 12px;
+            }
+            #attendance-module .table-container {
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+            #attendance-module .table-header { padding: 12px; gap: 12px; }
+            #attendance-module .table-responsive { padding-left: 0 !important; padding-right: 0 !important; }
+            #attendance-module .summary-dashboard { gap: 8px; padding: 8px; }
+            #attendance-module .summary-card { min-width: calc(33.333% - 8px); padding: 10px 4px; }
+            #attendance-module .summary-card span { font-size: 9px; text-align: center; }
+            #attendance-module .summary-card strong { font-size: 18px; }
+            #attendance-module .form-input { min-width: 0; font-size: 16px; }
+            #attendance-module .modal-overlay {
+                padding: 8px;
+                align-items: flex-end;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+            #attendance-module .modal-container {
+                width: 100%;
+                max-width: none;
+                max-height: calc(100dvh - 16px);
+                border-radius: 16px;
+            }
+            #attendance-module .modal-header { padding: 14px 16px; }
+            #attendance-module .modal-body { padding: 16px; overflow-y: auto; }
+            #attendance-module .input-group,
+            #attendance-module .input-group.three-cols {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
+            }
+            #attendance-module .modal-body form > div[style*="justify-content: flex-end"] {
+                flex-wrap: wrap;
+            }
+            #attendance-module .modal-body form > div[style*="justify-content: flex-end"] button {
+                flex: 1 1 auto;
+                justify-content: center;
+            }
+            #attendance-module .table-header > div[style*="justify-content: space-between"] {
+                align-items: flex-start !important;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            #attendance-module .table-header button { white-space: nowrap; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #attendance-module *, #attendance-module *::before, #attendance-module *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+        }
+
     </style>
 
     <div class="section-title">
@@ -396,7 +497,8 @@
         }
         window.openLeaveModal = function() {
             document.getElementById('leaveModal').style.display = 'flex';
-            document.getElementById('leaveDate').value = new Date().toISOString().split('T')[0];
+            const d = new Date();
+            document.getElementById('leaveDate').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
         window.closeLeaveModal = function() {
             document.getElementById('leaveModal').style.display = 'none';
@@ -404,7 +506,8 @@
         }
 
         // Set Default Date to Today
-        const todayString = new Date().toISOString().split('T')[0];
+        const todayDate = new Date();
+        const todayString = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
         document.getElementById("attDate").value = todayString;
         document.getElementById("filterAttDate").value = todayString;
 
@@ -558,6 +661,7 @@
                 snap.forEach(docSnap => reqs.push({id: docSnap.id, data: docSnap.data()}));
                 reqs.sort((a,b) => new Date(b.data.date) - new Date(a.data.date));
 
+                const leaveFragment = document.createDocumentFragment();
                 reqs.forEach(req => {
                     const data = req.data;
                     let badgeCls = 'badge-pending';
@@ -581,8 +685,9 @@
                         <td data-label="Status"><span class="badge ${badgeCls}">${data.status}</span></td>
                         <td class="no-print admin-only-col" data-label="Actions" style="text-align: right;">${actionsHtml}</td>
                     `;
-                    tableBody.appendChild(tr);
+                    leaveFragment.appendChild(tr);
                 });
+                tableBody.appendChild(leaveFragment);
             } catch(e) {
                 console.error("Error loading leave requests:", e);
                 tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--danger);">Error loading leave requests.</td></tr>';
@@ -629,75 +734,87 @@
             window.generateMonthlyReport();
         }
 
+        let monthlyReportRequestId = 0;
         window.generateMonthlyReport = async function() {
-            const monthVal = document.getElementById('reportMonth').value; // YYYY-MM
+            const requestId = ++monthlyReportRequestId;
+            const monthVal = document.getElementById('reportMonth').value;
             const branchFilter = document.getElementById('reportBranch').value.toLowerCase();
-            
-            if(!monthVal) return;
+            if (!monthVal) return;
 
             const [year, month] = monthVal.split('-');
-            const daysInMonth = new Date(year, month, 0).getDate();
+            const daysInMonth = new Date(Number(year), Number(month), 0).getDate();
             const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            
-            document.getElementById('reportPrintMonthTxt').innerText = `${monthNames[parseInt(month)-1]} ${year}`;
-            document.getElementById('monthlyEmptyMsg').style.display = 'none';
 
-            // Build Header
+            document.getElementById('reportPrintMonthTxt').innerText = `${monthNames[Number(month) - 1]} ${year}`;
+            document.getElementById('monthlyEmptyMsg').style.display = 'block';
+            document.getElementById('monthlyEmptyMsg').innerText = 'Loading monthly report...';
+
             let headHtml = `<tr><th style="width: 150px;">Branch</th><th style="width: 150px;">Name</th><th>Role</th>`;
-            for(let i=1; i<=daysInMonth; i++) {
-                headHtml += `<th>${i}</th>`;
-            }
+            for (let i = 1; i <= daysInMonth; i++) headHtml += `<th>${i}</th>`;
             headHtml += `<th>Total P</th></tr>`;
             document.getElementById('monthlyHead').innerHTML = headHtml;
 
-            // Fetch Month Data
-            let q;
-            if (!isAdmin) {
-                q = query(collection(db, "daily_attendance"), where("branch", "==", window.currentUser.branch));
-            } else {
-                q = collection(db, "daily_attendance");
-            }
-            const snap = await getDocs(q);
-            const attData = [];
-            snap.forEach(d => attData.push(d.data()));
-
-            // Filter Employees and Sort by Branch, then Name
-            let filteredEmps = allEmployees;
-            if (branchFilter && branchFilter !== 'all branches') {
-                filteredEmps = filteredEmps.filter(e => (e.branch || '').toLowerCase() === branchFilter);
-            }
-            
-            let bodyHtml = '';
-            filteredEmps.forEach(emp => {
-                let presentCount = 0;
-                let rowHtml = `<tr>
-                    <td>${emp.branch || '--'}</td>
-                    <td>${emp.name}</td>
-                    <td><span style="font-size:9px; color:#888;">${emp.type}</span></td>`;
-                
-                for(let i=1; i<=daysInMonth; i++) {
-                    let dStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
-                    let record = attData.find(a => a.empId === emp.id && a.date === dStr);
-                    
-                    let mark = '-';
-                    let cls = 'm-st-none';
-                    
-                    if(record) {
-                        if(record.status === 'Present') { mark = 'P'; cls = 'm-st-P'; presentCount++; }
-                        else if(record.status === 'Half-Day') { mark = 'H'; cls = 'm-st-H'; presentCount += 0.5; }
-                        else if(record.status === 'Leave') { mark = 'L'; cls = 'm-st-L'; }
-                    }
-                    rowHtml += `<td class="${cls}">${mark}</td>`;
+            try {
+                let q;
+                if (!isAdmin) {
+                    q = query(collection(db, "daily_attendance"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = collection(db, "daily_attendance");
                 }
-                rowHtml += `<td style="color:var(--primary); font-weight:800;">${presentCount}</td></tr>`;
-                bodyHtml += rowHtml;
-            });
+                const snap = await getDocs(q);
+                if (requestId !== monthlyReportRequestId) return;
 
-            if (filteredEmps.length === 0) {
-                bodyHtml = `<tr><td colspan="${daysInMonth + 4}" style="padding: 20px; color: var(--text-muted);">No employees found.</td></tr>`;
+                // O(1) attendance lookup instead of repeatedly scanning every record for every employee/day.
+                const attendanceByEmployeeDate = new Map();
+                snap.forEach(d => {
+                    const data = d.data();
+                    if (data.empId && data.date && data.date.startsWith(`${year}-${month}-`)) {
+                        attendanceByEmployeeDate.set(`${data.empId}|${data.date}`, data);
+                    }
+                });
+
+                let filteredEmps = allEmployees;
+                if (branchFilter && branchFilter !== 'all branches') {
+                    filteredEmps = filteredEmps.filter(e => (e.branch || '').toLowerCase() === branchFilter);
+                }
+
+                const bodyRows = [];
+                for (const emp of filteredEmps) {
+                    let presentCount = 0;
+                    let rowHtml = `<tr>
+                        <td>${emp.branch || '--'}</td>
+                        <td>${emp.name || ''}</td>
+                        <td><span style="font-size:9px; color:#888;">${emp.type || ''}</span></td>`;
+
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const dStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
+                        const record = attendanceByEmployeeDate.get(`${emp.id}|${dStr}`);
+                        let mark = '-';
+                        let cls = 'm-st-none';
+
+                        if (record) {
+                            if (record.status === 'Present') { mark = 'P'; cls = 'm-st-P'; presentCount++; }
+                            else if (record.status === 'Half-Day') { mark = 'H'; cls = 'm-st-H'; presentCount += 0.5; }
+                            else if (record.status === 'Leave') { mark = 'L'; cls = 'm-st-L'; }
+                        }
+                        rowHtml += `<td class="${cls}">${mark}</td>`;
+                    }
+                    rowHtml += `<td style="color:var(--primary); font-weight:800;">${presentCount}</td></tr>`;
+                    bodyRows.push(rowHtml);
+                }
+
+                if (requestId !== monthlyReportRequestId) return;
+                document.getElementById('monthlyBody').innerHTML = bodyRows.length
+                    ? bodyRows.join('')
+                    : `<tr><td colspan="${daysInMonth + 4}" style="padding: 20px; color: var(--text-muted);">No employees found.</td></tr>`;
+                document.getElementById('monthlyEmptyMsg').style.display = 'none';
+            } catch (error) {
+                console.error("Monthly attendance report error:", error);
+                if (requestId === monthlyReportRequestId) {
+                    document.getElementById('monthlyEmptyMsg').style.display = 'block';
+                    document.getElementById('monthlyEmptyMsg').innerText = 'Unable to load monthly report. Please check connection and Firestore permissions.';
+                }
             }
-
-            document.getElementById('monthlyBody').innerHTML = bodyHtml;
         }
 
         window.printMonthlyReport = function() {
@@ -767,6 +884,7 @@
                 querySnapshot.forEach(docSnap => attList.push({ id: docSnap.id, data: docSnap.data() }));
                 attList.sort((a, b) => new Date(b.data.date || 0) - new Date(a.data.date || 0));
 
+                const attendanceFragment = document.createDocumentFragment();
                 attList.forEach((item) => {
                     const data = item.data;
                     const docId = item.id;
@@ -797,8 +915,9 @@
                             <span class="material-symbols-rounded" style="color: var(--danger); cursor: pointer; font-size: 20px;" title="Delete" onclick="window.deleteAtt('${docId}')">delete</span>
                         </td>
                     `;
-                    tableBody.appendChild(tr);
+                    attendanceFragment.appendChild(tr);
                 });
+                tableBody.appendChild(attendanceFragment);
                 
                 window.filterAttTable();
 
@@ -856,7 +975,8 @@
         }
 
         window.setAttFilterToday = function() {
-            document.getElementById("filterAttDate").value = new Date().toISOString().split('T')[0];
+            const d = new Date();
+            document.getElementById("filterAttDate").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             window.filterAttTable();
         }
 
@@ -945,7 +1065,8 @@
         window.resetAttForm = function() {
             document.getElementById('attendance-form').reset();
             document.getElementById('attDocId').value = '';
-            document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
+            const d = new Date();
+            document.getElementById('attDate').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
             document.getElementById('saveAttBtn').innerHTML = '<span class="material-symbols-rounded" style="font-size: 18px;">how_to_reg</span> Save Attendance';
             
             if (!isAdmin) {
