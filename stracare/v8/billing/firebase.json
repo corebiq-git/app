@@ -1,0 +1,5 @@
+{
+  "functions": [{"source": "functions", "codebase": "default", "runtime": "nodejs20"}],
+  "hosting": {"public": "public", "ignore": ["firebase.json", "**/.*", "**/node_modules/**"], "cleanUrls": true, "headers": [{"source": "**/*.@(js|css)", "headers": [{"key": "Cache-Control", "value": "no-cache"}]}]},
+  "firestore": {"rules": "firestore.rules"}
+}

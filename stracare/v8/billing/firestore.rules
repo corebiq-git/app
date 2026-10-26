@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Usage history is accessed only by trusted Admin SDK backend functions.
+    // Admin SDK bypasses Firestore rules; the browser must not read/write this collection directly.
+    match /firebaseUsageDaily/{document=**} {
+      allow read, write: if false;
+    }
+    // Keep existing application collections/rules in your project. Do not blindly replace
+    // your production rules with this starter file if the project has other collections.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
