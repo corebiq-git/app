@@ -7,7 +7,14 @@
 <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div id="loginScreen" class="login-wrap"><div class="login-card"><div class="brand-mark">C<span>B</span></div><p class="eyebrow">COREBIQ ADMIN</p><h1>Firebase Monitor</h1><p class="muted">Secure usage, quota and billing overview.</p><button id="loginBtn" class="btn primary">Sign in with Google</button><p id="loginError" class="error" role="alert"></p><p class="tiny muted">Access is restricted to configured administrator email addresses.</p></div></div>
+<div id="loginScreen" class="login-wrap"><div class="login-card"><div class="brand-mark">C<span>B</span></div><p class="eyebrow">COREBIQ ADMIN</p><h1>Firebase Monitor</h1><p class="muted">Secure usage, quota and billing overview.</p><form id="loginForm" class="login-form" novalidate>
+<label for="loginEmail">Email address</label>
+<input id="loginEmail" name="email" type="email" placeholder="admin@corebiq.com" autocomplete="username" required>
+<label for="loginPassword">Password</label>
+<input id="loginPassword" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+<button id="loginBtn" class="btn primary" type="submit">Sign in</button>
+<p id="loginError" class="error" role="alert" aria-live="polite"></p>
+</form><p class="tiny muted">Access is restricted to configured administrator email addresses.</p></div></div>
 <div id="app" class="app hidden">
 <aside class="sidebar"><div class="brand"><div class="brand-mark small">C<span>B</span></div><div><strong>COREBIQ</strong><small>Firebase Monitor</small></div></div><nav><a class="nav-item active" href="#overview">▦ <span>Overview</span></a><a class="nav-item" href="#services">◈ <span>Services</span></a><a class="nav-item" href="#history">▤ <span>Daily history</span></a><a class="nav-item" href="#billing">₹ <span>Billing</span></a></nav><div class="sidebar-bottom"><span class="status-dot"></span><span>Admin session</span><button id="logoutBtn" class="text-btn">Sign out</button></div></aside>
 <main class="main"><header class="topbar"><div><p class="eyebrow">OPERATIONS / CLOUD</p><h1>Usage overview</h1><p class="muted" id="projectLabel">Connect your Firebase project to begin.</p></div><div class="top-actions"><select id="rangeSelect" aria-label="Date range"><option value="1">Last 24 hours</option><option value="7" selected>Last 7 days</option><option value="30">Last 30 days</option></select><button id="refreshBtn" class="btn secondary">↻ Refresh</button></div></header>
