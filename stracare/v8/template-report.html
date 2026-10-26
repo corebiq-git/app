@@ -369,6 +369,11 @@
             #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
             #letterhead-module .company-info { max-width: 85mm !important; }
             #letterhead-module .letter-body { padding: 8mm 20mm !important; flex-grow: 1 !important; }
+            #letterhead-module .form-group,
+            #letterhead-module .report-notes-label-row {
+                grid-template-columns: minmax(0, 1fr) 12px minmax(0, 1fr) !important;
+                gap: 12px !important;
+            }
             
             /* Print rules to hide guidelines and placeholders */
             #letterhead-module .form-group input { border-bottom: none !important; padding-left: 0 !important; }
