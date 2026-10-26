@@ -5,13 +5,10 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.10.0/firebas
 
 // Replace these values with the Web app config from Firebase Console > Project settings.
 const firebaseConfig = {
-  apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
-    authDomain: "cmf001stra.firebaseapp.com",
-    projectId: "cmf001stra",
-    storageBucket: "cmf001stra.firebasestorage.app",
-    messagingSenderId: "763958641347",
-    appId: "1:763958641347:web:316876bc2340b26bd21876",
-    measurementId: "G-770FBR88LJ"
+  apiKey: 'YOUR_FIREBASE_WEB_API_KEY',
+  authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
+  projectId: 'YOUR_PROJECT_ID',
+  appId: 'YOUR_FIREBASE_APP_ID'
 };
 const configured = !Object.values(firebaseConfig).some(v => String(v).includes('YOUR_'));
 const $ = id => document.getElementById(id);
@@ -38,7 +35,23 @@ function renderServices(services=[]){
   }
 }
 function renderHistory(items=[]){const body=$('historyRows');body.innerHTML='';if(!items.length){body.innerHTML='<tr><td colspan="5" class="empty">No saved snapshots yet.</td></tr>';return}for(const x of items){const tr=document.createElement('tr');[x.date,fmt(x.firestoreReads),fmt(x.firestoreWrites),bytes(x.rtdbEgress),x.capturedAt?new Date(x.capturedAt).toLocaleString():'—'].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});body.appendChild(tr)}}
-async function loadDashboard(){if(!functions)return;setNotice('Loading official metrics and saved history…');$('refreshBtn').disabled=true;try{const fn=httpsCallable(functions,'getDashboard');const result=await fn({days:Number($('rangeSelect').value)});const d=result.data||{};const latest=d.latest||{};setText('projectLabel',`Project: ${d.projectId||firebaseConfig.projectId} · Last ${$('rangeSelect').value} day(s)`);setText('firestoreReads',fmt(latest.firestoreReads));setText('firestoreWrites',fmt(latest.firestoreWrites));setText('rtdbEgress',bytes(latest.rtdbEgress));setText('functionExecutions',fmt(latest.functionExecutions));drawChart(d.daily||[]);renderServices(d.services||[]);renderHistory(d.history||[]);if(d.billing?.available){setText('reportedCost',new Intl.NumberFormat('en-US',{style:'currency',currency:d.billing.currency||'USD'}).format(d.billing.amount));setText('billingPeriod',d.billing.period||'Reported from configured billing export.')}else{setText('reportedCost','Not connected');setText('billingPeriod','Configure Billing export to BigQuery to display actual costs.')}setNotice(d.warning||'Metrics refreshed. Values may be delayed by Cloud Monitoring and availability varies by service.');setText('lastUpdated','Updated '+new Date().toLocaleTimeString());}catch(e){console.error(e);setNotice(e.message||'Could not load metrics. Check admin access, deployed functions and Cloud Monitoring API permissions.','error')}finally{$('refreshBtn').disabled=false}}
+function renderQuota(d){
+  const q=d.freeTier||{};
+  const items=[
+    ['Reads','firestoreReads',q.reads,50000,'quotaReadsText','quotaReadsBar','quotaReadsNote',false],
+    ['Writes','firestoreWrites',q.writes,20000,'quotaWritesText','quotaWritesBar','quotaWritesNote',false],
+    ['Deletes','firestoreDeletes',q.deletes,20000,'quotaDeletesText','quotaDeletesBar','quotaDeletesNote',false],
+    ['Storage','storageBytes',q.storageBytes,1073741824,'quotaStorageText','quotaStorageBar','quotaStorageNote',true]
+  ];
+  for(const [label,key,value,limit,textId,barId,noteId,isBytes] of items){
+    const el=$(textId),bar=$(barId),note=$(noteId); if(!el||!bar||!note)continue;
+    const n=value==null?null:Number(value); const shown=n==null?'—':(isBytes?bytes(n):fmt(n));
+    const maxLabel=isBytes?'1 GiB':fmt(limit); el.textContent=`${shown} / ${maxLabel}`;
+    const pct=n==null?0:Math.max(0,Math.min(100,n/limit*100)); bar.style.width=pct+'%'; bar.classList.toggle('warn',pct>=90);
+    note.textContent=n==null?'Official metric unavailable for this project/range':`${pct.toFixed(1)}% of reference allowance${pct>=90?' · Near limit':''}`;
+  }
+}
+async function loadDashboard(){if(!functions)return;setNotice('Loading official metrics and saved history…');$('refreshBtn').disabled=true;try{const fn=httpsCallable(functions,'getDashboard');const result=await fn({days:Number($('rangeSelect').value)});const d=result.data||{};const latest=d.latest||{};setText('projectLabel',`Project: ${d.projectId||firebaseConfig.projectId} · Last ${$('rangeSelect').value} day(s)`);setText('firestoreReads',fmt(latest.firestoreReads));setText('firestoreWrites',fmt(latest.firestoreWrites));setText('rtdbEgress',bytes(latest.rtdbEgress));setText('functionExecutions',fmt(latest.functionExecutions));drawChart(d.daily||[]);renderServices(d.services||[]);renderHistory(d.history||[]);renderQuota(d);if(d.billing?.available){setText('reportedCost',new Intl.NumberFormat('en-US',{style:'currency',currency:d.billing.currency||'USD'}).format(d.billing.amount));setText('billingPeriod',d.billing.period||'Reported from configured billing export.')}else{setText('reportedCost','Not connected');setText('billingPeriod','Configure Billing export to BigQuery to display actual costs.')}setNotice(d.warning||'Metrics refreshed. Values may be delayed by Cloud Monitoring and availability varies by service.');setText('lastUpdated','Updated '+new Date().toLocaleTimeString());}catch(e){console.error(e);setNotice(e.message||'Could not load metrics. Check admin access, deployed functions and Cloud Monitoring API permissions.','error')}finally{$('refreshBtn').disabled=false}}
 async function saveSnapshot(){try{$('snapshotBtn').disabled=true;const fn=httpsCallable(functions,'captureDailySnapshot');await fn({});await loadDashboard();setNotice('Daily snapshot saved.');}catch(e){setNotice(e.message||'Snapshot failed.','error')}finally{$('snapshotBtn').disabled=false}}
 $('loginForm').addEventListener('submit', async event => {
   event.preventDefault();
@@ -78,4 +91,26 @@ $('loginForm').addEventListener('submit', async event => {
   }
 });
 $('logoutBtn').addEventListener('click',()=>signOut(auth));$('refreshBtn').addEventListener('click',loadDashboard);$('rangeSelect').addEventListener('change',loadDashboard);$('snapshotBtn').addEventListener('click',saveSnapshot);
-if(configured){const app=initializeApp(firebaseConfig);auth=getAuth(app);functions=getFunctions(app);getFirestore(app);onAuthStateChanged(auth,user=>{if(user){$('loginScreen').classList.add('hidden');$('app').classList.remove('hidden');loadDashboard()}else{$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden')}})}else{setNotice('Setup required: add Firebase web config, deploy the backend, and set the administrator allowlist. The dashboard is not connected to live data.');}
+if(configured){
+  const firebaseApp=initializeApp(firebaseConfig);auth=getAuth(firebaseApp);functions=getFunctions(firebaseApp);getFirestore(firebaseApp);
+  // Fail closed: keep dashboard hidden until the backend confirms this user is an allowlisted admin.
+  $('app').hidden=true;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');
+  onAuthStateChanged(auth,async user=>{
+    $('app').hidden=true;$('app').classList.add('hidden');
+    if(!user){$('loginScreen').classList.remove('hidden');return;}
+    try{
+      await httpsCallable(functions,'checkAdminAccess')({});
+      $('loginScreen').classList.add('hidden');$('app').hidden=false;$('app').classList.remove('hidden');
+      await loadDashboard();
+    }catch(e){
+      console.error('Admin verification failed:',e.code||e.message);
+      await signOut(auth).catch(()=>{});
+      $('loginScreen').classList.remove('hidden');
+      $('loginError').textContent='This account is not authorized as a COREBIQ administrator.';
+    }
+  });
+}else{
+  $('app').hidden=true;$('app').classList.add('hidden');$('loginScreen').classList.remove('hidden');
+  $('loginError').textContent='Setup required: add Firebase web config in public/app.js.';
+  setNotice('Firebase configuration is missing. The dashboard remains locked until setup is complete.','error');
+}
