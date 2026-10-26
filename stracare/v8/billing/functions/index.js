@@ -43,13 +43,21 @@ async function queryMetric(spec, days) {
   const request = { name: `projects/${projectId()}`, filter: `metric.type = "${spec.metric}"`, interval: { startTime: { seconds: Math.floor(start.getTime()/1000) }, endTime: { seconds: Math.floor(now.getTime()/1000) } }, view: 'FULL', pageSize: 1000 };
   try {
     const [series] = await metricClient.listTimeSeries(request);
-    const daily = new Map(); let total = 0; let hasValue = false;
+    const daily = new Map(); let total = 0; let hasValue = false; let latestTime = 0; let latestGauge = null;
     for (const ts of series || []) for (const p of ts.points || []) {
       const val = toNumber(p); if (val == null) continue;
-      const time = p.interval?.endTime?.seconds ? new Date(Number(p.interval.endTime.seconds)*1000) : now;
-      const day = isoDay(time); daily.set(day, (daily.get(day) || 0) + val); total += val; hasValue = true;
+      const seconds = Number(p.interval?.endTime?.seconds || 0);
+      const time = seconds ? new Date(seconds * 1000) : now;
+      const day = isoDay(time);
+      if (spec.gauge) {
+        if (seconds >= latestTime) { latestTime = seconds; latestGauge = val; }
+        daily.set(day, val);
+      } else {
+        daily.set(day, (daily.get(day) || 0) + val); total += val;
+      }
+      hasValue = true;
     }
-    return { ...spec, available: hasValue, value: hasValue ? total : null, daily: Object.fromEntries(daily), note: hasValue ? '' : 'No time series returned for selected range.' };
+    return { ...spec, available: hasValue, value: hasValue ? (spec.gauge ? latestGauge : total) : null, daily: Object.fromEntries(daily), note: hasValue ? '' : 'No time series returned for selected range.' };
   } catch (e) {
     // Do not return internal error details to the browser; logs retain the details.
     console.warn(`Metric query unavailable: ${spec.metric}`, e.message);
@@ -74,8 +82,21 @@ async function buildDashboard(days) {
   const warningThresholds = { firestoreReads: Number(process.env.WARN_FIRESTORE_READS_DAILY || 0), firestoreWrites: Number(process.env.WARN_FIRESTORE_WRITES_DAILY || 0), functionExecutions: Number(process.env.WARN_FUNCTION_EXECUTIONS_DAILY || 0) };
   const latestDay = daily[daily.length - 1] || {};
   const warnings = Object.entries(warningThresholds).filter(([key, limit]) => limit > 0 && Number(latestDay[key] || 0) >= limit).map(([key, limit]) => `${key} reached configured daily warning threshold (${limit}).`);
-  return { projectId: projectId(), latest, daily, services: results, history, billing: { available: false }, warnings, warning: warnings.length ? `Usage warning: ${warnings.join(' ')}` : 'Official metric values are subject to metric availability and reporting delay. Configure daily warning thresholds and Billing export separately for actual costs.' };
+  const today = isoDay(new Date());
+  const freeTier = {
+    reads: byKey.firestoreReads?.daily?.[today] ?? null,
+    writes: byKey.firestoreWrites?.daily?.[today] ?? null,
+    deletes: byKey.firestoreDeletes?.daily?.[today] ?? null,
+    storageBytes: byKey.storageBytes?.value ?? null,
+    referenceLimits: { readsPerDay: 50000, writesPerDay: 20000, deletesPerDay: 20000, storageBytes: 1073741824 }
+  };
+  return { projectId: projectId(), latest, daily, services: results, history, freeTier, billing: { available: false }, warnings, warning: warnings.length ? `Usage warning: ${warnings.join(' ')}` : 'Official metrics can be delayed or unavailable. Free-tier bars are indicative; check Firebase Console for plan eligibility and billing details.' };
 }
+exports.checkAdminAccess = onCall({ region: 'us-central1', cors: true, enforceAppCheck: false }, async request => {
+  const email = requireAdmin(request);
+  return { ok: true, email };
+});
+
 exports.getDashboard = onCall({ region: 'us-central1', cors: true, enforceAppCheck: false }, async request => {
   requireAdmin(request);
   const days = Math.max(1, Math.min(30, Number(request.data?.days) || 7));
