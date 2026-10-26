@@ -1,0 +1,119 @@
+<style>
+    .bottom-nav {
+        position: fixed;
+        z-index: 1100;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-around;
+        gap: 4px;
+        padding: 7px 8px max(7px, env(safe-area-inset-bottom));
+        border-top: 1px solid var(--outline-soft, #E1E4E2);
+        background: rgba(255, 255, 255, .98);
+        box-shadow: 0 -4px 18px rgba(31, 35, 40, .10);
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
+    }
+
+    .bottom-nav-item {
+        display: flex;
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 56px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 3px 1px;
+        border: 0;
+        border-radius: 12px;
+        background: transparent;
+        color: var(--muted, #6B7280);
+        font-family: Outfit, "Google Sans", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.1;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: color .18s ease, transform .18s ease;
+    }
+
+    .bottom-nav-item:hover {
+        background: transparent;
+        color: #0B1F4B;
+    }
+
+    .bottom-nav-item:active {
+        transform: scale(.95);
+    }
+
+    .bottom-nav-item:focus-visible {
+        outline: 2px solid var(--primary, #0B1F4B);
+        outline-offset: 1px;
+    }
+
+    .bottom-nav-item[aria-current="page"],
+    .bottom-nav-item[aria-pressed="true"],
+    .bottom-nav-item[aria-expanded="true"] {
+        color: #0B1F4B;
+        font-weight: 600;
+    }
+
+    .bottom-nav-icon-wrap {
+        display: grid;
+        width: 38px;
+        height: 28px;
+        place-items: center;
+        border-radius: 12px;
+        color: currentColor;
+        transition: color .18s ease;
+    }
+
+    .bottom-nav-icon {
+        font-size: 23px;
+        line-height: 1;
+        font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+        transition: font-variation-settings .18s ease, transform .18s ease;
+    }
+
+    .bottom-nav-item[aria-current="page"] .bottom-nav-icon,
+    .bottom-nav-item[aria-pressed="true"] .bottom-nav-icon,
+    .bottom-nav-item[aria-expanded="true"] .bottom-nav-icon {
+        font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
+    }
+
+    @media (min-width: 769px) {
+        .bottom-nav {
+            display: none;
+        }
+    }
+
+</style>
+
+<nav class="bottom-nav" aria-label="Mobile navigation">
+    <button class="bottom-nav-item active" type="button" aria-label="Home" aria-current="page" onclick="window.switchView('view-dashboard', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon" aria-hidden="true">home</span></span>
+        <span>Home</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="Contacts" onclick="window.switchView('view-contacts', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon" aria-hidden="true">contact_page</span></span>
+        <span>Contacts</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="My tasks" onclick="window.switchView('view-my-tasks', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon" aria-hidden="true">task_alt</span></span>
+        <span>My Task</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="Appointments" onclick="window.switchView('view-appointments', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon" aria-hidden="true">event_available</span></span>
+        <span>Apt</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="Open menu" aria-expanded="false" onclick="window.toggleMenu()">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon" aria-hidden="true">menu_open</span></span>
+        <span>Menu</span>
+    </button>
+</nav>
