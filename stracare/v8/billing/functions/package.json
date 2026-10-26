@@ -1,0 +1,13 @@
+{
+  "name": "corebiq-firebase-monitor-functions",
+  "description": "Secure backend for COREBIQ Firebase usage monitoring dashboard",
+  "private": true,
+  "engines": {"node": "20"},
+  "main": "index.js",
+  "scripts": {"serve": "firebase emulators:start --only functions", "deploy": "firebase deploy --only functions"},
+  "dependencies": {
+    "firebase-admin": "^13.4.0",
+    "firebase-functions": "^6.4.0",
+    "@google-cloud/monitoring": "^5.3.0"
+  }
+}
