@@ -5,10 +5,13 @@ import { getFirestore } from 'https://www.gstatic.com/firebasejs/11.10.0/firebas
 
 // Replace these values with the Web app config from Firebase Console > Project settings.
 const firebaseConfig = {
-  apiKey: 'YOUR_FIREBASE_WEB_API_KEY',
-  authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  appId: 'YOUR_FIREBASE_APP_ID'
+    apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+    authDomain: "cmf001stra.firebaseapp.com",
+    projectId: "cmf001stra",
+    storageBucket: "cmf001stra.firebasestorage.app",
+    messagingSenderId: "763958641347",
+    appId: "1:763958641347:web:316876bc2340b26bd21876",
+    measurementId: "G-770FBR88LJ"
 };
 const configured = !Object.values(firebaseConfig).some(v => String(v).includes('YOUR_'));
 const $ = id => document.getElementById(id);
