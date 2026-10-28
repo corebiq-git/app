@@ -34,8 +34,201 @@
             }
         }
     </script>
-
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e293b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Trimurti">
+<link rel="apple-touch-icon" href="assets/logo.png">
+    
     <style>
+/* ===== TRIMURTI PWA ADDITIONS ===== */
+.pwa-splash {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    background: #1e293b;
+    color: #fff;
+    transition: opacity .35s ease, visibility .35s ease;
+}
+
+.pwa-splash.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.pwa-splash-content {
+    text-align: center;
+    padding: 24px;
+}
+
+.pwa-splash-logo {
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin: 0 auto 22px;
+    border: 3px solid #d4af37;
+    background: #fff;
+    padding: 5px;
+}
+
+.pwa-splash h1 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.pwa-splash p {
+    color: #d4af37;
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-top: 8px;
+}
+
+.pwa-splash-loader {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #ffffff35;
+    border-top-color: #d4af37;
+    border-radius: 50%;
+    margin: 28px auto 0;
+    animation: pwa-spin .8s linear infinite;
+}
+
+@keyframes pwa-spin {
+    to { transform: rotate(360deg); }
+}
+
+.pwa-download-button {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    right: 12px;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid #d4af37;
+    border-radius: 999px;
+    background: #1e293b;
+    color: #fff;
+    font: 600 11px/1.2 Inter, sans-serif;
+    box-shadow: 0 4px 14px #0002;
+}
+
+.pwa-download-button i {
+    color: #d4af37;
+}
+
+.pwa-popup-backdrop[hidden] {
+    display: none !important;
+}
+
+.pwa-popup-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 11000;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    background: #0f172a88;
+    backdrop-filter: blur(5px);
+}
+
+.pwa-popup {
+    position: relative;
+    width: min(340px, 100%);
+    padding: 28px 22px 22px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #f1e4b7;
+    border-radius: 22px;
+    box-shadow: 0 20px 70px #0003;
+    animation: pwa-popup-in .2s ease-out;
+}
+
+@keyframes pwa-popup-in {
+    from { opacity: 0; transform: translateY(10px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pwa-popup-close {
+    position: absolute;
+    top: 9px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    font-size: 27px;
+    line-height: 1;
+    padding: 4px 8px;
+}
+
+.pwa-popup-logo {
+    width: 66px;
+    height: 66px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 2px solid #d4af37;
+    margin: 0 auto 14px;
+}
+
+.pwa-popup h2 {
+    color: #1e293b;
+    font-size: 21px;
+    font-weight: 750;
+    margin: 0 0 9px;
+}
+
+.pwa-popup > p {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 18px;
+}
+
+.pwa-install-confirm {
+    width: 100%;
+    padding: 13px;
+    border: 0;
+    border-radius: 12px;
+    background: #1e293b;
+    color: #fff;
+    font: 650 14px Inter, sans-serif;
+}
+
+.pwa-install-confirm i {
+    color: #d4af37;
+    margin-right: 7px;
+}
+
+.pwa-popup .pwa-install-help {
+    font-size: 11px;
+    margin: 13px 0 0;
+}
+
+@media (display-mode: standalone) {
+    .pwa-download-button {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .pwa-download-button {
+        top: auto;
+        bottom: 84px;
+        right: 10px;
+    }
+}
+        
         /* Custom Scrollbar for progress area */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
@@ -68,6 +261,53 @@
 </head>
 <body class="bg-brand-light text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
+<!-- TRIMURTI PWA SPLASH SCREEN -->
+<div id="pwa-splash" class="pwa-splash">
+    <div class="pwa-splash-content">
+        <img src="assets/logo.png" alt="Trimurti Gold & Diamonds"
+             class="pwa-splash-logo">
+        <h1>TRIMURTI</h1>
+        <p>GOLD & DIAMONDS</p>
+        <div class="pwa-splash-loader"></div>
+    </div>
+</div>
+
+<!-- SMALL DOWNLOAD APP BUTTON -->
+<button id="pwa-download-button" class="pwa-download-button"
+        type="button" aria-label="Download app">
+    <i class="fa-solid fa-download"></i>
+    <span>Download App</span>
+</button>
+
+<!-- INSTALL APP POPUP -->
+<div id="pwa-install-popup" class="pwa-popup-backdrop"
+     role="dialog" aria-modal="true"
+     aria-labelledby="pwa-popup-title" hidden>
+    <div class="pwa-popup">
+        <button type="button" id="pwa-popup-close"
+                class="pwa-popup-close" aria-label="Close">
+            &times;
+        </button>
+
+        <img src="assets/logo.png" alt="Trimurti logo"
+             class="pwa-popup-logo">
+
+        <h2 id="pwa-popup-title">Install Trimurti</h2>
+        <p>Get quick access to your Swarna Nidhi plan,
+           installment payments and payment history.</p>
+
+        <button type="button" id="pwa-install-confirm"
+                class="pwa-install-confirm">
+            <i class="fa-solid fa-download"></i>
+            Install App
+        </button>
+
+        <p id="pwa-install-help" class="pwa-install-help">
+            Add Trimurti to your home screen for easy access.
+        </p>
+    </div>
+</div>
+    
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
