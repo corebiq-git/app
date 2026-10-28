@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trimurti Gold & Diamonds | Installment Scheme</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#1e293b', // Charcoal/Navy
+                            gold: '#d4af37', // Gold
+                            goldDark: '#b5952f',
+                            light: '#f8fafc',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar for progress area */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Smooth transitions */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 300ms, transform 300ms;
+        }
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN APP WRAPPER -->
+    <div id="app" class="flex-grow flex flex-col relative w-full max-w-md mx-auto bg-white shadow-2xl overflow-hidden sm:rounded-3xl sm:my-8 sm:h-[calc(100vh-4rem)] border border-slate-100">
+        
+        <!-- LOADING SCREEN -->
+        <div id="global-loader" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center">
+            <div class="w-12 h-12 spinner mb-4"></div>
+            <p class="text-slate-500 font-medium animate-pulse">Loading Trimurti...</p>
+        </div>
+
+        <!-- AUTHENTICATION VIEW -->
+        <div id="auth-view" class="hidden flex-col h-full overflow-y-auto p-6">
+            <div class="flex-grow flex flex-col justify-center items-center max-w-sm mx-auto w-full">
+                <!-- Logo -->
+                <div class="mb-8 text-center">
+                    <img src="assets/logo.png" alt="Trimurti Logo" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e293b/d4af37?text=TRIMURTI';" 
+                         class="w-32 h-32 object-cover rounded-full mx-auto shadow-md border-4 border-white mb-4 bg-slate-900">
+                    <h1 class="text-2xl font-bold text-brand-dark tracking-tight">TRIMURTI</h1>
+                    <p class="text-xs text-brand-gold font-medium uppercase tracking-widest mt-1">Premium Gold & Diamonds</p>
+                </div>
+
+                <!-- Auth Forms Wrapper -->
+                <div class="w-full bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    
+                    <!-- Login Form -->
+                    <form id="login-form" class="flex flex-col gap-4">
+                        <h2 class="text-xl font-semibold mb-2">Customer Login</h2>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Username</label>
+                            <input type="text" id="login-username" value="Customer" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent transition-all" placeholder="Enter username">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-600 mb-1">Password</label>
+                            <input type="password" id="login-password" value="Customer@123" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent transition-all" placeholder="••••••••">
+                        </div>
+                        <button type="submit" id="login-btn" class="w-full mt-2 bg-brand-dark hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <span>Sign In</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view" class="hidden flex-col h-full bg-slate-50 relative overflow-hidden">
+            
+            <!-- Header -->
+            <header class="bg-white px-6 py-4 flex justify-between items-center border-b border-slate-100 z-10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <img src="assets/logo.png" alt="Trimurti Logo" 
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/1e293b/d4af37?text=T';" 
+                         class="w-10 h-10 object-cover rounded-full shadow-sm border border-slate-100 bg-slate-900">
+                    <div>
+                        <h2 class="text-sm font-bold text-brand-dark leading-tight">TRIMURTI</h2>
+                        <p class="text-[10px] text-brand-gold font-medium uppercase tracking-wider">Premium Shop</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center justify-center sm:hidden">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <button onclick="logout()" class="hidden sm:flex w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors items-center justify-center">
+                    <i class="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                </button>
+            </header>
+
+            <!-- Scrollable Content Area -->
+            <main class="flex-grow overflow-y-auto relative pb-20">
+                
+                <!-- TAB: HOME -->
+                <div id="tab-home" class="p-4 sm:p-6 block animate-[fadeIn_0.3s_ease-out]">
+                    <!-- Welcome Section -->
+                    <div class="mb-6">
+                        <h3 class="text-lg text-slate-500">Welcome, <span id="dash-user-name" class="font-semibold text-brand-dark">Customer</span></h3>
+                        <p class="text-sm text-slate-400 mt-1">11-Month Swarna Nidhi Plan</p>
+                    </div>
+
+                    <!-- Financial Summary Cards -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-brand-dark text-white rounded-2xl p-4 shadow-md relative overflow-hidden">
+                            <div class="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full"></div>
+                            <p class="text-xs text-slate-300 font-medium mb-1">Total Paid</p>
+                            <h4 class="text-2xl font-bold" id="dash-total-paid">₹0</h4>
+                            <p class="text-[10px] text-brand-gold mt-2"><span id="dash-months-paid">0</span>/11 Months</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
+                            <p class="text-xs text-slate-500 font-medium mb-1">Next Due</p>
+                            <div class="mt-2 text-sm font-medium text-slate-700 flex items-center gap-1">
+                                <i class="fa-regular fa-calendar text-brand-gold"></i>
+                                <span id="dash-due-date">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scheme Progress -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-5">
+                        <div class="flex justify-between items-end mb-4">
+                            <h3 class="text-sm font-semibold text-brand-dark">Scheme Progress</h3>
+                            <span class="text-xs font-medium text-brand-gold bg-brand-gold/10 px-2 py-1 rounded-md" id="dash-progress-text">Month 0 of 11</span>
+                        </div>
+                        
+                        <!-- Stepper -->
+                        <div class="relative w-full h-14">
+                            <div class="absolute top-1/2 left-0 right-0 h-1 bg-slate-100 -translate-y-1/2 z-0 rounded-full"></div>
+                            <div id="progress-line" class="absolute top-1/2 left-0 h-1 bg-brand-gold -translate-y-1/2 z-0 rounded-full transition-all duration-500 w-0"></div>
+                            <div class="absolute inset-0 overflow-x-auto hide-scrollbar flex items-center justify-between z-10 px-1" id="progress-steps-container">
+                            </div>
+                        </div>
+                        
+                        <button id="btn-pay-next" onclick="switchTab('payment')" class="w-full mt-6 bg-brand-gold/10 hover:bg-brand-gold/20 text-brand-goldDark font-semibold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
+                            Pay Next Installment <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB: PAYMENT -->
+                <div id="tab-payment" class="p-4 sm:p-6 hidden animate-[fadeIn_0.3s_ease-out]">
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 max-w-sm mx-auto">
+                        <div class="text-center mb-6 mt-2">
+                            <div class="w-16 h-16 bg-brand-gold/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa-solid fa-indian-rupee-sign text-2xl text-brand-gold"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-dark">Make Payment</h3>
+                            <p class="text-sm text-slate-500 mt-1">Pay securely via UPI</p>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-100 space-y-3">
+                            <div class="flex justify-between items-center text-sm mb-2">
+                                <span class="text-slate-500">Installment for</span>
+                                <span class="font-semibold text-brand-dark bg-white px-3 py-1 rounded-lg border border-slate-200 shadow-sm" id="payment-month-label">Month 1</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-600 mb-1">Amount to Pay (₹)</label>
+                                <input type="number" id="pay-amount" value="5000" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-brand-gold focus:border-transparent transition-all font-bold text-xl text-brand-dark bg-white shadow-inner">
+                            </div>
+                        </div>
+
+                        <button id="btn-generate-qr" onclick="generateQR()" class="w-full bg-brand-dark hover:bg-slate-800 text-white font-semibold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-brand-dark/20">
+                            <i class="fa-solid fa-qrcode"></i>
+                            <span>Generate UPI QR</span>
+                        </button>
+
+                        <!-- QR Code Display Area -->
+                        <div id="qr-display-area" class="hidden flex-col items-center mt-6 animate-[fadeIn_0.3s_ease-out]">
+                            <img id="upi-qr-image" src="" alt="UPI QR Code" class="w-56 h-56 border-4 border-slate-100 shadow-md rounded-2xl mb-4 p-2 bg-white">
+                            <p class="text-xs font-mono text-slate-500 mb-4 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">trimurthijewellery.64062552@hdfcbank</p>
+                            <div class="flex gap-3 w-full">
+                                <button onclick="downloadQR()" class="flex-1 bg-white border border-slate-200 hover:bg-slate-50 text-brand-dark font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-sm">
+                                    <i class="fa-solid fa-download"></i> Download
+                                </button>
+                                <button onclick="markPaymentPaid()" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm shadow-md shadow-green-600/20">
+                                    <i class="fa-solid fa-check"></i> Mark Paid
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- WhatsApp Acknowledgment Area -->
+                        <div id="whatsapp-ack-area" class="hidden flex-col items-center mt-6 animate-[fadeIn_0.3s_ease-out]">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                                <i class="fa-solid fa-check text-2xl text-green-600"></i>
+                            </div>
+                            <h4 class="font-bold text-brand-dark mb-1">Payment Recorded!</h4>
+                            <p class="text-sm text-slate-500 mb-6 text-center">Please send the acknowledgment to the shop.</p>
+                            <button onclick="sendWhatsAppAck()" class="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold py-4 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-[#25D366]/30">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                                <span>Send WhatsApp Ack</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: HISTORY -->
+                <div id="tab-history" class="p-4 sm:p-6 hidden animate-[fadeIn_0.3s_ease-out]">
+                    <h3 class="text-lg font-bold text-brand-dark mb-4">Payment History</h3>
+                    <div id="history-container" class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col min-h-[200px]">
+                        <!-- History Items injected here -->
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-100 flex justify-around items-center h-[72px] pb-safe z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] rounded-b-3xl sm:rounded-b-none">
+                <button onclick="switchTab('home')" data-tab="home" class="nav-btn text-brand-gold flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors">
+                    <i class="fa-solid fa-house text-lg"></i>
+                    <span class="text-[10px] font-medium">Home</span>
+                </button>
+                <button onclick="switchTab('payment')" data-tab="payment" class="nav-btn text-slate-400 hover:text-slate-600 flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors">
+                    <i class="fa-solid fa-indian-rupee-sign text-lg"></i>
+                    <span class="text-[10px] font-medium">Payment</span>
+                </button>
+                <button onclick="switchTab('history')" data-tab="history" class="nav-btn text-slate-400 hover:text-slate-600 flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors">
+                    <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+                    <span class="text-[10px] font-medium">History</span>
+                </button>
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-slate-600 flex flex-col items-center justify-center w-16 h-full gap-1 transition-colors">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                    <span class="text-[10px] font-medium">Menu</span>
+                </button>
+            </nav>
+            
+            <!-- Sidebar Overlay -->
+            <div id="sidebar-overlay" class="absolute inset-0 bg-slate-900/40 z-40 hidden transition-opacity duration-300 opacity-0 backdrop-blur-sm" onclick="toggleSidebar()"></div>
+            
+            <!-- Sidebar Drawer -->
+            <div id="sidebar" class="absolute top-0 left-0 bottom-0 w-64 bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col sm:rounded-l-3xl overflow-hidden">
+                <div class="bg-brand-dark p-6 text-white flex flex-col items-center text-center relative">
+                    <button onclick="toggleSidebar()" class="absolute top-4 right-4 text-slate-300 hover:text-white w-8 h-8 flex items-center justify-center rounded-full bg-white/10">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                    <img src="assets/logo.png" alt="Logo" onerror="this.onerror=null; this.src='https://placehold.co/100x100/ffffff/1e293b?text=T';" class="w-16 h-16 rounded-full border-2 border-brand-gold mb-3 bg-white">
+                    <h3 class="font-bold text-lg leading-tight" id="sidebar-user-name">Customer</h3>
+                    <p class="text-xs text-brand-gold mt-1">Swarna Nidhi Member</p>
+                </div>
+                
+                <div class="flex-grow overflow-y-auto py-4">
+                    <ul class="flex flex-col space-y-1 px-3">
+                        <li>
+                            <a href="#" onclick="toggleSidebar()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-brand-dark hover:bg-slate-50 rounded-xl transition-colors font-medium text-sm">
+                                <i class="fa-solid fa-circle-plus w-5 text-center text-slate-400"></i> New Plan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="toggleSidebar()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-brand-dark hover:bg-slate-50 rounded-xl transition-colors font-medium text-sm">
+                                <i class="fa-solid fa-gem w-5 text-center text-slate-400"></i> My Plan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="toggleSidebar()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-brand-dark hover:bg-slate-50 rounded-xl transition-colors font-medium text-sm">
+                                <i class="fa-solid fa-headset w-5 text-center text-slate-400"></i> Support
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="toggleSidebar()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-brand-dark hover:bg-slate-50 rounded-xl transition-colors font-medium text-sm">
+                                <i class="fa-solid fa-user w-5 text-center text-slate-400"></i> Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" onclick="toggleSidebar()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-brand-dark hover:bg-slate-50 rounded-xl transition-colors font-medium text-sm">
+                                <i class="fa-solid fa-wallet w-5 text-center text-slate-400"></i> My Account
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="p-4 border-t border-slate-100">
+                    <button onclick="logout()" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors font-semibold text-sm">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- APP LOGIC & LOCAL STORAGE SETUP -->
+    <script>
+        // Global State & Local Storage Setup
+        const STATE = {
+            maxMonths: 11,
+            userData: {
+                name: 'Customer',
+                startDate: new Date().toISOString(),
+                monthsPaid: 0,
+                totalPaid: 0,
+                payments: []
+            },
+            currentPaymentAmount: 0
+        };
+
+        // DOM Elements
+        const el = {
+            globalLoader: document.getElementById('global-loader'),
+            authView: document.getElementById('auth-view'),
+            dashboardView: document.getElementById('dashboard-view'),
+            
+            loginForm: document.getElementById('login-form'),
+            
+            dashUserName: document.getElementById('dash-user-name'),
+            dashTotalPaid: document.getElementById('dash-total-paid'),
+            dashMonthsPaid: document.getElementById('dash-months-paid'),
+            dashDueDate: document.getElementById('dash-due-date'),
+            dashProgressText: document.getElementById('dash-progress-text'),
+            progressContainer: document.getElementById('progress-steps-container'),
+            progressLine: document.getElementById('progress-line'),
+            historyContainer: document.getElementById('history-container'),
+            
+            // Tabs
+            tabHome: document.getElementById('tab-home'),
+            tabPayment: document.getElementById('tab-payment'),
+            tabHistory: document.getElementById('tab-history'),
+            navBtns: document.querySelectorAll('.nav-btn[data-tab]'),
+            
+            // Sidebar
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebar-overlay'),
+            sidebarUserName: document.getElementById('sidebar-user-name'),
+            
+            // Payment elements
+            paymentMonthLabel: document.getElementById('payment-month-label'),
+            payAmountInput: document.getElementById('pay-amount'),
+            qrDisplayArea: document.getElementById('qr-display-area'),
+            upiQrImage: document.getElementById('upi-qr-image'),
+            whatsappAckArea: document.getElementById('whatsapp-ack-area'),
+            btnGenerateQR: document.getElementById('btn-generate-qr')
+        };
+
+        // --- UTILITIES ---
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-green-50 text-green-800 border-green-200',
+                error: 'bg-red-50 text-red-800 border-red-200'
+            };
+            const icons = {
+                success: '<i class="fa-solid fa-circle-check text-green-500"></i>',
+                error: '<i class="fa-solid fa-circle-exclamation text-red-500"></i>'
+            };
+
+            toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl border shadow-lg transform transition-all duration-300 opacity-0 translate-y-[-20px] ${colors[type]}`;
+            toast.innerHTML = `${icons[type]} <span class="text-sm font-medium">${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-[20px]');
+                setTimeout(() => toast.remove(), 3000);
+            }, 3000);
+        };
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '--';
+            const d = new Date(dateString);
+            return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function calculateNextDueDate(startDate, monthsPaid) {
+            if (!startDate) return '--';
+            const date = new Date(startDate);
+            date.setMonth(date.getMonth() + monthsPaid + 1);
+            return formatDate(date);
+        }
+
+        // --- LOCAL STORAGE LOGIC ---
+        function initLocalStorage() {
+            const savedData = localStorage.getItem('trimurti_userData');
+            if (savedData) {
+                STATE.userData = JSON.parse(savedData);
+            } else {
+                localStorage.setItem('trimurti_userData', JSON.stringify(STATE.userData));
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('trimurti_userData', JSON.stringify(STATE.userData));
+        }
+
+        // --- AUTHENTICATION ---
+        el.loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const u = document.getElementById('login-username').value;
+            const p = document.getElementById('login-password').value;
+            
+            if (u === 'Customer' && p === 'Customer@123') {
+                localStorage.setItem('trimurti_auth', 'true');
+                // Ensure customer details are saved right on login per request requirements
+                initLocalStorage(); 
+                showToast('Login successful!', 'success');
+                showView('dashboard');
+                updateDashboardUI();
+            } else {
+                showToast('Invalid Username or Password', 'error');
+            }
+        });
+
+        window.logout = function() {
+            localStorage.removeItem('trimurti_auth');
+            showView('auth');
+        };
+
+        // --- DASHBOARD UI ---
+        function renderProgress(monthsPaid) {
+            let html = '';
+            
+            for (let i = 1; i <= STATE.maxMonths; i++) {
+                const isCompleted = i <= monthsPaid;
+                const isCurrent = i === monthsPaid + 1;
+                
+                let classes = "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 relative z-10 transition-colors duration-300 border-2 ";
+                
+                if (isCompleted) {
+                    classes += "bg-brand-gold text-white border-brand-gold shadow-md";
+                } else if (isCurrent) {
+                    classes += "bg-white text-brand-dark border-brand-gold";
+                } else {
+                    classes += "bg-white text-slate-300 border-slate-200";
+                }
+
+                let icon = isCompleted ? '<i class="fa-solid fa-check text-[10px]"></i>' : i;
+                html += `<div class="${classes}" style="margin-right: ${i === STATE.maxMonths ? '0' : '1.5rem'}">${icon}</div>`;
+            }
+            
+            el.progressContainer.innerHTML = html;
+            
+            const percentage = monthsPaid === 0 ? 0 : Math.min(100, (monthsPaid / (STATE.maxMonths - 1)) * 100);
+            el.progressLine.style.width = `calc(${percentage}% - 1rem)`;
+            
+            el.dashProgressText.innerText = `Month ${monthsPaid} of ${STATE.maxMonths}`;
+            
+            const btnPayNext = document.getElementById('btn-pay-next');
+            if (btnPayNext) {
+                if (monthsPaid >= STATE.maxMonths) {
+                    btnPayNext.disabled = true;
+                    btnPayNext.innerHTML = '<i class="fa-solid fa-trophy"></i> Scheme Completed!';
+                    btnPayNext.classList.remove('bg-brand-gold/10', 'text-brand-goldDark', 'hover:bg-brand-gold/20');
+                    btnPayNext.classList.add('bg-green-100', 'text-green-700', 'cursor-not-allowed');
+                } else {
+                    btnPayNext.disabled = false;
+                    btnPayNext.innerHTML = 'Pay Next Installment <i class="fa-solid fa-arrow-right text-xs"></i>';
+                    btnPayNext.classList.add('bg-brand-gold/10', 'text-brand-goldDark', 'hover:bg-brand-gold/20');
+                    btnPayNext.classList.remove('bg-green-100', 'text-green-700', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        function updateDashboardUI() {
+            const data = STATE.userData;
+            el.dashUserName.innerText = data.name;
+            if(el.sidebarUserName) el.sidebarUserName.innerText = data.name;
+            el.dashTotalPaid.innerText = formatCurrency(data.totalPaid);
+            el.dashMonthsPaid.innerText = data.monthsPaid;
+            el.dashDueDate.innerText = calculateNextDueDate(data.startDate, data.monthsPaid);
+            
+            renderProgress(data.monthsPaid);
+            renderHistory(data.payments);
+        }
+
+        function renderHistory(payments) {
+            if (!payments || payments.length === 0) {
+                el.historyContainer.innerHTML = `
+                    <div class="p-8 text-center text-slate-400 text-sm">
+                        <i class="fa-solid fa-receipt text-2xl mb-2 opacity-50"></i>
+                        <p>No payments made yet.</p>
+                    </div>`;
+                return;
+            }
+
+            const sortedPayments = [...payments].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            let html = '';
+            sortedPayments.forEach((payment, index) => {
+                const isLatest = index === 0;
+                html += `
+                    <div class="p-4 border-b border-slate-50 last:border-0 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full ${isLatest ? 'bg-green-100 text-green-600' : 'bg-slate-100 text-slate-500'} flex items-center justify-center">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-brand-dark">Month ${payment.monthIndex} Paid</p>
+                                <p class="text-xs text-slate-400">Txn: ${payment.txId}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-brand-dark">${formatCurrency(payment.amount)}</p>
+                            <p class="text-xs text-slate-400">${formatDate(payment.date)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            el.historyContainer.innerHTML = html;
+        }
+
+        // --- PAYMENT & QR LOGIC ---
+        window.switchTab = function(tabId) {
+            // Hide all tabs
+            el.tabHome.classList.add('hidden');
+            el.tabPayment.classList.add('hidden');
+            el.tabHistory.classList.add('hidden');
+            
+            // Reset nav buttons
+            el.navBtns.forEach(btn => {
+                btn.classList.remove('text-brand-gold');
+                btn.classList.add('text-slate-400');
+            });
+            
+            // Show selected tab
+            if (tabId === 'home') {
+                el.tabHome.classList.remove('hidden');
+                document.querySelector('.nav-btn[data-tab="home"]').classList.add('text-brand-gold');
+                document.querySelector('.nav-btn[data-tab="home"]').classList.remove('text-slate-400');
+            } else if (tabId === 'payment') {
+                el.tabPayment.classList.remove('hidden');
+                document.querySelector('.nav-btn[data-tab="payment"]').classList.add('text-brand-gold');
+                document.querySelector('.nav-btn[data-tab="payment"]').classList.remove('text-slate-400');
+                
+                // Initialize payment view
+                if (STATE.userData.monthsPaid >= STATE.maxMonths) {
+                    el.paymentMonthLabel.innerText = 'Completed';
+                    el.btnGenerateQR.disabled = true;
+                    el.btnGenerateQR.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    el.paymentMonthLabel.innerText = `Month ${STATE.userData.monthsPaid + 1}`;
+                    el.btnGenerateQR.disabled = false;
+                    el.btnGenerateQR.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+                
+                // Reset states
+                el.qrDisplayArea.classList.add('hidden');
+                el.qrDisplayArea.classList.remove('flex');
+                el.whatsappAckArea.classList.add('hidden');
+                el.whatsappAckArea.classList.remove('flex');
+                el.btnGenerateQR.classList.remove('hidden');
+                el.payAmountInput.disabled = false;
+                
+            } else if (tabId === 'history') {
+                el.tabHistory.classList.remove('hidden');
+                document.querySelector('.nav-btn[data-tab="history"]').classList.add('text-brand-gold');
+                document.querySelector('.nav-btn[data-tab="history"]').classList.remove('text-slate-400');
+            }
+        };
+
+        window.toggleSidebar = function() {
+            const isClosed = el.sidebar.classList.contains('-translate-x-full');
+            if (isClosed) {
+                el.sidebarOverlay.classList.remove('hidden');
+                setTimeout(() => el.sidebarOverlay.classList.remove('opacity-0'), 10);
+                el.sidebar.classList.remove('-translate-x-full');
+            } else {
+                el.sidebarOverlay.classList.add('opacity-0');
+                el.sidebar.classList.add('-translate-x-full');
+                setTimeout(() => el.sidebarOverlay.classList.add('hidden'), 300);
+            }
+        };
+
+        window.generateQR = function() {
+            const amount = parseFloat(el.payAmountInput.value);
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            
+            STATE.currentPaymentAmount = amount;
+            
+            const upiId = "trimurthijewellery.64062552@hdfcbank";
+            const name = encodeURIComponent("Trimurti Jewellery");
+            const upiString = `upi://pay?pa=${upiId}&pn=${name}&am=${amount}&cu=INR`;
+            
+            // Generate QR using public API
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}&margin=10`;
+            
+            el.upiQrImage.src = qrUrl;
+            
+            el.btnGenerateQR.classList.add('hidden');
+            el.payAmountInput.disabled = true;
+            
+            el.qrDisplayArea.classList.remove('hidden');
+            el.qrDisplayArea.classList.add('flex');
+        };
+
+        window.downloadQR = async function() {
+            try {
+                // Fetch the image as a blob to allow cross-origin downloading
+                const response = await fetch(el.upiQrImage.src);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `Trimurti_UPI_QR_Amt_${STATE.currentPaymentAmount}.png`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                showToast('QR Code downloaded', 'success');
+            } catch (err) {
+                showToast('Failed to download QR code', 'error');
+            }
+        };
+
+        window.markPaymentPaid = function() {
+            // Update local storage
+            const txId = 'TRM' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            STATE.userData.monthsPaid += 1;
+            STATE.userData.totalPaid += STATE.currentPaymentAmount;
+            
+            STATE.userData.payments.push({
+                txId: txId,
+                amount: STATE.currentPaymentAmount,
+                date: new Date().toISOString(),
+                monthIndex: STATE.userData.monthsPaid
+            });
+            
+            saveToLocalStorage();
+            updateDashboardUI();
+            
+            showToast('Payment recorded successfully!', 'success');
+            
+            // Show WhatsApp button
+            el.qrDisplayArea.classList.add('hidden');
+            el.qrDisplayArea.classList.remove('flex');
+            
+            el.whatsappAckArea.classList.remove('hidden');
+            el.whatsappAckArea.classList.add('flex');
+        };
+        
+        window.sendWhatsAppAck = function() {
+            const amount = STATE.currentPaymentAmount;
+            const month = STATE.userData.monthsPaid;
+            
+            const message = `*Trimurti Gold & Diamonds - Payment Acknowledgment*\n\nCustomer: ${STATE.userData.name}\nMonth Paid: ${month}\nAmount Paid: ₹${amount}\nUPI: trimurthijewellery.64062552@hdfcbank\n\nThank you!`;
+            
+            const waUrl = `https://wa.me/919539666916?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+            
+            setTimeout(() => {
+                switchTab('home');
+            }, 1000);
+        };
+
+        // --- INITIALIZATION ---
+        function showView(viewName) {
+            el.globalLoader.classList.add('hidden');
+            el.authView.classList.add('hidden');
+            el.dashboardView.classList.add('hidden');
+            
+            if (viewName === 'auth') {
+                el.authView.classList.remove('hidden');
+                el.authView.classList.add('flex');
+            } else if (viewName === 'dashboard') {
+                el.dashboardView.classList.remove('hidden');
+                el.dashboardView.classList.add('flex');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const isLoggedIn = localStorage.getItem('trimurti_auth') === 'true';
+                if (isLoggedIn) {
+                    initLocalStorage();
+                    showView('dashboard');
+                    updateDashboardUI();
+                } else {
+                    showView('auth');
+                }
+            }, 800); // Simulate network load
+        });
+
+    </script>
+</body>
+</html>
