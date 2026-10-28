@@ -5,20 +5,40 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function hasUserProfile() {
+      return signedIn()
+        && request.auth.token.email is string
+        && exists(/databases/$(database)/documents/users/$(request.auth.token.email.lower()));
+    }
+
     function getUserData() {
-      return get(/databases/$(database)/documents/users/$(request.auth.token.email)).data;
+      return get(/databases/$(database)/documents/users/$(request.auth.token.email.lower())).data;
     }
 
     function isAdmin() {
-      return signedIn() && getUserData().role == 'admin';
+      return hasUserProfile() && getUserData().role == 'admin';
     }
 
     function isUserBranch(docBranch) {
-      return signedIn() && getUserData().branch == docBranch;
+      return hasUserProfile()
+        && docBranch is string
+        && getUserData().branch is string
+        && getUserData().branch == docBranch;
+    }
+
+    function canReviewBookingRequest() {
+      return isAdmin()
+        || (isUserBranch(resource.data.branch)
+          && request.resource.data.branch == resource.data.branch
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+            'status', 'appointmentId', 'patientMatch', 'reviewedAt'
+          ])
+          && request.resource.data.status in ['converted', 'declined']
+          && request.resource.data.reviewedAt == request.time);
     }
 
     match /users/{email} {
-      allow read: if signedIn() && request.auth.token.email == email;
+      allow read: if signedIn() && request.auth.token.email.lower() == email;
       allow read, write, delete: if isAdmin();
     }
 
@@ -68,15 +88,14 @@ service cloud.firestore {
         && request.resource.data.status == 'pending'
         && request.resource.data.createdAt == request.time;
       allow get, list: if isAdmin() || isUserBranch(resource.data.branch);
-      allow update: if isAdmin()
-        || (isUserBranch(resource.data.branch)
-          && request.resource.data.branch == resource.data.branch
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-            'status', 'appointmentId', 'patientMatch', 'reviewedAt'
-          ])
-          && request.resource.data.status in ['converted', 'declined']
-          && request.resource.data.reviewedAt == request.time);
+      allow update: if canReviewBookingRequest();
       allow delete: if isAdmin();
+    }
+
+    match /leave_requests/{requestId} {
+      allow get, list: if isAdmin() || isUserBranch(resource.data.branch);
+      allow create: if isAdmin() || isUserBranch(request.resource.data.branch);
+      allow update, delete: if isAdmin();
     }
 
     match /staff/{document=**} {
@@ -88,11 +107,12 @@ service cloud.firestore {
     }
 
     match /appointments/{document=**} {
-      allow read, write, delete: if isAdmin();
-      allow read: if isUserBranch(resource.data.branch);
-      allow create: if isUserBranch(request.resource.data.branch);
-      allow update: if isUserBranch(resource.data.branch)
-        && isUserBranch(request.resource.data.branch);
+      allow get, list: if isAdmin() || isUserBranch(resource.data.branch);
+      allow create: if isAdmin() || isUserBranch(request.resource.data.branch);
+      allow update: if isAdmin()
+        || (isUserBranch(resource.data.branch)
+          && isUserBranch(request.resource.data.branch));
+      allow delete: if isAdmin() || isUserBranch(resource.data.branch);
     }
 
     match /patients/{document=**} {
@@ -120,11 +140,15 @@ service cloud.firestore {
     }
 
     match /daily_attendance/{document=**} {
-      allow read, write, delete: if isAdmin();
-      allow read: if isUserBranch(resource.data.branch);
-      allow create: if isUserBranch(request.resource.data.branch);
-      allow update: if isUserBranch(resource.data.branch)
-        && isUserBranch(request.resource.data.branch);
+      allow get, list: if isAdmin() || isUserBranch(resource.data.branch);
+      allow create: if isAdmin()
+        || (request.resource.data.branch is string
+          && isUserBranch(request.resource.data.branch));
+      allow update: if isAdmin()
+        || (isUserBranch(resource.data.branch)
+          && request.resource.data.branch == resource.data.branch
+          && isUserBranch(request.resource.data.branch));
+      allow delete: if isAdmin() || isUserBranch(resource.data.branch);
     }
   }
 }

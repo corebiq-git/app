@@ -364,7 +364,7 @@
             <span class="task-title-icon material-symbols-rounded" aria-hidden="true">task_alt</span>
             <div>
                 <h1>My Task</h1>
-                <p>Keep track of your personal to-dos.</p>
+                <p>Personal tasks are saved in this browser for your login.</p>
             </div>
         </div>
         <button class="task-button primary" id="task-new-button" type="button">
@@ -441,27 +441,49 @@
     </section>
 
     <script type="module">
-        import { auth, db } from './firebase-config.js';
-        import {
-            addDoc,
-            collection,
-            deleteDoc,
-            doc,
-            getDocs,
-            query,
-            serverTimestamp,
-            updateDoc,
-            where
-        } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+        import { auth } from './firebase-config.js';
         import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
 
-        const taskCollection = collection(db, 'tasks');
         const taskForm = document.getElementById('task-form');
         const taskFormPanel = document.getElementById('task-form-panel');
         const taskList = document.getElementById('task-list');
         const taskItems = new Map();
         let activeUser = null;
         let editingTaskId = null;
+
+        function taskStorageKey() {
+            if (!activeUser?.uid) throw new Error('Sign in again to access your personal tasks.');
+            return `corebiq.myTasks.v1:${encodeURIComponent(activeUser.uid)}`;
+        }
+
+        function readStoredTasks() {
+            let stored;
+            try {
+                stored = localStorage.getItem(taskStorageKey());
+            } catch (error) {
+                throw new Error(`Could not access local task storage: ${error.message}`);
+            }
+            if (!stored) return [];
+            try {
+                const tasks = JSON.parse(stored);
+                if (!Array.isArray(tasks) || tasks.some(task =>
+                    !task || typeof task.id !== 'string' || typeof task.title !== 'string'
+                )) {
+                    throw new Error('Saved task data has an invalid format.');
+                }
+                return tasks;
+            } catch (error) {
+                throw new Error(`Could not read local tasks: ${error.message}`);
+            }
+        }
+
+        function writeStoredTasks(tasks) {
+            try {
+                localStorage.setItem(taskStorageKey(), JSON.stringify(tasks));
+            } catch (error) {
+                throw new Error(`Could not save tasks in this browser: ${error.message}`);
+            }
+        }
 
         function getLocalDateString(date = new Date()) {
             const year = date.getFullYear();
@@ -644,24 +666,22 @@
             taskList.appendChild(loading);
 
             try {
-                const taskQuery = query(taskCollection, where('ownerUid', '==', activeUser.uid));
-                const snapshot = await getDocs(taskQuery);
+                const tasks = readStoredTasks();
                 taskItems.clear();
-                snapshot.forEach(taskDoc => {
-                    const data = taskDoc.data();
-                    taskItems.set(taskDoc.id, {
-                        id: taskDoc.id,
-                        title: data.title || '',
-                        description: data.description || '',
-                        dueDate: data.dueDate || '',
-                        priority: ['low', 'medium', 'high'].includes(data.priority) ? data.priority : 'medium',
-                        status: ['todo', 'in-progress', 'completed'].includes(data.status) ? data.status : 'todo'
+                tasks.forEach(task => {
+                    taskItems.set(task.id, {
+                        id: task.id,
+                        title: task.title || '',
+                        description: task.description || '',
+                        dueDate: task.dueDate || '',
+                        priority: ['low', 'medium', 'high'].includes(task.priority) ? task.priority : 'medium',
+                        status: ['todo', 'in-progress', 'completed'].includes(task.status) ? task.status : 'todo'
                     });
                 });
                 updateSummary();
                 renderTasks();
             } catch (error) {
-                console.error('Unable to load personal tasks:', error);
+                console.error('Unable to load local personal tasks:', error);
                 showMessage(`Could not load tasks: ${error.message}`, true);
             }
         }
@@ -672,13 +692,14 @@
                 return;
             }
             try {
-                await updateDoc(doc(db, 'tasks', taskId), {
-                    ...changes,
-                    updatedAt: serverTimestamp()
-                });
-                await loadTasks();
+                const task = taskItems.get(taskId);
+                if (!task) throw new Error('Task is no longer available.');
+                taskItems.set(taskId, { ...task, ...changes });
+                writeStoredTasks(Array.from(taskItems.values()));
+                updateSummary();
+                renderTasks();
             } catch (error) {
-                console.error('Unable to update task:', error);
+                console.error('Unable to update local task:', error);
                 window.alert(`Could not update task: ${error.message}`);
                 await loadTasks();
             }
@@ -689,13 +710,14 @@
             if (!task || !window.confirm(`Delete "${task.title}"? This cannot be undone.`)) return;
 
             try {
-                await deleteDoc(doc(db, 'tasks', taskId));
                 taskItems.delete(taskId);
+                writeStoredTasks(Array.from(taskItems.values()));
                 updateSummary();
                 renderTasks();
             } catch (error) {
-                console.error('Unable to delete task:', error);
+                console.error('Unable to delete local task:', error);
                 window.alert(`Could not delete task: ${error.message}`);
+                await loadTasks();
             }
         }
 
@@ -716,24 +738,25 @@
             saveButton.disabled = true;
             try {
                 const payload = {
+                    id: editingTaskId || `task_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
                     title,
                     description: document.getElementById('task-description').value.trim(),
                     dueDate: document.getElementById('task-due-date').value,
                     priority: document.getElementById('task-priority').value,
-                    status: document.getElementById('task-status').value,
-                    ownerUid: activeUser.uid,
-                    ownerEmail: activeUser.email || '',
-                    updatedAt: serverTimestamp()
+                    status: document.getElementById('task-status').value
                 };
                 if (editingTaskId) {
-                    await updateDoc(doc(db, 'tasks', editingTaskId), payload);
+                    if (!taskItems.has(editingTaskId)) throw new Error('Task is no longer available.');
+                    taskItems.set(editingTaskId, payload);
                 } else {
-                    await addDoc(taskCollection, { ...payload, createdAt: serverTimestamp() });
+                    taskItems.set(payload.id, payload);
                 }
+                writeStoredTasks(Array.from(taskItems.values()));
                 closeForm();
+                updateSummary();
                 await loadTasks();
             } catch (error) {
-                console.error('Unable to save task:', error);
+                console.error('Unable to save local task:', error);
                 window.alert(`Could not save task: ${error.message}`);
             } finally {
                 saveButton.disabled = false;

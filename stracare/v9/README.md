@@ -31,7 +31,23 @@ Deploy `firestore.rules` with Firebase CLI or the Firebase console.
 `public-booking.html` is the shareable, unauthenticated booking request page. It collects a preferred branch, date/time, patient name, and 10-digit mobile number. Requests remain pending until staff review them in **Appointments → Public Booking Requests**, where the mobile is matched against patients in the selected branch and the request can be converted into an appointment.
 
 Deploy the updated `firestore.rules` before publishing the page. Public access to the `branches` collection is used to populate the branch selector; keep branch documents limited to information intended for public visibility. Public requests can be submitted but cannot be read by unauthenticated users.
+Admins can review requests for all branches. Branch users can view, convert, or decline requests only for their assigned branch; Firestore rules enforce this restriction.
 
-## Attendance query index
+## Attendance and appointment query indexes
 
-Attendance reports query `daily_attendance` by branch and date range. Create the composite index in `firestore.indexes.json` before using the attendance page for branch-scoped accounts. The index uses collection scope with `branch` ascending and `date` ascending.
+Appointment and attendance lists query by branch and apply date filters in the page to avoid requiring compound branch/date indexes. Patient lookups still use branch and mobile together and may require the corresponding index in `firestore.indexes.json`.
+Admins can manage attendance across branches. Branch users can view, add, edit, and delete attendance only for their assigned branch; Firestore rules enforce the branch restriction.
+
+The root `firebase.json` maps `firestore.indexes.json` to Firebase CLI. From this directory, deploy the indexes to the app's Firebase project with:
+
+```sh
+npx firebase-tools deploy --only firestore:indexes --project cmf001stra
+```
+
+Wait until the indexes show **Enabled** in Firebase Console → Firestore Database → Indexes, then reload the app. If the attendance page still shows the old generic error after refreshing the deployed site, publish the latest `attendance.html` as well.
+
+## Transaction module storage
+
+The Transactions & Vouchers module continues to use Firebase and remains linked to Payments, Receipts, and Ledgers.
+
+The **My Task** module stores personal tasks in browser localStorage under the signed-in Firebase UID. Tasks are local to that browser/device and do not sync between devices. Existing Firestore task records are not automatically copied into local storage.

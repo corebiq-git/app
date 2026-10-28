@@ -33,6 +33,7 @@
     }
 
     .sidebar-toggle-button:focus-visible,
+    .module-search-toggle:focus-visible,
     .support-button:focus-visible,
     .notification-button:focus-visible,
     .profile-button:focus-visible {
@@ -46,37 +47,71 @@
 
     .module-search {
         position: relative;
-        width: min(100%, 520px);
-        flex: 1 1 420px;
-        margin: 0;
+        width: 42px;
+        flex: 0 0 42px;
+        margin: 0 0 0 auto;
+    }
+
+    .module-search.open {
+        z-index: 105;
     }
 
     .module-search-box {
-        height: 44px;
+        position: relative;
+        width: 42px;
+        height: 42px;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 0 14px;
-        background: #F8F9FA;
-        border: 1px solid var(--primary-soft);
-        border-radius: 24px;
+        justify-content: center;
+        gap: 6px;
+        padding: 0;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 22px;
         color: var(--muted);
-        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        transition: width .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
     }
 
-    .module-search-box:focus-within {
+    .module-search-toggle {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        flex: 0 0 42px;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+    }
+
+    .module-search-toggle:hover,
+    .module-search-toggle[aria-expanded="true"] {
+        background: #F1F3F8;
+    }
+
+    .module-search.open .module-search-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 105;
+        width: min(360px, calc(100vw - 24px));
+        justify-content: flex-start;
+        padding: 0 8px 0 0;
+        background: var(--surface);
+        border-color: var(--primary-soft);
+        box-shadow: 0 8px 24px rgba(31, 35, 40, .14);
+    }
+
+    .module-search.open .module-search-box:focus-within {
         background: var(--surface);
         border-color: var(--primary);
         box-shadow: 0 0 0 3px var(--primary-soft);
     }
 
-    .module-search-box > .material-symbols-rounded {
-        flex: 0 0 auto;
-        font-size: 21px;
-        color: var(--primary);
-    }
-
     .module-search-input {
+        display: none;
         width: 100%;
         min-width: 0;
         padding: 0;
@@ -86,6 +121,19 @@
         color: var(--text);
         font: inherit;
         font-size: 14px;
+    }
+
+    .module-search.open .module-search-input {
+        display: block;
+    }
+
+    .module-search.open .module-search-toggle {
+        width: 34px;
+        flex-basis: 34px;
+    }
+
+    .module-search-toggle .material-symbols-rounded {
+        font-size: 22px;
     }
 
     .module-search-input::placeholder {
@@ -122,10 +170,10 @@
 
     .module-search-results {
         position: absolute;
-        top: calc(100% + 8px);
+        top: 50px;
         left: 0;
-        right: 0;
         display: none;
+        width: min(360px, calc(100vw - 24px));
         max-height: min(60vh, 420px);
         overflow-y: auto;
         padding: 6px;
@@ -181,6 +229,31 @@
         align-items: center;
         gap: 9px;
     }
+
+    .install-app-button {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        flex: 0 0 42px;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #126B4A;
+        cursor: pointer;
+        transition: background-color .18s ease, color .18s ease;
+    }
+
+    .install-app-button:hover {
+        background: #EAF5EF;
+    }
+
+    .install-app-button:focus-visible { outline: 2px solid #0F7A52; outline-offset: 2px; }
+    .install-app-button .material-symbols-rounded { font-size: 22px; }
 
     .support-actions {
         position: relative;
@@ -444,21 +517,6 @@
 
         .sidebar-toggle-button { display: none; }
 
-        .module-search {
-            width: auto;
-            flex: 1 1 auto;
-        }
-
-        .module-search-box {
-            height: 42px;
-            gap: 7px;
-            padding: 0 11px;
-        }
-
-        .module-search-input {
-            font-size: 13px;
-        }
-
         .header-actions {
             gap: 6px;
         }
@@ -490,7 +548,17 @@
 
     <div class="module-search">
         <div class="module-search-box">
-            <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            <button
+                class="module-search-toggle"
+                id="module-search-toggle"
+                type="button"
+                aria-label="Search dashboard modules"
+                aria-expanded="false"
+                aria-controls="module-search-input"
+                title="Search modules"
+                onclick="window.toggleModuleSearch()">
+                <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            </button>
             <input
                 class="module-search-input"
                 id="module-search-input"
@@ -515,6 +583,15 @@
     </div>
 
     <div class="header-actions">
+        <button
+            class="install-app-button"
+            id="install-app-button"
+            type="button"
+            aria-label="Install STRA CARE app"
+            title="Install app"
+            onclick="window.installApp()">
+            <span class="material-symbols-rounded" aria-hidden="true">install_mobile</span>
+        </button>
         <div class="support-actions">
             <button
                 class="support-button"

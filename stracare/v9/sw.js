@@ -1,11 +1,16 @@
-const CACHE="corebiq-v7";
+const CACHE="corebiq-v10";
 const CORE=[
     "./",
     "./index.html",
     "./login.html",
+    "./splash-screen.html",
     "./manifest.webmanifest",
     "./assets/favicon.png",
     "./assets/app-icon.png",
+    "./assets/splash-screen.png",
+    "./assets/loading.png",
+    "./assets/logo-sidebar-bottom.png",
+    "./assets/logo-client.png",
     "./assets/logo-client-display.png",
     "./assets/name-client-display.png",
     "./assets/logo.png",

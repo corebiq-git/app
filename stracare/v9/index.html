@@ -9,10 +9,9 @@
 <link rel="apple-touch-icon" href="assets/app-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
 <link rel="stylesheet" href="css/corebiq.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 
 <style>
 :root{
@@ -24,7 +23,7 @@
     --warning: var(--primary);
     --secondary: var(--primary);
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent}
 html,body{
     display:flex;
     height:100%;
@@ -34,6 +33,18 @@ html,body{
     background:var(--bg);
     color:var(--text-main);
 }
+#startup-splash{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    width:100%;
+    height:100%;
+    border:0;
+    opacity:1;
+    visibility:visible;
+    transition:opacity .35s ease,visibility .35s ease;
+}
+#startup-splash.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
 #app-container{
     display:flex;
     height:100%;
@@ -78,20 +89,130 @@ html,body{
     to{opacity:1;transform:translateY(0)}
 }
 
-.dashboard-attendance-appointments-row{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    align-items:stretch;
-    gap:20px;
-    margin-bottom:24px;
-}
-.dashboard-attendance-appointments-row > .dash-card{min-width:0;margin:0}
 .dash-top-row{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
     gap:20px;
     margin-bottom:24px;
 }
+.dashboard-hidden-legacy{display:none!important}
+.dashboard-count-row{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+    margin-bottom:20px;
+}
+.dashboard-entry-row{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+    margin-bottom:20px;
+}
+.dashboard-week-card{
+    margin-bottom:20px;
+    padding:16px 18px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--surface);
+    box-shadow:none;
+}
+.dashboard-week-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.dashboard-week-title{margin:0;color:var(--text-main);font-size:14px;font-weight:700}
+.dashboard-week-controls{display:flex;align-items:center;gap:6px}
+.dashboard-week-control,.dashboard-module-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    min-height:34px;
+    padding:6px 9px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--surface);
+    color:var(--primary);
+    font:inherit;
+    font-size:12px;
+    font-weight:700;
+    text-decoration:none;
+    cursor:pointer;
+}
+.dashboard-week-control:hover,.dashboard-module-link:hover{background:var(--primary-soft)}
+.dashboard-week-control .material-symbols-rounded,.dashboard-module-link .material-symbols-rounded{font-size:18px}
+.dashboard-module-link{width:36px;height:36px;min-height:36px;flex:0 0 36px;padding:0}
+.dashboard-week-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.dashboard-week-day{
+    display:flex;
+    min-width:0;
+    min-height:66px;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    border:1px solid transparent;
+    border-radius:12px;
+    background:#F8FAFC;
+    color:var(--text-main);
+    font:inherit;
+    cursor:pointer;
+}
+.dashboard-week-day:hover{border-color:var(--primary-soft);background:#F1F5FB}
+.dashboard-week-day[aria-pressed="true"]{border-color:var(--primary);background:var(--primary);color:#fff}
+.dashboard-week-day-name{font-size:10px;font-weight:600;opacity:.8}
+.dashboard-week-day-number{font-size:17px;font-weight:800;line-height:1}
+.dashboard-week-day-today .dashboard-week-day-name::after{content:" · Today"}
+.dashboard-entry-heading{justify-content:space-between}
+.dashboard-entry-title{display:flex;align-items:center;gap:10px;min-width:0}
+.dashboard-count-card,.dashboard-entry-card{
+    min-width:0;
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:var(--surface);
+    box-shadow:none;
+}
+.dashboard-count-card.attendance{border-color:#D6EBDD;background:#F1F8F2}
+.dashboard-count-card.appointments{border-color:#D8E2F1;background:#F1F5FB}
+.dashboard-count-card.finance{border-color:#F0E2C8;background:#FFFAF1}
+.dashboard-count-heading,.dashboard-entry-heading{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:16px;
+    color:var(--text-main);
+    font-size:16px;
+    font-weight:700;
+}
+.dashboard-count-icon{
+    display:grid;
+    width:40px;
+    height:40px;
+    place-items:center;
+    border-radius:13px;
+    background:#EAF4EE;
+    color:#188038;
+}
+.dashboard-count-card.attendance .dashboard-count-icon{background:#DDF0E2;color:#188038}
+.dashboard-count-card.appointments .dashboard-count-icon{background:#DFE8F5;color:#0B1F4B}
+.dashboard-count-card.finance .dashboard-count-icon{background:#F8ECD5;color:#986515}
+.dashboard-count-total{font-size:34px;font-weight:800;line-height:1.1;color:var(--text-main)}
+.dashboard-count-caption{margin-top:4px;color:var(--text-muted);font-size:12px}
+.dashboard-count-details{display:flex;gap:10px;margin-top:16px}
+.dashboard-count-detail{flex:1;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.72)}
+.dashboard-count-detail span{display:block;color:var(--text-muted);font-size:11px}
+.dashboard-count-detail strong{display:block;margin-top:2px;font-size:18px;color:var(--text-main)}
+.dashboard-count-detail.received strong{color:#188038}
+.dashboard-count-detail.due strong{color:#B3261E}
+.dashboard-entry-heading{margin-bottom:14px}
+.dashboard-entry-heading .material-symbols-rounded{color:var(--primary);font-size:21px}
+.dashboard-record-list{display:grid;gap:8px;max-height:320px;overflow-y:auto}
+.dashboard-record{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--border);border-radius:12px;background:#FAFAFC}
+.dashboard-record-main{min-width:0}
+.dashboard-record-name{overflow:hidden;color:var(--text-main);font-size:13px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}
+.dashboard-record-meta{margin-top:3px;color:var(--text-muted);font-size:11px;line-height:1.4}
+.dashboard-record-status{flex:0 0 auto;padding:5px 8px;border-radius:999px;background:#E8EEF7;color:#0B1F4B;font-size:10px;font-weight:700;text-transform:uppercase}
+.dashboard-record-status.present,.dashboard-record-status.completed{background:#E8F5E9;color:#188038}
+.dashboard-record-status.leave,.dashboard-record-status.absent,.dashboard-record-status.cancelled{background:#FCE8E6;color:#B3261E}
+.dashboard-record-empty{padding:22px 12px;border:1px dashed var(--border);border-radius:12px;color:var(--text-muted);font-size:12px;text-align:center}
 .dash-card{
     background:var(--surface);
     border-radius:16px;
@@ -118,8 +239,8 @@ html,body{
     padding:22px 26px;
     border:1px solid rgba(255,255,255,.14);
     border-radius:20px;
-    background:linear-gradient(120deg,#081A3A 0%,#0B1F4B 48%,#17447B 100%);
-    box-shadow:0 14px 32px rgba(11,31,75,.22),0 3px 8px rgba(11,31,75,.12);
+    background:linear-gradient(90deg,rgba(8,26,58,.24),rgba(11,31,75,.08)),url('./assets/image-welcome.png') center/cover no-repeat;
+    box-shadow:none;
 }
 .dash-welcome-card::after{
     position:absolute;
@@ -157,8 +278,9 @@ html,body{
 }
 .dash-welcome-company{
     margin:10px 0 0;
-    color:rgba(235,243,255,.82);
-    font-size:14px;
+    color:#53D69A;
+    font-size:clamp(17px,2vw,21px);
+    font-weight:600;
     font-weight:600;
 }
 .dashboard-quick-tools{
@@ -624,7 +746,13 @@ html,body{
         width:min(92vw,360px);
         height:min(76dvh,560px);
     }
-    .dash-top-row{grid-template-columns:1fr;gap:12px}
+    .dash-top-row,.dashboard-count-row,.dashboard-entry-row{grid-template-columns:1fr;gap:12px}
+    .dashboard-week-card{padding:13px}
+    .dashboard-week-days{gap:4px}
+    .dashboard-week-day{min-height:58px;border-radius:9px}
+    .dashboard-week-day-name{font-size:9px}
+    .dashboard-module-link{width:34px;height:34px;min-height:34px;flex-basis:34px;padding:0}
+    .dashboard-module-link .material-symbols-rounded{font-size:19px}
     .dash-card{padding:16px;border-radius:12px}
     .dash-welcome-card{gap:14px;padding:19px;border-radius:16px}
     .dashboard-quick-tools{padding:14px;border-radius:16px}
@@ -635,17 +763,18 @@ html,body{
     .sales-trend-heading{align-items:flex-start}
     .dashboard-period-control{width:max-content;max-width:100%}
     .sales-trend-chart{height:170px}
+    .dashboard-count-card,.dashboard-entry-card{padding:16px;border-radius:15px}
 }
 @media(max-width:480px){
-    .dashboard-attendance-appointments-row{grid-template-columns:1fr;gap:12px}
-
     .dashboard-finance-summary{align-items:flex-start;flex-direction:column;gap:10px}
     .dashboard-period-control{align-self:flex-end}
+    .dashboard-record{padding:10px}
 }
 </style>
 </head>
 
 <body>
+<iframe id="startup-splash" src="splash-screen.html" title="Loading STRA CARE"></iframe>
 <div id="app-container">
 
     <div id="sidebar-container"></div>
@@ -669,7 +798,7 @@ html,body{
                             Welcome back,
                         </div>
                         <h2 class="dash-welcome-title" id="dash-company-name" data-no-translate>Loading company...</h2>
-                        <p class="dash-welcome-company">Here is your financial overview</p>
+                        <p class="dash-welcome-company">Run Your Clinic With Confidence</p>
                     </div>
                     <div class="dashboard-finance-summary">
                         <div class="dashboard-as-of" aria-label="Current date and time">
@@ -682,78 +811,90 @@ html,body{
                                 <time id="dashboard-as-of-time">--:--:--</time>
                             </span>
                         </div>
-                        <label class="dashboard-period-control" for="dashboard-period">
-                            <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
-                            <select id="dashboard-period" class="dashboard-period-select" aria-label="Financial overview period" onchange="window.updateDashboardSales()">
-                                <option value="today">Today</option>
-                                <option value="this-week">This week</option>
-                                <option value="this-month">This month</option>
-                                <option value="this-fy">This FY</option>
-                                <option value="this-year">This year</option>
-                            </select>
-                        </label>
                     </div>
                 </section>
 
-                <section class="dash-card calendar-week-card" aria-label="Current week calendar">
-                    <div class="cal-header-row">
-                        <div class="cal-month-title" id="calMonthDisplay">This week</div>
-                        <button class="dashboard-view-all" type="button" onclick="window.setCalToToday()">
-                            <span class="material-symbols-rounded" style="font-size:16px">today</span> Today
-                        </button>
+                <section class="dashboard-week-card" aria-label="Choose a day to view dashboard records">
+                    <div class="dashboard-week-header">
+                        <h2 class="dashboard-week-title" id="dashboardWeekLabel">This week</h2>
+                        <div class="dashboard-week-controls">
+                            <button class="dashboard-week-control" type="button" id="dashboardPreviousWeek" aria-label="Previous week">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+                            </button>
+                            <button class="dashboard-week-control" type="button" id="dashboardCurrentWeek">This week</button>
+                            <button class="dashboard-week-control" type="button" id="dashboardNextWeek" aria-label="Next week">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="calendar-grid" id="calendarGrid"></div>
+                    <div class="dashboard-week-days" id="dashboardWeekDays" role="group" aria-label="Days of the selected week"></div>
                 </section>
 
-                <div class="dashboard-attendance-appointments-row" aria-label="Attendance and appointment summaries">
-                    <div class="dash-card attendance-overview">
-                        <div class="card-title">Today's Attendance Overview</div>
-                        <div class="fin-stat-container">
-                            <div class="fin-stat success-box">
-                                <div class="fin-stat-info">
-                                    <div class="fin-label">Present / Half-Day</div>
-                                    <div class="fin-amount" id="dashPresent">0</div>
-                                </div>
-                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
-                            </div>
-
-                            <div class="fin-stat alert">
-                                <div class="fin-stat-info">
-                                    <div class="fin-label">On Leave / Absent</div>
-                                    <div class="fin-amount" id="dashAbsent">0</div>
-                                </div>
-                                <span class="material-symbols-rounded fin-icon">event_busy</span>
-                            </div>
+                <section class="dashboard-count-row" aria-label="Selected date attendance, appointments, and fees">
+                    <article class="dashboard-count-card attendance">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span></span>
+                            <span id="dashboardAttendanceCountHeading">Attendance</span>
                         </div>
-                    </div>
-
-                    <div class="dash-card">
-                        <div class="card-title">Appointments Overview</div>
-                        <div class="chart-container">
-                            <canvas id="apptDonutChart"></canvas>
+                        <div class="dashboard-count-total" id="dashboardAttendancePresent">0</div>
+                        <div class="dashboard-count-caption" id="dashboardAttendanceCountCaption">Present or half-day</div>
+                        <div class="dashboard-count-details">
+                            <div class="dashboard-count-detail"><span>On leave / absent</span><strong id="dashboardAttendanceAbsent">0</strong></div>
+                            <div class="dashboard-count-detail"><span>Attendance records</span><strong id="dashboardAttendanceTotal">0</strong></div>
                         </div>
-
-                        <div class="mini-stats-grid">
-                            <div class="mini-stat schedule-status-stat">
-                                <div class="mini-stat-label">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                    Pending
-                                </div>
-                                <div class="mini-stat-val" id="dashPending">0</div>
-                            </div>
-
-                            <div class="mini-stat schedule-status-stat">
-                                <div class="mini-stat-label">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                                    Completed
-                                </div>
-                                <div class="mini-stat-val" id="dashCompleted">0</div>
-                            </div>
+                    </article>
+                    <article class="dashboard-count-card appointments">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded" aria-hidden="true">event_available</span></span>
+                            <span id="dashboardAppointmentCountHeading">Appointments</span>
                         </div>
-                    </div>
-                </div>
+                        <div class="dashboard-count-total" id="dashboardAppointmentTotal">0</div>
+                        <div class="dashboard-count-caption" id="dashboardAppointmentCountCaption">Scheduled for selected date</div>
+                        <div class="dashboard-count-details">
+                            <div class="dashboard-count-detail"><span>Pending</span><strong id="dashboardAppointmentPending">0</strong></div>
+                            <div class="dashboard-count-detail"><span>Completed</span><strong id="dashboardAppointmentCompleted">0</strong></div>
+                        </div>
+                    </article>
+                    <article class="dashboard-count-card finance">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded" aria-hidden="true">account_balance_wallet</span></span>
+                            <span id="dashboardFeeSummaryHeading">Fee Summary · Today</span>
+                        </div>
+                        <div class="dashboard-count-total" id="dashboardFeeTotal">₹0.00</div>
+                        <div class="dashboard-count-caption">Total fee for selected date</div>
+                        <div class="dashboard-count-details">
+                            <div class="dashboard-count-detail received"><span>Received</span><strong id="dashboardFeeReceived">₹0.00</strong></div>
+                            <div class="dashboard-count-detail due"><span>Due</span><strong id="dashboardFeeDue">₹0.00</strong></div>
+                        </div>
+                    </article>
+                </section>
 
-                <section class="dashboard-quick-tools" aria-labelledby="dashboard-quick-tools-title">
+                <section class="dashboard-entry-row" aria-label="Saved attendance and appointments for selected date">
+                    <article class="dashboard-entry-card">
+                        <h2 class="dashboard-entry-heading">
+                            <span class="dashboard-entry-title"><span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span><span id="dashboardAttendanceHeading">Today's Saved Attendance</span></span>
+                            <button class="dashboard-module-link" type="button" onclick="window.switchView('view-attendance', null)" aria-label="Open full attendance module" title="Open full attendance module">
+                                <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+                            </button>
+                        </h2>
+                        <div class="dashboard-record-list" id="dashboardAttendanceRecords" aria-live="polite">
+                            <div class="dashboard-record-empty">Loading today's attendance...</div>
+                        </div>
+                    </article>
+                    <article class="dashboard-entry-card">
+                        <h2 class="dashboard-entry-heading">
+                            <span class="dashboard-entry-title"><span class="material-symbols-rounded" aria-hidden="true">event_note</span><span id="dashboardAppointmentHeading">Today's Saved Appointments</span></span>
+                            <button class="dashboard-module-link" type="button" onclick="window.switchView('view-appointments', null)" aria-label="Open full appointments module" title="Open full appointments module">
+                                <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+                            </button>
+                        </h2>
+                        <div class="dashboard-record-list" id="dashboardAppointmentRecords" aria-live="polite">
+                            <div class="dashboard-record-empty">Loading today's appointments...</div>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="dashboard-quick-tools dashboard-hidden-legacy" aria-labelledby="dashboard-quick-tools-title">
                     <div class="dashboard-quick-tools-head">
                         <h2 class="dashboard-quick-tools-title" id="dashboard-quick-tools-title">
                             <span class="material-symbols-rounded" aria-hidden="true">grid_view</span>
@@ -785,9 +926,53 @@ html,body{
                     </div>
                 </section>
 
+                <div class="dash-top-row dashboard-hidden-legacy">
 
+                    <div class="dash-card attendance-overview">
+                        <div class="card-title">Today's Attendance Overview</div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Present / Half-Day</div>
+                                    <div class="fin-amount" id="dashPresent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
+                            </div>
 
-                <div class="dash-top-row">
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">On Leave / Absent</div>
+                                    <div class="fin-amount" id="dashAbsent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">event_busy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">Schedule Breakdown</div>
+                        <div class="chart-container">
+                            <canvas id="apptDonutChart"></canvas>
+                        </div>
+
+                        <div class="mini-stats-grid">
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    Pending
+                                </div>
+                                <div class="mini-stat-val" id="dashPending">0</div>
+                            </div>
+
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                    Completed
+                                </div>
+                                <div class="mini-stat-val" id="dashCompleted">0</div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="dash-card">
                         <div class="card-title">
@@ -821,7 +1006,7 @@ html,body{
 
                 </div>
 
-                <section class="dash-card sales-trend-card" aria-label="Sales trend">
+                <section class="dash-card sales-trend-card dashboard-hidden-legacy" aria-label="Sales trend">
                     <div class="sales-trend-heading">
                         <div>
                             <div class="card-title">Sales trend</div>
@@ -837,9 +1022,17 @@ html,body{
                     </div>
                 </section>
 
+                <section class="dash-card calendar-week-card dashboard-hidden-legacy" aria-label="Current week calendar">
+                    <div class="cal-header-row">
+                        <div class="cal-month-title" id="calMonthDisplay">This week</div>
+                        <button class="dashboard-view-all" type="button" onclick="window.setCalToToday()">
+                            <span class="material-symbols-rounded" style="font-size:16px">today</span> Today
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </section>
 
-
-                <div class="dash-table-wrapper">
+                <div class="dash-table-wrapper dashboard-hidden-legacy">
                     <div class="schedule-table-heading">
                         <h4 style="font-size:14px;font-weight:700;margin:0;color:var(--text-main)">
                             Schedule for:
@@ -954,7 +1147,9 @@ import {
     collection,
     getDocs,
     query,
-    where
+    where,
+    setDoc,
+    runTransaction
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import {
     onAuthStateChanged,
@@ -968,11 +1163,6 @@ window.currentUser = null;
 window.allApts = [];
 window.aptDatesSet = new Set();
 window.apptChartInstance = null;
-window.addEventListener('corebiq:settings-changed', () => {
-    if (window.salesTrendChartInstance && typeof window.updateDashboardSales === 'function') {
-        window.updateDashboardSales();
-    }
-});
 
 /* Local-date helper: avoids UTC date shifting in India/other timezones. */
 window.getLocalDateString = function(date = new Date()) {
@@ -980,6 +1170,325 @@ window.getLocalDateString = function(date = new Date()) {
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
     return `${y}-${m}-${d}`;
+};
+
+window.selectedDashboardDate = window.getLocalDateString();
+
+function dashboardDateFromKey(dateKey) {
+    const [year, month, day] = dateKey.split('-').map(Number);
+    return new Date(year, month - 1, day);
+}
+
+function renderDashboardWeek() {
+    const selectedDate = dashboardDateFromKey(window.selectedDashboardDate);
+    const weekStart = new Date(selectedDate);
+    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 6);
+    const label = document.getElementById('dashboardWeekLabel');
+    const days = document.getElementById('dashboardWeekDays');
+    if (!label || !days) return;
+
+    const dateLabel = date => date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    label.textContent = `${dateLabel(weekStart)} – ${dateLabel(weekEnd)}`;
+    days.replaceChildren();
+    for (let index = 0; index < 7; index++) {
+        const date = new Date(weekStart);
+        date.setDate(weekStart.getDate() + index);
+        const dateKey = window.getLocalDateString(date);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'dashboard-week-day';
+        if (dateKey === window.getLocalDateString()) button.classList.add('dashboard-week-day-today');
+        button.setAttribute('aria-pressed', String(dateKey === window.selectedDashboardDate));
+        button.setAttribute('aria-label', date.toLocaleDateString('en-IN', {
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        }));
+        const dayName = document.createElement('span');
+        dayName.className = 'dashboard-week-day-name';
+        dayName.textContent = date.toLocaleDateString('en-IN', { weekday: 'short' });
+        const dayNumber = document.createElement('span');
+        dayNumber.className = 'dashboard-week-day-number';
+        dayNumber.textContent = String(date.getDate());
+        button.append(dayName, dayNumber);
+        button.addEventListener('click', () => {
+            window.selectedDashboardDate = dateKey;
+            renderDashboardWeek();
+            window.fetchDashboardData();
+        });
+        days.appendChild(button);
+    }
+}
+
+document.getElementById('dashboardPreviousWeek')?.addEventListener('click', () => {
+    const date = dashboardDateFromKey(window.selectedDashboardDate);
+    date.setDate(date.getDate() - 7);
+    window.selectedDashboardDate = window.getLocalDateString(date);
+    renderDashboardWeek();
+    window.fetchDashboardData();
+});
+document.getElementById('dashboardNextWeek')?.addEventListener('click', () => {
+    const date = dashboardDateFromKey(window.selectedDashboardDate);
+    date.setDate(date.getDate() + 7);
+    window.selectedDashboardDate = window.getLocalDateString(date);
+    renderDashboardWeek();
+    window.fetchDashboardData();
+});
+document.getElementById('dashboardCurrentWeek')?.addEventListener('click', () => {
+    window.selectedDashboardDate = window.getLocalDateString();
+    renderDashboardWeek();
+    window.fetchDashboardData();
+});
+renderDashboardWeek();
+
+const dashboardEscapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+}[character]));
+let dashboardEmployees = [];
+let dashboardTherapists = [];
+
+function dashboardFillSelect(select, records, placeholder) {
+    select.innerHTML = `<option value="">${dashboardEscapeHtml(placeholder)}</option>`;
+    records.forEach(record => {
+        const option = document.createElement('option');
+        option.value = record.id;
+        option.textContent = record.name;
+        if (record.type) option.dataset.type = record.type;
+        if (record.branch) option.dataset.branch = record.branch;
+        select.appendChild(option);
+    });
+}
+
+function refreshDashboardEntryDirectories() {
+    const attendanceBranch = document.getElementById('dashboardAttendanceBranch').value;
+    const appointmentBranch = document.getElementById('dashboardAppointmentBranch').value;
+    const employees = dashboardEmployees.filter(employee => !attendanceBranch || employee.branch === attendanceBranch);
+    const therapists = dashboardTherapists.filter(therapist => !appointmentBranch || therapist.branch === appointmentBranch);
+    dashboardFillSelect(document.getElementById('dashboardAttendanceEmployee'), employees, 'Select staff or therapist');
+    dashboardFillSelect(document.getElementById('dashboardAppointmentTherapist'), therapists, 'Select therapist');
+}
+
+window.loadDashboardEntryOptions = async function() {
+    const isAdmin = window.currentUser?.role === 'admin';
+    const branch = window.currentUser?.branch || '';
+    const branchSelects = [
+        document.getElementById('dashboardAttendanceBranch'),
+        document.getElementById('dashboardAppointmentBranch')
+    ];
+    const branchesRequest = isAdmin
+        ? getDocs(collection(db, 'branches'))
+        : Promise.resolve(null);
+    const staffQuery = isAdmin
+        ? collection(db, 'staff')
+        : query(collection(db, 'staff'), where('branch', '==', branch));
+    const therapistsQuery = isAdmin
+        ? collection(db, 'therapists')
+        : query(collection(db, 'therapists'), where('branch', '==', branch));
+    const [branchesSnapshot, staffSnapshot, therapistsSnapshot] = await Promise.all([
+        branchesRequest,
+        getDocs(staffQuery),
+        getDocs(therapistsQuery)
+    ]);
+    const branches = isAdmin
+        ? [...new Set(branchesSnapshot.docs.map(item => item.data().name).filter(Boolean))].sort()
+        : [branch];
+
+    branchSelects.forEach(select => {
+        select.innerHTML = '';
+        if (isAdmin) {
+            const placeholder = document.createElement('option');
+            placeholder.value = '';
+            placeholder.textContent = 'Select branch';
+            select.appendChild(placeholder);
+        }
+        branches.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            select.appendChild(option);
+        });
+        if (!isAdmin) {
+            select.value = branch;
+            select.disabled = true;
+        }
+    });
+
+    dashboardEmployees = [
+        ...staffSnapshot.docs.map(item => ({
+            id: item.id,
+            name: item.data().name || 'Unnamed staff',
+            type: 'Staff',
+            branch: item.data().branch || ''
+        })),
+        ...therapistsSnapshot.docs.map(item => ({
+            id: item.id,
+            name: item.data().name || 'Unnamed therapist',
+            type: 'Therapist',
+            branch: item.data().branch || ''
+        }))
+    ].sort((a, b) => a.name.localeCompare(b.name));
+    dashboardTherapists = therapistsSnapshot.docs.map(item => ({
+        id: item.id,
+        name: item.data().name || 'Unnamed therapist',
+        branch: item.data().branch || ''
+    })).sort((a, b) => a.name.localeCompare(b.name));
+    refreshDashboardEntryDirectories();
+};
+
+function setDashboardFeedback(id, message, state = '') {
+    const feedback = document.getElementById(id);
+    feedback.textContent = message;
+    feedback.className = `dashboard-entry-feedback${state ? ` ${state}` : ''}`;
+}
+
+function dashboardAttendanceDocumentId(date, type, employeeId) {
+    return `${date}_${String(type || 'employee').toLowerCase()}_${encodeURIComponent(employeeId)}`;
+}
+
+function dashboardAppointmentDocumentId(appointment) {
+    return `apt_${encodeURIComponent(appointment.branch)}_${appointment.date}_${encodeURIComponent(appointment.time)}_${encodeURIComponent(appointment.therapist)}_${encodeURIComponent(appointment.mobile)}`;
+}
+
+window.saveDashboardAttendance = async function(event) {
+    event.preventDefault();
+    const form = document.getElementById('dashboardAttendanceForm');
+    const button = document.getElementById('dashboardAttendanceSubmit');
+    if (button.disabled) return;
+    const employeeSelect = document.getElementById('dashboardAttendanceEmployee');
+    const employee = dashboardEmployees.find(item => item.id === employeeSelect.value && item.type === employeeSelect.selectedOptions[0]?.dataset.type);
+    const branch = window.currentUser?.role === 'admin'
+        ? document.getElementById('dashboardAttendanceBranch').value
+        : window.currentUser?.branch;
+    const date = document.getElementById('dashboardAttendanceDate').value;
+    if (!employee || !branch || !date) {
+        setDashboardFeedback('dashboardAttendanceFeedback', 'Select an employee, branch, and date.', 'error');
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = 'Saving...';
+    setDashboardFeedback('dashboardAttendanceFeedback', '');
+    try {
+        const attendanceRef = doc(db, 'daily_attendance', dashboardAttendanceDocumentId(date, employee.type, employee.id));
+        await runTransaction(db, async transaction => {
+            const existing = await transaction.get(attendanceRef);
+            transaction.set(attendanceRef, {
+                date,
+                empId: employee.id,
+                empName: employee.name,
+                empType: employee.type,
+                branch,
+                status: document.getElementById('dashboardAttendanceStatus').value,
+                notes: document.getElementById('dashboardAttendanceNotes').value.trim(),
+                updatedAt: new Date(),
+                createdAt: existing.exists() ? existing.data().createdAt || new Date() : new Date()
+            }, { merge: true });
+        });
+        form.reset();
+        document.getElementById('dashboardAttendanceDate').value = window.getLocalDateString();
+        if (window.currentUser?.role !== 'admin') document.getElementById('dashboardAttendanceBranch').value = window.currentUser.branch;
+        refreshDashboardEntryDirectories();
+        setDashboardFeedback('dashboardAttendanceFeedback', 'Attendance saved.', 'success');
+        await window.fetchDashboardData();
+    } catch (error) {
+        console.error('Dashboard attendance save failed:', error);
+        setDashboardFeedback('dashboardAttendanceFeedback', 'Could not save attendance. Check your access and try again.', 'error');
+    } finally {
+        button.disabled = false;
+        button.textContent = 'Save Attendance';
+    }
+};
+
+window.saveDashboardAppointment = async function(event) {
+    event.preventDefault();
+    const form = document.getElementById('dashboardAppointmentForm');
+    const button = document.getElementById('dashboardAppointmentSubmit');
+    if (button.disabled) return;
+    const mobile = document.getElementById('dashboardAppointmentMobile').value.trim();
+    const name = document.getElementById('dashboardAppointmentName').value.trim();
+    const date = document.getElementById('dashboardAppointmentDate').value;
+    const time = document.getElementById('dashboardAppointmentTime').value;
+    const branch = window.currentUser?.role === 'admin'
+        ? document.getElementById('dashboardAppointmentBranch').value
+        : window.currentUser?.branch;
+    const therapist = document.getElementById('dashboardAppointmentTherapist').selectedOptions[0]?.textContent || '';
+    if (!/^\d{10}$/.test(mobile) || !name || !date || !branch || !therapist || !/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(time)) {
+        setDashboardFeedback('dashboardAppointmentFeedback', 'Enter valid patient details, branch, therapist, date, and a time between 9 AM and 9 PM.', 'error');
+        return;
+    }
+
+    button.disabled = true;
+    button.textContent = 'Saving...';
+    setDashboardFeedback('dashboardAppointmentFeedback', '');
+    const appointment = {
+        mobile, name, age: '', gender: '', category: 'Normal', location: '', patientNotes: '',
+        branch, date, time, previousDate: '', previousTime: '', duration: '',
+        sessionsPerDay: '', therapist, status: 'Pending', fee: 0, advance: 0,
+        balance: 0, prevDues: 0, notes: '', paymentMode: 'Cash',
+        paymentReference: '', paymentRemarks: '', createdAt: new Date(), updatedAt: new Date()
+    };
+    const appointmentRef = doc(db, 'appointments', dashboardAppointmentDocumentId(appointment));
+    try {
+        const matchingAppointments = await getDocs(query(
+            collection(db, 'appointments'),
+            where('branch', '==', branch),
+            where('date', '==', date),
+            where('time', '==', time),
+            where('therapist', '==', therapist),
+            where('mobile', '==', mobile)
+        ));
+        if (matchingAppointments.docs.some(item => String(item.data().status || '').toLowerCase() !== 'cancelled')) {
+            throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+        }
+
+        const patientMatches = await getDocs(query(
+            collection(db, 'patients'),
+            where('mobile', '==', mobile),
+            where('branch', '==', branch)
+        ));
+        const patientRef = patientMatches.empty
+            ? doc(db, 'patients', `apt_${encodeURIComponent(branch)}_${encodeURIComponent(mobile)}`)
+            : null;
+        await runTransaction(db, async transaction => {
+            const appointmentSnapshot = await transaction.get(appointmentRef);
+            if (appointmentSnapshot.exists() && String(appointmentSnapshot.data().status || '').toLowerCase() !== 'cancelled') {
+                throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+            }
+            const patientSnapshot = patientRef ? await transaction.get(patientRef) : null;
+            transaction.set(appointmentRef, appointment);
+            if (patientRef && patientSnapshot && !patientSnapshot.exists()) {
+                transaction.set(patientRef, {
+                    patientId: `P${mobile}`,
+                    mobile,
+                    name,
+                    category: 'Normal',
+                    branch,
+                    location: '',
+                    notes: '',
+                    createdAt: new Date()
+                });
+            }
+        });
+        form.reset();
+        document.getElementById('dashboardAppointmentDate').value = window.getLocalDateString();
+        if (window.currentUser?.role !== 'admin') document.getElementById('dashboardAppointmentBranch').value = window.currentUser.branch;
+        refreshDashboardEntryDirectories();
+        setDashboardFeedback('dashboardAppointmentFeedback', 'Appointment saved.', 'success');
+        await window.fetchDashboardData();
+    } catch (error) {
+        console.error('Dashboard appointment save failed:', error);
+        const message = error.message.includes('already exists')
+            ? error.message
+            : 'Could not save appointment. Check your access and try again.';
+        setDashboardFeedback('dashboardAppointmentFeedback', message, 'error');
+    } finally {
+        button.disabled = false;
+        button.textContent = 'Save Appointment';
+    }
 };
 
 window.formatTime12Hour = function(value) {
@@ -1102,6 +1611,61 @@ window.handleLogout = async function() {
     }
 };
 
+window.deferredInstallPrompt = null;
+
+window.isAppInstalled = function() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+        navigator.standalone === true;
+};
+
+window.updateInstallButton = function() {
+    const button = document.getElementById('install-app-button');
+    if (button) button.hidden = window.isAppInstalled();
+};
+
+window.installApp = async function() {
+    if (window.isAppInstalled()) {
+        window.updateInstallButton();
+        return;
+    }
+
+    if (!window.deferredInstallPrompt) {
+        const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        window.alert(isIOS
+            ? 'To install STRA CARE, tap the Share button in Safari and choose "Add to Home Screen".'
+            : 'To install STRA CARE, use your browser menu and choose "Install app" or "Add to Home screen".');
+        return;
+    }
+
+    const installPrompt = window.deferredInstallPrompt;
+    window.deferredInstallPrompt = null;
+    window.updateInstallButton();
+
+    try {
+        await installPrompt.prompt();
+        await installPrompt.userChoice;
+    } catch (error) {
+        console.error('Unable to open the app installation prompt:', error);
+        window.alert('The install prompt could not be opened. Please try again from your browser menu.');
+    } finally {
+        window.updateInstallButton();
+    }
+};
+
+window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    window.deferredInstallPrompt = event;
+    window.updateInstallButton();
+});
+
+window.addEventListener('appinstalled', () => {
+    window.deferredInstallPrompt = null;
+    window.updateInstallButton();
+});
+
+window.matchMedia('(display-mode: standalone)').addEventListener?.('change', window.updateInstallButton);
+window.updateInstallButton();
+
 window.loadDashboardCompanyName = async function() {
     const companyElement = document.getElementById('dash-company-name');
     if (!companyElement || !window.currentUser) return;
@@ -1164,6 +1728,11 @@ onAuthStateChanged(auth, async (user) => {
 
         const app = document.getElementById('app-container');
         if (app) app.style.visibility = 'visible';
+        const startupSplash = document.getElementById('startup-splash');
+        if (startupSplash) {
+            startupSplash.classList.add('is-hidden');
+            window.setTimeout(() => startupSplash.remove(), 400);
+        }
         window.loadDashboardCompanyName();
 
         /* Sidebar is loaded separately; hide the Users item after it appears too. */
@@ -1364,6 +1933,7 @@ window.loadComponent = async function(elementId, filename) {
             window.updateHeaderProfile();
             window.updateSidebarCollapseControl();
             window.updateNotificationBell();
+            window.updateInstallButton();
         }
 
         if (filename === 'sidebar.html') {
@@ -1539,6 +2109,27 @@ window.searchModules = function(query) {
     input.setAttribute('aria-expanded', 'true');
 };
 
+window.toggleModuleSearch = function(forceOpen) {
+    const container = document.querySelector('.module-search');
+    const button = document.getElementById('module-search-toggle');
+    const input = document.getElementById('module-search-input');
+    if (!container || !button || !input) return;
+
+    const shouldOpen = typeof forceOpen === 'boolean'
+        ? forceOpen
+        : !container.classList.contains('open');
+    container.classList.toggle('open', shouldOpen);
+    button.setAttribute('aria-expanded', String(shouldOpen));
+
+    if (shouldOpen) {
+        input.focus();
+    } else {
+        input.value = '';
+        window.searchModules('');
+        input.blur();
+    }
+};
+
 window.clearModuleSearch = function() {
     const input = document.getElementById('module-search-input');
     if (!input) return;
@@ -1556,15 +2147,12 @@ window.openModuleFromSearch = function(targetId) {
     if (navElement && navElement.offsetParent === null) return;
 
     window.switchView(targetId, navElement || null);
-    const input = document.getElementById('module-search-input');
-    if (input) input.value = '';
-    window.searchModules('');
-    input?.blur();
+    window.toggleModuleSearch(false);
 };
 
 window.handleModuleSearchKeydown = function(event) {
     if (event.key === 'Escape') {
-        window.searchModules('');
+        window.toggleModuleSearch(false);
         return;
     }
 
@@ -2373,183 +2961,188 @@ window.updateDashboardAppointmentSummary = function(range) {
 /* -------------------------------------------------------
    DASHBOARD FIRESTORE DATA
 ------------------------------------------------------- */
+let dashboardRequestSequence = 0;
+const dashboardInFlightRequests = new Map();
 window.fetchDashboardData = async function() {
-
     if (!window.currentUser) return;
 
-    try {
+    const errorBanner = document.getElementById('dash-error-banner');
+    const errorText = document.getElementById('dash-error-text');
+    const selectedDate = window.selectedDashboardDate || window.getLocalDateString();
+    const requestSequence = ++dashboardRequestSequence;
+    const selectedLabel = dashboardDateFromKey(selectedDate).toLocaleDateString('en-IN', {
+        day: 'numeric', month: 'short', year: 'numeric'
+    });
+    const branch = window.currentUser.role === 'admin' ? '' : window.currentUser.branch;
+    const appointmentConstraints = [where('date', '==', selectedDate)];
+    const attendanceConstraints = [where('date', '==', selectedDate)];
+    if (branch) {
+        appointmentConstraints.push(where('branch', '==', branch));
+        attendanceConstraints.push(where('branch', '==', branch));
+    }
 
-        const errBanner =
-            document.getElementById('dash-error-banner');
-
-        if (errBanner) {
-            errBanner.style.display = 'none';
-        }
-
-        /* -----------------------------------------------
-           APPOINTMENTS
-        ------------------------------------------------ */
-        let qApt;
-
-        if (window.currentUser.role === 'admin') {
-            qApt =
-                query(collection(db, "appointments"));
-        } else {
-            qApt =
-                query(
-                    collection(db, "appointments"),
-                    where(
-                        "branch",
-                        "==",
-                        window.currentUser.branch
-                    )
-                );
-        }
-
-        const snapApt =
-            await getDocs(qApt);
-
-        window.allApts = [];
-        window.aptDatesSet.clear();
-
-        snapApt.forEach(docSnap => {
-
-            const data = docSnap.data();
-
-            window.allApts.push({
-                ...data,
-                id: docSnap.id
-            });
-
-            if (data.date) {
-                window.aptDatesSet.add(data.date);
-            }
-
-        });
-
-        window.allApts.sort((a,b) => {
-
-            const dateCompare =
-                String(b.date || '').localeCompare(
-                    String(a.date || '')
-                );
-
-            if (dateCompare !== 0) {
-                return dateCompare;
-            }
-
-            return String(a.time || '').localeCompare(
-                String(b.time || '')
-            );
-        });
-
-        window.renderCalendar();
-        window.renderLiveTable();
-
-        /* -----------------------------------------------
-           FINANCIAL SALES OVERVIEW
-        ------------------------------------------------ */
-        let qTransactions;
-        if (window.currentUser.role === 'admin') {
-            qTransactions = query(collection(db, "transactions"));
-        } else {
-            qTransactions = query(
-                collection(db, "transactions"),
-                where("branch", "==", window.currentUser.branch)
-            );
-        }
-
-        const snapTransactions = await getDocs(qTransactions);
-        window.dashboardTransactions = snapTransactions.docs.map(docSnap => docSnap.data());
-        window.updateDashboardSales();
-
-        /* -----------------------------------------------
-           TODAY'S ATTENDANCE
-        ------------------------------------------------ */
-        const todayStr =
-            window.getLocalDateString();
-
-        let qAtt;
-
-        if (window.currentUser.role === 'admin') {
-            qAtt =
-                query(
-                    collection(db, "daily_attendance"),
-                    where("date", "==", todayStr)
-                );
-        } else {
-            qAtt =
-                query(
-                    collection(db, "daily_attendance"),
-                    where("date", "==", todayStr),
-                    where(
-                        "branch",
-                        "==",
-                        window.currentUser.branch
-                    )
-                );
-        }
-
-        const snapAtt =
-            await getDocs(qAtt);
-
-        let attPresent = 0;
-        let attAbsent = 0;
-
-        snapAtt.forEach(docSnap => {
-
-            const status =
-                (docSnap.data().status || '').toLowerCase();
-
-            if (
-                status === 'present' ||
-                status === 'half-day'
-            ) {
-                attPresent++;
-            } else if (
-                status === 'absent' ||
-                status === 'leave'
-            ) {
-                attAbsent++;
-            }
-        });
-
-        const dAttPresent =
-            document.getElementById('dashPresent');
-
-        if (dAttPresent) {
-            dAttPresent.innerText = attPresent;
-        }
-
-        const dAttAbsent =
-            document.getElementById('dashAbsent');
-
-        if (dAttAbsent) {
-            dAttAbsent.innerText = attAbsent;
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Dashboard Load Error:",
-            error
+    const requestKey = `${selectedDate}:${branch}`;
+    let request = dashboardInFlightRequests.get(requestKey);
+    if (!request) {
+        request = Promise.all([
+            getDocs(query(collection(db, 'appointments'), ...appointmentConstraints)),
+            getDocs(query(collection(db, 'daily_attendance'), ...attendanceConstraints))
+        ]);
+        dashboardInFlightRequests.set(requestKey, request);
+        request.then(
+            () => { if (dashboardInFlightRequests.get(requestKey) === request) dashboardInFlightRequests.delete(requestKey); },
+            () => { if (dashboardInFlightRequests.get(requestKey) === request) dashboardInFlightRequests.delete(requestKey); }
         );
+    }
 
-        const errorBanner =
-            document.getElementById('dash-error-banner');
+    try {
+        if (errorBanner) errorBanner.style.display = 'none';
+        document.getElementById('dashboardAttendanceCountHeading').textContent = `Attendance · ${selectedLabel}`;
+        document.getElementById('dashboardAttendanceCountCaption').textContent = 'Present or half-day';
+        document.getElementById('dashboardAppointmentCountHeading').textContent = `Appointments · ${selectedLabel}`;
+        document.getElementById('dashboardAppointmentCountCaption').textContent = `Scheduled for ${selectedLabel}`;
+        document.getElementById('dashboardFeeSummaryHeading').textContent = `Fee Summary · ${selectedLabel}`;
+        document.getElementById('dashboardAttendanceHeading').textContent = `Saved Attendance · ${selectedLabel}`;
+        document.getElementById('dashboardAppointmentHeading').textContent = `Saved Appointments · ${selectedLabel}`;
+        const [appointmentsSnapshot, attendanceSnapshot] = await request;
+        if (requestSequence !== dashboardRequestSequence) return;
 
-        const errorText =
-            document.getElementById('dash-error-text');
+        const appointmentRecords = appointmentsSnapshot.docs.map(item => ({ id: item.id, data: item.data() }));
+        const appointmentMap = new Map();
+        appointmentRecords.forEach(record => {
+            const data = record.data;
+            const identityParts = [data.branch, data.date, data.time, data.therapist, data.mobile]
+                .map(value => String(value || '').trim().toLowerCase());
+            const key = identityParts.every(Boolean) ? identityParts.join('|') : record.id;
+            const existing = appointmentMap.get(key);
+            const isActive = String(data.status || '').toLowerCase() !== 'cancelled';
+            const existingIsActive = existing && String(existing.status || '').toLowerCase() !== 'cancelled';
+            const timestamp = value => value && typeof value.toMillis === 'function'
+                ? value.toMillis()
+                : (Date.parse(value || '') || 0);
+            const dataTime = timestamp(data.updatedAt) || timestamp(data.createdAt);
+            const existingTime = existing
+                ? timestamp(existing.updatedAt) || timestamp(existing.createdAt)
+                : -1;
+            if (!existing || (isActive && !existingIsActive) || (isActive === existingIsActive && dataTime >= existingTime)) {
+                appointmentMap.set(key, data);
+            }
+        });
+        const appointments = [...appointmentMap.values()];
+        const completed = appointments.filter(item => String(item.status || '').toLowerCase() === 'completed').length;
+        const attendanceByEmployee = new Map();
+        attendanceSnapshot.docs.forEach(item => {
+            const data = item.data();
+            const key = `${data.empType || ''}:${data.empId || item.id}:${data.date || selectedDate}`;
+            const existing = attendanceByEmployee.get(key);
+            const timestamp = value => value && typeof value.toMillis === 'function'
+                ? value.toMillis()
+                : Date.parse(value || '') || 0;
+            const dataTime = timestamp(data.updatedAt) || timestamp(data.createdAt);
+            const existingTime = existing
+                ? timestamp(existing.updatedAt) || timestamp(existing.createdAt)
+                : -1;
+            if (!existing || dataTime >= existingTime) attendanceByEmployee.set(key, data);
+        });
 
-        if (errorBanner) {
-            errorBanner.style.display = 'flex';
+        let attendancePresent = 0;
+        let attendanceAway = 0;
+        attendanceByEmployee.forEach(item => {
+            const status = String(item.status || '').toLowerCase();
+            if (status === 'present' || status === 'half-day') attendancePresent++;
+            else if (status === 'absent' || status === 'leave') attendanceAway++;
+        });
+
+        document.getElementById('dashboardAttendancePresent').textContent = attendancePresent;
+        document.getElementById('dashboardAttendanceAbsent').textContent = attendanceAway;
+        document.getElementById('dashboardAttendanceTotal').textContent = attendanceByEmployee.size;
+        document.getElementById('dashboardAppointmentTotal').textContent = appointments.length;
+        document.getElementById('dashboardAppointmentPending').textContent = appointments.filter(item =>
+            String(item.status || 'Pending').toLowerCase() === 'pending'
+        ).length;
+        document.getElementById('dashboardAppointmentCompleted').textContent = completed;
+        const billableAppointments = appointments.filter(item =>
+            String(item.status || '').toLowerCase() !== 'cancelled'
+        );
+        const totalFee = billableAppointments.reduce((sum, item) =>
+            sum + (Number(item.fee ?? item.totalFee) || 0), 0
+        );
+        const totalReceived = billableAppointments.reduce((sum, item) =>
+            sum + (Number(item.advance) || 0), 0
+        );
+        const totalDue = billableAppointments.reduce((sum, item) => {
+            const balance = Number(item.balance);
+            return sum + (item.balance != null && Number.isFinite(balance)
+                ? balance
+                : (Number(item.fee ?? item.totalFee) || 0) + (Number(item.prevDues) || 0) - (Number(item.advance) || 0));
+        }, 0);
+        const formatDashboardMoney = amount => window.formatCorebiqCurrency
+            ? window.formatCorebiqCurrency(amount)
+            : `₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        document.getElementById('dashboardFeeTotal').textContent = formatDashboardMoney(totalFee);
+        document.getElementById('dashboardFeeReceived').textContent = formatDashboardMoney(totalReceived);
+        document.getElementById('dashboardFeeDue').textContent = formatDashboardMoney(totalDue);
+        const attendanceList = document.getElementById('dashboardAttendanceRecords');
+        attendanceList.replaceChildren();
+        const attendanceRecords = [...attendanceByEmployee.values()]
+            .sort((a, b) => String(a.empName || '').localeCompare(String(b.empName || '')));
+        if (!attendanceRecords.length) {
+            attendanceList.innerHTML = '<div class="dashboard-record-empty">No attendance has been saved today.</div>';
+        } else {
+            attendanceRecords.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'dashboard-record';
+                const main = document.createElement('div');
+                main.className = 'dashboard-record-main';
+                const name = document.createElement('div');
+                name.className = 'dashboard-record-name';
+                name.textContent = item.empName || 'Unnamed employee';
+                const meta = document.createElement('div');
+                meta.className = 'dashboard-record-meta';
+                meta.textContent = `${item.empType || 'Employee'} · ${item.branch || 'No branch'}${item.notes ? ` · ${item.notes}` : ''}`;
+                const status = document.createElement('span');
+                status.className = `dashboard-record-status ${String(item.status || '').toLowerCase()}`;
+                status.textContent = item.status || 'Unknown';
+                main.append(name, meta);
+                row.append(main, status);
+                attendanceList.appendChild(row);
+            });
         }
 
-        if (errorText) {
-            errorText.innerText =
-                "Data Sync Error: " +
-                (error.message || "Unknown error");
+        const appointmentList = document.getElementById('dashboardAppointmentRecords');
+        appointmentList.replaceChildren();
+        appointments.sort((a, b) => String(a.time || '').localeCompare(String(b.time || '')));
+        if (!appointments.length) {
+            appointmentList.innerHTML = '<div class="dashboard-record-empty">No appointments are scheduled today.</div>';
+        } else {
+            appointments.forEach(item => {
+                const row = document.createElement('div');
+                row.className = 'dashboard-record';
+                const main = document.createElement('div');
+                main.className = 'dashboard-record-main';
+                const name = document.createElement('div');
+                name.className = 'dashboard-record-name';
+                name.textContent = item.name || 'Unnamed patient';
+                const meta = document.createElement('div');
+                meta.className = 'dashboard-record-meta';
+                meta.textContent = `${window.formatTime12Hour(item.time)} · ${item.branch || 'No branch'} · ${item.therapist || 'Unassigned therapist'}${item.mobile ? ` · ${item.mobile}` : ''}`;
+                const status = document.createElement('span');
+                status.className = `dashboard-record-status ${String(item.status || '').toLowerCase()}`;
+                status.textContent = item.status || 'Pending';
+                main.append(name, meta);
+                row.append(main, status);
+                appointmentList.appendChild(row);
+            });
         }
+    } catch (error) {
+        if (requestSequence !== dashboardRequestSequence) return;
+        console.error('Dashboard Load Error:', error);
+        if (errorBanner) errorBanner.style.display = 'flex';
+        if (errorText) errorText.textContent = `Data Sync Error: ${error.message || 'Unknown error'}`;
+        document.getElementById('dashboardAttendanceRecords').innerHTML =
+            '<div class="dashboard-record-empty">Unable to load attendance records.</div>';
+        document.getElementById('dashboardAppointmentRecords').innerHTML =
+            '<div class="dashboard-record-empty">Unable to load appointments.</div>';
     }
 };
 
@@ -2572,7 +3165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!event.target.closest('.module-search')) {
-            window.searchModules('');
+            window.toggleModuleSearch(false);
         }
     });
 
@@ -2581,6 +3174,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('support-menu')?.classList.remove('open');
             document.getElementById('support-button')?.setAttribute('aria-expanded', 'false');
             window.toggleProfileMenu(false);
+            window.toggleModuleSearch(false);
         }
 
         if (

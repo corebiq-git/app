@@ -347,28 +347,25 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: #F7F9FC;
+            background: #fff;
             transition: opacity .4s ease, visibility .4s ease;
         }
         .splash-logo {
             display: block;
-            width: min(160px, 42vw);
-            height: min(160px, 42vw);
+            width: min(120px, 30vw);
+            height: min(120px, 30vw);
             margin-bottom: 24px;
             object-fit: contain;
+            animation: splash-spin 1.6s linear infinite;
         }
-        .splash-dots { display: flex; gap: 6px; }
-        .splash-dots span {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--login-blue);
-            animation: splash-bounce .8s ease-in-out infinite alternate;
-        }
-        .splash-dots span:nth-child(2) { animation-delay: .15s; }
-        .splash-dots span:nth-child(3) { animation-delay: .3s; }
         .fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
-        @keyframes splash-bounce { to { transform: translateY(-6px); opacity: .45; } }
+        @keyframes splash-spin {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(90deg) scale(1.04); }
+            50% { transform: rotate(180deg) scale(1); }
+            75% { transform: rotate(270deg) scale(1.04); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
 
         @media (max-width: 800px) {
             .login-main {
@@ -409,14 +406,13 @@
 </head>
 <body>
     <div id="splash-screen" aria-label="Loading">
-        <img class="splash-logo" src="assets/logo.png" alt="COREBIQ">
-        <div class="splash-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <img class="splash-logo" src="assets/loading.png" alt="Loading">
     </div>
 
     <header class="login-topbar">
-        <a class="login-brand" href="login.html" aria-label="COREBIQ">
-            <img class="login-logo-image" src="assets/logo.png" alt="">
-            <img class="login-name-image" src="assets/name.png" alt="COREBIQ">
+        <a class="login-brand" href="login.html" aria-label="STRA CARE">
+            <img class="login-logo-image" src="assets/logo-sidebar-bottom.png" alt="">
+            <img class="login-name-image" src="assets/name.png" alt="STRA CARE">
         </a>
     </header>
 

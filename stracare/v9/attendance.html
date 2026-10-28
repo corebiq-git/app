@@ -404,17 +404,22 @@
             const paddedMonth = String(month).padStart(2, '0');
             const firstDay = `${year}-${paddedMonth}-01`;
             const lastDay = `${year}-${paddedMonth}-${String(new Date(year, month, 0).getDate()).padStart(2, '0')}`;
-            const constraints = [
-                where('date', '>=', firstDay),
-                where('date', '<=', lastDay)
-            ];
-            if (!isAdmin) constraints.unshift(where('branch', '==', window.currentUser.branch));
+            const constraints = [];
+            if (!isAdmin) constraints.push(where('branch', '==', currentUserBranch));
+            constraints.push(where('date', '>=', firstDay), where('date', '<=', lastDay));
 
             const monthRequest = getDocs(query(collection(db, 'daily_attendance'), ...constraints))
-                .then(snapshot => deduplicateAttendance(snapshot.docs.map(docSnap => ({
-                    id: docSnap.id,
-                    data: docSnap.data()
-                }))));
+                .catch(error => {
+                    if (isAdmin || error?.code !== 'failed-precondition') throw error;
+                    console.warn('Attendance date index unavailable; falling back to the assigned-branch query.', error);
+                    return getDocs(query(
+                        collection(db, 'daily_attendance'),
+                        where('branch', '==', currentUserBranch)
+                    ));
+                })
+                .then(snapshot => deduplicateAttendance(snapshot.docs
+                    .map(docSnap => ({ id: docSnap.id, data: docSnap.data() }))
+                    .filter(record => record.data.date >= firstDay && record.data.date <= lastDay)));
             attendanceMonthCache.set(cacheKey, monthRequest);
             monthRequest.catch(() => {
                 if (attendanceMonthCache.get(cacheKey) === monthRequest) {
@@ -464,34 +469,47 @@
         document.getElementById("filterAttMonth").value = todayString.slice(0, 7);
 
         // Ensure Admin UI checks
-        const isAdmin = (!window.currentUser || window.currentUser.role === 'admin');
+        const isAdmin = window.currentUser?.role === 'admin';
+        const currentUserBranch = String(window.currentUser?.branch || '').trim();
+        const canAccessAttendance = isAdmin || Boolean(window.currentUser && currentUserBranch && currentUserBranch !== 'Unknown');
         if (!isAdmin) {
             const style = document.createElement('style');
             style.innerHTML = `.admin-only-col { display: none !important; }`;
             document.head.appendChild(style);
         }
 
+        function canManageAttendanceRecord(data) {
+            return isAdmin || (canAccessAttendance && data?.branch === currentUserBranch);
+        }
+
+        function escapeAttendanceText(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
         // --- 1. LOAD DROPDOWNS (WITH RBAC) ---
         window.loadDropdowns = async function() {
             try {
+                if (!canAccessAttendance) {
+                    throw new Error('Your account does not have an assigned branch for attendance access.');
+                }
                 const branchSelect = document.getElementById('attBranch');
                 const leaveBranchSelect = document.getElementById('leaveBranch');
                 const filterBranchSelect = document.getElementById('filterAttBranch');
                 const reportBranchSelect = document.getElementById('reportBranch');
                 let branchesRequest = Promise.resolve(null);
 
-                if (window.currentUser && window.currentUser.role !== 'admin') {
-                    const userBranch = window.currentUser.branch;
-                    const opt = `<option value="${userBranch}">${userBranch}</option>`;
-                    
-                    branchSelect.innerHTML = opt;
-                    leaveBranchSelect.innerHTML = opt;
-                    filterBranchSelect.innerHTML = opt;
-                    reportBranchSelect.innerHTML = opt;
-                    
-                    branchSelect.style.pointerEvents = 'none'; branchSelect.style.background = 'var(--grey-med)';
-                    leaveBranchSelect.style.pointerEvents = 'none'; leaveBranchSelect.style.background = 'var(--grey-med)';
-                    reportBranchSelect.style.pointerEvents = 'none'; reportBranchSelect.style.background = 'var(--grey-med)';
+                if (!isAdmin) {
+                    [branchSelect, leaveBranchSelect, filterBranchSelect, reportBranchSelect].forEach((select, index) => {
+                        select.replaceChildren(new Option(currentUserBranch, currentUserBranch));
+                        select.disabled = true;
+                        if (index < 2) select.style.background = 'var(--grey-med)';
+                    });
                 } else {
                     branchesRequest = getDocs(query(collection(db, "branches"), orderBy("name")));
                 }
@@ -499,9 +517,9 @@
                 let tQuery = collection(db, "therapists");
                 let sQuery = collection(db, "staff");
 
-                if (window.currentUser && window.currentUser.role !== 'admin') {
-                    tQuery = query(collection(db, "therapists"), where("branch", "==", window.currentUser.branch));
-                    sQuery = query(collection(db, "staff"), where("branch", "==", window.currentUser.branch));
+                if (!isAdmin) {
+                    tQuery = query(collection(db, "therapists"), where("branch", "==", currentUserBranch));
+                    sQuery = query(collection(db, "staff"), where("branch", "==", currentUserBranch));
                 }
 
                 const [bSnap, tSnap, sSnap] = await Promise.all([
@@ -722,8 +740,13 @@
             } catch (error) {
                 console.error("Error loading monthly attendance:", error);
                 if (requestVersion !== monthlyReportVersion) return;
+                const detail = error?.code === 'failed-precondition'
+                    ? 'A Firestore composite index is required. Deploy firestore.indexes.json, then wait for the index to finish building.'
+                    : error?.code === 'permission-denied'
+                        ? 'Firestore denied this query. Check the deployed daily_attendance rule and confirm your user branch matches the attendance records.'
+                        : error?.message || 'An unexpected error occurred.';
                 document.getElementById('monthlyBody').innerHTML =
-                    `<tr><td colspan="${daysInMonth + 4}" style="padding: 20px; color: var(--danger);">Unable to load attendance records.</td></tr>`;
+                    `<tr><td colspan="${daysInMonth + 4}" role="alert" style="padding: 20px; color: var(--danger);">Unable to load attendance records: ${escapeAttendanceText(detail)}${error?.code ? ` (${escapeAttendanceText(error.code)})` : ''}</td></tr>`;
                 return;
             }
             if (requestVersion !== monthlyReportVersion) return;
@@ -862,10 +885,12 @@
                         <td data-label="Status"><span class="badge ${badgeClass}">${data.status}</span></td>
                         <td data-label="Notes"><span style="font-size: 13px; color: var(--text-muted);">${data.notes || '--'}</span></td>
                         <td class="no-print" data-label="Actions" style="text-align: right;">
-                            <span class="material-symbols-rounded" style="color: var(--text-muted); cursor: pointer; font-size: 20px; margin-right: 8px;" title="Edit" onclick="window.editAtt('${docId}')">edit</span>
-                            <span class="material-symbols-rounded" style="color: var(--danger); cursor: pointer; font-size: 20px;" title="Delete" onclick="window.deleteAtt('${docId}')">delete</span>
-                        </td>
-                    `;
+                                ${canManageAttendanceRecord(data) ? `
+                                <span class="material-symbols-rounded" style="color: var(--text-muted); cursor: pointer; font-size: 20px; margin-right: 8px;" title="Edit" onclick="window.editAtt('${docId}')">edit</span>
+                                <span class="material-symbols-rounded" style="color: var(--danger); cursor: pointer; font-size: 20px;" title="Delete" onclick="window.deleteAtt('${docId}')">delete</span>
+                                ` : '--'}
+                            </td>
+                        `;
                     tableBody.appendChild(tr);
                 });
                 
@@ -874,7 +899,12 @@
             } catch (error) {
                 if (requestVersion !== attendanceLogLoadVersion) return;
                 console.error("Firebase Read Error:", error);
-                tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--danger);">Error loading data. Check Firestore rules.</td></tr>';
+                const detail = error?.code === 'permission-denied'
+                    ? 'Firestore denied this query. Confirm the deployed attendance rule allows your assigned branch and that users.branch exactly matches daily_attendance.branch.'
+                    : error?.code === 'failed-precondition'
+                        ? 'Firestore requires a query index. Deploy firestore.indexes.json or use the index link in the browser console.'
+                        : error?.message || 'An unexpected error occurred.';
+                tableBody.innerHTML = `<tr><td colspan="6" role="alert" style="text-align:center; padding: 20px; color: var(--danger);">Unable to load attendance: ${escapeAttendanceText(detail)}${error?.code ? ` (${escapeAttendanceText(error.code)})` : ''}</td></tr>`;
             }
         };
 
@@ -957,12 +987,21 @@
             const status = document.getElementById('attStatus').value;
             const notes = document.getElementById('attNotes').value;
 
+            const selectedEmployee = selectEmp.options[selectEmp.selectedIndex];
+            const recordBeingEdited = docId ? window.attDataCache[docId] : null;
+            if (!canAccessAttendance || (!isAdmin && (
+                branch !== currentUserBranch
+                || selectedEmployee?.getAttribute('data-branch') !== currentUserBranch
+                || (docId && (!recordBeingEdited || !canManageAttendanceRecord(recordBeingEdited)))
+            ))) {
+                return alert('You can only manage attendance for your assigned branch.');
+            }
             if(!date || !empId || !branch || !status) {
                 return alert("Date, Employee, Branch, and Status are required!");
             }
 
-            const empName = selectEmp.options[selectEmp.selectedIndex].getAttribute('data-name');
-            const empType = selectEmp.options[selectEmp.selectedIndex].getAttribute('data-type');
+            const empName = selectedEmployee.getAttribute('data-name');
+            const empType = selectedEmployee.getAttribute('data-type');
 
             saveBtn.innerHTML = 'Saving...';
             saveBtn.disabled = true;
@@ -994,7 +1033,9 @@
 
         window.editAtt = function(docId) {
             const data = window.attDataCache[docId];
-            if(!data) return;
+            if(!data || !canManageAttendanceRecord(data)) {
+                return alert('You can only edit attendance for your assigned branch.');
+            }
 
             document.getElementById('attDocId').value = docId;
             document.getElementById('attDate').value = data.date;
@@ -1008,6 +1049,10 @@
         }
 
         window.deleteAtt = async function(docId) {
+            const data = window.attDataCache[docId];
+            if (!data || !canManageAttendanceRecord(data)) {
+                return alert('You can only delete attendance for your assigned branch.');
+            }
             if(confirm("Are you sure you want to delete this attendance record?")) {
                 try {
                     await deleteDoc(doc(db, "daily_attendance", docId));
@@ -1025,8 +1070,8 @@
             document.getElementById('attDate').value = new Date().toISOString().split('T')[0];
             document.getElementById('saveAttBtn').innerHTML = '<span class="material-symbols-rounded" style="font-size: 18px;">how_to_reg</span> Save Attendance';
             
-            if (!isAdmin) {
-                document.getElementById('attBranch').value = window.currentUser.branch;
+            if (!isAdmin && canAccessAttendance) {
+                document.getElementById('attBranch').value = currentUserBranch;
             }
         }
 
@@ -1070,7 +1115,7 @@
             .catch(error => {
                 console.error("Unable to initialize attendance module:", error);
                 document.getElementById('attTableBody').innerHTML =
-                    '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--danger);">Attendance could not be loaded. Please refresh and try again.</td></tr>';
+                    `<tr><td colspan="6" role="alert" style="text-align:center; padding:20px; color:var(--danger);">Attendance could not be loaded: ${escapeAttendanceText(error?.message || error?.code || 'Unknown error')}</td></tr>`;
             });
 
     </script>

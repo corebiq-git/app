@@ -1,12 +1,12 @@
 {
-  "name": "COREBIQ Clinic Management",
-  "short_name": "COREBIQ",
+  "name": "STRA CARE Clinic Management",
+  "short_name": "STRA CARE",
   "description": "Clinic management workspace",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#FAFAFB",
-  "theme_color": "#0B1F4B",
+  "theme_color": "#0F7A52",
   "icons": [
     {
       "src": "assets/app-icon.png",

@@ -53,7 +53,6 @@
 .act.download{color:#188038}.act.whatsapp{color:#128C7E}
 #appointment-module .no-due{color:#64748B;font-weight:700}#appointment-module .excess{color:#059669;font-weight:750}#appointment-module .due{color:#DC2626;font-weight:750}
 .badge{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:750;text-transform:uppercase}.pending{background:#FFF7ED;color:#EA580C}.reported{background:#E8EEF7;color:#0B1F4B}.completed{background:#ECFDF5;color:#059669}.rescheduled{background:#F1F5F9;color:#64748B}.cancelled{background:#FEF2F2;color:#DC2626}.cat{background:#F8FAFC;color:#334155;border:1px solid var(--border)}
-.cards{display:none;padding:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}.cards.show{display:grid}.apt-card{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.card-top{display:flex;justify-content:space-between;gap:8px}.card-patient{display:flex;gap:8px}.card-check{padding-top:2px}.card-line{font-size:12px;color:var(--muted);margin-top:5px}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}.card-actions{display:flex;gap:6px;margin-top:10px}
 .empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
 .modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.52);z-index:10000;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:min(900px,100%);max-height:94vh;overflow:auto;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.22)}.modal-head{position:sticky;top:0;z-index:2;background:#fff;padding:13px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:16px;margin:0}.modal-body{padding:15px}.close{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}
 .section{border:1px solid var(--border);border-radius:11px;margin-bottom:12px;padding:12px}.section h4{font-size:13px;color:var(--primary);margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid.three{grid-template-columns:repeat(3,1fr)}.field label{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:5px}.span2{grid-column:1/-1}.location-row{display:grid;grid-template-columns:auto 1fr auto;gap:6px}.money-box{background:var(--bg);border-radius:10px;padding:10px}.form-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:3px}.readonly{background:#F8FAFC!important;border:0!important;font-weight:750}
@@ -144,7 +143,6 @@
 #appointment-module .cat{background:#F4F7FC;color:#40454D;border-color:#E1E4E2}
 #appointment-module .act{width:36px;height:36px;border-radius:11px;border-color:#E1E4E2}
 #appointment-module .cards{padding:16px;gap:12px}
-#appointment-module .apt-card{padding:16px;border:1px solid #E1E4E2;border-radius:18px;box-shadow:0 1px 3px rgba(31,35,40,.05)}
 #appointment-module .card-grid{border-top-color:#E1E4E2}
 #appointment-module .empty{color:#6B7280}
 #appointment-module .modal{background:rgba(31,35,40,.42);backdrop-filter:blur(3px)}
@@ -175,6 +173,21 @@
 #appointment-module .appointment-filter-select select:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
 #appointment-module .appointment-filter-select .material-symbols-rounded{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:20px}
 #appointment-module .topbar .new-btn{height:48px!important;margin-left:auto;padding:0 22px!important;white-space:nowrap}
+#appointment-module .appointment-week-card{margin:0 0 18px;padding:16px 18px;border:1px solid #E1E4E2;border-radius:20px;background:#fff}
+#appointment-module .appointment-week-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#appointment-module .appointment-week-title{margin:0;color:#1F1F1F;font-size:14px;font-weight:700}
+#appointment-module .appointment-week-controls{display:flex;align-items:center;gap:6px}
+#appointment-module .appointment-week-control{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:6px 9px;border:1px solid #E1E4E2;border-radius:10px;background:#fff;color:#0B1F4B;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+#appointment-module .appointment-week-control:hover{background:#F0F4F9}
+#appointment-module .appointment-week-control .material-symbols-rounded{font-size:18px}
+#appointment-module .appointment-week-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+#appointment-module .appointment-week-day{display:flex;min-width:0;min-height:66px;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:12px;background:#F8FAFC;color:#1F1F1F;font:inherit;cursor:pointer}
+#appointment-module .appointment-week-day:hover{border-color:#C8D2E1;background:#F1F5FB}
+#appointment-module .appointment-week-day[aria-pressed="true"]{border-color:#0B1F4B;background:#0B1F4B;color:#fff}
+#appointment-module .appointment-week-day-name{font-size:10px;font-weight:600;opacity:.8}
+#appointment-module .appointment-week-day-number{font-size:17px;font-weight:800;line-height:1}
+#appointment-module .appointment-week-day-today .appointment-week-day-name::after{content:" · Today"}
+@media(max-width:700px){#appointment-module .appointment-week-card{padding:13px;border-radius:16px}#appointment-module .appointment-week-days{gap:4px}#appointment-module .appointment-week-day{min-height:58px;border-radius:9px}#appointment-module .appointment-week-day-name{font-size:9px}}
 #appointment-module .appointment-toolbar .tool{flex:0 0 auto}
 #appointment-module .appointment-toolbar .more-actions-btn{height:48px;width:48px;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672}
 #appointment-module .appointment-toolbar .more-actions-btn:hover{background:#F0F4F9;color:#0B1F4B}
@@ -259,6 +272,18 @@
   <button class="new-btn" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">add</span><span>New Appointment</span></button>
 </div>
 
+<section class="appointment-week-card no-print" aria-label="Choose an appointment date">
+  <div class="appointment-week-header">
+    <h3 class="appointment-week-title" id="appointmentWeekLabel">This week</h3>
+    <div class="appointment-week-controls">
+      <button class="appointment-week-control" type="button" id="appointmentPreviousWeek" aria-label="Previous week"><span class="material-symbols-rounded" aria-hidden="true">chevron_left</span></button>
+      <button class="appointment-week-control" type="button" id="appointmentCurrentWeek">This week</button>
+      <button class="appointment-week-control" type="button" id="appointmentNextWeek" aria-label="Next week"><span class="material-symbols-rounded" aria-hidden="true">chevron_right</span></button>
+    </div>
+  </div>
+  <div class="appointment-week-days" id="appointmentWeekDays" role="group" aria-label="Days of the selected week"></div>
+</section>
+
 <div class="appointment-toolbar no-print">
   <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
   <label class="appointment-filter-select" aria-label="Filter appointments by status">
@@ -273,15 +298,12 @@
     <button class="icon-btn more-actions-btn" title="More Actions" aria-label="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
     <div class="dropdown">
       <div class="drop-title">View &amp; Actions</div>
-      <button class="drop-item active" id="viewListBtn" onclick="window.setView('list')"><span class="material-symbols-rounded">view_list</span>List View</button>
-      <button class="drop-item" id="viewCardBtn" onclick="window.setView('card')"><span class="material-symbols-rounded">grid_view</span>Card View</button>
       <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>More Filters</button>
       <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
       <button class="drop-item" onclick="window.clearFilters();window.toggleTool('moreTool')"><span class="material-symbols-rounded">close</span>Clear All</button>
       <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
       <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
       <button class="drop-item" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span>Export CSV</button>
-      <button class="drop-item" onclick="window.openTherapistWiseReport()"><span class="material-symbols-rounded">clinical_notes</span>Therapist-wise Report</button>
       <div class="drop-title">Selected Appointments</div>
       <button class="drop-item" onclick="window.editSelectedAppointment()"><span class="material-symbols-rounded">edit</span>Edit Selected Appointment</button>
       <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
@@ -298,32 +320,26 @@
   </div>
 </div>
 
-<section id="therapistWiseReport" class="therapist-report" aria-label="Therapist-wise appointment report">
+<section id="therapistWiseReport" class="therapist-report show" aria-label="Therapist-wise appointment report">
   <header class="therapist-report-header">
-    <h2>Therapist-wise Appointment Report</h2>
+    <h2>Appointments by Doctor / Therapist</h2>
     <div class="therapist-report-actions no-print">
       <button class="btn small" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
-      <button class="btn small" onclick="window.closeTherapistWiseReport()"><span class="material-symbols-rounded">arrow_back</span>Back to Appointments</button>
     </div>
   </header>
-  <div id="therapistWiseReportContent"></div>
-</section>
-
-<div class="panel">
   <div class="filters no-print" id="filtersBar">
-    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.filterTable()">
+    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
     <span style="font-size:12px;color:var(--muted)">to</span>
-    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.filterTable()">
+    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
     <button class="btn small" onclick="window.setFilterToday()">Today</button>
     <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
     <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
-    <select id="filterBranch" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Branches</option></select>
+    <select id="filterBranch" class="form-input filter-input" onchange="window.loadAppointments()"><option value="">All Branches</option></select>
   </div>
   <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong></div>
   <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
-  <div class="table-wrap" id="listView"><table class="table"><thead><tr><th class="no-print"><input type="checkbox" id="selectAll" onclick="window.toggleAllCheckboxes(this)"></th><th>Date & Time</th><th>Patient Details</th><th>Branch / Therapist</th><th>Therapy / Financials</th><th>Status</th><th class="no-print">Actions</th></tr></thead><tbody id="aptTableBody"></tbody></table></div>
-  <div class="cards" id="cardView"></div>
-</div>
+  <div id="therapistWiseReportContent"></div>
+</section>
 
 <div class="kpis">
   <div class="kpi today"><div class="label">Today's Appointment</div><div class="num" id="kpiToday">0</div></div>
@@ -396,10 +412,12 @@
 <script type="module">
 import { auth, db } from './firebase-config.js';
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc, getDoc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc, getDoc, runTransaction, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 window.appointmentsDataCache={}; window.allPatientsCache={}; window.allBranchesString='';
-let allAppointments=[]; let viewMode='list'; let sortMode='dateDesc'; let confirmHandler=null;
+let allAppointments=[]; let sortMode='dateDesc'; let confirmHandler=null;
+const appointmentsRequestCache=new Map();
+let appointmentsLoadVersion=0;
 
 const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const money=v=>(parseFloat(v)||0).toFixed(2);
@@ -428,6 +446,77 @@ function paymentStatusDisplay(v){
   return {text:'Not Paid',cls:'payment-not-paid',detail:`Due ${displayMoney(n)}`};
 }
 const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+document.getElementById('filterDateFrom').value=todayISO();
+document.getElementById('filterDateTo').value=todayISO();
+let selectedAppointmentDate=todayISO();
+function appointmentDateFromKey(dateKey){
+  const [year,month,day]=dateKey.split('-').map(Number);
+  return new Date(year,month-1,day);
+}
+function renderAppointmentWeek(){
+  const selectedDate=appointmentDateFromKey(selectedAppointmentDate);
+  const weekStart=new Date(selectedDate);
+  weekStart.setDate(weekStart.getDate()-((weekStart.getDay()+6)%7));
+  const weekEnd=new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate()+6);
+  const label=document.getElementById('appointmentWeekLabel');
+  const days=document.getElementById('appointmentWeekDays');
+  if(!label||!days)return;
+  const dateLabel=date=>date.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+  label.textContent=`${dateLabel(weekStart)} – ${dateLabel(weekEnd)}`;
+  days.replaceChildren();
+  for(let index=0;index<7;index++){
+    const date=new Date(weekStart);
+    date.setDate(weekStart.getDate()+index);
+    const dateKey=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='appointment-week-day';
+    if(dateKey===todayISO())button.classList.add('appointment-week-day-today');
+    button.setAttribute('aria-pressed',String(dateKey===selectedAppointmentDate));
+    button.setAttribute('aria-label',date.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+    const dayName=document.createElement('span');
+    dayName.className='appointment-week-day-name';
+    dayName.textContent=date.toLocaleDateString('en-IN',{weekday:'short'});
+    const dayNumber=document.createElement('span');
+    dayNumber.className='appointment-week-day-number';
+    dayNumber.textContent=String(date.getDate());
+    button.append(dayName,dayNumber);
+    button.addEventListener('click',()=>{
+      selectedAppointmentDate=dateKey;
+      document.getElementById('filterDateFrom').value=dateKey;
+      document.getElementById('filterDateTo').value=dateKey;
+      renderAppointmentWeek();
+      window.loadAppointments();
+    });
+    days.appendChild(button);
+  }
+}
+function shiftAppointmentWeek(days){
+  const date=appointmentDateFromKey(selectedAppointmentDate);
+  date.setDate(date.getDate()+days);
+  selectedAppointmentDate=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  document.getElementById('filterDateFrom').value=selectedAppointmentDate;
+  document.getElementById('filterDateTo').value=selectedAppointmentDate;
+  renderAppointmentWeek();
+  window.loadAppointments();
+}
+document.getElementById('appointmentPreviousWeek').addEventListener('click',()=>shiftAppointmentWeek(-7));
+document.getElementById('appointmentNextWeek').addEventListener('click',()=>shiftAppointmentWeek(7));
+document.getElementById('appointmentCurrentWeek').addEventListener('click',()=>{
+  selectedAppointmentDate=todayISO();
+  document.getElementById('filterDateFrom').value=selectedAppointmentDate;
+  document.getElementById('filterDateTo').value=selectedAppointmentDate;
+  renderAppointmentWeek();
+  window.loadAppointments();
+});
+renderAppointmentWeek();
+window.appointmentDateFilterChanged=()=>{
+  const from=document.getElementById('filterDateFrom').value;
+  if(from)selectedAppointmentDate=from;
+  renderAppointmentWeek();
+  return window.loadAppointments();
+};
 window.formatIndianDate=dateStr=>{if(!dateStr)return'';const p=String(dateStr).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:dateStr};
 const attendanceDayInitial=dateStr=>{
   const match=String(dateStr||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -444,15 +533,14 @@ window.closeModal=id=>document.getElementById(id)?.classList.remove('show');
 
 onAuthStateChanged(auth,user=>{
   if(!user){document.getElementById('appointment-module').innerHTML='<div style="padding:50px;text-align:center;color:#991B1B">Access denied. Please log in.</div>';return}
-  window.loadPatientsForApt()
-    .then(()=>window.loadPublicBookingRequests())
+  window.loadPatientsForApt().catch(e=>console.error('Unable to load appointment patient choices:',e));
+  window.loadPublicBookingRequests()
     .catch(e=>{console.error('Unable to initialize public booking requests:',e);document.getElementById('publicBookingList').innerHTML='<div class="public-booking-empty" style="color:var(--danger)">Unable to load booking requests. Check Firestore permissions.</div>'});
   window.loadBranchesForApt(); window.loadTherapistsForApt();
   document.getElementById('todayLabel').textContent='Today: '+window.formatIndianDate(todayISO());
   window.resetAptForm();
   window.appointmentsLoadPromise=window.loadAppointments();
   window.appointmentsLoadPromise.then(()=>{
-    window.setFilterToday();
     if(window.dashboardPendingDuesRequested){
       window.dashboardPendingDuesRequested=false;
       window.showPendingDues();
@@ -520,12 +608,21 @@ window.openAppointmentForm=()=>{closeTools();window.resetAptForm();document.getE
 window.closeAppointmentForm=()=>document.getElementById('aptModal').classList.remove('show');
 
 window.publicBookingRequestsCache={};
+window.canReviewPublicBookingRequest=request=>
+  Boolean(window.currentUser)&&(
+    window.currentUser.role==='admin'
+    || (Boolean(window.currentUser.branch)&&request?.branch===window.currentUser.branch)
+  );
 window.loadPublicBookingRequests=async()=>{
   const list=document.getElementById('publicBookingList');
   list.innerHTML='<div class="public-booking-empty">Loading public booking requests…</div>';
   try{
+    if(!window.currentUser)throw new Error('Your account profile is not available.');
     let q=collection(db,'booking_requests');
-    if(window.currentUser&&window.currentUser.role!=='admin'){
+    if(window.currentUser.role!=='admin'){
+      if(!window.currentUser.branch||window.currentUser.branch==='Unknown'){
+        throw new Error('Your account has no assigned branch.');
+      }
       q=query(collection(db,'booking_requests'),where('branch','==',window.currentUser.branch));
     }
     const snapshot=await getDocs(q);
@@ -571,7 +668,7 @@ window.renderPublicBookingRequests=()=>{
 window.convertPublicBooking=async requestId=>{
   const request=window.publicBookingRequestsCache?.[requestId];
   if(!request)return alert('This booking request is no longer pending. Refresh the request list.');
-  if(!window.currentUser||(!window.currentUser.branch&&window.currentUser.role!=='admin'))return alert('Your account has no assigned branch.');
+  if(!window.canReviewPublicBookingRequest(request))return alert('You can only approve public bookings for your assigned branch.');
   const patientQuery=query(
     collection(db,'patients'),
     where('mobile','==',request.mobile),
@@ -636,6 +733,7 @@ window.convertPublicBooking=async requestId=>{
         reviewedAt:serverTimestamp()
       });
     });
+    invalidateAppointmentsRequestCache();
     if(patientData)window.allPatientsCacheByBranch[`${request.branch}:${request.mobile}`]=patientData;
     delete window.publicBookingRequestsCache[requestId];
     await Promise.all([window.loadAppointments(),window.loadPublicBookingRequests()]);
@@ -648,6 +746,7 @@ window.convertPublicBooking=async requestId=>{
 window.declinePublicBooking=async requestId=>{
   const request=window.publicBookingRequestsCache?.[requestId];
   if(!request)return;
+  if(!window.canReviewPublicBookingRequest(request))return alert('You can only decline public bookings for your assigned branch.');
   if(!confirm(`Decline the booking request from ${request.name||'this patient'}?`))return;
   try{
     await updateDoc(doc(db,'booking_requests',requestId),{status:'declined',reviewedAt:serverTimestamp()});
@@ -660,14 +759,131 @@ window.declinePublicBooking=async requestId=>{
 };
 
 window.loadAppointments=async()=>{
-  const tb=document.getElementById('aptTableBody');tb.innerHTML='<tr><td colspan="7" class="empty">Loading appointments...</td></tr>';
-  try{let q=window.currentUser&&window.currentUser.role!=='admin'?query(collection(db,'appointments'),where('branch','==',window.currentUser.branch)):query(collection(db,'appointments'));
-    const snap=await getDocs(q);allAppointments=[];window.appointmentsDataCache={};snap.forEach(d=>{const x={id:d.id,data:d.data()};allAppointments.push(x);window.appointmentsDataCache[d.id]=d.data()});
-    updateKPIs();renderAppointments();return allAppointments;
-  }catch(e){console.error(e);tb.innerHTML='<tr><td colspan="7" class="empty" style="color:var(--danger)">Error loading appointments. Check Firestore rules.</td></tr>'}
+  const requestVersion=++appointmentsLoadVersion;
+  const report=document.getElementById('therapistWiseReportContent');
+  report.innerHTML='<div class="empty">Loading appointments...</div>';
+  try{
+    if(!window.currentUser)throw new Error('Your account profile is not available. Please sign out and sign in again.');
+    const branch=window.currentUser.role!=='admin'
+      ?String(window.currentUser.branch||'').trim()
+      :document.getElementById('filterBranch').value;
+    if(window.currentUser.role!=='admin'&&(!branch||branch==='Unknown')){
+      throw new Error('Your account has no assigned branch. Ask an administrator to set your branch in Users.');
+    }
+    const from=document.getElementById('filterDateFrom').value;
+    const to=document.getElementById('filterDateTo').value;
+    const cacheKey=JSON.stringify([branch,from,to]);
+    let request=appointmentsRequestCache.get(cacheKey);
+    if(!request){
+      const constraints=[];
+      if(branch)constraints.push(where('branch','==',branch));
+      if(from)constraints.push(where('date','>=',from));
+      if(to)constraints.push(where('date','<=',to));
+      request=getDocs(query(collection(db,'appointments'),...constraints)).catch(error=>{
+        if(!branch||error?.code!=='failed-precondition')throw error;
+        console.warn('Appointment date index unavailable; falling back to the assigned-branch query.',error);
+        return getDocs(query(collection(db,'appointments'),where('branch','==',branch)));
+      });
+      appointmentsRequestCache.set(cacheKey,request);
+      request.then(()=>{
+        if(appointmentsRequestCache.get(cacheKey)===request)appointmentsRequestCache.delete(cacheKey);
+      },()=>{
+        if(appointmentsRequestCache.get(cacheKey)===request)appointmentsRequestCache.delete(cacheKey);
+      });
+    }
+    const snap=await request;
+    if(requestVersion!==appointmentsLoadVersion)return;
+    allAppointments=deduplicateAppointments(snap.docs.map(item=>({id:item.id,data:item.data()})));
+    window.appointmentsDataCache={};
+    allAppointments.forEach(item=>{window.appointmentsDataCache[item.id]=item.data});
+    renderAppointments();
+    if((!from||from<=todayISO())&&(!to||to>=todayISO())){
+      updateKPIs(allAppointments);
+    }else if(branch){
+      updateKPIs(allAppointments);
+    }else{
+      try{
+        const todaySnapshot=await getDocs(query(collection(db,'appointments'),where('date','==',todayISO())));
+        if(requestVersion===appointmentsLoadVersion){
+          updateKPIs(todaySnapshot.docs.map(item=>({id:item.id,data:item.data()})));
+        }
+      }catch(error){
+        console.error('Unable to load today appointment totals:',error);
+        if(requestVersion===appointmentsLoadVersion){
+          ['kpiToday','kpiCompleted','kpiPending'].forEach(id=>document.getElementById(id).textContent='—');
+        }
+      }
+    }
+    return allAppointments;
+  }catch(e){
+    if(requestVersion!==appointmentsLoadVersion)return;
+    console.error('Appointment load failed:',e);
+    const detail=e?.code==='permission-denied'
+      ?'Firestore denied this query. Confirm the deployed appointments rule allows this user branch and that the user profile branch exactly matches appointment.branch.'
+      :e?.code==='failed-precondition'
+        ?'A Firestore composite index is required. Deploy firestore.indexes.json, or open the full error in the browser console and use its index link. Wait for the index to finish building.'
+        :e?.message||'An unexpected error occurred.';
+    report.innerHTML=`<div class="empty" role="alert" style="color:var(--danger)">Unable to load appointments: ${esc(detail)}${e?.code?` <small>(${esc(e.code)})</small>`:''}</div>`;
+  }
 };
-function updateKPIs(){
-  const t=todayISO(),tod=allAppointments.filter(x=>x.data.date===t),done=tod.filter(x=>String(x.data.status||'').toLowerCase()==='completed').length,pending=tod.filter(x=>String(x.data.status||'').toLowerCase()==='pending').length;
+function invalidateAppointmentsRequestCache(){appointmentsRequestCache.clear()}
+function patientDocumentId(branch,mobile){return `apt_${encodeURIComponent(branch)}_${encodeURIComponent(mobile)}`}
+function appointmentDocumentId(appointment){
+  return `apt_${encodeURIComponent(appointment.branch)}_${appointment.date}_${encodeURIComponent(appointment.time)}_${encodeURIComponent(appointment.therapist)}_${encodeURIComponent(appointment.mobile)}`;
+}
+function appointmentTimestamp(value){
+  if(value&&typeof value.toMillis==='function')return value.toMillis();
+  const parsed=value instanceof Date?value.getTime():Date.parse(value||'');
+  return Number.isFinite(parsed)?parsed:0;
+}
+function deduplicateAppointments(records){
+  const unique=new Map();
+  records.forEach(record=>{
+    const data=record.data;
+    const identity=[data.branch,data.date,data.time,data.therapist,data.mobile]
+      .map(value=>String(value||'').trim().toLowerCase());
+    const key=identity.slice(0,3).every(Boolean)&&identity[4]
+      ?identity.join('|')
+      :record.id;
+    const existing=unique.get(key);
+    const isActive=String(data.status||'').toLowerCase()!=='cancelled';
+    const existingIsActive=existing&&String(existing.data.status||'').toLowerCase()!=='cancelled';
+    const timestamp=appointmentTimestamp(data.updatedAt)||appointmentTimestamp(data.createdAt);
+    const existingTimestamp=existing
+      ?appointmentTimestamp(existing.data.updatedAt)||appointmentTimestamp(existing.data.createdAt)
+      :-1;
+    if(!existing||(isActive&&!existingIsActive)||(isActive===existingIsActive&&timestamp>=existingTimestamp)){
+      unique.set(key,record);
+    }
+  });
+  return [...unique.values()];
+}
+async function createAppointmentIfMissing(appointment){
+  const id=appointmentDocumentId(appointment);
+  const existingQuery=query(collection(db,'appointments'),where('branch','==',appointment.branch));
+  const matches=await getDocs(existingQuery);
+  if(matches.docs.some(item=>{
+    const existing=item.data();
+    return existing.date===appointment.date
+      && existing.time===appointment.time
+      && existing.therapist===appointment.therapist
+      && existing.mobile===appointment.mobile
+      && String(existing.status||'').toLowerCase()!=='cancelled';
+  })){
+    throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+  }
+  const appointmentRef=doc(db,'appointments',id);
+  await runTransaction(db,async transaction=>{
+    const existing=await transaction.get(appointmentRef);
+    if(existing.exists()&&String(existing.data().status||'').toLowerCase()!=='cancelled'){
+      throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+    }
+    transaction.set(appointmentRef,appointment);
+  });
+  return id;
+}
+function updateKPIs(appointments=allAppointments){
+  const t=todayISO(),tod=appointments.filter(x=>x.data.date===t),done=tod.filter(x=>String(x.data.status||'').toLowerCase()==='completed').length,pending=tod.filter(x=>String(x.data.status||'').toLowerCase()==='pending').length;
   document.getElementById('kpiToday').textContent=tod.length;document.getElementById('kpiCompleted').textContent=done;document.getElementById('kpiPending').textContent=pending;
 }
 function filteredAppointments(){
@@ -676,68 +892,60 @@ function filteredAppointments(){
   a.sort((x,y)=>{const A=x.data,B=y.data;switch(sortMode){case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'doctorAsc':return String(A.therapist||'').localeCompare(String(B.therapist||''));case'balanceDesc':return (parseFloat(B.balance)||0)-(parseFloat(A.balance)||0);case'balanceAsc':return (parseFloat(A.balance)||0)-(parseFloat(B.balance)||0);case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''))||String(A.time||'').localeCompare(String(B.time||''));default:return String(B.date||'').localeCompare(String(A.date||''))||String(B.time||'').localeCompare(String(A.time||''))}});
   return a;
 }
-window.openTherapistWiseReport=()=>{
-  const appointments=filteredAppointments();
-  if(!appointments.length)return alert('No appointments are available for the current filters.');
+function renderTherapistWiseReport(appointments){
+  const content=document.getElementById('therapistWiseReportContent');
+  if(!appointments.length){
+    content.innerHTML='<div class="empty">No appointments match the selected date and filters.</div>';
+    return;
+  }
   const grouped=new Map();
-  appointments.forEach(({data})=>{
-    const therapist=String(data.therapist||'Unassigned').trim()||'Unassigned';
+  appointments.forEach(appointment=>{
+    const therapist=String(appointment.data.therapist||'Unassigned').trim()||'Unassigned';
     if(!grouped.has(therapist))grouped.set(therapist,[]);
-    grouped.get(therapist).push(data);
+    grouped.get(therapist).push(appointment);
   });
   const groups=[...grouped.entries()].sort(([a],[b])=>a.localeCompare(b));
   groups.forEach(([,items])=>items.sort((a,b)=>
-    String(a.date||'').localeCompare(String(b.date||''))||String(a.time||'').localeCompare(String(b.time||''))
+    String(a.data.date||'').localeCompare(String(b.data.date||''))||String(a.data.time||'').localeCompare(String(b.data.time||''))
   ));
   const reportGroups=groups.map(([therapist,items])=>`
     <section class="therapist-report-group">
       <h3>${esc(therapist)} <span>${items.length} appointment${items.length===1?'':'s'}</span></h3>
       <div class="therapist-report-table-wrap">
         <table class="therapist-report-table">
-          <thead><tr><th>Patient</th><th>Date &amp; Time</th><th>Branch</th><th>Fee</th><th>Payment Status</th><th>Appointment Status</th></tr></thead>
-          <tbody>${items.map(item=>{
+          <thead><tr><th class="no-print">Select</th><th>Patient</th><th>Date &amp; Time</th><th>Branch</th><th>Fee</th><th>Payment Status</th><th>Appointment Status</th><th class="no-print">Actions</th></tr></thead>
+          <tbody>${items.map(({id,data:item})=>{
             const payment=paymentStatusDisplay(item.balance);
             const status=String(item.status||'Pending');
             const statusClass={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'}[status]||'pending';
             return `<tr>
-              <td><span class="therapist-report-patient">${esc(item.name||'Unnamed patient')}</span></td>
+              <td class="no-print"><input type="checkbox" class="apt-checkbox" value="${esc(id)}" aria-label="Select appointment for ${esc(item.name||'Unnamed patient')}" onchange="window.updateSelectionBar()"></td>
+              <td><span class="therapist-report-patient">${esc(item.name||'Unnamed patient')}</span><span class="therapist-report-mobile">${esc(item.mobile||'')}</span></td>
               <td>${esc(attendanceDayInitial(item.date))} · ${esc(window.formatIndianDate(item.date))} · ${esc(formatTime12Hour(item.time))}</td>
               <td>${esc(item.branch||'—')}</td>
               <td>₹${money(item.fee)}</td>
               <td><span class="badge payment-status ${payment.cls}">${esc(payment.text)}</span></td>
               <td><span class="badge ${statusClass}">${esc(status)}</span></td>
+              <td class="no-print">${actionHTML(id)}</td>
             </tr>`;
           }).join('')}</tbody>
         </table>
       </div>
     </section>
   `).join('');
-  document.getElementById('therapistWiseReportContent').innerHTML=
-    `<p class="therapist-report-meta">${appointments.length} appointments · ${groups.length} therapists · Generated ${esc(new Date().toLocaleString())}</p>${reportGroups}`;
-  closeTools();
-  document.getElementById('therapistWiseReport').classList.add('show');
-  document.getElementById('therapistWiseReport').scrollIntoView({behavior:'smooth',block:'start'});
-};
-window.closeTherapistWiseReport=()=>{const report=document.getElementById('therapistWiseReport');report.classList.remove('show');report.scrollIntoView({behavior:'smooth',block:'start'})};
+  content.innerHTML=
+    `<p class="therapist-report-meta">${appointments.length} appointments · ${groups.length} therapists</p>${reportGroups}`;
+}
 function actionHTML(id){
   return `<div class="actions"><button class="act edit" title="Edit Appointment" aria-label="Edit Appointment" onclick="window.editAppointment('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
 }
 function renderAppointments(){
-  const list=filteredAppointments(),tb=document.getElementById('aptTableBody'),cards=document.getElementById('cardView');tb.innerHTML='';cards.innerHTML='';
-  if(!list.length){tb.innerHTML='<tr><td colspan="7" class="empty">No appointments match the current filters.</td></tr>';cards.innerHTML='<div class="empty" style="grid-column:1/-1">No appointments match the current filters.</div>';updateSelectionBar();return}
-  const map={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'};
-  list.forEach(x=>{
-    const d=x.data,id=x.id,st=d.status||'Pending',ind=window.formatIndianDate(d.date),payment=paymentStatusDisplay(d.balance),balance=balanceDisplay(d.balance);
-    const tr=document.createElement('tr');tr.className='apt-row';tr.dataset.id=id;tr.innerHTML=`<td class="no-print"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></td><td><strong>${ind}</strong><div class="sub">${esc(formatTime12Hour(d.time))}</div>${d.previousDate?`<div class="sub">Prev: ${window.formatIndianDate(d.previousDate)} ${esc(formatTime12Hour(d.previousTime))}</div>`:''}</td><td><div class="patient-cell"><span class="patient-avatar" aria-hidden="true">${esc((d.name||'?').trim().charAt(0).toUpperCase())}</span><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')} ${d.age?`• ${esc(d.age)} Yrs`:''}${d.gender?' • '+esc(d.gender):''}</div><span class="badge cat" style="margin-top:5px">${esc(d.category||'Normal')}</span></div></div></td><td><strong>${esc(d.branch||'')}</strong><div class="sub">${esc(d.therapist||'')}</div></td><td><span class="badge payment-status ${payment.cls}">${payment.text}</span><div class="sub">Fee ₹${money(d.fee)} • Adv ₹${money(d.advance)}</div><div class="sub">Balance: <span class="${balance.cls}">${esc(balance.text)}</span></div></td><td><span class="badge ${map[st]||'pending'}">${esc(st)}</span>${d.notes?`<div class="sub" style="max-width:220px;white-space:normal;margin-top:5px">${esc(d.notes)}</div>`:''}</td><td class="no-print">${actionHTML(id)}</td>`;
-    tb.appendChild(tr);
-    const card=document.createElement('div');card.className='apt-card';card.dataset.id=id;card.innerHTML=`<div class="card-top"><div class="card-patient"><div class="card-check"><input type="checkbox" class="apt-checkbox" value="${id}" onchange="window.updateSelectionBar()"></div><div><div class="patient-name">${esc(d.name||'')}</div><div class="sub">${esc(d.mobile||'')}</div></div></div><span class="badge ${map[st]||'pending'}">${esc(st)}</span></div><div class="card-line"><b>${ind}</b> • ${esc(formatTime12Hour(d.time))}</div><div class="sub" style="margin-top:10px">Payment Status</div><span class="badge payment-status ${payment.cls}">${payment.text}</span><div class="card-grid"><div><div class="sub">Branch</div><b>${esc(d.branch||'')}</b></div><div><div class="sub">Therapist</div><b>${esc(d.therapist||'--')}</b></div><div><div class="sub">Fee / Advance</div><b>₹${money(d.fee)} / ₹${money(d.advance)}</b></div><div><div class="sub">Balance</div><b class="${balance.cls}">${esc(balance.text)}</b></div></div><div class="card-actions">${actionHTML(id)}</div>`;
-    cards.appendChild(card);
-  });
+  renderTherapistWiseReport(filteredAppointments());
   updateSelectionBar();
 }
 window.filterTable=renderAppointments;
-window.setFilterToday=()=>{const s=todayISO();document.getElementById('filterDateFrom').value=s;document.getElementById('filterDateTo').value=s;renderAppointments()};
-window.clearFilters=()=>{document.getElementById('filterDateFrom').value='';document.getElementById('filterDateTo').value='';document.getElementById('filterStatus').value='';document.getElementById('filterCategory').value='';document.getElementById('filterPayment').value='';if(!window.currentUser||window.currentUser.role==='admin')document.getElementById('filterBranch').value='';document.getElementById('aptSearchInput').value='';window.setFilterToday()};
+window.setFilterToday=()=>{const s=todayISO();selectedAppointmentDate=s;document.getElementById('filterDateFrom').value=s;document.getElementById('filterDateTo').value=s;renderAppointmentWeek();return window.loadAppointments()};
+window.clearFilters=()=>{document.getElementById('filterStatus').value='';document.getElementById('filterCategory').value='';document.getElementById('filterPayment').value='';if(!window.currentUser||window.currentUser.role==='admin')document.getElementById('filterBranch').value='';document.getElementById('aptSearchInput').value='';return window.setFilterToday()};
 window.showFilters=()=>{closeTools();document.getElementById('filtersBar').classList.add('show')};
 window.showPendingDues=async()=>{
   if(window.appointmentsLoadPromise)await window.appointmentsLoadPromise;
@@ -748,15 +956,13 @@ window.showPendingDues=async()=>{
   document.getElementById('filterPayment').value='pending';
   document.getElementById('aptSearchInput').value='';
   document.getElementById('filtersBar').classList.add('show');
-  renderAppointments();
+  await window.loadAppointments();
 };
-window.setView=m=>{viewMode=m;document.getElementById('listView').style.display=m==='list'?'block':'none';document.getElementById('cardView').classList.toggle('show',m==='card');document.getElementById('viewListBtn').classList.toggle('active',m==='list');document.getElementById('viewCardBtn').classList.toggle('active',m==='card');closeTools()};
 window.setSort=m=>{sortMode=m;const select=document.getElementById('aptSortSelect');if(select)select.value=m;renderAppointments();closeTools()};
 window.updateSelectionBar=()=>{
   const ids=[...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value);document.getElementById('selectedCount').textContent=new Set(ids).size;document.getElementById('bulkBar').classList.toggle('show',ids.length>0);
 };
-window.clearSelection=()=>{document.querySelectorAll('.apt-checkbox').forEach(x=>x.checked=false);document.getElementById('selectAll').checked=false;window.updateSelectionBar()};
-window.toggleAllCheckboxes=m=>{document.querySelectorAll('.apt-row .apt-checkbox,.apt-card .apt-checkbox').forEach(x=>x.checked=m.checked);window.updateSelectionBar()};
+window.clearSelection=()=>{document.querySelectorAll('.apt-checkbox').forEach(x=>x.checked=false);window.updateSelectionBar()};
 function selectedIds(){return [...new Set([...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value))]}
 window.editSelectedAppointment=()=>{
   const ids=selectedIds();closeTools();
@@ -778,17 +984,30 @@ window.editAppointmentData=async(d,id=null,isNew=false)=>{
 window.editAppointment=id=>{const d=window.appointmentsDataCache[id];if(d)window.editAppointmentData(d,id,false)};
 window.saveAppointment=async()=>{
   const btn=document.getElementById('saveAptBtn'),id=document.getElementById('aptDocId').value,get=x=>document.getElementById(x).value.trim(),fee=parseFloat(get('aptFee'))||0,advance=parseFloat(get('aptAdvance'))||0,prev=parseFloat(get('aptPrevDues'))||0;
+  if(btn.disabled)return;
   let status=get('aptStatus'),date=get('aptDate'),notes=get('aptNotes'),res=get('aptRescheduleDate');const req=['aptMobile','aptName','aptBranch','aptDate','aptTime','aptTherapist','aptCategory'];if(req.some(x=>!get(x)))return alert('Please fill all required (*) fields.');
   const appointmentTime=get('aptTime');if(!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(appointmentTime))return alert('Appointment time must be between 9:00 AM and 9:00 PM.');
   if(status==='Rescheduled'){if(!res)return alert('Please pick a new reschedule date.');notes=notes.replace(/\[Moved from: .*?\]/g,'').trim()+(notes.trim()?'\n':'')+`[Moved from: ${window.formatIndianDate(date)}]`;date=res}
   const payload={mobile:get('aptMobile'),name:get('aptName'),age:get('aptAge'),gender:get('aptGender'),category:get('aptCategory'),location:get('aptLocation'),patientNotes:get('aptPatientNotes'),branch:get('aptBranch'),date,time:appointmentTime,previousDate:get('aptPreviousDate'),previousTime:get('aptPreviousTime'),duration:get('aptDuration'),sessionsPerDay:get('aptSessionsPerDay'),therapist:get('aptTherapist'),status,fee,advance,balance:fee+prev-advance,prevDues:prev,notes,paymentMode:get('aptPaymentMode'),paymentReference:get('aptPaymentReference'),paymentRemarks:get('aptPaymentRemarks'),updatedAt:new Date()};
   btn.disabled=true;btn.textContent='Saving...';
   try{
-    let pq=query(collection(db,'patients'),where('mobile','==',payload.mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'patients'),where('mobile','==',payload.mobile),where('branch','==',window.currentUser.branch));
+    const pq=query(collection(db,'patients'),where('mobile','==',payload.mobile),where('branch','==',payload.branch));
     const ps=await getDocs(pq),pdata={mobile:payload.mobile,name:payload.name,age:payload.age,gender:payload.gender,category:payload.category,location:payload.location,notes:payload.patientNotes,branch:payload.branch};
-    if(ps.empty)await addDoc(collection(db,'patients'),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);
-    if(id){await updateDoc(doc(db,'appointments',id),payload);await window.syncTransactions(id,payload);alert('Appointment updated successfully!')}else{payload.createdAt=new Date();const n=await addDoc(collection(db,'appointments'),payload);await window.syncTransactions(n.id,payload);alert('New appointment saved successfully!')}
-    window.closeAppointmentForm();window.resetAptForm();await window.loadAppointments();document.getElementById('filterDateFrom').value=payload.date;document.getElementById('filterDateTo').value=payload.date;window.filterTable();
+    if(ps.empty)await setDoc(doc(db,'patients',patientDocumentId(payload.branch,payload.mobile)),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()},{merge:true});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);
+    let appointmentId=id;
+    if(id){
+      const targetId=appointmentDocumentId(payload);
+      if(targetId!==id&&(await getDoc(doc(db,'appointments',targetId))).exists()){
+        throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+      }
+      await updateDoc(doc(db,'appointments',id),payload);
+    }else{
+      payload.createdAt=new Date();
+      appointmentId=await createAppointmentIfMissing(payload);
+    }
+    await window.syncTransactions(appointmentId,payload);
+    alert(id?'Appointment updated successfully!':'New appointment saved successfully!');
+    window.closeAppointmentForm();window.resetAptForm();document.getElementById('filterDateFrom').value=payload.date;document.getElementById('filterDateTo').value=payload.date;invalidateAppointmentsRequestCache();await window.loadAppointments();
   }catch(e){console.error(e);alert('Failed to save appointment. Check your database permissions.')}finally{btn.disabled=false;btn.textContent=id?'Update Appointment':'Save Appointment'}
 };
 window.syncTransactions=async(aptId,payload)=>{
@@ -810,14 +1029,14 @@ window.syncTransactions=async(aptId,payload)=>{
   if(sale||fee>0){
     const salePayload={date:payload.date,type:'Sales',mobile:payload.mobile,name:payload.name,mode,ref:'Auto-Bill',invoiceNo,cashIn:0,cashOut:fee,notes:fee>0?'Consultation / Therapy Billed':'Appointment bill voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
     if(sale)await updateDoc(doc(db,'transactions',sale),salePayload);
-    else if(fee>0)await addDoc(collection(db,'transactions'),{...salePayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()});
+    else if(fee>0)await setDoc(doc(db,'transactions',`apt_${aptId}_sales`),{...salePayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()},{merge:true});
   }
   const advance=Number(payload.advance)||0;
   if(receipt||advance>0){
     const receiptDate=receiptData&&Number(receiptData.cashIn||0)===advance&&receiptData.date?receiptData.date:todayISO();
     const receiptPayload={date:receiptDate,type:'Receipt',mobile:payload.mobile,name:payload.name,mode,ref:payload.paymentReference||'Auto-Advance',cashIn:advance,cashOut:0,notes:advance>0?(payload.paymentRemarks||'Appointment receipt received today'):'Appointment receipt voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
     if(receipt)await updateDoc(doc(db,'transactions',receipt),receiptPayload);
-    else if(advance>0)await addDoc(collection(db,'transactions'),{...receiptPayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()});
+    else if(advance>0)await setDoc(doc(db,'transactions',`apt_${aptId}_receipt`),{...receiptPayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()},{merge:true});
   }
 };
 window.viewNotes=id=>{const d=window.appointmentsDataCache[id];if(!d)return;document.getElementById('modalPatientName').textContent=d.name||'';document.getElementById('modalPatientMeta').textContent=`Mobile: +91 ${d.mobile||''} | Scheduled: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)} | Doctor: ${d.therapist||'--'}`;let n='';if(d.patientNotes)n+=`[Medical History]\n${d.patientNotes}\n\n`;if(d.notes)n+=`[Diagnosis Report]\n${d.notes}`;document.getElementById('modalPatientNotesText').textContent=n||'No notes recorded for this patient.';document.getElementById('notesModal').classList.add('show')};
@@ -964,12 +1183,12 @@ window.sendInvoiceWhatsApp=id=>{
 };
 window.executeBulkDelete=async()=>{
   const ids=selectedIds();if(!ids.length)return alert('Please select appointments to delete.');for(const id of ids){const d=window.appointmentsDataCache[id];if(d&&d.status!=='Pending'&&d.status!=='Cancelled')return alert('You can only bulk delete Pending or Cancelled appointments.')}
-  showConfirm('Delete Appointments',`Permanently delete ${ids.length} selected appointment${ids.length>1?'s':''}?`,'Delete',async()=>{try{for(const id of ids)await deleteDoc(doc(db,'appointments',id));alert('Selected appointments deleted.');await window.loadAppointments();window.setFilterToday()}catch(e){console.error(e);alert('Error deleting appointments.')}})
+  showConfirm('Delete Appointments',`Permanently delete ${ids.length} selected appointment${ids.length>1?'s':''}?`,'Delete',async()=>{try{for(const id of ids)await deleteDoc(doc(db,'appointments',id));alert('Selected appointments deleted.');invalidateAppointmentsRequestCache();await window.setFilterToday()}catch(e){console.error(e);alert('Error deleting appointments.')}})
 };
 window.showBulkDate=()=>{if(!selectedIds().length)return alert('Please select appointments first.');document.getElementById('bulkDateArea').style.display='inline-flex'};
 window.confirmBulkReschedule=async()=>{
   const nd=document.getElementById('bulkDateInput').value,ids=selectedIds();if(!nd)return alert('Please select a date.');
-  showConfirm('Move Selected Appointments',`Create ${ids.length} new Pending appointment${ids.length>1?'s':''} on ${window.formatIndianDate(nd)}? The original records will remain.`,'Confirm',async()=>{try{for(const id of ids){const d=window.appointmentsDataCache[id];if(!d)continue;let notes=String(d.notes||'').replace(/\[Moved from: .*?\]/g,'').trim();notes+=(notes?'\n':'')+`[Moved from: ${window.formatIndianDate(d.date)}]`;await addDoc(collection(db,'appointments'),{...d,date:nd,status:'Pending',notes,createdAt:new Date(),updatedAt:new Date()})}alert('Selected appointments copied to '+window.formatIndianDate(nd)+'.');document.getElementById('bulkDateArea').style.display='none';document.getElementById('bulkDateInput').value='';window.clearSelection();await window.loadAppointments();window.setFilterToday()}catch(e){console.error(e);alert('Failed to move selected appointments.')}})
+  showConfirm('Move Selected Appointments',`Create ${ids.length} new Pending appointment${ids.length>1?'s':''} on ${window.formatIndianDate(nd)}? The original records will remain.`,'Confirm',async()=>{try{for(const id of ids){const d=window.appointmentsDataCache[id];if(!d)continue;let notes=String(d.notes||'').replace(/\[Moved from: .*?\]/g,'').trim();notes+=(notes?'\n':'')+`[Moved from: ${window.formatIndianDate(d.date)}]`;await createAppointmentIfMissing({...d,date:nd,status:'Pending',notes,createdAt:new Date(),updatedAt:new Date()})}alert('Selected appointments copied to '+window.formatIndianDate(nd)+'.');document.getElementById('bulkDateArea').style.display='none';document.getElementById('bulkDateInput').value='';window.clearSelection();invalidateAppointmentsRequestCache();await window.setFilterToday()}catch(e){console.error(e);alert('Failed to move selected appointments.')}})
 };
 window.executeBulkReschedule=()=>window.showBulkDate();
 function showConfirm(title,message,ok,fn){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMessage').textContent=message;document.getElementById('confirmOk').textContent=ok;confirmHandler=fn;document.getElementById('confirmModal').classList.add('show');document.getElementById('confirmOk').onclick=async()=>{const f=confirmHandler;window.closeModal('confirmModal');confirmHandler=null;if(f)await f()}}
@@ -981,7 +1200,33 @@ function parseCSV(text){const rows=[];let row=[],cell='',q=false;text=String(tex
 const norm=v=>String(v||'').trim().toLowerCase().replace(/[\s_\-\/]+/g,'');
 window.importAppointmentsCSV=async file=>{
   if(!file)return;try{const rows=parseCSV(await file.text());if(rows.length<2)throw Error('CSV contains no appointment rows.');const hm={};rows[0].forEach((h,i)=>hm[norm(h)]=i);const req=['mobile','name','branch','date','time','therapist'];const miss=req.filter(k=>hm[norm(k)]===undefined);if(miss.length)throw Error('Missing required columns: '+miss.join(', '));
-    let ok=0,fail=[];for(let ri=1;ri<rows.length;ri++){try{const r={};CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());const mobile=r.mobile.replace(/\D/g,'');if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');if(!r.name||!r.branch||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(r.time)||!r.therapist)throw Error('Required value missing or invalid date/time (time must be 9:00 AM–9:00 PM)');if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}const fee=parseFloat(r.fee)||0,adv=parseFloat(r.advance)||0,prev=parseFloat(r.prevDues)||0,payload={mobile,name:r.name,age:r.age,gender:r.gender,category:r.category||'Normal',location:r.location,patientNotes:r.patientNotes,branch:r.branch,date:r.date,time:r.time,previousDate:r.previousDate,previousTime:r.previousTime,duration:r.duration,sessionsPerDay:r.sessionsPerDay,therapist:r.therapist,status:r.status||'Pending',fee,advance:adv,balance:fee+prev-adv,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};let pq=query(collection(db,'patients'),where('mobile','==',mobile));if(window.currentUser&&window.currentUser.role!=='admin')pq=query(collection(db,'patients'),where('mobile','==',mobile),where('branch','==',window.currentUser.branch));const ps=await getDocs(pq),pdata={mobile,name:r.name,age:r.age,gender:r.gender,category:payload.category,location:r.location,notes:r.patientNotes,branch:r.branch};if(ps.empty)await addDoc(collection(db,'patients'),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);const n=await addDoc(collection(db,'appointments'),payload);try{await window.syncTransactions(n.id,payload)}catch(tx){console.error(tx)}ok++}catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}}alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);if(ok)await window.loadAppointments();window.setFilterToday()}catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('aptCsvInput').value=''}};
+    let ok=0,fail=[];
+    for(let ri=1;ri<rows.length;ri++){
+      try{
+        const r={};
+        CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());
+        const mobile=r.mobile.replace(/\D/g,'');
+        if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');
+        if(!r.name||!r.branch||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(r.time)||!r.therapist)throw Error('Required value missing or invalid date/time (time must be 9:00 AM–9:00 PM)');
+        if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}
+        const fee=parseFloat(r.fee)||0,adv=parseFloat(r.advance)||0,prev=parseFloat(r.prevDues)||0;
+        const payload={mobile,name:r.name,age:r.age,gender:r.gender,category:r.category||'Normal',location:r.location,patientNotes:r.patientNotes,branch:r.branch,date:r.date,time:r.time,previousDate:r.previousDate,previousTime:r.previousTime,duration:r.duration,sessionsPerDay:r.sessionsPerDay,therapist:r.therapist,status:r.status||'Pending',fee,advance:adv,balance:fee+prev-adv,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};
+        const patientQuery=query(collection(db,'patients'),where('mobile','==',mobile),where('branch','==',r.branch));
+        const patientSnapshot=await getDocs(patientQuery);
+        const patientData={mobile,name:r.name,age:r.age,gender:r.gender,category:payload.category,location:r.location,notes:r.patientNotes,branch:r.branch};
+        if(patientSnapshot.empty){
+          await setDoc(doc(db,'patients',patientDocumentId(r.branch,mobile)),{patientId:'P'+Math.floor(Math.random()*90000+10000),...patientData,createdAt:new Date()},{merge:true});
+        }else{
+          await updateDoc(doc(db,'patients',patientSnapshot.docs[0].id),patientData);
+        }
+        const appointmentId=await createAppointmentIfMissing(payload);
+        try{await window.syncTransactions(appointmentId,payload)}catch(tx){console.error(tx)}
+        ok++;
+      }catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}
+    }
+    alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);
+    if(ok){invalidateAppointmentsRequestCache();await window.setFilterToday()}
+  }catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('aptCsvInput').value=''}};
 window.exportAppointmentsCSV=()=>{const list=filteredAppointments();const rows=[CSV_HEADERS,...list.map(x=>{const d=x.data;return CSV_HEADERS.map(k=>d[k]??'')})];const csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`appointments-${todayISO()}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 window.exportAptPDF=()=>window.print();
 window.openBulkReschedule=window.executeBulkReschedule;

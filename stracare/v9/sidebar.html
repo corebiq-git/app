@@ -43,10 +43,11 @@
 
     .sidebar-logo {
         display: block;
-        width: 38px;
-        height: 38px;
+        width: min(100%, 160px);
+        height: 56px;
+        aspect-ratio: 5 / 2;
         object-fit: contain;
-        flex: 0 0 38px;
+        flex: 0 1 160px;
     }
 
     .sidebar-name {
@@ -198,19 +199,6 @@
         color: rgba(255, 255, 255, .48);
     }
 
-    .nav-link[data-target="view-corebiq-ai"] .nav-shortcut {
-        border-color: rgba(139, 105, 225, .12);
-        background: rgba(255, 255, 255, .5);
-        color: rgba(118, 94, 232, .5);
-    }
-
-    .nav-link[data-target="view-corebiq-ai"].active .nav-shortcut {
-        border-color: rgba(255, 255, 255, .12);
-        background: rgba(255, 255, 255, .07);
-        color: rgba(255, 255, 255, .5);
-    }
-
-
     /* =========================================================
        DIVIDERS
        ========================================================= */
@@ -252,8 +240,9 @@
     }
 
     #sidebar-container.is-collapsed .sidebar-logo {
-        width: 38px;
-        height: 38px;
+        width: 64px;
+        height: 26px;
+        flex: 0 0 64px;
     }
 
     #sidebar-container.is-collapsed .sidebar-nav {
@@ -314,76 +303,6 @@
         color: #FFFFFF;
     }
 
-    .nav-link[data-target="view-corebiq-ai"] {
-        border-color: rgba(139, 105, 225, .18);
-        background: linear-gradient(100deg, #FBF9FF 0%, #F8F5FF 48%, #F1FAFF 100%);
-        color: #6952B5;
-        font-weight: 650;
-    }
-
-    .nav-link[data-target="view-corebiq-ai"] .material-symbols-rounded {
-        color: #765EE8;
-        background: linear-gradient(135deg, #4285F4 5%, #8B5CF6 48%, #D65DB1 76%, #38A9D6 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .nav-link[data-target="view-corebiq-ai"] .nav-ai-label {
-        color: #765EE8;
-        background: linear-gradient(100deg, #4285F4 0%, #8B5CF6 48%, #D65DB1 78%, #328DBB 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .nav-link[data-target="view-corebiq-ai"]:hover,
-    .nav-link[data-target="view-corebiq-ai"]:focus-visible {
-        border-color: rgba(139, 105, 225, .32);
-        background: linear-gradient(100deg, #F4F0FF 0%, #F7F0FF 48%, #EBF8FF 100%);
-        color: #6148AE;
-        box-shadow: 0 3px 12px rgba(112, 91, 197, .12);
-    }
-
-    .nav-link[data-target="view-corebiq-ai"].active,
-    .nav-link[data-target="view-corebiq-ai"].active:hover {
-        border-color: transparent;
-        background: linear-gradient(110deg, #5579E8 0%, #8063DC 48%, #B65FC5 78%, #4D9ED2 100%);
-        color: #FFFFFF;
-        box-shadow: 0 5px 16px rgba(112, 91, 197, .24);
-    }
-
-    .nav-link[data-target="view-corebiq-ai"].active .material-symbols-rounded,
-    .nav-link[data-target="view-corebiq-ai"].active .nav-ai-label {
-        background: none;
-        color: #FFFFFF;
-        -webkit-text-fill-color: #FFFFFF;
-    }
-
-    #sidebar-container.is-collapsed .nav-link[data-target="view-corebiq-ai"] {
-        border-color: transparent;
-        background: transparent;
-        box-shadow: none;
-    }
-
-    #sidebar-container.is-collapsed .nav-link[data-target="view-corebiq-ai"] .material-symbols-rounded {
-        border: 1px solid rgba(139, 105, 225, .2);
-        background: linear-gradient(145deg, #F1EDFF 0%, #F7ECFA 52%, #E8F7FF 100%);
-        color: #765EE8;
-        -webkit-text-fill-color: #765EE8;
-    }
-
-    #sidebar-container.is-collapsed .nav-link[data-target="view-corebiq-ai"].active .material-symbols-rounded {
-        border-color: transparent;
-        background: linear-gradient(135deg, #5579E8 0%, #8063DC 52%, #B65FC5 100%);
-        color: #FFFFFF;
-        -webkit-text-fill-color: #FFFFFF;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .nav-link[data-target="view-corebiq-ai"] { transition: none; }
-    }
-
     #sidebar-container.is-collapsed .nav-divider {
         margin: 8px 12px;
     }
@@ -426,43 +345,7 @@
        ========================================================= */
 
     .sidebar-footer {
-        padding: 18px 20px;
-
-        border-top: 1px solid var(--border);
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        background: #FAFAFA;
-
-        margin-top: auto;
-        flex-shrink: 0;
-    }
-
-    .footer-brand {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .footer-logo {
-        display: block;
-        width: 28px;
-        height: 28px;
-        aspect-ratio: 1;
-        object-fit: contain;
-        flex: 0 0 28px;
-    }
-
-    .footer-app-name {
-        display: block;
-        width: min(100%, 120px);
-        max-height: 28px;
-        object-fit: contain;
+        display: none;
     }
 
 
@@ -499,9 +382,9 @@
         }
 
         .sidebar-logo {
-            width: 32px;
-            height: 32px;
-            flex-basis: 32px;
+            width: min(100%, 150px);
+            height: 54px;
+            flex-basis: 150px;
         }
 
         .sidebar-name {
@@ -556,6 +439,12 @@
             padding: 10px 6px;
         }
 
+        #sidebar-container.is-collapsed .sidebar-logo {
+            width: 64px;
+            height: 26px;
+            flex-basis: 64px;
+        }
+
         #sidebar-container.is-collapsed .close-menu {
             display: flex;
             width: 34px;
@@ -575,14 +464,9 @@
 
         <div class="sidebar-brand">
             <img
-                src="assets/logo-client-display.png"
-                alt=""
+                src="assets/logo-sidebar-bottom.png"
+                alt="Corebiq"
                 class="sidebar-logo"
-            >
-            <img
-                src="assets/name-client-display.png"
-                alt="Stra Care"
-                class="sidebar-name"
             >
         </div>
 
@@ -663,29 +547,6 @@
                 event_note
             </span>
             Appointments
-        </button>
-
-        <button
-            class="nav-link"
-            data-target="view-public-booking"
-            onclick="window.switchView('view-public-booking', this)"
-        >
-            <span class="material-symbols-rounded">
-                public
-            </span>
-            Public Booking
-        </button>
-
-
-        <button
-            class="nav-link"
-            data-target="view-calender"
-            onclick="window.switchView('view-calender', this)"
-        >
-            <span class="material-symbols-rounded">
-                calendar_month
-            </span>
-            Calendar
         </button>
 
         <div class="nav-section-label">Accounts</div>
@@ -831,17 +692,6 @@
             Report Template
         </button>
 
-        <button
-            class="nav-link"
-            data-target="view-seal"
-            onclick="window.switchView('view-seal', this)"
-        >
-            <span class="material-symbols-rounded">
-                verified
-            </span>
-            Digital Seals
-        </button>
-
         <div class="nav-section-label">Backup&amp;Restore</div>
 
         <button
@@ -881,17 +731,6 @@
 
         <button
             class="nav-link"
-            data-target="view-clinic-details"
-            onclick="window.switchView('view-clinic-details', this)"
-        >
-            <span class="material-symbols-rounded">
-                clinical_notes
-            </span>
-            Clinic Details
-        </button>
-
-        <button
-            class="nav-link"
             data-target="view-users"
             id="nav-users-btn"
             onclick="window.switchView('view-users', this)"
@@ -900,19 +739,6 @@
                 manage_accounts
             </span>
             Users (Admin)
-        </button>
-
-        <div class="nav-section-label">AI Assistant</div>
-
-        <button
-            class="nav-link"
-            data-target="view-corebiq-ai"
-            onclick="window.switchView('view-corebiq-ai', this)"
-        >
-            <span class="material-symbols-rounded">
-                auto_awesome
-            </span>
-            <span class="nav-ai-label">COREBIQ AI</span>
         </button>
 
         <div class="nav-section-label">App Info &amp; More</div>
@@ -965,18 +791,5 @@
 
     </div>
 
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
-    <div class="sidebar-footer">
-
-        <div class="footer-brand">
-            <img src="assets/logo.png" alt="" class="footer-logo">
-            <img src="assets/name.png" alt="COREBIQ" class="footer-app-name">
-        </div>
-
-    </div>
 
 </div>
