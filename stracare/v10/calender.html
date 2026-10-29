@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COREBIQ | Calendar</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+  <link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+<main class="module-container" id="calendar-module">
+  <style>
+    #calendar-module {
+      --cal-primary: #0B1F4B;
+      --cal-primary-soft: #E8EEF7;
+      --cal-bg: #F4F7FC;
+      --cal-border: #E1E4E2;
+      --cal-text: #1F1F1F;
+      --cal-muted: #6B7280;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      color: var(--cal-text);
+      font-family: Inter, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    #calendar-module * { box-sizing: border-box; }
+    #calendar-module button, #calendar-module select { font: inherit; }
+    #calendar-module .material-symbols-rounded {
+      font-family: "Material Symbols Rounded";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      font-feature-settings: "liga";
+      -webkit-font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+      vertical-align: middle;
+    }
+    #calendar-module .calendar-hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 18px 20px;
+      border: 1px solid #EEF0F4;
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(31,35,40,.06);
+    }
+    #calendar-module .hero-copy { display: flex; align-items: center; gap: 13px; min-width: 0; }
+    #calendar-module .hero-icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #EEF0F4;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--cal-primary);
+      box-shadow: 0 1px 3px rgba(31,35,40,.06);
+    }
+    #calendar-module .hero-icon .material-symbols-rounded { font-size: 25px; }
+    #calendar-module h1 { margin: 0; color: #1F1F1F; font-size: 24px; font-weight: 600; letter-spacing: -.35px; line-height: 1.2; }
+    #calendar-module .hero-copy p { margin: 5px 0 0; color: var(--cal-muted); font-size: 13px; }
+    #calendar-module .hero-actions { display: flex; align-items: center; gap: 9px; flex: 0 0 auto; }
+    #calendar-module .cal-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid var(--cal-border);
+      border-radius: 22px;
+      background: #fff;
+      color: #40454D;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .16s ease, border-color .16s ease, color .16s ease;
+    }
+    #calendar-module .cal-button { border-radius: 22px !important; }
+    #calendar-module .cal-button:hover { background: #F7F9FC; border-color: #C4C7C5; }
+    #calendar-module .cal-button.primary { border-color: var(--cal-primary); background: var(--cal-primary); color: #fff; }
+    #calendar-module .cal-button.primary:hover { background: #071630; }
+    #calendar-module .cal-button .material-symbols-rounded { font-size: 19px; }
+    #calendar-module .calendar-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+    #calendar-module .stat-card {
+      min-width: 0;
+      padding: 15px 17px;
+      border: 1px solid var(--cal-border);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(31,35,40,.05);
+    }
+    #calendar-module .stat-label { color: var(--cal-muted); font-size: 12px; font-weight: 500; }
+    #calendar-module .stat-value { margin-top: 4px; color: var(--cal-text); font-size: 24px; font-weight: 600; line-height: 1.2; }
+    #calendar-module .stat-card.month .stat-value { color: var(--cal-primary); }
+    #calendar-module .stat-card.pending .stat-value { color: #A65B00; }
+    #calendar-module .stat-card.completed .stat-value { color: #188038; }
+    #calendar-module .calendar-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .9fr); gap: 16px; align-items: start; }
+    #calendar-module .cal-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--cal-border);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(31,35,40,.06), 0 8px 25px rgba(31,35,40,.035);
+    }
+    #calendar-module .card-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 62px;
+      padding: 14px 18px;
+      border-bottom: 1px solid #F0F2F5;
+    }
+    #calendar-module .card-heading h2 { margin: 0; font-size: 15px; font-weight: 600; }
+    #calendar-module .month-nav { display: flex; align-items: center; gap: 10px; }
+    #calendar-module .month-title { min-width: 145px; text-align: center; font-size: 15px; font-weight: 600; }
+    #calendar-module .icon-button {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--cal-border);
+      border-radius: 50%;
+      background: #fff;
+      color: #5E6672;
+      cursor: pointer;
+    }
+    #calendar-module .icon-button { border-radius: 50% !important; }
+    #calendar-module .icon-button:hover { border-color: #C8D2E1; background: var(--cal-primary-soft); color: var(--cal-primary); }
+    #calendar-module .calendar-body { padding: 16px 18px 18px; }
+    #calendar-module .weekday-grid, #calendar-module .day-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    #calendar-module .weekday-grid { margin-bottom: 7px; }
+    #calendar-module .weekday { padding: 7px 0; color: #758195; font-size: 11px; font-weight: 600; text-align: center; text-transform: uppercase; }
+    #calendar-module .day-grid { gap: 5px; }
+    #calendar-module .day-cell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+      min-height: 74px;
+      padding: 9px 3px 5px;
+      border: 1px solid transparent;
+      border-radius: 13px;
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+      text-align: center;
+      transition: background .14s ease, border-color .14s ease;
+    }
+    #calendar-module .day-cell { border-radius: 13px !important; }
+    #calendar-module .day-cell:hover { border-color: #C8D2E1; background: #F6F9FE; }
+    #calendar-module .day-cell.outside-month { color: #A8B0BD; }
+    #calendar-module .day-cell.today .day-number { color: var(--cal-primary); font-weight: 700; }
+    #calendar-module .day-cell.selected { border-color: var(--cal-primary); background: var(--cal-primary); color: #fff; }
+    #calendar-module .day-cell.selected .day-number { color: #fff; }
+    #calendar-module .day-number { font-size: 13px; font-weight: 500; line-height: 1.4; }
+    #calendar-module .day-count { min-height: 17px; margin-top: 4px; padding: 1px 6px; border-radius: 999px; background: #E8EEF7; color: #0B1F4B; font-size: 10px; font-weight: 600; line-height: 15px; }
+    #calendar-module .day-cell.selected .day-count { background: rgba(255,255,255,.2); color: #fff; }
+    #calendar-module .day-cell:not(.has-appointments) .day-count { visibility: hidden; }
+    #calendar-module .calendar-legend { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 14px; color: var(--cal-muted); font-size: 11px; }
+    #calendar-module .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+    #calendar-module .legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cal-primary); }
+    #calendar-module .legend-dot.today-dot { background: #8394B3; }
+    #calendar-module .agenda-date { color: var(--cal-muted); font-size: 12px; font-weight: 500; }
+    #calendar-module .agenda-count { min-width: 26px; height: 26px; display: inline-grid; place-items: center; padding: 0 7px; border-radius: 99px; background: var(--cal-primary-soft); color: var(--cal-primary); font-size: 11px; font-weight: 700; }
+    #calendar-module .agenda-list { display: flex; flex-direction: column; gap: 10px; max-height: 510px; overflow-y: auto; padding: 14px; }
+    #calendar-module .appointment-card { padding: 13px; border: 1px solid var(--cal-border); border-radius: 16px; background: #fff; }
+    #calendar-module .appointment-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 9px; }
+    #calendar-module .appointment-person { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    #calendar-module .person-avatar { flex: 0 0 38px; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: #E8EEF7; color: #0B1F4B; font-size: 14px; font-weight: 600; }
+    #calendar-module .person-name { overflow-wrap: anywhere; font-size: 13px; font-weight: 600; }
+    #calendar-module .person-mobile,.appointment-meta { color: var(--cal-muted); font-size: 11px; }
+    #calendar-module .person-mobile { margin-top: 2px; }
+    #calendar-module .appointment-time { display: flex; align-items: center; gap: 5px; margin-top: 11px; color: var(--cal-primary); font-size: 12px; font-weight: 600; }
+    #calendar-module .appointment-time .material-symbols-rounded { font-size: 16px; }
+    #calendar-module .appointment-details { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #F0F2F5; }
+    #calendar-module .detail-label { color: #87909D; font-size: 10px; }
+    #calendar-module .detail-value { overflow-wrap: anywhere; margin-top: 2px; color: #344054; font-size: 11px; font-weight: 500; }
+    #calendar-module .status-badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 8px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+    #calendar-module .status-pending { background: #FFF4E5; color: #8A4B08; }
+    #calendar-module .status-reported { background: #E8EEF7; color: #0B1F4B; }
+    #calendar-module .status-completed { background: #E8F5E9; color: #188038; }
+    #calendar-module .status-rescheduled { background: #F0F4F9; color: #5E6672; }
+    #calendar-module .status-cancelled { background: #FCE8E6; color: #B3261E; }
+    #calendar-module .agenda-empty { display: grid; justify-items: center; gap: 7px; padding: 42px 18px; color: var(--cal-muted); text-align: center; }
+    #calendar-module .agenda-empty .material-symbols-rounded { color: #9AA5B4; font-size: 34px; }
+    #calendar-module .agenda-empty strong { color: #344054; font-size: 13px; font-weight: 600; }
+    #calendar-module .agenda-empty span:last-child { max-width: 260px; font-size: 11px; }
+    #calendar-module .loading-state,#calendar-module .error-state { padding: 36px 18px; color: var(--cal-muted); font-size: 13px; text-align: center; }
+    #calendar-module .error-state { color: #B3261E; }
+    @media(max-width:900px) {
+      #calendar-module .calendar-layout { grid-template-columns: minmax(0,1fr); }
+      #calendar-module .agenda-list { max-height: none; }
+    }
+    @media(max-width:600px) {
+      #calendar-module .calendar-hero { align-items: flex-start; flex-wrap: wrap; padding: 14px; border-radius: 20px; }
+      #calendar-module .hero-copy { gap: 10px; }
+      #calendar-module .hero-icon { flex-basis: 42px; width: 42px; height: 42px; border-radius: 14px; }
+      #calendar-module h1 { font-size: 20px; }
+      #calendar-module .hero-copy p { font-size: 12px; }
+      #calendar-module .hero-actions { width: 100%; justify-content: flex-end; }
+      #calendar-module .calendar-stats { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+      #calendar-module .stat-card { padding: 12px; border-radius: 15px; }
+      #calendar-module .stat-label { font-size: 11px; }
+      #calendar-module .stat-value { font-size: 21px; }
+      #calendar-module .cal-card { border-radius: 20px; }
+      #calendar-module .card-heading { padding: 12px 13px; }
+      #calendar-module .calendar-body { padding: 11px 9px 13px; }
+      #calendar-module .month-title { min-width: 125px; font-size: 13px; }
+      #calendar-module .day-grid { gap: 2px; }
+      #calendar-module .day-cell { min-height: 54px; padding: 7px 1px 3px; border-radius: 9px !important; }
+      #calendar-module .day-number { font-size: 12px; }
+      #calendar-module .day-count { margin-top: 3px; padding: 0 4px; font-size: 9px; }
+      #calendar-module .weekday { font-size: 9px; }
+    }
+  </style>
+
+  <header class="calendar-hero">
+    <div class="hero-copy">
+      <span class="hero-icon"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span></span>
+      <div>
+        <h1>Calendar</h1>
+        <p>View your appointment schedule by date, with patient and visit details.</p>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="cal-button" type="button" id="calendarTodayButton"><span class="material-symbols-rounded">today</span>Today</button>
+      <button class="cal-button primary" type="button" id="calendarRefreshButton"><span class="material-symbols-rounded">refresh</span>Refresh</button>
+    </div>
+  </header>
+
+  <section class="calendar-stats" aria-label="Appointment summary">
+    <article class="stat-card month"><div class="stat-label">Appointments this month</div><div class="stat-value" id="calendarMonthCount">—</div></article>
+    <article class="stat-card"><div class="stat-label">Selected day</div><div class="stat-value" id="calendarDayCount">—</div></article>
+    <article class="stat-card pending"><div class="stat-label">Pending · selected day</div><div class="stat-value" id="calendarPendingCount">—</div></article>
+    <article class="stat-card completed"><div class="stat-label">Completed · selected day</div><div class="stat-value" id="calendarCompletedCount">—</div></article>
+  </section>
+
+  <section class="calendar-layout" aria-label="Calendar and appointment details">
+    <article class="cal-card">
+      <header class="card-heading">
+        <h2>Appointment calendar</h2>
+        <div class="month-nav">
+          <button class="icon-button" type="button" id="calendarPrevMonth" aria-label="Previous month"><span class="material-symbols-rounded">chevron_left</span></button>
+          <div class="month-title" id="calendarMonthTitle" aria-live="polite">Loading…</div>
+          <button class="icon-button" type="button" id="calendarNextMonth" aria-label="Next month"><span class="material-symbols-rounded">chevron_right</span></button>
+        </div>
+      </header>
+      <div class="calendar-body">
+        <div class="weekday-grid" aria-hidden="true">
+          <div class="weekday">Sun</div><div class="weekday">Mon</div><div class="weekday">Tue</div><div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday">Fri</div><div class="weekday">Sat</div>
+        </div>
+        <div class="day-grid" id="calendarDays" role="grid" aria-label="Appointment dates">
+          <div class="loading-state" style="grid-column:1/-1">Loading appointments…</div>
+        </div>
+        <div class="calendar-legend">
+          <span class="legend-item"><span class="legend-dot"></span>Appointments scheduled</span>
+          <span class="legend-item"><span class="legend-dot today-dot"></span>Today</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="cal-card">
+      <header class="card-heading">
+        <div>
+          <h2>Day details</h2>
+          <div class="agenda-date" id="calendarSelectedDate">Loading…</div>
+        </div>
+        <span class="agenda-count" id="calendarAgendaCount">0</span>
+      </header>
+      <div class="agenda-list" id="calendarAgenda">
+        <div class="loading-state">Loading appointments…</div>
+      </div>
+    </article>
+  </section>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { collection, getDocs, query, where, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const root = document.getElementById('calendar-module');
+    const state = {
+      appointments: [],
+      year: new Date().getFullYear(),
+      month: new Date().getMonth(),
+      selectedDate: localDateKey(new Date()),
+      loading: false
+    };
+
+    function localDateKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[character]);
+    }
+
+    function formatDate(dateKey, options = { day: 'numeric', month: 'long', year: 'numeric' }) {
+      const match = String(dateKey || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return 'Date unavailable';
+      return new Intl.DateTimeFormat('en-IN', options).format(new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+    }
+
+    function formatTime(value) {
+      const match = String(value || '').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?$/i);
+      if (!match) return value || 'Time not set';
+      let hour = Number(match[1]);
+      const minute = match[2];
+      const meridiem = match[3]?.toUpperCase();
+      if (meridiem) return hour >= 1 && hour <= 12 ? `${String(hour).padStart(2, '0')}:${minute} ${meridiem}` : value;
+      if (hour > 23) return value;
+      const suffix = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      return `${String(hour).padStart(2, '0')}:${minute} ${suffix}`;
+    }
+
+    function statusClass(status) {
+      const normalized = String(status || 'Pending').toLowerCase();
+      return ['pending', 'reported', 'completed', 'rescheduled', 'cancelled'].includes(normalized) ? `status-${normalized}` : 'status-pending';
+    }
+
+    function appointmentBalance(appointment) {
+      const balance = Number(appointment.balance) || 0;
+      if (Math.abs(balance) < 0.005) return 'No Due';
+      if (balance < 0) return `Excess ₹${Math.abs(balance).toFixed(2)}`;
+      return `Due ₹${balance.toFixed(2)}`;
+    }
+
+    function renderCalendar() {
+      const monthTitle = root.querySelector('#calendarMonthTitle');
+      const calendarDays = root.querySelector('#calendarDays');
+      const monthCount = root.querySelector('#calendarMonthCount');
+      if (!monthTitle || !calendarDays) return;
+
+      monthTitle.textContent = new Intl.DateTimeFormat('en-IN', { month: 'long', year: 'numeric' }).format(new Date(state.year, state.month, 1));
+      const appointmentsByDate = new Map();
+      state.appointments.forEach(appointment => {
+        if (!appointment.date) return;
+        appointmentsByDate.set(appointment.date, (appointmentsByDate.get(appointment.date) || 0) + 1);
+      });
+      const monthPrefix = `${state.year}-${String(state.month + 1).padStart(2, '0')}-`;
+      if (monthCount) monthCount.textContent = String(state.appointments.filter(appointment => appointment.date?.startsWith(monthPrefix)).length);
+
+      const firstWeekday = new Date(state.year, state.month, 1).getDay();
+      const daysInMonth = new Date(state.year, state.month + 1, 0).getDate();
+      const cells = [];
+      for (let index = 0; index < firstWeekday; index += 1) {
+        const date = new Date(state.year, state.month, 0 - (firstWeekday - index - 1));
+        cells.push(dayCell(date, true, appointmentsByDate));
+      }
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        cells.push(dayCell(new Date(state.year, state.month, day), false, appointmentsByDate));
+      }
+      const trailing = (7 - cells.length % 7) % 7;
+      for (let day = 1; day <= trailing; day += 1) {
+        cells.push(dayCell(new Date(state.year, state.month + 1, day), true, appointmentsByDate));
+      }
+      calendarDays.innerHTML = cells.join('');
+      renderAgenda();
+    }
+
+    function dayCell(date, outsideMonth, appointmentsByDate) {
+      const key = localDateKey(date);
+      const count = appointmentsByDate.get(key) || 0;
+      const classes = ['day-cell'];
+      if (outsideMonth) classes.push('outside-month');
+      if (key === localDateKey(new Date())) classes.push('today');
+      if (key === state.selectedDate) classes.push('selected');
+      if (count) classes.push('has-appointments');
+      return `<button class="${classes.join(' ')}" type="button" role="gridcell" aria-label="${escapeHtml(formatDate(key))}${count ? `, ${count} appointment${count === 1 ? '' : 's'}` : ', no appointments'}" aria-pressed="${key === state.selectedDate}" data-date="${key}"><span class="day-number">${date.getDate()}</span><span class="day-count">${count ? `${count} apt${count === 1 ? '' : 's'}` : '0'}</span></button>`;
+    }
+
+    function renderAgenda() {
+      const agenda = root.querySelector('#calendarAgenda');
+      const selectedDate = root.querySelector('#calendarSelectedDate');
+      const agendaCount = root.querySelector('#calendarAgendaCount');
+      if (!agenda) return;
+      const dayAppointments = state.appointments
+        .filter(appointment => appointment.date === state.selectedDate)
+        .sort((first, second) => String(first.time || '').localeCompare(String(second.time || '')));
+      if (selectedDate) selectedDate.textContent = formatDate(state.selectedDate);
+      if (agendaCount) agendaCount.textContent = String(dayAppointments.length);
+      root.querySelector('#calendarDayCount').textContent = String(dayAppointments.length);
+      root.querySelector('#calendarPendingCount').textContent = String(dayAppointments.filter(item => String(item.status || 'Pending').toLowerCase() === 'pending').length);
+      root.querySelector('#calendarCompletedCount').textContent = String(dayAppointments.filter(item => String(item.status || '').toLowerCase() === 'completed').length);
+
+      if (!dayAppointments.length) {
+        agenda.innerHTML = `<div class="agenda-empty"><span class="material-symbols-rounded" aria-hidden="true">event_busy</span><strong>No appointments for this day</strong><span>Select another date or use the month arrows to see scheduled visits.</span></div>`;
+        return;
+      }
+
+      agenda.innerHTML = dayAppointments.map(appointment => {
+        const status = appointment.status || 'Pending';
+        const name = appointment.name || 'Unknown patient';
+        const initial = name.trim().charAt(0).toUpperCase() || '?';
+        const notes = appointment.notes ? `<div class="detail-item" style="grid-column:1/-1"><div class="detail-label">Notes</div><div class="detail-value">${escapeHtml(appointment.notes)}</div></div>` : '';
+        return `<article class="appointment-card">
+          <div class="appointment-top">
+            <div class="appointment-person"><span class="person-avatar" aria-hidden="true">${escapeHtml(initial)}</span><div><div class="person-name">${escapeHtml(name)}</div><div class="person-mobile">${appointment.mobile ? `+91 ${escapeHtml(appointment.mobile)}` : 'Mobile not provided'}</div></div></div>
+            <span class="status-badge ${statusClass(status)}">${escapeHtml(status)}</span>
+          </div>
+          <div class="appointment-time"><span class="material-symbols-rounded" aria-hidden="true">schedule</span>${escapeHtml(formatTime(appointment.time))}</div>
+          <div class="appointment-details">
+            <div class="detail-item"><div class="detail-label">Branch</div><div class="detail-value">${escapeHtml(appointment.branch || '—')}</div></div>
+            <div class="detail-item"><div class="detail-label">Therapist</div><div class="detail-value">${escapeHtml(appointment.therapist || '—')}</div></div>
+            <div class="detail-item"><div class="detail-label">Service / Duration</div><div class="detail-value">${escapeHtml(appointment.duration || '—')}</div></div>
+            <div class="detail-item"><div class="detail-label">Fee · Advance</div><div class="detail-value">₹${(Number(appointment.fee) || 0).toFixed(2)} · ₹${(Number(appointment.advance) || 0).toFixed(2)}</div></div>
+            <div class="detail-item"><div class="detail-label">Balance</div><div class="detail-value">${escapeHtml(appointmentBalance(appointment))}</div></div>
+            ${notes}
+          </div>
+        </article>`;
+      }).join('');
+    }
+
+    function moveMonth(offset) {
+      const date = new Date(state.year, state.month + offset, 1);
+      state.year = date.getFullYear();
+      state.month = date.getMonth();
+      renderCalendar();
+    }
+
+    async function loadAppointments(user) {
+      if (state.loading) return;
+      state.loading = true;
+      const agenda = root.querySelector('#calendarAgenda');
+      const grid = root.querySelector('#calendarDays');
+      agenda.innerHTML = '<div class="loading-state">Loading appointments…</div>';
+      grid.innerHTML = '<div class="loading-state" style="grid-column:1/-1">Loading appointments…</div>';
+      try {
+        let context = window.currentUser;
+        if (!context && user.email) {
+          const profile = await getDoc(doc(db, 'users', user.email.toLowerCase()));
+          if (profile.exists()) {
+            const profileData = profile.data();
+            context = { role: profileData.role || 'user', branch: profileData.branch || 'Unknown' };
+          }
+        }
+        if (!context) throw new Error('Could not load the signed-in user profile.');
+        let appointmentsQuery = query(collection(db, 'appointments'));
+        if (context.role !== 'admin') {
+          if (!context.branch || context.branch === 'Unknown') throw new Error('Your account does not have an assigned branch.');
+          appointmentsQuery = query(collection(db, 'appointments'), where('branch', '==', context.branch));
+        }
+        const snapshot = await getDocs(appointmentsQuery);
+        state.appointments = snapshot.docs.map(item => ({ id: item.id, ...item.data() }))
+          .filter(item => /^\d{4}-\d{2}-\d{2}$/.test(String(item.date || '')));
+        renderCalendar();
+      } catch (error) {
+        console.error('Unable to load calendar appointments:', error);
+        agenda.innerHTML = `<div class="error-state">${escapeHtml(error.message || 'Unable to load calendar appointments. Check Firestore permissions.')}</div>`;
+        grid.innerHTML = '<div class="error-state" style="grid-column:1/-1">Calendar could not be loaded.</div>';
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    root.querySelector('#calendarPrevMonth').addEventListener('click', () => moveMonth(-1));
+    root.querySelector('#calendarNextMonth').addEventListener('click', () => moveMonth(1));
+    root.querySelector('#calendarDays').addEventListener('click', event => {
+      const cell = event.target.closest('[data-date]');
+      if (!cell) return;
+      state.selectedDate = cell.dataset.date;
+      const date = new Date(`${state.selectedDate}T00:00:00`);
+      state.year = date.getFullYear();
+      state.month = date.getMonth();
+      renderCalendar();
+    });
+    root.querySelector('#calendarTodayButton').addEventListener('click', () => {
+      const today = new Date();
+      state.selectedDate = localDateKey(today);
+      state.year = today.getFullYear();
+      state.month = today.getMonth();
+      renderCalendar();
+    });
+    root.querySelector('#calendarRefreshButton').addEventListener('click', () => {
+      const user = auth.currentUser;
+      if (user) loadAppointments(user);
+    });
+
+    renderCalendar();
+
+    onAuthStateChanged(auth, user => {
+      if (!user) {
+        root.querySelector('#calendarAgenda').innerHTML = '<div class="error-state">Please sign in to view the appointment calendar.</div>';
+        root.querySelector('#calendarDays').innerHTML = '<div class="error-state" style="grid-column:1/-1">Sign-in required.</div>';
+        return;
+      }
+      loadAppointments(user);
+    });
+  </script>
+</main>
+</body>
+</html>
