@@ -186,15 +186,41 @@
         #letterhead-module .patient-details-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
         #letterhead-module .form-group {
+            position: relative;
             display: grid;
-            grid-template-columns: 200px 12px minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
             align-items: end;
-            gap: 12px;
+            column-gap: 12px;
+            row-gap: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #letterhead-module .form-group > label {
+            grid-column: 1;
+            min-width: 0;
+            max-width: 100%;
+        }
+        #letterhead-module .form-group > .form-group-colon {
+            position: absolute !important;
+            left: 50% !important;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+        #letterhead-module .form-group > input {
+            grid-column: 2;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         #letterhead-module .form-group label {
@@ -227,15 +253,35 @@
         #letterhead-module .form-group input:focus { border-bottom-color: var(--primary); }
         
         #letterhead-module .report-notes-section {
-            display: flex; flex-direction: column; flex: 1; gap: 12px;
+            display: flex; flex-direction: column; flex: 1; gap: 6px;
         }
         #letterhead-module .report-notes-section label {
             font-weight: 600; font-size: 11pt; color: var(--text-main); margin-bottom: 4px;
         }
         #letterhead-module .report-notes-label-row {
+            position: relative;
             display: grid;
-            grid-template-columns: 200px 12px minmax(0, 1fr);
-            gap: 12px;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 6px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #letterhead-module .report-notes-label-row > label {
+            grid-column: 1;
+            min-width: 0;
+            max-width: 100%;
+        }
+        #letterhead-module .report-notes-label-row > .report-notes-colon {
+            position: absolute !important;
+            left: 50% !important;
+            top: 0;
+            transform: translateX(-50%);
+            width: 12px;
+            margin: 0 !important;
+            padding: 0 !important;
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
         }
         #letterhead-module .report-notes-section textarea { 
             flex: 1; width: 100%; min-height: 250px;
@@ -369,6 +415,45 @@
             #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
             #letterhead-module .company-info { max-width: 85mm !important; }
             #letterhead-module .letter-body { padding: 8mm 20mm !important; flex-grow: 1 !important; }
+            /* Explicit print/PDF overrides: keep every colon on the page centre. */
+            #letterhead-module .form-group {
+                position: relative !important;
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                column-gap: 12px !important;
+                row-gap: 4px !important;
+                width: 100% !important;
+            }
+            #letterhead-module .form-group > label { grid-column: 1 !important; }
+            #letterhead-module .form-group > input { grid-column: 2 !important; min-width: 0 !important; }
+            #letterhead-module .form-group > .form-group-colon {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                transform: translate(-50%, -50%) !important;
+                width: 12px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                text-align: center !important;
+            }
+            #letterhead-module .report-notes-label-row {
+                position: relative !important;
+                display: grid !important;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+                width: 100% !important;
+            }
+            #letterhead-module .report-notes-label-row > label { grid-column: 1 !important; }
+            #letterhead-module .report-notes-label-row > .report-notes-colon {
+                position: absolute !important;
+                left: 50% !important;
+                top: 0 !important;
+                transform: translateX(-50%) !important;
+                width: 12px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                text-align: center !important;
+            }
+
             
             /* Print rules to hide guidelines and placeholders */
             #letterhead-module .form-group input { border-bottom: none !important; padding-left: 0 !important; }
@@ -418,6 +503,9 @@
             </label>
             <button class="print-btn" type="button" onclick="window.print()">
                 <span class="material-symbols-rounded">print</span>Print Report
+            </button>
+            <button class="print-btn" id="download-report-jpeg" type="button" onclick="window.downloadReportJPEG()">
+                <span class="material-symbols-rounded">download</span>Download A4 JPEG
             </button>
         </div>
     </div>
@@ -514,6 +602,93 @@
             <span id="letterhead-branch-names" class="footer-branch-names"></span>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        window.downloadReportJPEG = async function () {
+            const button = document.getElementById('download-report-jpeg');
+            const report = document.querySelector('#letterhead-module .a4-canvas');
+
+            if (!report) {
+                alert('The A4 report could not be found.');
+                return;
+            }
+            if (typeof window.html2canvas !== 'function') {
+                alert('JPEG export library could not be loaded. Please check your internet connection and try again.');
+                return;
+            }
+
+            const originalLabel = button ? button.innerHTML : '';
+            if (button) {
+                button.disabled = true;
+                button.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span>Preparing JPEG…';
+            }
+
+            try {
+                const canvas = await window.html2canvas(report, {
+                    backgroundColor: '#FFFFFF',
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: false,
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    onclone: function (clonedDocument) {
+                        const clonedModule = clonedDocument.getElementById('letterhead-module');
+                        const clonedReport = clonedDocument.querySelector('#letterhead-module .a4-canvas');
+                        const toolbar = clonedDocument.querySelector('#letterhead-module .studio-toolbar');
+
+                        if (toolbar) toolbar.style.display = 'none';
+                        if (clonedModule) {
+                            clonedModule.style.cssText += ';width:794px!important;max-width:794px!important;padding:0!important;margin:0!important;display:block!important;background:#fff!important;';
+                        }
+                        if (clonedReport) {
+                            clonedReport.style.cssText += ';width:794px!important;min-width:794px!important;max-width:794px!important;height:1123px!important;min-height:1123px!important;max-height:1123px!important;margin:0!important;border:0!important;box-shadow:none!important;overflow:hidden!important;background:#fff!important;';
+                        }
+
+                        const header = clonedDocument.querySelector('#letterhead-module .letter-header');
+                        const body = clonedDocument.querySelector('#letterhead-module .letter-body');
+                        const footer = clonedDocument.querySelector('#letterhead-module .footer-section');
+                        if (header) header.style.padding = '56.7px 75.6px 18.9px 37.8px';
+                        if (body) {
+                            body.style.padding = '30.2px 75.6px';
+                            body.style.flex = '1 1 auto';
+                        }
+                        if (footer) footer.style.padding = '10px 75.6px 12px';
+                    }
+                });
+
+                // Export at a standard A4 portrait ratio, with a high-resolution JPEG.
+                const output = document.createElement('canvas');
+                output.width = 2480;
+                output.height = 3508;
+                const context = output.getContext('2d');
+                context.fillStyle = '#FFFFFF';
+                context.fillRect(0, 0, output.width, output.height);
+                context.drawImage(canvas, 0, 0, output.width, output.height);
+
+                const blob = await new Promise(resolve => output.toBlob(resolve, 'image/jpeg', 0.95));
+                if (!blob) throw new Error('JPEG image could not be generated.');
+
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'physiotherapy-assessment-report-A4.jpg';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1500);
+            } catch (error) {
+                console.error('A4 JPEG export failed:', error);
+                alert('Could not create the JPEG. Please try again or use Print Report.');
+            } finally {
+                if (button) {
+                    button.disabled = false;
+                    button.innerHTML = originalLabel;
+                }
+            }
+        };
+    </script>
 
     <script type="module">
         import { db } from './firebase-config.js';
