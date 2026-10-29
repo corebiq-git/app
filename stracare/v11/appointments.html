@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>COREBIQ | APPOINTMENTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+<div class="module-container" id="appointment-module">
+<style>
+:root{--primary:#0B1F4B;--primary-light:#E8EEF7;--bg:#F8FAFC;--surface:#fff;--text:#0F172A;--muted:#64748B;--border:#E2E8F0;--success:#10B981;--danger:#EF4444;--warning:#F59E0B;--shadow:0 2px 10px rgba(15,23,42,.06)}
+#appointment-module{font-family:Inter,sans-serif;width:100%;max-width:1120px;color:var(--text)}
+#appointment-module *{box-sizing:border-box}
+.material-symbols-rounded{font-size:20px;vertical-align:middle}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.title h2{font-size:27px;line-height:1.1;margin:0;font-weight:750}.title p{font-size:14px;color:var(--muted);margin:5px 0 0}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);height:40px;padding:0 12px;border-radius:10px;font-size:13px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.danger{color:var(--danger);border-color:#FECACA}.btn.blue{color:var(--primary);border-color:#CCD5E3}.btn.small{height:36px;padding:0 10px;font-size:12px}
+.new-btn{height:40px;padding:0 15px;border:0;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .label{font-size:12px;color:var(--muted);font-weight:600}.kpi .num{font-size:22px;font-weight:800;margin-top:3px}
+.kpi.today .num{color:var(--primary)}.kpi.done .num{color:var(--success)}.kpi.pending .num{color:var(--warning)}
+.panel{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:visible;margin-bottom:16px}
+.panel-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.panel-title{font-size:15px;font-weight:750}
+.toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tool{position:relative}.icon-btn{width:40px;height:40px;border:1px solid var(--border);border-radius:10px;background:#fff;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#334155}.icon-btn:hover{background:#F8FAFC}
+.icon-btn.active{background:var(--primary-light);color:var(--primary);border-color:#CCD5E3}
+.dropdown{display:none;position:fixed;right:12px;top:60px;min-width:190px;max-width:min(280px,calc(100vw - 24px));max-height:calc(100vh - 72px);overflow-y:auto;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:6px;z-index:5000}
+.tool.open .dropdown{display:block}.drop-title{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;padding:7px 9px}.drop-item{width:100%;border:0;background:#fff;text-align:left;padding:9px;border-radius:7px;font-size:13px;display:flex;gap:8px;align-items:center;cursor:pointer;color:var(--text)}.drop-item:hover{background:#F8FAFC}.drop-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
+.bulk-date-menu{display:none;gap:6px;padding:6px 8px}.bulk-date-menu .form-input{min-width:0;flex:1;height:36px;padding:6px 8px}.bulk-date-menu .btn{flex:0 0 auto}
+.therapist-report{display:none;margin:0 0 18px;padding:18px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow)}
+.therapist-report.show{display:block}.therapist-report-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.therapist-report-header h2{margin:0;color:var(--primary);font-size:20px}.therapist-report-actions{display:flex;gap:8px}
+.therapist-report-meta{margin:-10px 0 14px;color:var(--muted);font-size:12px}
+.therapist-report-group{margin:0 0 18px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.therapist-report-group h3{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0;padding:12px 14px;background:#E8EEF7;border-left:5px solid #164683;color:#0B1F4B;font-size:16px}
+.therapist-report-group h3 span{color:#475569;font-size:12px;font-weight:600}
+.therapist-report-table-wrap{overflow-x:auto}.therapist-report-table{width:100%;min-width:720px;border-collapse:collapse}
+.therapist-report-table th,.therapist-report-table td{padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;font-size:12px;vertical-align:middle}
+.therapist-report-table th{background:#F8FAFC;color:#64748B;font-size:10px;text-transform:uppercase;letter-spacing:.35px}
+.therapist-report-table tr:last-child td{border-bottom:0}.therapist-report-patient{font-weight:700}.therapist-report-mobile{display:block;margin-top:3px;color:#64748B;font-size:11px}
+@media print{#appointment-module>.topbar,#appointment-module>.appointment-toolbar,#appointment-module>.panel,#appointment-module>.kpis,#appointment-module>.public-booking-panel,#appointment-module>#aptModal,#appointment-module>#notesModal,#appointment-module>#confirmModal,#appointment-module>#invoiceModal{display:none!important}#appointment-module .therapist-report{display:block!important;margin:0;padding:0;border:0;box-shadow:none}#appointment-module .therapist-report-header .therapist-report-actions{display:none!important}#appointment-module .therapist-report-group{break-inside:avoid}#appointment-module .therapist-report-group h3{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+.searchbar{display:none;padding:8px 12px;border-bottom:1px solid var(--border);background:#FAFAFA}.searchbar.show{display:flex}.searchbox{display:flex;align-items:center;gap:6px;width:100%;background:#fff;border:1px solid var(--border);border-radius:9px;padding:0 9px}.searchbox input{height:36px;width:100%;border:0;outline:0;font-size:13px}
+.filters{display:none;padding:10px 12px;border-bottom:1px solid var(--border);background:#FAFAFA;gap:8px;flex-wrap:wrap;align-items:center}.filters.show{display:flex}
+.form-input{width:100%;padding:11px 12px;border-radius:9px;border:1px solid var(--border);font-size:13px;color:var(--text);background:#FAFAFA;outline:none}.form-input:focus{border-color:var(--primary);background:#fff}.filter-input{width:auto;min-width:120px;height:36px;padding:7px 9px}
+.bulkbar{display:none;background:#FFF7ED;padding:10px 12px;border-bottom:1px solid #FED7AA;align-items:center;gap:8px;flex-wrap:wrap}.bulkbar.show{display:flex}.bulkbar strong{font-size:12px;color:#9A3412}
+.table-wrap{overflow-x:auto}.table{width:100%;min-width:930px;border-collapse:collapse}.table th{font-size:11px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:10px 12px;background:#FAFAFA;border-bottom:1px solid var(--border);white-space:nowrap}.table td{font-size:13px;padding:12px;border-bottom:1px solid var(--border);vertical-align:top}.table tr:last-child td{border-bottom:0}.patient-name{font-weight:750;font-size:14px}.sub{font-size:11px;color:var(--muted);margin-top:3px}.actions{display:flex;gap:5px;justify-content:flex-end}.act{width:32px;height:32px;border:1px solid var(--border);background:#fff;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.act:hover{background:#F8FAFC}.act.note{color:#8B5CF6}.act.inv{color:#155A90}.act.edit{color:#64748B}
+.act.download{color:#188038}.act.whatsapp{color:#128C7E}
+#appointment-module .no-due{color:#64748B;font-weight:700}#appointment-module .excess{color:#059669;font-weight:750}#appointment-module .due{color:#DC2626;font-weight:750}
+.badge{display:inline-flex;padding:4px 8px;border-radius:6px;font-size:10px;font-weight:750;text-transform:uppercase}.pending{background:#FFF7ED;color:#EA580C}.reported{background:#E8EEF7;color:#0B1F4B}.completed{background:#ECFDF5;color:#059669}.rescheduled{background:#F1F5F9;color:#64748B}.cancelled{background:#FEF2F2;color:#DC2626}.cat{background:#F8FAFC;color:#334155;border:1px solid var(--border)}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.52);z-index:10000;align-items:center;justify-content:center;padding:14px}.modal.show{display:flex}.modal-box{background:#fff;width:min(900px,100%);max-height:94vh;overflow:auto;border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.22)}.modal-head{position:sticky;top:0;z-index:2;background:#fff;padding:13px 15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:16px;margin:0}.modal-body{padding:15px}.close{width:36px;height:36px;border:1px solid var(--border);border-radius:9px;background:#fff;cursor:pointer}
+.section{border:1px solid var(--border);border-radius:11px;margin-bottom:12px;padding:12px}.section h4{font-size:13px;color:var(--primary);margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.grid.three{grid-template-columns:repeat(3,1fr)}.field label{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:5px}.span2{grid-column:1/-1}.location-row{display:grid;grid-template-columns:auto 1fr auto;gap:6px}.money-box{background:var(--bg);border-radius:10px;padding:10px}.form-actions{display:flex;justify-content:flex-end;gap:8px;padding-top:3px}.readonly{background:#F8FAFC!important;border:0!important;font-weight:750}
+.notes-content{padding:15px;line-height:1.6;white-space:pre-wrap;font-size:13px;min-height:150px;background:#FAFAFA;border:1px solid var(--border);border-radius:9px}
+.public-booking-panel{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.public-booking-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.public-booking-title{font-size:15px;font-weight:750}.public-booking-count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:99px;background:#EDE9FE;color:#5B21B6;font-size:11px;font-weight:800}
+.public-booking-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;padding:12px}
+.public-booking-request{border:1px solid var(--border);border-radius:12px;padding:12px;background:#FCFCFD}
+.public-booking-request-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.public-booking-request-name{font-size:14px;font-weight:750}
+.public-booking-request-meta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}
+.public-booking-actions{display:flex;gap:7px;margin-top:10px}
+.public-booking-actions .btn{height:35px;font-size:11px}
+.public-booking-empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}
+.patient-match{font-size:10px;font-weight:750;border-radius:99px;padding:4px 7px;white-space:nowrap}
+.patient-match.existing{background:#ECFDF5;color:#047857}.patient-match.new{background:#E8EEF7;color:#0B1F4B}
+.confirm-box{max-width:430px}.confirm-message{font-size:13px;line-height:1.6;color:var(--muted);padding:15px}
+@media(max-width:700px){.topbar{align-items:flex-start}.title h2{font-size:22px}.new-btn span:last-child{display:none}.kpis{gap:7px}.kpi{padding:10px}.kpi .num{font-size:20px}.grid,.grid.three{grid-template-columns:1fr}.span2{grid-column:auto}.modal{padding:8px}.modal-box{max-height:96vh}.toolbar{width:100%}.panel-head{align-items:flex-start}.panel-title{width:100%}}
+@media print{#appointment-module .no-print,#appointment-module .toolbar,#appointment-module .new-btn,.kpis{display:none!important}.panel{box-shadow:none;border:0}.table{min-width:100%}}
+
+/* Appointment module: match the shared reference page while keeping its tools compact. */
+#appointment-module{max-width:1200px!important;margin:0 auto!important;color:#1F1F1F!important;font-family:Inter,sans-serif!important;font-size:14px;line-height:1.5}
+#appointment-module .material-symbols-rounded{font-family:"Material Symbols Rounded"!important;font-variation-settings:"FILL" 0,"wght" 400,"GRAD" 0,"opsz" 24;vertical-align:middle}
+#appointment-module .topbar{position:static;align-items:center;margin-bottom:22px}
+#appointment-module .title{display:flex;align-items:center;gap:12px}
+#appointment-module .title-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #E1E4E2;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.08)}
+#appointment-module .title-icon .material-symbols-rounded{font-size:26px}
+#appointment-module .title h2{font-size:26px!important;line-height:1.2!important;font-weight:600!important;letter-spacing:-.4px;color:#1F1F1F}
+#appointment-module .title p{font-size:14px;color:#6B7280;margin-top:4px}
+#appointment-module .topbar>div:last-child{gap:10px!important}
+#appointment-module .btn,#appointment-module .new-btn{height:42px!important;border-radius:22px!important;padding:0 17px!important;font-family:Inter,sans-serif!important;font-size:13px!important;font-weight:600!important;transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+#appointment-module .btn{border:1px solid #C4C7C5!important;background:#fff!important;color:#40454D!important}
+#appointment-module .btn:hover{background:#F7F9FC!important}
+#appointment-module .btn.primary,#appointment-module .new-btn{border:1px solid #0B1F4B!important;background:#0B1F4B!important;color:#fff!important;box-shadow:0 2px 8px rgba(11,31,75,.16)}
+#appointment-module .btn.primary:hover,#appointment-module .new-btn:hover{background:#071630!important}
+#appointment-module .new-btn .material-symbols-rounded{font-size:20px}
+#appointment-module .kpis{gap:14px;margin-bottom:18px}
+#appointment-module .kpi{padding:18px 20px;border:1px solid #E1E4E2;border-radius:18px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
+#appointment-module .kpi .label{font-size:13px;font-weight:500;color:#6B7280}
+#appointment-module .kpi .num{font-size:26px;font-weight:600;margin-top:5px;color:#1F1F1F}
+#appointment-module .kpi.today .num{color:#0B1F4B}
+#appointment-module .kpi.done .num{color:#188038}
+#appointment-module .kpi.pending .num{color:#B3261E}
+#appointment-module .public-booking-panel,#appointment-module .panel{border:1px solid #E1E4E2;border-radius:24px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.08),0 8px 28px rgba(31,35,40,.05)}
+#appointment-module .public-booking-panel{margin-bottom:18px}
+#appointment-module .public-booking-head,#appointment-module .panel-head{padding:16px 20px;border-bottom:1px solid #E1E4E2}
+#appointment-module .public-booking-title,#appointment-module .panel-title{font-size:16px;font-weight:600;color:#1F1F1F}
+#appointment-module .public-booking-count{background:#E8EEF7;color:#0B1F4B;font-size:12px}
+#appointment-module .public-booking-list{padding:16px;gap:12px}
+#appointment-module .public-booking-request{padding:15px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
+#appointment-module .public-booking-request-name{font-size:14px;font-weight:600;color:#1F1F1F}
+#appointment-module .public-booking-request-meta{font-size:12px;line-height:1.6;color:#6B7280}
+#appointment-module .public-booking-actions .btn{height:36px!important;padding:0 13px!important;border-radius:18px!important;font-size:12px!important}
+#appointment-module .patient-match.existing{background:#E8F5E9;color:#188038}
+#appointment-module .patient-match.new{background:#E8EEF7;color:#0B1F4B}
+#appointment-module .toolbar{gap:8px}
+#appointment-module .icon-btn{width:40px;height:40px;border:1px solid #E1E4E2;border-radius:12px;background:#fff;color:#5E6672;transition:background .18s ease,color .18s ease}
+#appointment-module .icon-btn:hover{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .icon-btn.active{background:#E8EEF7;color:#0B1F4B;border-color:#C8D2E1}
+#appointment-module .dropdown{border:1px solid #E1E4E2;border-radius:16px;box-shadow:0 12px 30px rgba(31,35,40,.14);padding:7px}
+#appointment-module .drop-item{border-radius:10px;padding:10px;color:#40454D;font-family:Inter,sans-serif}
+#appointment-module .drop-item:hover,#appointment-module .drop-item.active{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .searchbar,#appointment-module .filters{padding:12px 20px;background:#fff;border-bottom:1px solid #E1E4E2}
+#appointment-module .searchbox{border:1px solid #E1E4E2;border-radius:20px;background:#F4F7FC;padding:0 12px}
+#appointment-module .searchbox input{background:transparent;font-family:Inter,sans-serif}
+#appointment-module .form-input{border:1px solid #E1E4E2;border-radius:12px;background:#F4F7FC;color:#1F1F1F;font-family:Inter,sans-serif}
+#appointment-module .form-input:focus{border-color:#0B1F4B;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.12)}
+#appointment-module .bulkbar{background:#FFF8E1;border-bottom-color:#F9AB00}
+#appointment-module .bulkbar strong{color:#7A4F01}
+#appointment-module .table{min-width:930px}
+#appointment-module .table th{padding:13px 15px;background:#FAFBFC;color:#646A73;font-size:11px;letter-spacing:.45px}
+#appointment-module .table td{padding:14px 15px;border-bottom-color:#E1E4E2}
+#appointment-module .table tbody tr:hover{background:#FAFBFE}
+#appointment-module .patient-name{font-weight:600;color:#1F1F1F}
+#appointment-module .sub{font-size:12px;color:#6B7280}
+#appointment-module .badge{border-radius:999px;font-size:10px;letter-spacing:.2px}
+#appointment-module .payment-status{margin-top:4px}
+#appointment-module .payment-paid,#appointment-module .payment-excess{color:#188038}
+#appointment-module .badge.payment-paid,#appointment-module .badge.payment-excess{background:#E8F5E9}
+#appointment-module .payment-not-paid{color:#B3261E}
+#appointment-module .badge.payment-not-paid{background:#FCE8E6}
+#appointment-module .pending{background:#FFF4E5;color:#8A4B08}
+#appointment-module .reported{background:#E8EEF7;color:#0B1F4B}
+#appointment-module .completed{background:#E8F5E9;color:#188038}
+#appointment-module .rescheduled{background:#F0F4F9;color:#5E6672}
+#appointment-module .cancelled{background:#FCE8E6;color:#B3261E}
+#appointment-module .cat{background:#F4F7FC;color:#40454D;border-color:#E1E4E2}
+#appointment-module .act{width:36px;height:36px;border-radius:11px;border-color:#E1E4E2}
+#appointment-module .cards{padding:16px;gap:12px}
+#appointment-module .card-grid{border-top-color:#E1E4E2}
+#appointment-module .empty{color:#6B7280}
+#appointment-module .modal{background:rgba(31,35,40,.42);backdrop-filter:blur(3px)}
+#appointment-module .modal-box{border:1px solid #E1E4E2;border-radius:24px;box-shadow:0 20px 50px rgba(31,35,40,.2)}
+#appointment-module .modal-head{padding:17px 20px;border-bottom-color:#E1E4E2}
+#appointment-module .modal-head h3{font-size:18px!important;font-weight:600!important;color:#1F1F1F}
+#appointment-module .modal-body{padding:20px}
+#appointment-module .close{border-color:#E1E4E2;border-radius:50%;color:#5E6672}
+#appointment-module .section{padding:16px;border:1px solid #E1E4E2;border-radius:16px;background:#fff}
+#appointment-module .section h4{font-size:14px!important;font-weight:600!important;color:#0B1F4B}
+#appointment-module .field label{font-size:11px;color:#646A73;letter-spacing:.35px}
+#appointment-module .grid{gap:14px}
+#appointment-module .money-box{border:1px solid #E1E4E2;border-radius:14px;background:#F7F9FC}
+#appointment-module .readonly{background:#F0F4F9!important}
+#appointment-module .form-actions{padding-top:10px}
+#appointment-module .btn.small{height:36px!important;padding:0 13px!important;font-size:12px!important}
+#appointment-module .topbar{min-height:88px;align-items:center;margin-bottom:18px;padding:16px 20px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+#appointment-module .appointment-toolbar{display:flex;align-items:center;gap:12px;min-height:88px;padding:16px 18px;margin-bottom:22px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+#appointment-module .appointment-toolbar .searchbar{display:flex;flex:1;min-width:220px;padding:0;border:0;background:transparent}
+#appointment-module .appointment-toolbar .searchbox{height:48px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;padding:0 14px;color:#8290A2}
+#appointment-module .appointment-toolbar .searchbox:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+#appointment-module .appointment-toolbar .searchbox input{height:46px;font-size:14px;color:#1F1F1F}
+#appointment-module .appointment-toolbar .searchbox input::placeholder{color:#718096}
+#appointment-module .appointment-toolbar .searchbox .close{width:30px!important;height:30px!important;border:0!important;background:transparent!important}
+#appointment-module .appointment-filter-select{position:relative;flex:0 0 170px}
+#appointment-module .appointment-filter-select.sort-select{flex-basis:180px}
+#appointment-module .appointment-filter-select select{width:100%;height:48px;padding:0 38px 0 16px;border:1px solid transparent;border-radius:20px;background:#F4F7FC;color:#334155;font:500 14px Inter,sans-serif;appearance:none;outline:0;cursor:pointer}
+#appointment-module .appointment-filter-select select:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+#appointment-module .appointment-filter-select .material-symbols-rounded{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:20px}
+#appointment-module .topbar .new-btn{height:48px!important;margin-left:auto;padding:0 22px!important;white-space:nowrap}
+#appointment-module .appointment-week-card{margin:0 0 18px;padding:16px 18px;border:1px solid #E1E4E2;border-radius:20px;background:#fff}
+#appointment-module .appointment-week-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+#appointment-module .appointment-week-title{margin:0;color:#1F1F1F;font-size:14px;font-weight:700}
+#appointment-module .appointment-week-controls{display:flex;align-items:center;gap:6px}
+#appointment-module .appointment-week-control{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:6px 9px;border:1px solid #E1E4E2;border-radius:10px;background:#fff;color:#0B1F4B;font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+#appointment-module .appointment-week-control:hover{background:#F0F4F9}
+#appointment-module .appointment-week-control .material-symbols-rounded{font-size:18px}
+#appointment-module .appointment-week-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+#appointment-module .appointment-week-day{display:flex;min-width:0;min-height:66px;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;border-radius:12px;background:#F8FAFC;color:#1F1F1F;font:inherit;cursor:pointer}
+#appointment-module .appointment-week-day:hover{border-color:#C8D2E1;background:#F1F5FB}
+#appointment-module .appointment-week-day[aria-pressed="true"]{border-color:#0B1F4B;background:#0B1F4B;color:#fff}
+#appointment-module .appointment-week-day-name{font-size:10px;font-weight:600;opacity:.8}
+#appointment-module .appointment-week-day-number{font-size:17px;font-weight:800;line-height:1}
+#appointment-module .appointment-week-day-today .appointment-week-day-name::after{content:" · Today"}
+@media(max-width:700px){#appointment-module .appointment-week-card{padding:13px;border-radius:16px}#appointment-module .appointment-week-days{gap:4px}#appointment-module .appointment-week-day{min-height:58px;border-radius:9px}#appointment-module .appointment-week-day-name{font-size:9px}}
+#appointment-module .appointment-toolbar .tool{flex:0 0 auto}
+#appointment-module .appointment-toolbar .more-actions-btn{height:48px;width:48px;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672}
+#appointment-module .appointment-toolbar .more-actions-btn:hover{background:#F0F4F9;color:#0B1F4B}
+#appointment-module .panel{overflow:visible;margin-bottom:0;border-radius:26px}
+#appointment-module .panel-head{padding:15px 20px;border-bottom-color:#F0F2F5}
+#appointment-module .panel-title{font-size:15px;font-weight:600}
+#appointment-module .filters.show{display:flex}
+#appointment-module .table{min-width:900px}
+#appointment-module .table th{padding:16px 18px;background:#FAFBFC;color:#65748B;font-size:11px;letter-spacing:.55px}
+#appointment-module .table td{padding:16px 18px;vertical-align:middle}
+#appointment-module .patient-cell{display:flex;align-items:center;gap:12px;min-width:190px}
+#appointment-module .patient-avatar{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:50%;background:#E8EEF7;color:#0B1F4B;font-size:15px;font-weight:600}
+#appointment-module .patient-cell .patient-name{font-size:14px}
+#appointment-module .table tbody tr:nth-child(even){background:#FCFCFD}
+#appointment-module .table tbody tr:hover{background:#F6F9FE}
+#appointment-module .badge{padding:5px 10px;font-size:10px}
+#appointment-module .public-booking-panel{margin-top:22px}
+#appointment-module .kpis{margin-top:22px}
+@media(max-width:700px){
+  #appointment-module .topbar{align-items:flex-start;flex-wrap:wrap;gap:10px;padding:12px;border-radius:20px}
+  #appointment-module .topbar .title{width:auto;flex:1 1 100%;min-width:0}
+  #appointment-module .title{align-items:flex-start}
+  #appointment-module .title-icon{flex-basis:42px;width:42px;height:42px;border-radius:14px}
+  #appointment-module .title h2{font-size:21px!important}
+  #appointment-module .title p{font-size:12px}
+  #appointment-module .topbar .new-btn{height:42px!important;flex:0 0 auto;margin-left:auto;padding:0 13px!important;font-size:12px!important;white-space:nowrap}
+  #appointment-module .topbar .new-btn span:last-child{display:inline}
+  #appointment-module .kpis{gap:8px}
+  #appointment-module .kpi{padding:12px 13px;border-radius:15px}
+  #appointment-module .kpi .label{font-size:11px}
+  #appointment-module .kpi .num{font-size:22px}
+  #appointment-module .public-booking-head,#appointment-module .panel-head{padding:14px}
+  #appointment-module .public-booking-list{padding:12px}
+  #appointment-module .panel-head{align-items:flex-start}
+  #appointment-module .toolbar{width:100%}
+  #appointment-module .table-wrap{border-radius:0 0 24px 24px}
+  #appointment-module .modal{padding:8px}
+  #appointment-module .modal-box{width:100%;max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom));border-radius:20px;overscroll-behavior:contain}
+  #appointment-module .modal-body{padding:14px}
+  #appointment-module #add-appointment-form{min-width:0}
+  #appointment-module #add-appointment-form .grid,
+  #appointment-module #add-appointment-form .grid.three{grid-template-columns:minmax(0,1fr);width:100%}
+  #appointment-module #add-appointment-form .field{min-width:0}
+  #appointment-module #add-appointment-form .form-input{display:block;width:100%;min-width:0;min-height:44px}
+  #appointment-module #add-appointment-form textarea.form-input{min-height:80px}
+  #appointment-module #add-appointment-form .location-row{grid-template-columns:44px minmax(0,1fr) 44px;gap:6px}
+  #appointment-module #add-appointment-form .location-row .btn{width:44px;min-width:44px;padding:0!important}
+  #appointment-module #add-appointment-form .money-box{min-width:0}
+  #appointment-module #add-appointment-form .form-actions{position:sticky;bottom:-14px;z-index:3;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin:0 -14px -14px;padding:12px 14px max(12px,env(safe-area-inset-bottom));background:#fff;border-top:1px solid #E1E4E2}
+  #appointment-module #add-appointment-form .form-actions .btn{width:100%;min-width:0;min-height:44px;padding:0 10px!important;white-space:normal;line-height:1.2}
+  #appointment-module .public-booking-actions{flex-wrap:wrap}
+  #appointment-module .public-booking-actions .btn{flex:1 1 120px;min-height:40px}
+  #appointment-module .bulkbar{align-items:stretch}
+  #appointment-module .bulkbar .btn{flex:1 1 120px;min-height:40px}
+  #appointment-module #bulkDateArea[style*="inline-flex"]{display:flex!important;flex:1 1 100%;gap:8px;min-width:0}
+  #appointment-module #bulkDateArea .form-input{flex:1;min-width:0}
+  #appointment-module #bulkDateArea .btn{flex:0 0 auto}
+  #appointment-module .appointment-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:12px;border-radius:20px}
+  #appointment-module .appointment-toolbar .searchbar{grid-column:1/-1;min-width:0}
+  #appointment-module .appointment-filter-select,#appointment-module .appointment-filter-select.sort-select{flex:auto;width:100%}
+  #appointment-module .appointment-filter-select select{height:42px;border-radius:16px;font-size:12px}
+  #appointment-module .appointment-toolbar .more-actions-btn{height:42px;width:42px}
+  #appointment-module .appointment-toolbar .searchbox{height:44px;border-radius:17px}
+  #appointment-module .appointment-toolbar .searchbox input{height:42px;font-size:13px}
+  #appointment-module .panel-head{padding:13px 14px}
+  #appointment-module .table td,#appointment-module .table th{padding:13px 12px}
+  #appointment-module .patient-avatar{flex-basis:36px;width:36px;height:36px}
+}
+@media(max-width:380px){
+  #appointment-module .title p{max-width:100%;line-height:1.4}
+  #appointment-module .topbar .new-btn{height:40px!important;padding:0 10px!important}
+  #appointment-module .topbar .new-btn span:last-child{display:none}
+  #appointment-module .topbar .new-btn{width:40px;justify-content:center}
+  #appointment-module .kpi{padding:10px 8px}
+  #appointment-module .kpi .label{font-size:10px;line-height:1.25}
+  #appointment-module #add-appointment-form .form-actions{grid-template-columns:1fr}
+}
+</style>
+
+<div class="topbar">
+  <div class="title"><span class="title-icon"><span class="material-symbols-rounded">calendar_month</span></span><div><h2>Appointments &amp; Scheduling</h2><p>Plan visits, review bookings, and manage your daily schedule. <span id="todayLabel"></span></p></div></div>
+  <button class="new-btn" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">add</span><span>New Appointment</span></button>
+</div>
+
+<section class="appointment-week-card no-print" aria-label="Choose an appointment date">
+  <div class="appointment-week-header">
+    <h3 class="appointment-week-title" id="appointmentWeekLabel">This week</h3>
+    <div class="appointment-week-controls">
+      <button class="appointment-week-control" type="button" id="appointmentPreviousWeek" aria-label="Previous week"><span class="material-symbols-rounded" aria-hidden="true">chevron_left</span></button>
+      <button class="appointment-week-control" type="button" id="appointmentCurrentWeek">This week</button>
+      <button class="appointment-week-control" type="button" id="appointmentNextWeek" aria-label="Next week"><span class="material-symbols-rounded" aria-hidden="true">chevron_right</span></button>
+    </div>
+  </div>
+  <div class="appointment-week-days" id="appointmentWeekDays" role="group" aria-label="Days of the selected week"></div>
+</section>
+
+<div class="appointment-toolbar no-print">
+  <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
+  <label class="appointment-filter-select" aria-label="Filter appointments by status">
+    <select id="filterStatus" onchange="window.filterTable()"><option value="">All Statuses</option><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select>
+    <span class="material-symbols-rounded">expand_more</span>
+  </label>
+  <label class="appointment-filter-select sort-select" aria-label="Sort appointments">
+    <select id="aptSortSelect" onchange="window.setSort(this.value)"><option value="dateDesc">Date: Newest first</option><option value="dateAsc">Date: Oldest first</option><option value="nameAsc">Patient: A–Z</option><option value="doctorAsc">Therapist: A–Z</option><option value="balanceDesc">Balance: High–Low</option><option value="balanceAsc">Balance: Low–High</option></select>
+    <span class="material-symbols-rounded">sort</span>
+  </label>
+  <div class="tool" id="moreTool">
+    <button class="icon-btn more-actions-btn" title="More Actions" aria-label="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
+    <div class="dropdown">
+      <div class="drop-title">View &amp; Actions</div>
+      <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>More Filters</button>
+      <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
+      <button class="drop-item" onclick="window.clearFilters();window.toggleTool('moreTool')"><span class="material-symbols-rounded">close</span>Clear All</button>
+      <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
+      <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
+      <button class="drop-item" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span>Export CSV</button>
+      <div class="drop-title">Selected Appointments</div>
+      <button class="drop-item" onclick="window.editSelectedAppointment()"><span class="material-symbols-rounded">edit</span>Edit Selected Appointment</button>
+      <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
+      <button class="drop-item" onclick="window.executeBulkReschedule()"><span class="material-symbols-rounded">event_repeat</span>Move Selected to Date</button>
+      <button class="drop-item" onclick="window.executeBulkDelete()"><span class="material-symbols-rounded">delete</span>Bulk Delete</button>
+      <div id="bulkDateArea" class="bulk-date-menu">
+        <input type="date" id="bulkDateInput" class="form-input" aria-label="New date for selected appointments">
+        <button class="btn small primary" onclick="window.confirmBulkReschedule()">Confirm</button>
+      </div>
+      <button class="drop-item" onclick="window.clearSelection();window.toggleTool('moreTool')"><span class="material-symbols-rounded">deselect</span>Clear Selection</button>
+      <div class="drop-title">Other</div>
+      <button class="drop-item" onclick="window.exportAptPDF()"><span class="material-symbols-rounded">picture_as_pdf</span>Print / PDF</button>
+    </div>
+  </div>
+</div>
+
+<section id="therapistWiseReport" class="therapist-report show" aria-label="Therapist-wise appointment report">
+  <header class="therapist-report-header">
+    <h2>Appointments by Doctor / Therapist</h2>
+    <div class="therapist-report-actions no-print">
+      <button class="btn small" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+    </div>
+  </header>
+  <div class="filters no-print" id="filtersBar">
+    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
+    <span style="font-size:12px;color:var(--muted)">to</span>
+    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
+    <button class="btn small" onclick="window.setFilterToday()">Today</button>
+    <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
+    <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
+    <select id="filterBranch" class="form-input filter-input" onchange="window.loadAppointments()"><option value="">All Branches</option></select>
+  </div>
+  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong></div>
+  <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
+  <div id="therapistWiseReportContent"></div>
+</section>
+
+<div class="kpis">
+  <div class="kpi today"><div class="label">Today's Appointment</div><div class="num" id="kpiToday">0</div></div>
+  <div class="kpi done"><div class="label">Completed</div><div class="num" id="kpiCompleted">0</div></div>
+  <div class="kpi pending"><div class="label">Pending</div><div class="num" id="kpiPending">0</div></div>
+</div>
+
+<section class="public-booking-panel">
+  <header class="public-booking-head">
+    <div class="public-booking-title">Public Booking Requests</div>
+    <span id="publicBookingCount" class="public-booking-count">0</span>
+  </header>
+  <div id="publicBookingList" class="public-booking-list"><div class="public-booking-empty">Loading public booking requests…</div></div>
+</section>
+
+<div class="modal" id="aptModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="formTitle">New Appointment</h3><button class="close" onclick="window.closeAppointmentForm()"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="modal-body">
+      <form id="add-appointment-form" onsubmit="event.preventDefault();window.saveAppointment()">
+      <input type="hidden" id="aptDocId">
+      <div class="section"><h4>1. Patient Details</h4>
+        <div class="grid">
+          <div class="field span2"><label>Search Patient</label><input list="patients-datalist" id="aptPatientSearch" class="form-input" placeholder="Search by patient name or mobile" onchange="window.handlePatientSelect()" autocomplete="off"><datalist id="patients-datalist"></datalist></div>
+          <div class="field"><label>Patient Mobile *</label><input type="tel" id="aptMobile" class="form-input" maxlength="10" placeholder="10-digit number" required></div>
+          <div class="field"><label>Patient Name *</label><input id="aptName" class="form-input" placeholder="Full Name" required></div>
+          <div class="field"><label>Age</label><input type="number" id="aptAge" class="form-input" min="1" max="120"></div>
+          <div class="field"><label>Gender</label><select id="aptGender" class="form-input"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+          <div class="field"><label>Patient Category *</label><select id="aptCategory" class="form-input" required><option>Normal</option><option>Regular</option><option>Both</option></select></div>
+          <div class="field"><label>Location</label><div class="location-row"><button type="button" class="btn" onclick="window.getCurrentLocation(this)"><span class="material-symbols-rounded">my_location</span></button><input id="aptLocation" class="form-input" placeholder="Address or Maps URL"><button type="button" class="btn" onclick="window.openLocationMap()"><span class="material-symbols-rounded">map</span></button></div></div>
+          <div class="field span2"><label>Patient Medical History / Admin Notes</label><textarea id="aptPatientNotes" class="form-input" rows="2" placeholder="Pre-existing conditions, allergies, patient background..."></textarea></div>
+        </div>
+      </div>
+      <div class="section"><h4>2. Appointment & Therapy Details</h4>
+        <div class="grid three">
+          <div class="field"><label>Branch *</label><select id="aptBranch" class="form-input" required><option value="">Loading...</option></select></div>
+          <div class="field"><label>Scheduled Date *</label><input type="date" id="aptDate" class="form-input" required></div>
+          <div class="field"><label>Scheduled Time * (9:00 AM–9:00 PM)</label><input type="time" id="aptTime" class="form-input" min="09:00" max="21:00" required></div>
+          <div class="field"><label>Previous Visit Date</label><input type="date" id="aptPreviousDate" class="form-input"></div>
+          <div class="field"><label>Previous Visit Time</label><input type="time" id="aptPreviousTime" class="form-input"></div>
+          <div class="field"><label>Duration of Therapy</label><input id="aptDuration" class="form-input" placeholder="30 minutes / 2 weeks"></div>
+          <div class="field"><label>Sessions / Day</label><input type="number" id="aptSessionsPerDay" class="form-input" min="1" step="1"></div>
+          <div class="field"><label>Doctor / Therapist *</label><input list="therapists-datalist" id="aptTherapist" class="form-input" placeholder="Search / Select Therapist" required autocomplete="off"><datalist id="therapists-datalist"></datalist></div>
+          <div class="field"><label>Status *</label><select id="aptStatus" class="form-input" onchange="window.toggleReschedule(this)" required><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select></div>
+          <div class="field" id="reschedule-container" style="display:none"><label style="color:var(--danger)">New Reschedule Date</label><input type="date" id="aptRescheduleDate" class="form-input"></div>
+          <div class="field span2"><label>Diagnosis Report / Administrative Notes</label><textarea id="aptNotes" class="form-input" rows="3" placeholder="Diagnosis, symptoms, treatment findings, remarks..."></textarea></div>
+        </div>
+      </div>
+      <div class="section"><h4>3. Payment Details</h4>
+        <div class="grid three" style="margin-top:10px">
+          <div class="money-box field"><label>Fee (₹)</label><input type="number" id="aptFee" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="money-box field"><label>Receipt Received Today (₹)</label><input type="number" id="aptAdvance" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="field" id="aptPaymentModeField" style="display:none"><label>Mode (Cash / Bank Ledger)</label><select id="aptPaymentMode" class="form-input"><option>Cash</option><optgroup label="Bank Ledger"><option>UPI</option><option>Card</option><option>Bank Transfer</option></optgroup><option>Mixed</option><option>Credit</option></select></div>
+          <div class="money-box field"><label>Previous O/S (₹)</label><input type="number" id="aptPrevDues" class="form-input readonly" readonly></div>
+          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:12px;margin-top:5px;font-weight:700"></div></div>
+          <div class="field"><label>Payment Reference / UTR</label><input id="aptPaymentReference" class="form-input"></div>
+          <div class="field"><label>Payment Remarks</label><input id="aptPaymentRemarks" class="form-input"></div>
+        </div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn" onclick="window.resetAptForm()">Clear Form</button><button type="submit" class="btn primary" id="saveAptBtn">Save Appointment</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="notesModal"><div class="modal-box" style="max-width:620px"><div class="modal-head"><h3>Patient Notes & Diagnosis</h3><button class="close" onclick="window.closeModal('notesModal')"><span class="material-symbols-rounded">close</span></button></div><div class="modal-body" id="printNotesArea"><h3 id="modalPatientName" style="margin:0 0 4px"></h3><div id="modalPatientMeta" class="sub" style="margin-bottom:12px"></div><div id="modalPatientNotesText" class="notes-content"></div><div class="form-actions no-print" style="margin-top:12px"><button class="btn primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span>Print Notes</button></div></div></div></div>
+
+<div class="modal" id="confirmModal"><div class="modal-box confirm-box"><div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="window.closeModal('confirmModal')"><span class="material-symbols-rounded">close</span></button></div><div class="confirm-message" id="confirmMessage"></div><div class="form-actions" style="padding:0 15px 15px"><button class="btn" onclick="window.closeModal('confirmModal')">Cancel</button><button class="btn primary" id="confirmOk">Confirm</button></div></div></div>
+
+<script type="module">
+import { auth, db } from './firebase-config.js';
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+import { collection, addDoc, query, where, getDocs, updateDoc, doc, deleteDoc, getDoc, runTransaction, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+window.appointmentsDataCache={}; window.allPatientsCache={}; window.allBranchesString='';
+let allAppointments=[]; let sortMode='dateDesc'; let confirmHandler=null;
+const appointmentsRequestCache=new Map();
+let appointmentsLoadVersion=0;
+
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const money=v=>(parseFloat(v)||0).toFixed(2);
+const displayMoney=v=>window.formatCorebiqCurrency?window.formatCorebiqCurrency(v):`₹${money(v)}`;
+const formatTime12Hour=value=>{
+  const match=String(value||'').trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM)?$/i);
+  if(!match)return value||'';
+  let hours=Number(match[1]);
+  const minutes=match[2],meridiem=match[3]?.toUpperCase();
+  if(meridiem)return hours>=1&&hours<=12?`${String(hours).padStart(2,'0')}:${minutes} ${meridiem}`:value;
+  if(hours>23)return value;
+  const period=hours>=12?'PM':'AM';
+  hours=hours%12||12;
+  return `${String(hours).padStart(2,'0')}:${minutes} ${period}`;
+};
+function balanceDisplay(v){
+  const n=Number(v)||0;
+  if(Math.abs(n)<0.005) return {text:'No Due',cls:'no-due'};
+  if(n<0) return {text:`Excess ${displayMoney(Math.abs(n))}`,cls:'excess'};
+  return {text:`Due ${displayMoney(n)}`,cls:'due'};
+}
+function paymentStatusDisplay(v){
+  const n=Number(v)||0;
+  if(Math.abs(n)<0.005) return {text:'Paid',cls:'payment-paid',detail:''};
+  if(n<0) return {text:'Excess',cls:'payment-excess',detail:displayMoney(Math.abs(n))};
+  return {text:'Not Paid',cls:'payment-not-paid',detail:`Due ${displayMoney(n)}`};
+}
+const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+document.getElementById('filterDateFrom').value=todayISO();
+document.getElementById('filterDateTo').value=todayISO();
+let selectedAppointmentDate=todayISO();
+function appointmentDateFromKey(dateKey){
+  const [year,month,day]=dateKey.split('-').map(Number);
+  return new Date(year,month-1,day);
+}
+function renderAppointmentWeek(){
+  const selectedDate=appointmentDateFromKey(selectedAppointmentDate);
+  const weekStart=new Date(selectedDate);
+  weekStart.setDate(weekStart.getDate()-((weekStart.getDay()+6)%7));
+  const weekEnd=new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate()+6);
+  const label=document.getElementById('appointmentWeekLabel');
+  const days=document.getElementById('appointmentWeekDays');
+  if(!label||!days)return;
+  const dateLabel=date=>date.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+  label.textContent=`${dateLabel(weekStart)} – ${dateLabel(weekEnd)}`;
+  days.replaceChildren();
+  for(let index=0;index<7;index++){
+    const date=new Date(weekStart);
+    date.setDate(weekStart.getDate()+index);
+    const dateKey=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='appointment-week-day';
+    if(dateKey===todayISO())button.classList.add('appointment-week-day-today');
+    button.setAttribute('aria-pressed',String(dateKey===selectedAppointmentDate));
+    button.setAttribute('aria-label',date.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'}));
+    const dayName=document.createElement('span');
+    dayName.className='appointment-week-day-name';
+    dayName.textContent=date.toLocaleDateString('en-IN',{weekday:'short'});
+    const dayNumber=document.createElement('span');
+    dayNumber.className='appointment-week-day-number';
+    dayNumber.textContent=String(date.getDate());
+    button.append(dayName,dayNumber);
+    button.addEventListener('click',()=>{
+      selectedAppointmentDate=dateKey;
+      document.getElementById('filterDateFrom').value=dateKey;
+      document.getElementById('filterDateTo').value=dateKey;
+      renderAppointmentWeek();
+      window.loadAppointments();
+    });
+    days.appendChild(button);
+  }
+}
+function shiftAppointmentWeek(days){
+  const date=appointmentDateFromKey(selectedAppointmentDate);
+  date.setDate(date.getDate()+days);
+  selectedAppointmentDate=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+  document.getElementById('filterDateFrom').value=selectedAppointmentDate;
+  document.getElementById('filterDateTo').value=selectedAppointmentDate;
+  renderAppointmentWeek();
+  window.loadAppointments();
+}
+document.getElementById('appointmentPreviousWeek').addEventListener('click',()=>shiftAppointmentWeek(-7));
+document.getElementById('appointmentNextWeek').addEventListener('click',()=>shiftAppointmentWeek(7));
+document.getElementById('appointmentCurrentWeek').addEventListener('click',()=>{
+  selectedAppointmentDate=todayISO();
+  document.getElementById('filterDateFrom').value=selectedAppointmentDate;
+  document.getElementById('filterDateTo').value=selectedAppointmentDate;
+  renderAppointmentWeek();
+  window.loadAppointments();
+});
+renderAppointmentWeek();
+window.appointmentDateFilterChanged=()=>{
+  const from=document.getElementById('filterDateFrom').value;
+  if(from)selectedAppointmentDate=from;
+  renderAppointmentWeek();
+  return window.loadAppointments();
+};
+window.formatIndianDate=dateStr=>{if(!dateStr)return'';const p=String(dateStr).split('-');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:dateStr};
+const attendanceDayInitial=dateStr=>{
+  const match=String(dateStr||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!match)return'';
+  const [,year,month,day]=match;
+  const date=new Date(Number(year),Number(month)-1,Number(day));
+  if(date.getFullYear()!==Number(year)||date.getMonth()!==Number(month)-1||date.getDate()!==Number(day))return'';
+  return['S','M','T','W','T','F','S'][date.getDay()];
+};
+function closeTools(){document.querySelectorAll('.tool.open').forEach(x=>x.classList.remove('open'))}
+window.toggleTool=id=>{const e=document.getElementById(id);if(!e)return;const was=e.classList.contains('open');closeTools();if(!was)e.classList.add('open')};
+document.addEventListener('click',e=>{if(!e.target.closest('.tool'))closeTools()});
+window.closeModal=id=>document.getElementById(id)?.classList.remove('show');
+
+onAuthStateChanged(auth,user=>{
+  if(!user){document.getElementById('appointment-module').innerHTML='<div style="padding:50px;text-align:center;color:#991B1B">Access denied. Please log in.</div>';return}
+  window.loadPatientsForApt().catch(e=>console.error('Unable to load appointment patient choices:',e));
+  window.loadPublicBookingRequests()
+    .catch(e=>{console.error('Unable to initialize public booking requests:',e);document.getElementById('publicBookingList').innerHTML='<div class="public-booking-empty" style="color:var(--danger)">Unable to load booking requests. Check Firestore permissions.</div>'});
+  window.loadBranchesForApt(); window.loadTherapistsForApt();
+  document.getElementById('todayLabel').textContent='Today: '+window.formatIndianDate(todayISO());
+  window.resetAptForm();
+  window.appointmentsLoadPromise=window.loadAppointments();
+  window.appointmentsLoadPromise.then(()=>{
+    if(window.dashboardPendingDuesRequested){
+      window.dashboardPendingDuesRequested=false;
+      window.showPendingDues();
+    }
+  });
+});
+
+window.loadPatientsForApt=async()=>{
+  const dl=document.getElementById('patients-datalist'); if(!dl)return;
+  try{let q=query(collection(db,'patients'));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'patients'),where('branch','==',window.currentUser.branch));
+    const s=await getDocs(q);let h='';window.allPatientsCache={};window.allPatientsCacheByBranch={};
+    s.forEach(d=>{const p=d.data();if(p.name&&p.mobile){window.allPatientsCache[p.mobile]=p;window.allPatientsCacheByBranch[`${p.branch||''}:${p.mobile}`]=p;h+=`<option value="${esc(p.mobile)}" label="${esc(p.name)} (${esc(p.mobile)})"></option><option value="${esc(p.name)} (${esc(p.mobile)})"></option>`}});
+    dl.innerHTML=h;
+    return s;
+  }catch(e){console.error(e);throw e}
+};
+window.loadBranchesForApt=async()=>{
+  const a=document.getElementById('aptBranch'),f=document.getElementById('filterBranch');
+  if(window.currentUser&&window.currentUser.role!=='admin'){const b=window.currentUser.branch;a.innerHTML=`<option value="${esc(b)}">${esc(b)}</option>`;f.innerHTML=`<option value="${esc(b)}">${esc(b)}</option>`;a.disabled=true;window.allBranchesString=b;return}
+  try{const s=await getDocs(collection(db,'branches'));let l=[];s.forEach(d=>{if(d.data().name)l.push(d.data().name)});l.sort();window.allBranchesString=l.join(' | ');a.innerHTML='<option value="">Select Branch</option>'+l.map(x=>`<option>${esc(x)}</option>`).join('');f.innerHTML='<option value="">All Branches</option>'+l.map(x=>`<option>${esc(x)}</option>`).join('')}catch(e){console.error(e)}
+};
+window.loadTherapistsForApt=async()=>{
+  const dl=document.getElementById('therapists-datalist');if(!dl)return;
+  try{let q=query(collection(db,'therapists'));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'therapists'),where('branch','==',window.currentUser.branch));const s=await getDocs(q);let l=[];s.forEach(d=>{if(d.data().name)l.push(d.data().name)});dl.innerHTML=l.sort().map(x=>`<option value="${esc(x)}"></option>`).join('')}catch(e){console.error(e)}
+};
+window.handlePatientSelect=async()=>{
+  let raw=document.getElementById('aptPatientSearch').value.trim(),mobile=raw;if(!window.allPatientsCache[mobile]){const m=raw.match(/(\d{10})/);if(m)mobile=m[1]}const p=window.allPatientsCache[mobile];if(!p)return;
+  document.getElementById('aptPatientSearch').value=p.name||'';
+  const ids=['aptName','aptMobile','aptAge','aptGender','aptLocation','aptPatientNotes'],keys=['name','mobile','age','gender','location','notes'];ids.forEach((id,i)=>document.getElementById(id).value=p[keys[i]]||'');
+  document.getElementById('aptCategory').value=p.category||'Normal';if(p.branch&&!document.getElementById('aptBranch').disabled)document.getElementById('aptBranch').value=p.branch;
+  let due=0,current=document.getElementById('aptDocId').value;try{let q=query(collection(db,'appointments'),where('mobile','==',p.mobile));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'appointments'),where('mobile','==',p.mobile),where('branch','==',window.currentUser.branch));(await getDocs(q)).forEach(d=>{if(d.id!==current)due+=parseFloat(d.data().balance)||0});document.getElementById('aptPrevDues').value=due.toFixed(2);window.calcBalance()}catch(e){console.error(e)}
+};
+window.calcBalance=()=>{
+  const f=parseFloat(document.getElementById('aptFee').value)||0;
+  const a=parseFloat(document.getElementById('aptAdvance').value)||0;
+  document.getElementById('aptPaymentModeField').style.display=a>0?'':'none';
+  const p=parseFloat(document.getElementById('aptPrevDues').value)||0;
+  const n=f+p-a;
+  const state=balanceDisplay(n);
+  const input=document.getElementById('aptBalance');
+  const label=document.getElementById('aptBalanceState');
+  const previousInput=document.getElementById('aptPrevDues');
+  const previousState=balanceDisplay(p);
+  previousInput.classList.remove('due','excess','no-due');
+  previousInput.classList.add(previousState.cls);
+  input.classList.remove('due','excess','no-due');
+  input.classList.add(state.cls);
+  input.value=Math.abs(n)<0.005?'0.00':money(n);
+  label.textContent=state.text;
+  label.className=state.cls;
+};
+window.toggleReschedule=s=>{const c=document.getElementById('reschedule-container');c.style.display=s.value==='Rescheduled'?'block':'none';if(s.value!=='Rescheduled')document.getElementById('aptRescheduleDate').value=''};
+window.openLocationMap=()=>{const l=document.getElementById('aptLocation').value;if(!l)return alert('Please enter an address or map link first.');window.open(l.startsWith('http')?l:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(l),'_blank')};
+window.getCurrentLocation=btn=>{if(!navigator.geolocation)return alert('Geolocation is not supported.');const old=btn.innerHTML;btn.innerHTML='<span class="material-symbols-rounded">sync</span>';navigator.geolocation.getCurrentPosition(p=>{document.getElementById('aptLocation').value=`https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;btn.innerHTML=old},()=>{alert('Unable to get location.');btn.innerHTML=old})};
+
+window.resetAptForm=()=>{
+  document.getElementById('add-appointment-form').reset();document.getElementById('aptDocId').value='';document.getElementById('aptPatientSearch').value='';
+  document.getElementById('aptCategory').value='Normal';document.getElementById('aptStatus').value='Pending';document.getElementById('aptPaymentMode').value='Cash';
+  document.getElementById('aptPrevDues').value='0.00';document.getElementById('aptBalance').value='0.00';document.getElementById('aptBalanceState').textContent='No Due';document.getElementById('aptBalanceState').className='no-due';document.getElementById('saveAptBtn').textContent='Save Appointment';document.getElementById('formTitle').textContent='New Appointment';
+  document.getElementById('aptDate').value=todayISO();document.getElementById('aptRescheduleDate').value='';document.getElementById('reschedule-container').style.display='none';
+  if(window.currentUser&&window.currentUser.role!=='admin')document.getElementById('aptBranch').value=window.currentUser.branch;
+  window.calcBalance();
+};
+window.openAppointmentForm=()=>{closeTools();window.resetAptForm();document.getElementById('aptModal').classList.add('show');setTimeout(()=>document.getElementById('aptMobile').focus(),80)};
+window.closeAppointmentForm=()=>document.getElementById('aptModal').classList.remove('show');
+
+window.publicBookingRequestsCache={};
+window.canReviewPublicBookingRequest=request=>
+  Boolean(window.currentUser)&&(
+    window.currentUser.role==='admin'
+    || (Boolean(window.currentUser.branch)&&request?.branch===window.currentUser.branch)
+  );
+window.loadPublicBookingRequests=async()=>{
+  const list=document.getElementById('publicBookingList');
+  list.innerHTML='<div class="public-booking-empty">Loading public booking requests…</div>';
+  try{
+    if(!window.currentUser)throw new Error('Your account profile is not available.');
+    let q=collection(db,'booking_requests');
+    if(window.currentUser.role!=='admin'){
+      if(!window.currentUser.branch||window.currentUser.branch==='Unknown'){
+        throw new Error('Your account has no assigned branch.');
+      }
+      q=query(collection(db,'booking_requests'),where('branch','==',window.currentUser.branch));
+    }
+    const snapshot=await getDocs(q);
+    window.publicBookingRequestsCache={};
+    snapshot.forEach(item=>{
+      const request=item.data();
+      if(request.status==='pending')window.publicBookingRequestsCache[item.id]=request;
+    });
+    window.renderPublicBookingRequests();
+  }catch(error){
+    console.error('Public booking request load failed:',error);
+    document.getElementById('publicBookingCount').textContent='!';
+    list.innerHTML='<div class="public-booking-empty" style="color:var(--danger)">Unable to load requests. Check deployed Firestore rules.</div>';
+    throw error;
+  }
+};
+window.renderPublicBookingRequests=()=>{
+  const requests=Object.entries(window.publicBookingRequestsCache||{}).sort(([,a],[,b])=>
+    `${a.date||''} ${a.time||''}`.localeCompare(`${b.date||''} ${b.time||''}`)
+  );
+  document.getElementById('publicBookingCount').textContent=String(requests.length);
+  if(!requests.length){
+    document.getElementById('publicBookingList').innerHTML='<div class="public-booking-empty">No pending public requests.</div>';
+    return;
+  }
+  document.getElementById('publicBookingList').innerHTML=requests.map(([id,request])=>{
+    const patient=window.allPatientsCacheByBranch?.[`${request.branch||''}:${request.mobile||''}`];
+    const matchLabel=patient?'Existing patient — verify details':'New patient — verify before creating';
+    const matchClass=patient?'existing':'new';
+    const time=formatTime12Hour(request.time);
+    return `<article class="public-booking-request">
+      <div class="public-booking-request-top">
+        <div><div class="public-booking-request-name">${esc(request.name||'')}</div><div class="public-booking-request-meta">${esc(request.mobile||'')}<br>${esc(request.branch||'')} · ${window.formatIndianDate(request.date)} ${esc(time)}${request.notes?`<br>Message: ${esc(request.notes)}`:''}</div></div>
+        <span class="patient-match ${matchClass}">${matchLabel}</span>
+      </div>
+      <div class="public-booking-actions">
+        <button class="btn primary" type="button" onclick="window.convertPublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:17px">event_available</span> Convert to Appointment</button>
+        <button class="btn" type="button" onclick="window.declinePublicBooking('${esc(id)}')"><span class="material-symbols-rounded" style="font-size:17px">close</span> Decline</button>
+      </div>
+    </article>`;
+  }).join('');
+};
+window.convertPublicBooking=async requestId=>{
+  const request=window.publicBookingRequestsCache?.[requestId];
+  if(!request)return alert('This booking request is no longer pending. Refresh the request list.');
+  if(!window.canReviewPublicBookingRequest(request))return alert('You can only approve public bookings for your assigned branch.');
+  const patientQuery=query(
+    collection(db,'patients'),
+    where('mobile','==',request.mobile),
+    where('branch','==',request.branch)
+  );
+  const patientSnapshot=await getDocs(patientQuery);
+  const existingPatient=patientSnapshot.docs[0]?.data()||null;
+  const requestRef=doc(db,'booking_requests',requestId);
+  const appointmentRef=doc(collection(db,'appointments'));
+  const appointment={
+    mobile:request.mobile,
+    name:existingPatient?.name||request.name,
+    age:existingPatient?.age||'',
+    gender:existingPatient?.gender||'',
+    category:existingPatient?.category||'Normal',
+    location:existingPatient?.location||'',
+    patientNotes:existingPatient?.notes||'',
+    branch:request.branch,
+    date:request.date,
+    time:request.time,
+    previousDate:'',
+    previousTime:'',
+    duration:'',
+    sessionsPerDay:'',
+    therapist:'',
+    status:'Pending',
+    fee:0,
+    advance:0,
+    balance:0,
+    prevDues:0,
+    notes:request.notes?`Public booking message: ${request.notes}`:'',
+    paymentMode:'Cash',
+    paymentReference:'',
+    paymentRemarks:'',
+    publicBookingRequestId:requestId,
+    createdAt:serverTimestamp(),
+    updatedAt:serverTimestamp()
+  };
+  const patientRef=existingPatient?null:doc(collection(db,'patients'));
+  const patientData=patientRef?{
+    patientId:'P'+Math.floor(Math.random()*90000+10000),
+    mobile:request.mobile,
+    name:request.name,
+    category:'Normal',
+    branch:request.branch,
+    location:'',
+    notes:'',
+    createdAt:serverTimestamp()
+  }:null;
+  try{
+    await runTransaction(db,async transaction=>{
+      const requestSnapshot=await transaction.get(requestRef);
+      if(!requestSnapshot.exists()||requestSnapshot.data().status!=='pending'){
+        throw new Error('This booking request has already been handled.');
+      }
+      transaction.set(appointmentRef,appointment);
+      if(patientRef&&patientData)transaction.set(patientRef,patientData);
+      transaction.update(requestRef,{
+        status:'converted',
+        appointmentId:appointmentRef.id,
+        patientMatch:existingPatient?'existing':'new',
+        reviewedAt:serverTimestamp()
+      });
+    });
+    invalidateAppointmentsRequestCache();
+    if(patientData)window.allPatientsCacheByBranch[`${request.branch}:${request.mobile}`]=patientData;
+    delete window.publicBookingRequestsCache[requestId];
+    await Promise.all([window.loadAppointments(),window.loadPublicBookingRequests()]);
+    alert(`Booking converted to appointment.${existingPatient?' Existing patient record matched by mobile and branch.':' New patient record created.'}`);
+  }catch(error){
+    console.error('Public booking conversion failed:',error);
+    alert(`Could not convert booking request: ${error.message}`);
+  }
+};
+window.declinePublicBooking=async requestId=>{
+  const request=window.publicBookingRequestsCache?.[requestId];
+  if(!request)return;
+  if(!window.canReviewPublicBookingRequest(request))return alert('You can only decline public bookings for your assigned branch.');
+  if(!confirm(`Decline the booking request from ${request.name||'this patient'}?`))return;
+  try{
+    await updateDoc(doc(db,'booking_requests',requestId),{status:'declined',reviewedAt:serverTimestamp()});
+    delete window.publicBookingRequestsCache[requestId];
+    window.renderPublicBookingRequests();
+  }catch(error){
+    console.error('Public booking decline failed:',error);
+    alert('Could not decline this booking request. Check Firestore permissions.');
+  }
+};
+
+window.loadAppointments=async()=>{
+  const requestVersion=++appointmentsLoadVersion;
+  const report=document.getElementById('therapistWiseReportContent');
+  report.innerHTML='<div class="empty">Loading appointments...</div>';
+  try{
+    if(!window.currentUser)throw new Error('Your account profile is not available. Please sign out and sign in again.');
+    const branch=window.currentUser.role!=='admin'
+      ?String(window.currentUser.branch||'').trim()
+      :document.getElementById('filterBranch').value;
+    if(window.currentUser.role!=='admin'&&(!branch||branch==='Unknown')){
+      throw new Error('Your account has no assigned branch. Ask an administrator to set your branch in Users.');
+    }
+    const from=document.getElementById('filterDateFrom').value;
+    const to=document.getElementById('filterDateTo').value;
+    const cacheKey=JSON.stringify([branch,from,to]);
+    let request=appointmentsRequestCache.get(cacheKey);
+    if(!request){
+      const constraints=[];
+      if(branch)constraints.push(where('branch','==',branch));
+      if(from)constraints.push(where('date','>=',from));
+      if(to)constraints.push(where('date','<=',to));
+      request=getDocs(query(collection(db,'appointments'),...constraints)).catch(error=>{
+        if(!branch||error?.code!=='failed-precondition')throw error;
+        console.warn('Appointment date index unavailable; falling back to the assigned-branch query.',error);
+        return getDocs(query(collection(db,'appointments'),where('branch','==',branch)));
+      });
+      appointmentsRequestCache.set(cacheKey,request);
+      request.then(()=>{
+        if(appointmentsRequestCache.get(cacheKey)===request)appointmentsRequestCache.delete(cacheKey);
+      },()=>{
+        if(appointmentsRequestCache.get(cacheKey)===request)appointmentsRequestCache.delete(cacheKey);
+      });
+    }
+    const snap=await request;
+    if(requestVersion!==appointmentsLoadVersion)return;
+    allAppointments=deduplicateAppointments(snap.docs.map(item=>({id:item.id,data:item.data()})));
+    window.appointmentsDataCache={};
+    allAppointments.forEach(item=>{window.appointmentsDataCache[item.id]=item.data});
+    renderAppointments();
+    if((!from||from<=todayISO())&&(!to||to>=todayISO())){
+      updateKPIs(allAppointments);
+    }else if(branch){
+      updateKPIs(allAppointments);
+    }else{
+      try{
+        const todaySnapshot=await getDocs(query(collection(db,'appointments'),where('date','==',todayISO())));
+        if(requestVersion===appointmentsLoadVersion){
+          updateKPIs(todaySnapshot.docs.map(item=>({id:item.id,data:item.data()})));
+        }
+      }catch(error){
+        console.error('Unable to load today appointment totals:',error);
+        if(requestVersion===appointmentsLoadVersion){
+          ['kpiToday','kpiCompleted','kpiPending'].forEach(id=>document.getElementById(id).textContent='—');
+        }
+      }
+    }
+    return allAppointments;
+  }catch(e){
+    if(requestVersion!==appointmentsLoadVersion)return;
+    console.error('Appointment load failed:',e);
+    const detail=e?.code==='permission-denied'
+      ?'Firestore denied this query. Confirm the deployed appointments rule allows this user branch and that the user profile branch exactly matches appointment.branch.'
+      :e?.code==='failed-precondition'
+        ?'A Firestore composite index is required. Deploy firestore.indexes.json, or open the full error in the browser console and use its index link. Wait for the index to finish building.'
+        :e?.message||'An unexpected error occurred.';
+    report.innerHTML=`<div class="empty" role="alert" style="color:var(--danger)">Unable to load appointments: ${esc(detail)}${e?.code?` <small>(${esc(e.code)})</small>`:''}</div>`;
+  }
+};
+function invalidateAppointmentsRequestCache(){appointmentsRequestCache.clear()}
+function patientDocumentId(branch,mobile){return `apt_${encodeURIComponent(branch)}_${encodeURIComponent(mobile)}`}
+function appointmentDocumentId(appointment){
+  return `apt_${encodeURIComponent(appointment.branch)}_${appointment.date}_${encodeURIComponent(appointment.time)}_${encodeURIComponent(appointment.therapist)}_${encodeURIComponent(appointment.mobile)}`;
+}
+function appointmentTimestamp(value){
+  if(value&&typeof value.toMillis==='function')return value.toMillis();
+  const parsed=value instanceof Date?value.getTime():Date.parse(value||'');
+  return Number.isFinite(parsed)?parsed:0;
+}
+function deduplicateAppointments(records){
+  const unique=new Map();
+  records.forEach(record=>{
+    const data=record.data;
+    const identity=[data.branch,data.date,data.time,data.therapist,data.mobile]
+      .map(value=>String(value||'').trim().toLowerCase());
+    const key=identity.slice(0,3).every(Boolean)&&identity[4]
+      ?identity.join('|')
+      :record.id;
+    const existing=unique.get(key);
+    const isActive=String(data.status||'').toLowerCase()!=='cancelled';
+    const existingIsActive=existing&&String(existing.data.status||'').toLowerCase()!=='cancelled';
+    const timestamp=appointmentTimestamp(data.updatedAt)||appointmentTimestamp(data.createdAt);
+    const existingTimestamp=existing
+      ?appointmentTimestamp(existing.data.updatedAt)||appointmentTimestamp(existing.data.createdAt)
+      :-1;
+    if(!existing||(isActive&&!existingIsActive)||(isActive===existingIsActive&&timestamp>=existingTimestamp)){
+      unique.set(key,record);
+    }
+  });
+  return [...unique.values()];
+}
+async function createAppointmentIfMissing(appointment){
+  const id=appointmentDocumentId(appointment);
+  // Match the complete appointment identity in Firestore. Filtering only by
+  // branch previously downloaded every appointment in that branch on each save.
+  // The corresponding composite index is already defined in firestore.indexes.json.
+  const existingQuery=query(
+    collection(db,'appointments'),
+    where('branch','==',appointment.branch),
+    where('date','==',appointment.date),
+    where('time','==',appointment.time),
+    where('therapist','==',appointment.therapist),
+    where('mobile','==',appointment.mobile)
+  );
+  const matches=await getDocs(existingQuery);
+  if(matches.docs.some(item=>String(item.data().status||'').toLowerCase()!=='cancelled')){
+    throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+  }
+  const appointmentRef=doc(db,'appointments',id);
+  await runTransaction(db,async transaction=>{
+    const existing=await transaction.get(appointmentRef);
+    if(existing.exists()&&String(existing.data().status||'').toLowerCase()!=='cancelled'){
+      throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+    }
+    transaction.set(appointmentRef,appointment);
+  });
+  return id;
+}
+function updateKPIs(appointments=allAppointments){
+  const t=todayISO(),tod=appointments.filter(x=>x.data.date===t),done=tod.filter(x=>String(x.data.status||'').toLowerCase()==='completed').length,pending=tod.filter(x=>String(x.data.status||'').toLowerCase()==='pending').length;
+  document.getElementById('kpiToday').textContent=tod.length;document.getElementById('kpiCompleted').textContent=done;document.getElementById('kpiPending').textContent=pending;
+}
+function filteredAppointments(){
+  const fr=document.getElementById('filterDateFrom').value,to=document.getElementById('filterDateTo').value,st=document.getElementById('filterStatus').value.toLowerCase(),cat=document.getElementById('filterCategory').value.toLowerCase(),pay=document.getElementById('filterPayment').value,br=document.getElementById('filterBranch').value.toLowerCase(),term=document.getElementById('aptSearchInput').value.toLowerCase().trim();
+  let a=allAppointments.filter(x=>{const d=x.data,b=(d.branch||'').toLowerCase(),s=(d.status||'Pending').toLowerCase(),c=(d.category||'Normal').toLowerCase(),bal=parseFloat(d.balance)||0,text=`${d.name||''} ${d.mobile||''} ${d.therapist||''} ${d.branch||''} ${d.date||''}`.toLowerCase();return(!fr||d.date>=fr)&&(!to||d.date<=to)&&(!st||s===st)&&(!cat||c===cat)&&(!br||b===br)&&(!term||text.includes(term))&&(!pay||(pay==='pending'&&bal>0)||(pay==='paid'&&bal<=0))});
+  a.sort((x,y)=>{const A=x.data,B=y.data;switch(sortMode){case'nameAsc':return String(A.name||'').localeCompare(String(B.name||''));case'doctorAsc':return String(A.therapist||'').localeCompare(String(B.therapist||''));case'balanceDesc':return (parseFloat(B.balance)||0)-(parseFloat(A.balance)||0);case'balanceAsc':return (parseFloat(A.balance)||0)-(parseFloat(B.balance)||0);case'dateAsc':return String(A.date||'').localeCompare(String(B.date||''))||String(A.time||'').localeCompare(String(B.time||''));default:return String(B.date||'').localeCompare(String(A.date||''))||String(B.time||'').localeCompare(String(A.time||''))}});
+  return a;
+}
+function renderTherapistWiseReport(appointments){
+  const content=document.getElementById('therapistWiseReportContent');
+  if(!appointments.length){
+    content.innerHTML='<div class="empty">No appointments match the selected date and filters.</div>';
+    return;
+  }
+  const grouped=new Map();
+  appointments.forEach(appointment=>{
+    const therapist=String(appointment.data.therapist||'Unassigned').trim()||'Unassigned';
+    if(!grouped.has(therapist))grouped.set(therapist,[]);
+    grouped.get(therapist).push(appointment);
+  });
+  const groups=[...grouped.entries()].sort(([a],[b])=>a.localeCompare(b));
+  groups.forEach(([,items])=>items.sort((a,b)=>
+    String(a.data.date||'').localeCompare(String(b.data.date||''))||String(a.data.time||'').localeCompare(String(b.data.time||''))
+  ));
+  const reportGroups=groups.map(([therapist,items])=>`
+    <section class="therapist-report-group">
+      <h3>${esc(therapist)} <span>${items.length} appointment${items.length===1?'':'s'}</span></h3>
+      <div class="therapist-report-table-wrap">
+        <table class="therapist-report-table">
+          <thead><tr><th class="no-print">Select</th><th>Patient</th><th>Date &amp; Time</th><th>Branch</th><th>Fee</th><th>Payment Status</th><th>Appointment Status</th><th class="no-print">Actions</th></tr></thead>
+          <tbody>${items.map(({id,data:item})=>{
+            const payment=paymentStatusDisplay(item.balance);
+            const status=String(item.status||'Pending');
+            const statusClass={Completed:'completed',Reported:'reported',Rescheduled:'rescheduled',Cancelled:'cancelled',Pending:'pending'}[status]||'pending';
+            return `<tr>
+              <td class="no-print"><input type="checkbox" class="apt-checkbox" value="${esc(id)}" aria-label="Select appointment for ${esc(item.name||'Unnamed patient')}" onchange="window.updateSelectionBar()"></td>
+              <td><span class="therapist-report-patient">${esc(item.name||'Unnamed patient')}</span><span class="therapist-report-mobile">${esc(item.mobile||'')}</span></td>
+              <td>${esc(attendanceDayInitial(item.date))} · ${esc(window.formatIndianDate(item.date))} · ${esc(formatTime12Hour(item.time))}</td>
+              <td>${esc(item.branch||'—')}</td>
+              <td>₹${money(item.fee)}</td>
+              <td><span class="badge payment-status ${payment.cls}">${esc(payment.text)}</span></td>
+              <td><span class="badge ${statusClass}">${esc(status)}</span></td>
+              <td class="no-print">${actionHTML(id)}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>
+    </section>
+  `).join('');
+  content.innerHTML=
+    `<p class="therapist-report-meta">${appointments.length} appointments · ${groups.length} therapists</p>${reportGroups}`;
+}
+function actionHTML(id){
+  return `<div class="actions"><button class="act edit" title="Edit Appointment" aria-label="Edit Appointment" onclick="window.editAppointment('${id}')"><span class="material-symbols-rounded">edit</span></button><button class="act inv" title="View Invoice" aria-label="View Invoice" onclick="window.printInvoice('${id}')"><span class="material-symbols-rounded">visibility</span></button></div>`;
+}
+function renderAppointments(){
+  renderTherapistWiseReport(filteredAppointments());
+  updateSelectionBar();
+}
+window.filterTable=renderAppointments;
+window.setFilterToday=()=>{const s=todayISO();selectedAppointmentDate=s;document.getElementById('filterDateFrom').value=s;document.getElementById('filterDateTo').value=s;renderAppointmentWeek();return window.loadAppointments()};
+window.clearFilters=()=>{document.getElementById('filterStatus').value='';document.getElementById('filterCategory').value='';document.getElementById('filterPayment').value='';if(!window.currentUser||window.currentUser.role==='admin')document.getElementById('filterBranch').value='';document.getElementById('aptSearchInput').value='';return window.setFilterToday()};
+window.showFilters=()=>{closeTools();document.getElementById('filtersBar').classList.add('show')};
+window.showPendingDues=async()=>{
+  if(window.appointmentsLoadPromise)await window.appointmentsLoadPromise;
+  document.getElementById('filterDateFrom').value='';
+  document.getElementById('filterDateTo').value='';
+  document.getElementById('filterStatus').value='';
+  document.getElementById('filterCategory').value='';
+  document.getElementById('filterPayment').value='pending';
+  document.getElementById('aptSearchInput').value='';
+  document.getElementById('filtersBar').classList.add('show');
+  await window.loadAppointments();
+};
+window.setSort=m=>{sortMode=m;const select=document.getElementById('aptSortSelect');if(select)select.value=m;renderAppointments();closeTools()};
+window.updateSelectionBar=()=>{
+  const ids=[...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value);document.getElementById('selectedCount').textContent=new Set(ids).size;document.getElementById('bulkBar').classList.toggle('show',ids.length>0);
+};
+window.clearSelection=()=>{document.querySelectorAll('.apt-checkbox').forEach(x=>x.checked=false);window.updateSelectionBar()};
+function selectedIds(){return [...new Set([...document.querySelectorAll('.apt-checkbox:checked')].map(x=>x.value))]}
+window.editSelectedAppointment=()=>{
+  const ids=selectedIds();closeTools();
+  if(ids.length!==1)return alert('Please select exactly one appointment to edit.');
+  if(!window.appointmentsDataCache[ids[0]])return alert('Selected appointment data not found. Please reload the appointments.');
+  window.editAppointment(ids[0]);
+};
+window.openSelectedNew=()=>{
+  const ids=selectedIds();if(!ids.length)return alert('Please select at least one appointment first.');
+  const d=window.appointmentsDataCache[ids[0]];if(!d)return;
+  showConfirm('Create New Appointment','Create a new appointment using the first selected appointment as the patient/template?','Continue',()=>{window.editAppointmentData(d,null,true)});
+};
+window.editAppointmentData=async(d,id=null,isNew=false)=>{
+  const fields={aptDocId:id||'',aptMobile:d.mobile||'',aptName:d.name||'',aptAge:d.age||'',aptGender:d.gender||'',aptCategory:d.category||'Normal',aptLocation:d.location||'',aptPatientNotes:d.patientNotes||'',aptBranch:d.branch||'',aptDate:isNew?todayISO():(d.date||''),aptTime:isNew?'':(d.time||''),aptPreviousDate:d.previousDate||'',aptPreviousTime:d.previousTime||'',aptDuration:d.duration||'',aptSessionsPerDay:d.sessionsPerDay||'',aptTherapist:d.therapist||'',aptStatus:isNew?'Pending':(d.status||'Pending'),aptFee:d.fee??'',aptAdvance:isNew?'':(d.advance??''),aptNotes:d.notes||'',aptPaymentMode:d.paymentMode||'Cash',aptPaymentReference:isNew?'':(d.paymentReference||''),aptPaymentRemarks:isNew?'':(d.paymentRemarks||'')};
+  Object.entries(fields).forEach(([k,v])=>document.getElementById(k).value=v);
+  document.getElementById('aptPatientSearch').value=d.name||'';document.getElementById('saveAptBtn').textContent=isNew?'Save Appointment':'Update Appointment';document.getElementById('formTitle').textContent=isNew?'New Appointment from Selected':'Edit Appointment';
+  let due=0;try{let q=query(collection(db,'appointments'),where('mobile','==',d.mobile));if(window.currentUser&&window.currentUser.role!=='admin')q=query(collection(db,'appointments'),where('mobile','==',d.mobile),where('branch','==',window.currentUser.branch));(await getDocs(q)).forEach(x=>{if(x.id!==id)due+=parseFloat(x.data().balance)||0});document.getElementById('aptPrevDues').value=due.toFixed(2)}catch(e){document.getElementById('aptPrevDues').value='0.00'}window.calcBalance();window.toggleReschedule(document.getElementById('aptStatus'));document.getElementById('aptModal').classList.add('show');
+};
+window.editAppointment=id=>{const d=window.appointmentsDataCache[id];if(d)window.editAppointmentData(d,id,false)};
+window.saveAppointment=async()=>{
+  const btn=document.getElementById('saveAptBtn'),id=document.getElementById('aptDocId').value,get=x=>document.getElementById(x).value.trim(),fee=parseFloat(get('aptFee'))||0,advance=parseFloat(get('aptAdvance'))||0,prev=parseFloat(get('aptPrevDues'))||0;
+  if(btn.disabled)return;
+  let status=get('aptStatus'),date=get('aptDate'),notes=get('aptNotes'),res=get('aptRescheduleDate');const req=['aptMobile','aptName','aptBranch','aptDate','aptTime','aptTherapist','aptCategory'];if(req.some(x=>!get(x)))return alert('Please fill all required (*) fields.');
+  const appointmentTime=get('aptTime');if(!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(appointmentTime))return alert('Appointment time must be between 9:00 AM and 9:00 PM.');
+  if(status==='Rescheduled'){if(!res)return alert('Please pick a new reschedule date.');notes=notes.replace(/\[Moved from: .*?\]/g,'').trim()+(notes.trim()?'\n':'')+`[Moved from: ${window.formatIndianDate(date)}]`;date=res}
+  const payload={mobile:get('aptMobile'),name:get('aptName'),age:get('aptAge'),gender:get('aptGender'),category:get('aptCategory'),location:get('aptLocation'),patientNotes:get('aptPatientNotes'),branch:get('aptBranch'),date,time:appointmentTime,previousDate:get('aptPreviousDate'),previousTime:get('aptPreviousTime'),duration:get('aptDuration'),sessionsPerDay:get('aptSessionsPerDay'),therapist:get('aptTherapist'),status,fee,advance,balance:fee+prev-advance,prevDues:prev,notes,paymentMode:get('aptPaymentMode'),paymentReference:get('aptPaymentReference'),paymentRemarks:get('aptPaymentRemarks'),updatedAt:new Date()};
+  btn.disabled=true;btn.textContent='Saving...';
+  try{
+    const pq=query(collection(db,'patients'),where('mobile','==',payload.mobile),where('branch','==',payload.branch));
+    const ps=await getDocs(pq),pdata={mobile:payload.mobile,name:payload.name,age:payload.age,gender:payload.gender,category:payload.category,location:payload.location,notes:payload.patientNotes,branch:payload.branch};
+    if(ps.empty)await setDoc(doc(db,'patients',patientDocumentId(payload.branch,payload.mobile)),{patientId:'P'+Math.floor(Math.random()*90000+10000),...pdata,createdAt:new Date()},{merge:true});else await updateDoc(doc(db,'patients',ps.docs[0].id),pdata);
+    let appointmentId=id;
+    if(id){
+      const targetId=appointmentDocumentId(payload);
+      if(targetId!==id&&(await getDoc(doc(db,'appointments',targetId))).exists()){
+        throw new Error('An appointment already exists for this patient, therapist, branch, date, and time.');
+      }
+      await updateDoc(doc(db,'appointments',id),payload);
+    }else{
+      payload.createdAt=new Date();
+      appointmentId=await createAppointmentIfMissing(payload);
+    }
+    await window.syncTransactions(appointmentId,payload);
+    alert(id?'Appointment updated successfully!':'New appointment saved successfully!');
+    window.closeAppointmentForm();window.resetAptForm();document.getElementById('filterDateFrom').value=payload.date;document.getElementById('filterDateTo').value=payload.date;invalidateAppointmentsRequestCache();await window.loadAppointments();
+  }catch(e){console.error(e);alert('Failed to save appointment. Check your database permissions.')}finally{btn.disabled=false;btn.textContent=id?'Update Appointment':'Save Appointment'}
+};
+window.syncTransactions=async(aptId,payload)=>{
+  let linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',aptId));
+  if(window.currentUser&&window.currentUser.role!=='admin'){
+    linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',aptId),where('branch','==',window.currentUser.branch));
+  }
+  const snapshot=await getDocs(linkedQuery);
+  let sale=null,receipt=null,receiptData=null;
+  snapshot.forEach(transactionDoc=>{
+    const data=transactionDoc.data();
+    const type=String(data.type||'').toLowerCase();
+    if(type==='sales'&&!sale)sale=transactionDoc.id;
+    if(type==='receipt'&&!receipt){receipt=transactionDoc.id;receiptData=data}
+  });
+  const mode=payload.paymentMode||'Cash';
+  const invoiceNo=payload.invoiceNo||`INV-${aptId}`;
+  const fee=Number(payload.fee)||0;
+  if(sale||fee>0){
+    const salePayload={date:payload.date,type:'Sales',mobile:payload.mobile,name:payload.name,mode,ref:'Auto-Bill',invoiceNo,cashIn:0,cashOut:fee,notes:fee>0?'Consultation / Therapy Billed':'Appointment bill voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
+    if(sale)await updateDoc(doc(db,'transactions',sale),salePayload);
+    else if(fee>0)await setDoc(doc(db,'transactions',`apt_${aptId}_sales`),{...salePayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()},{merge:true});
+  }
+  const advance=Number(payload.advance)||0;
+  if(receipt||advance>0){
+    const receiptDate=receiptData&&Number(receiptData.cashIn||0)===advance&&receiptData.date?receiptData.date:todayISO();
+    const receiptPayload={date:receiptDate,type:'Receipt',mobile:payload.mobile,name:payload.name,mode,ref:payload.paymentReference||'Auto-Advance',cashIn:advance,cashOut:0,notes:advance>0?(payload.paymentRemarks||'Appointment receipt received today'):'Appointment receipt voided',linkedAptId:aptId,updatedAt:new Date(),branch:payload.branch};
+    if(receipt)await updateDoc(doc(db,'transactions',receipt),receiptPayload);
+    else if(advance>0)await setDoc(doc(db,'transactions',`apt_${aptId}_receipt`),{...receiptPayload,txnId:'TRN'+Math.floor(Math.random()*900000+100000),createdAt:new Date()},{merge:true});
+  }
+};
+window.viewNotes=id=>{const d=window.appointmentsDataCache[id];if(!d)return;document.getElementById('modalPatientName').textContent=d.name||'';document.getElementById('modalPatientMeta').textContent=`Mobile: +91 ${d.mobile||''} | Scheduled: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)} | Doctor: ${d.therapist||'--'}`;let n='';if(d.patientNotes)n+=`[Medical History]\n${d.patientNotes}\n\n`;if(d.notes)n+=`[Diagnosis Report]\n${d.notes}`;document.getElementById('modalPatientNotesText').textContent=n||'No notes recorded for this patient.';document.getElementById('notesModal').classList.add('show')};
+window.printModalNotes=()=>{const c=document.getElementById('printNotesArea').innerHTML,w=window.open('','_blank');if(!w)return;w.document.write(`<html><head><title>Patient Report</title><style>body{font-family:Arial;padding:35px;line-height:1.6}h2{color:#155A90}</style></head><body><h2>Patient Report</h2>${c}<script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()};
+window.openInvoiceTemplate=async(id,action='view')=>{
+  let d=window.appointmentsDataCache[id];
+  if(!d){
+    try{
+      const appointmentSnapshot=await getDoc(doc(db,'appointments',id));
+      if(appointmentSnapshot.exists())d=appointmentSnapshot.data();
+    }catch(error){
+      console.error('Could not load appointment for invoice:',error);
+      return alert('Could not load appointment data for this invoice. Check your database access.');
+    }
+  }
+  if(!d)return alert('Appointment data not found.');
+  const diagnosisNotes=[d.diagnosis,d.notes].filter((value,index,array)=>value&&array.indexOf(value)===index).join('\n');
+  let invoiceData={...d,invoiceNo:d.invoiceNo||`INV-${id}`,billDate:new Date().toISOString()};
+  let invoiceLinkError='',patientLinkError='';
+  if(d.mobile){
+    try{
+      let patientQuery=query(collection(db,'patients'),where('mobile','==',d.mobile));
+      if(window.currentUser&&window.currentUser.role!=='admin'){
+        patientQuery=query(
+          collection(db,'patients'),
+          where('mobile','==',d.mobile),
+          where('branch','==',window.currentUser.branch)
+        );
+      }else if(d.branch){
+        patientQuery=query(
+          collection(db,'patients'),
+          where('mobile','==',d.mobile),
+          where('branch','==',d.branch)
+        );
+      }
+      let patientSnapshot=await getDocs(patientQuery);
+      if(patientSnapshot.empty&&window.currentUser?.role==='admin'&&d.branch){
+        patientSnapshot=await getDocs(query(collection(db,'patients'),where('mobile','==',d.mobile)));
+      }
+      const patient=patientSnapshot.docs[0]?.data();
+      if(patient){
+        invoiceData={
+          ...invoiceData,
+          patientId:patient.patientId||invoiceData.patientId,
+          name:patient.name||invoiceData.name,
+          age:patient.age||invoiceData.age,
+          gender:patient.gender||invoiceData.gender,
+          category:patient.category||invoiceData.category,
+          mobile:patient.mobile||invoiceData.mobile,
+          email:patient.email||invoiceData.email,
+          address:patient.address||patient.location||invoiceData.address||invoiceData.location,
+          location:patient.address||patient.location||invoiceData.location||invoiceData.address,
+          patientNotes:invoiceData.patientNotes||patient.notes
+        };
+      }else{
+        patientLinkError='Patient profile was not found. Invoice uses appointment details.';
+      }
+    }catch(error){
+      console.error('Could not link patient profile to invoice:',error);
+      patientLinkError='Patient profile details could not be linked. Invoice uses appointment details.';
+    }
+  }else{
+    patientLinkError='Patient mobile number is missing; patient profile could not be linked.';
+  }
+  try{
+    let linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',id));
+    if(window.currentUser&&window.currentUser.role!=='admin'){
+      linkedQuery=query(collection(db,'transactions'),where('linkedAptId','==',id),where('branch','==',window.currentUser.branch));
+    }
+    const linkedSnapshot=await getDocs(linkedQuery);
+    let billed=0,advance=0,hasSales=false,hasReceipts=false;
+    linkedSnapshot.forEach(transactionDoc=>{
+      const transaction=transactionDoc.data();
+      const type=String(transaction.type||'').toLowerCase();
+      if(type==='sales'){
+        hasSales=true;
+        billed+=Number(transaction.cashOut)||0;
+        invoiceData.invoiceNo=transaction.invoiceNo||invoiceData.invoiceNo;
+        invoiceData.billDate=transaction.date||invoiceData.billDate;
+      }else if(type==='receipt'){
+        hasReceipts=true;
+        advance+=Number(transaction.cashIn)||0;
+      }
+    });
+    invoiceData.fee=hasSales?billed:Number(d.fee??d.totalFee)||0;
+    invoiceData.advance=hasReceipts?advance:Number(d.advance)||0;
+  }catch(error){
+    console.error('Unable to load linked sales and receipt records for invoice:',error);
+    invoiceLinkError='Sales and receipt details could not be loaded. Invoice uses appointment amounts.';
+  }
+  const payload={
+    appointment:{
+      ...invoiceData,
+      id,
+      appointmentId:id,
+      serviceName:d.serviceName||d.service||d.duration||'Therapy Session',
+      diagnosis:diagnosisNotes,
+      invoiceNotes:[diagnosisNotes,d.patientNotes].filter(Boolean).join('\n\n')
+    },
+    company:{},
+    companyProfileError:false,
+    invoiceLinkError,
+    patientLinkError
+  };
+  try{
+    const snap=await getDoc(doc(db,'settings','company_profile'));
+    if(snap.exists())payload.company=snap.data();
+    else payload.companyProfileError='Company profile was not found.';
+  }catch(e){
+    console.error('Unable to load company profile for invoice:',e);
+    payload.companyProfileError='Invoice opened, but company profile details could not be loaded. Check Firestore permissions.';
+  }
+  const invoiceFrame=document.getElementById('invoice-frame');
+  if(!invoiceFrame)return alert('Invoice template is unavailable. Please reload the dashboard and try again.');
+  window.pendingInvoicePayload=null;
+  let payloadStored=false;
+  try{
+    const invoiceUrl=new URL('template-invoice.html',window.location.href);
+    invoiceUrl.searchParams.set('invoiceRequest',`${Date.now()}`);
+    if(action==='download')invoiceUrl.searchParams.set('action','download');
+    sessionStorage.setItem('bizodit.invoicePayload',JSON.stringify(payload));
+    invoiceFrame.dataset.ready='false';
+    invoiceFrame.src=invoiceUrl.href;
+    payloadStored=true;
+  }catch(error){
+    console.error('Could not prepare invoice data for the template:',error);
+    try{sessionStorage.removeItem('bizodit.invoicePayload')}catch(storageError){console.error('Could not clear unsent invoice data:',storageError)}
+    window.pendingInvoicePayload={payload,action};
+  }
+  window.switchView('view-invoice',null);
+  if(!payloadStored)window.dispatchInvoicePayload();
+};
+window.printInvoice=id=>window.openInvoiceTemplate(id);
+window.downloadInvoice=id=>window.openInvoiceTemplate(id,'download');
+window.sendInvoiceWhatsApp=id=>{
+  const d=window.appointmentsDataCache[id];if(!d)return alert('Appointment data not found.');
+  let phone=String(d.mobile||'').replace(/\D/g,'');
+  if(phone.length===11&&phone.startsWith('0'))phone=phone.slice(1);
+  if(phone.length===10)phone='91'+phone;
+  if(!/^91\d{10}$/.test(phone))return alert('Patient mobile number must be a valid 10-digit Indian number.');
+  const amount=money(d.fee),paid=money(d.advance),balance=balanceDisplay(d.balance).text;
+  const message=`Hello ${d.name||''}, here are your invoice details (Invoice INV-${id}):\nAppointment: ${window.formatIndianDate(d.date)} ${formatTime12Hour(d.time)}\nService: ${d.duration||'Therapy session'}\nFee: ${displayMoney(amount)}\nAdvance paid: ${displayMoney(paid)}\nBalance: ${balance}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,'_blank','noopener');
+};
+window.executeBulkDelete=async()=>{
+  const ids=selectedIds();if(!ids.length)return alert('Please select appointments to delete.');for(const id of ids){const d=window.appointmentsDataCache[id];if(d&&d.status!=='Pending'&&d.status!=='Cancelled')return alert('You can only bulk delete Pending or Cancelled appointments.')}
+  showConfirm('Delete Appointments',`Permanently delete ${ids.length} selected appointment${ids.length>1?'s':''}?`,'Delete',async()=>{try{for(const id of ids)await deleteDoc(doc(db,'appointments',id));alert('Selected appointments deleted.');invalidateAppointmentsRequestCache();await window.setFilterToday()}catch(e){console.error(e);alert('Error deleting appointments.')}})
+};
+window.showBulkDate=()=>{if(!selectedIds().length)return alert('Please select appointments first.');document.getElementById('bulkDateArea').style.display='inline-flex'};
+window.confirmBulkReschedule=async()=>{
+  const nd=document.getElementById('bulkDateInput').value,ids=selectedIds();if(!nd)return alert('Please select a date.');
+  showConfirm('Move Selected Appointments',`Create ${ids.length} new Pending appointment${ids.length>1?'s':''} on ${window.formatIndianDate(nd)}? The original records will remain.`,'Confirm',async()=>{try{for(const id of ids){const d=window.appointmentsDataCache[id];if(!d)continue;let notes=String(d.notes||'').replace(/\[Moved from: .*?\]/g,'').trim();notes+=(notes?'\n':'')+`[Moved from: ${window.formatIndianDate(d.date)}]`;await createAppointmentIfMissing({...d,date:nd,status:'Pending',notes,createdAt:new Date(),updatedAt:new Date()})}alert('Selected appointments copied to '+window.formatIndianDate(nd)+'.');document.getElementById('bulkDateArea').style.display='none';document.getElementById('bulkDateInput').value='';window.clearSelection();invalidateAppointmentsRequestCache();await window.setFilterToday()}catch(e){console.error(e);alert('Failed to move selected appointments.')}})
+};
+window.executeBulkReschedule=()=>window.showBulkDate();
+function showConfirm(title,message,ok,fn){document.getElementById('confirmTitle').textContent=title;document.getElementById('confirmMessage').textContent=message;document.getElementById('confirmOk').textContent=ok;confirmHandler=fn;document.getElementById('confirmModal').classList.add('show');document.getElementById('confirmOk').onclick=async()=>{const f=confirmHandler;window.closeModal('confirmModal');confirmHandler=null;if(f)await f()}}
+
+const CSV_HEADERS=['mobile','name','age','gender','category','location','patientNotes','branch','date','time','previousDate','previousTime','duration','sessionsPerDay','therapist','status','fee','advance','prevDues','notes','paymentMode','paymentReference','paymentRemarks'];
+function csvCell(v){const s=String(v??'');return /[",\n\r]/.test(s)?`"${s.replace(/"/g,'""')}"`:s}
+window.downloadAppointmentSampleCSV=()=>{const row=['9744902555','Sample Patient','40','Male','Normal','','Medical/admin notes','Branch Name',todayISO(),'10:30','','','30 minutes','1','Therapist Name','Pending','1000','500','0','Appointment notes','UPI','REFERENCE123',''];const blob=new Blob([[CSV_HEADERS,row].map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='appointments-sample.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+function parseCSV(text){const rows=[];let row=[],cell='',q=false;text=String(text||'').replace(/^\uFEFF/,'');for(let i=0;i<text.length;i++){const c=text[i];if(q){if(c==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}else cell+=c}else{if(c==='"')q=true;else if(c===','){row.push(cell);cell=''}else if(c==='\n'){row.push(cell);rows.push(row);row=[];cell=''}else if(c!=='\r')cell+=c}}if(cell!==''||row.length){row.push(cell);rows.push(row)}return rows.filter(r=>r.some(v=>String(v).trim()!==''))}
+const norm=v=>String(v||'').trim().toLowerCase().replace(/[\s_\-\/]+/g,'');
+window.importAppointmentsCSV=async file=>{
+  if(!file)return;try{const rows=parseCSV(await file.text());if(rows.length<2)throw Error('CSV contains no appointment rows.');const hm={};rows[0].forEach((h,i)=>hm[norm(h)]=i);const req=['mobile','name','branch','date','time','therapist'];const miss=req.filter(k=>hm[norm(k)]===undefined);if(miss.length)throw Error('Missing required columns: '+miss.join(', '));
+    let ok=0,fail=[];
+    for(let ri=1;ri<rows.length;ri++){
+      try{
+        const r={};
+        CSV_HEADERS.forEach(k=>r[k]=hm[norm(k)]===undefined?'':String(rows[ri][hm[norm(k)]]??'').trim());
+        const mobile=r.mobile.replace(/\D/g,'');
+        if(!/^\d{10}$/.test(mobile))throw Error('Mobile must be 10 digits');
+        if(!r.name||!r.branch||!/^\d{4}-\d{2}-\d{2}$/.test(r.date)||!/^(0[9]|1\d|20):[0-5]\d$|^21:00$/.test(r.time)||!r.therapist)throw Error('Required value missing or invalid date/time (time must be 9:00 AM–9:00 PM)');
+        if(!window.currentUser||window.currentUser.role!=='admin'){if(r.branch!==window.currentUser.branch)throw Error('Branch mismatch')}
+        const fee=parseFloat(r.fee)||0,adv=parseFloat(r.advance)||0,prev=parseFloat(r.prevDues)||0;
+        const payload={mobile,name:r.name,age:r.age,gender:r.gender,category:r.category||'Normal',location:r.location,patientNotes:r.patientNotes,branch:r.branch,date:r.date,time:r.time,previousDate:r.previousDate,previousTime:r.previousTime,duration:r.duration,sessionsPerDay:r.sessionsPerDay,therapist:r.therapist,status:r.status||'Pending',fee,advance:adv,balance:fee+prev-adv,prevDues:prev,notes:r.notes,paymentMode:r.paymentMode||'Cash',paymentReference:r.paymentReference,paymentRemarks:r.paymentRemarks,createdAt:new Date(),updatedAt:new Date()};
+        const patientQuery=query(collection(db,'patients'),where('mobile','==',mobile),where('branch','==',r.branch));
+        const patientSnapshot=await getDocs(patientQuery);
+        const patientData={mobile,name:r.name,age:r.age,gender:r.gender,category:payload.category,location:r.location,notes:r.patientNotes,branch:r.branch};
+        if(patientSnapshot.empty){
+          await setDoc(doc(db,'patients',patientDocumentId(r.branch,mobile)),{patientId:'P'+Math.floor(Math.random()*90000+10000),...patientData,createdAt:new Date()},{merge:true});
+        }else{
+          await updateDoc(doc(db,'patients',patientSnapshot.docs[0].id),patientData);
+        }
+        const appointmentId=await createAppointmentIfMissing(payload);
+        try{await window.syncTransactions(appointmentId,payload)}catch(tx){console.error(tx)}
+        ok++;
+      }catch(e){fail.push(`Row ${ri+1}: ${e.message}`)}
+    }
+    alert(`CSV import complete.\n\nImported: ${ok}\nFailed: ${fail.length}${fail.length?'\n\n'+fail.slice(0,15).join('\n'):''}`);
+    if(ok){invalidateAppointmentsRequestCache();await window.setFilterToday()}
+  }catch(e){console.error(e);alert('CSV import failed: '+e.message)}finally{document.getElementById('aptCsvInput').value=''}};
+window.exportAppointmentsCSV=()=>{const list=filteredAppointments();const rows=[CSV_HEADERS,...list.map(x=>{const d=x.data;return CSV_HEADERS.map(k=>d[k]??'')})];const csv=rows.map(r=>r.map(csvCell).join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`appointments-${todayISO()}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+window.exportAptPDF=()=>window.print();
+window.openBulkReschedule=window.executeBulkReschedule;
+
+document.getElementById('aptModal').addEventListener('click',e=>{if(e.target.id==='aptModal')window.closeAppointmentForm()});
+document.getElementById('notesModal').addEventListener('click',e=>{if(e.target.id==='notesModal')window.closeModal('notesModal')});
+document.getElementById('confirmModal').addEventListener('click',e=>{if(e.target.id==='confirmModal')window.closeModal('confirmModal')});
+</script>
+</div>
+</body>
+</html>
