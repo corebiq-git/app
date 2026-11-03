@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ | Sample Module Page For Development Reference</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols Outlined -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#E8EEF7',
+                            100: '#E8EEF7',
+                            200: '#CCD5E3',
+                            300: '#AAB9D0',
+                            400: '#8394B3',
+                            500: '#274777',
+                            600: '#0B1F4B', // Google/Gemini Blue
+                            700: '#0B1F4B',
+                            800: '#0B1F4B',
+                            900: '#071630',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Material Icon Alignment */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-[#f4f7fc] text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Main Container -->
+    <main class="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+        
+        <!-- Header -->
+        <header class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-white rounded-2xl shadow-sm flex items-center justify-center text-primary-600 border border-gray-100">
+                <span class="material-symbols-outlined text-2xl">groups</span>
+            </div>
+            <div>
+                <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Customers</h1>
+                <p class="text-sm text-slate-500">Manage your client base and view details.</p>
+            </div>
+        </header>
+
+        <!-- Toolbar -->
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <!-- Search & Filters -->
+            <div class="flex flex-col sm:flex-row flex-1 gap-3">
+                <!-- Search -->
+                <div class="relative w-full sm:max-w-xs">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl pointer-events-none">search</span>
+                    <input type="text" id="searchInput" placeholder="Search customers..." 
+                        class="w-full pl-10 pr-4 py-2.5 bg-[#f4f7fc] border-transparent rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white focus:border-primary-500 transition-all placeholder:text-slate-500">
+                </div>
+
+                <!-- Filter -->
+                <div class="relative w-full sm:w-auto min-w-[140px]">
+                    <select id="filterStatus" class="w-full pl-4 pr-10 py-2.5 bg-[#f4f7fc] border-transparent rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white focus:border-primary-500 transition-all appearance-none cursor-pointer text-slate-700">
+                        <option value="All">All Statuses</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-lg">expand_more</span>
+                </div>
+
+                <!-- Sort -->
+                <div class="relative w-full sm:w-auto min-w-[140px]">
+                    <select id="sortBy" class="w-full pl-4 pr-10 py-2.5 bg-[#f4f7fc] border-transparent rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:bg-white focus:border-primary-500 transition-all appearance-none cursor-pointer text-slate-700">
+                        <option value="Newest">Newest First</option>
+                        <option value="NameAsc">Name (A-Z)</option>
+                        <option value="NameDesc">Name (Z-A)</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none text-lg">sort</span>
+                </div>
+            </div>
+
+            <!-- Add Button -->
+            <button onclick="toggleDrawer(true)" class="px-5 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-full shadow-sm shadow-primary-500/20 transition-all active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap">
+                <span class="material-symbols-outlined text-lg">add</span>
+                Add Customer
+            </button>
+        </div>
+
+        <!-- Main View (Table) -->
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex-1 flex flex-col">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="border-b border-gray-100 bg-gray-50/50">
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Customer</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Company</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Phone</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-gray-100">
+                        <!-- Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Empty State (Hidden by default) -->
+            <div id="emptyState" class="hidden flex-col items-center justify-center py-16 text-center">
+                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-4">
+                    <span class="material-symbols-outlined text-3xl">search_off</span>
+                </div>
+                <h3 class="text-base font-medium text-slate-900 mb-1">No customers found</h3>
+                <p class="text-sm text-slate-500 max-w-sm">Try adjusting your search or filter criteria to find what you're looking for.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Overlay -->
+    <div id="drawerOverlay" onclick="toggleDrawer(false)" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40 transition-opacity duration-300 opacity-0 pointer-events-none"></div>
+
+    <!-- Form Drawer -->
+    <aside id="customerDrawer" class="fixed top-0 right-0 z-50 h-screen w-full max-w-md bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col rounded-l-3xl overflow-hidden border-l border-gray-100">
+        
+        <!-- Drawer Header -->
+        <header class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-white">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600">
+                    <span class="material-symbols-outlined text-xl">person_add</span>
+                </div>
+                <h2 class="text-xl font-semibold tracking-tight text-slate-800">Add Customer</h2>
+            </div>
+            <button onclick="toggleDrawer(false)" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-700 hover:bg-gray-100 transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </header>
+
+        <!-- Drawer Body -->
+        <div class="flex-1 overflow-y-auto p-6 bg-[#f8fafd]">
+            <form id="addCustomerForm" class="space-y-5">
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-slate-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="name" required placeholder="e.g. Jane Doe" 
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all shadow-sm placeholder:text-slate-400">
+                </div>
+                
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email Address <span class="text-red-500">*</span></label>
+                    <input type="email" id="email" required placeholder="jane@example.com" 
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all shadow-sm placeholder:text-slate-400">
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <label for="company" class="block text-sm font-medium text-slate-700 mb-1.5">Company</label>
+                    <input type="text" id="company" placeholder="e.g. Acme Corp" 
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all shadow-sm placeholder:text-slate-400">
+                </div>
+                
+                <!-- Phone -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="(555) 000-0000" 
+                        class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all shadow-sm placeholder:text-slate-400">
+                </div>
+                
+                <!-- Status -->
+                <div>
+                    <label for="status" class="block text-sm font-medium text-slate-700 mb-1.5">Status</label>
+                    <div class="relative">
+                        <select id="status" class="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 appearance-none shadow-sm cursor-pointer text-slate-700">
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Drawer Footer -->
+        <footer class="px-6 py-4 border-t border-gray-100 bg-white flex items-center justify-end gap-3">
+            <button type="button" onclick="toggleDrawer(false)" class="px-5 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 bg-white border border-gray-200 hover:bg-gray-50 rounded-full transition-all">
+                Cancel
+            </button>
+            <button type="submit" form="addCustomerForm" class="px-5 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-full shadow-sm shadow-primary-500/30 transition-all active:scale-95">
+                Save Customer
+            </button>
+        </footer>
+    </aside>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Dummy Data & State ---
+        let customers = [
+            { id: 1, name: 'Alice Freeman', email: 'alice@finiteltd.com', company: 'Finite Ltd', phone: '(555) 123-4567', status: 'Active', date: new Date('2023-10-01').getTime() },
+            { id: 2, name: 'Robert Chen', email: 'robert.chen@innovate.io', company: 'Innovate.io', phone: '(555) 987-6543', status: 'Pending', date: new Date('2023-10-05').getTime() },
+            { id: 3, name: 'Sarah Jenkins', email: 's.jenkins@globaltech.net', company: 'Global Tech', phone: '(555) 345-6789', status: 'Active', date: new Date('2023-09-28').getTime() },
+            { id: 4, name: 'Michael O\'Connor', email: 'mike@startup.co', company: 'Startup Co', phone: '(555) 765-4321', status: 'Inactive', date: new Date('2023-10-10').getTime() },
+            { id: 5, name: 'Emily Davis', email: 'emily.d@creatives.art', company: 'Creatives Art', phone: '(555) 222-3333', status: 'Active', date: new Date('2023-10-15').getTime() },
+        ];
+
+        let state = {
+            search: '',
+            filter: 'All',
+            sort: 'Newest'
+        };
+
+        // --- 2. DOM Elements ---
+        const tableBody = document.getElementById('tableBody');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const filterStatus = document.getElementById('filterStatus');
+        const sortBy = document.getElementById('sortBy');
+        const drawer = document.getElementById('customerDrawer');
+        const overlay = document.getElementById('drawerOverlay');
+        const form = document.getElementById('addCustomerForm');
+
+        // --- 3. Event Listeners ---
+        searchInput.addEventListener('input', (e) => {
+            state.search = e.target.value.toLowerCase();
+            renderTable();
+        });
+
+        filterStatus.addEventListener('change', (e) => {
+            state.filter = e.target.value;
+            renderTable();
+        });
+
+        sortBy.addEventListener('change', (e) => {
+            state.sort = e.target.value;
+            renderTable();
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newCustomer = {
+                id: Date.now(),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value || 'N/A',
+                phone: document.getElementById('phone').value || 'N/A',
+                status: document.getElementById('status').value,
+                date: Date.now()
+            };
+
+            customers.unshift(newCustomer); // Add to beginning
+            
+            // Reset and close
+            form.reset();
+            toggleDrawer(false);
+            
+            // Update sort to newest to show the added user at top if sorting by newest
+            if(state.sort === 'Newest') {
+                sortBy.value = 'Newest';
+            }
+            renderTable();
+        });
+
+        // --- 4. Core Logic Functions ---
+        function getStatusBadge(status) {
+            const styles = {
+                'Active': 'bg-emerald-50 text-emerald-700 border-emerald-200/60',
+                'Inactive': 'bg-gray-50 text-gray-600 border-gray-200',
+                'Pending': 'bg-amber-50 text-amber-700 border-amber-200/60'
+            };
+            const style = styles[status] || styles['Inactive'];
+            
+            // Map status to a material icon
+            let icon = 'radio_button_unchecked';
+            if(status === 'Active') icon = 'check_circle';
+            if(status === 'Pending') icon = 'schedule';
+            if(status === 'Inactive') icon = 'cancel';
+
+            return `
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${style}">
+                    <span class="material-symbols-outlined text-[14px]">${icon}</span>
+                    ${status}
+                </span>
+            `;
+        }
+
+        function toggleDrawer(isOpen) {
+            if (isOpen) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+                drawer.classList.remove('translate-x-full');
+                drawer.classList.add('translate-x-0');
+            } else {
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                drawer.classList.remove('translate-x-0');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        function renderTable() {
+            // Filter
+            let filtered = customers.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(state.search) || 
+                                      c.email.toLowerCase().includes(state.search) || 
+                                      c.company.toLowerCase().includes(state.search);
+                const matchesFilter = state.filter === 'All' || c.status === state.filter;
+                return matchesSearch && matchesFilter;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if (state.sort === 'Newest') return b.date - a.date;
+                if (state.sort === 'NameAsc') return a.name.localeCompare(b.name);
+                if (state.sort === 'NameDesc') return b.name.localeCompare(a.name);
+                return 0;
+            });
+
+            // Render
+            tableBody.innerHTML = '';
+            
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('flex');
+            } else {
+                emptyState.classList.add('hidden');
+                emptyState.classList.remove('flex');
+
+                filtered.forEach(customer => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-gray-50/50 transition-colors group cursor-default';
+                    tr.innerHTML = `
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-sm shrink-0">
+                                    ${customer.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div>
+                                    <div class="font-medium text-slate-900">${customer.name}</div>
+                                    <div class="text-sm text-slate-500">${customer.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-slate-600">${customer.company}</td>
+                        <td class="px-6 py-4 text-sm text-slate-600">${customer.phone}</td>
+                        <td class="px-6 py-4">${getStatusBadge(customer.status)}</td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="w-8 h-8 rounded-full text-slate-400 hover:text-primary-600 hover:bg-primary-50 transition-colors flex items-center justify-center inline-flex opacity-0 group-hover:opacity-100">
+                                <span class="material-symbols-outlined text-[20px]">more_vert</span>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            }
+        }
+
+        // --- 5. Initialization ---
+        renderTable();
+    </script>
+</body>
+</html>

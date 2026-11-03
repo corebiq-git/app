@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#F7F9FC">
+  <title>COREBIQ | Firestore Usage</title>
+  <link rel="stylesheet" href="css/corebiq.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+  <style>
+    :root{color-scheme:light;--usage-ink:#172033;--usage-muted:#68758a;--usage-border:#e3e8f0;--usage-blue:#0b1f4b;--usage-bg:#f5f7fb}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--usage-bg);color:var(--usage-ink);font-family:Inter,Arial,sans-serif}
+    .usage-page{max-width:1220px;margin:0 auto;padding:28px 22px 48px}
+    .usage-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px;padding:20px 22px;background:#fff;border:1px solid var(--usage-border);border-radius:20px}
+    .usage-heading{display:flex;align-items:center;gap:14px}
+    .usage-heading-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#e8eef7;color:var(--usage-blue)}
+    .usage-heading h1{margin:0;font-size:23px;letter-spacing:-.03em}
+    .usage-heading p{margin:5px 0 0;color:var(--usage-muted);font-size:13px}
+    .usage-actions{display:flex;align-items:center;gap:9px}
+    .usage-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:0 13px;border:1px solid var(--usage-border);border-radius:11px;background:#fff;color:var(--usage-ink);font:600 13px Inter,Arial,sans-serif;text-decoration:none;cursor:pointer}
+    .usage-button:hover{background:#f8fafc}
+    .usage-button.primary{background:var(--usage-blue);border-color:var(--usage-blue);color:#fff}
+    .usage-button:disabled{opacity:.55;cursor:wait}
+    .usage-notice{margin:0 0 20px;padding:12px 15px;border:1px solid #d6e2f5;border-radius:12px;background:#edf4ff;color:#344c70;font-size:12px;line-height:1.55}
+    .usage-state{padding:38px 20px;border:1px solid var(--usage-border);border-radius:17px;background:#fff;text-align:center;color:var(--usage-muted)}
+    .usage-state.error{border-color:#fecaca;background:#fff7f7;color:#991b1b}
+    .usage-state .material-symbols-rounded{display:block;margin-bottom:8px;font-size:28px}
+    .usage-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:17px}
+    .usage-card,.usage-chart-card{min-width:0;padding:17px;border:1px solid var(--usage-border);border-radius:16px;background:#fff;box-shadow:0 2px 8px rgba(15,23,42,.035)}
+    .usage-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .usage-card-label{color:var(--usage-muted);font-size:12px;font-weight:650}
+    .usage-card-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#f0f4fa;color:var(--usage-blue)}
+    .usage-card-value{margin-top:13px;font-size:26px;font-weight:800;letter-spacing:-.04em;line-height:1.1;overflow-wrap:anywhere}
+    .usage-card-caption{min-height:32px;margin-top:6px;color:var(--usage-muted);font-size:11px;line-height:1.45}
+    .usage-progress{height:7px;margin-top:13px;overflow:hidden;border-radius:8px;background:#edf0f5}
+    .usage-progress span{display:block;height:100%;width:0;border-radius:inherit;background:#2056a4;transition:width .25s ease}
+    .usage-progress span.warn{background:#d97706}.usage-progress span.danger{background:#dc2626}
+    .usage-progress-label{display:flex;justify-content:space-between;gap:8px;margin-top:6px;color:var(--usage-muted);font-size:10px}
+    .usage-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .usage-chart-card h2{margin:0;font-size:14px}
+    .usage-chart-subtitle{margin:4px 0 16px;color:var(--usage-muted);font-size:11px}
+    .usage-chart{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:5px;align-items:end;min-height:150px;padding:0 2px}
+    .usage-chart-day{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;height:150px;min-width:0}
+    .usage-chart-bar-wrap{display:flex;align-items:flex-end;width:100%;height:112px;border-bottom:1px solid #e8ecf2}
+    .usage-chart-bar{width:100%;min-height:2px;border-radius:4px 4px 0 0;background:#3569b4}
+    .usage-chart-bar.storage{background:#0f8b78}
+    .usage-chart-value{max-width:100%;overflow:hidden;color:var(--usage-muted);font-size:9px;text-overflow:ellipsis;white-space:nowrap}
+    .usage-chart-label{color:var(--usage-muted);font-size:9px;white-space:nowrap;transform:rotate(-35deg);transform-origin:center top}
+    .usage-footer{display:flex;justify-content:space-between;gap:12px;margin-top:16px;color:var(--usage-muted);font-size:11px}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.usage-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:650px){.usage-page{padding:14px 12px 30px}.usage-header{align-items:flex-start;padding:15px;flex-direction:column}.usage-actions{width:100%}.usage-actions>*{flex:1}.usage-heading h1{font-size:20px}.usage-charts{grid-template-columns:1fr}.usage-chart{gap:3px}.usage-card,.usage-chart-card{padding:14px}}
+    @media(max-width:360px){.usage-summary{grid-template-columns:1fr}.usage-chart-label{font-size:8px}}
+  </style>
+</head>
+<body>
+  <main class="usage-page">
+    <header class="usage-header">
+      <div class="usage-heading">
+        <span class="usage-heading-icon material-symbols-rounded" aria-hidden="true">monitoring</span>
+        <div><h1>Firestore Usage</h1><p id="usageSubtitle">Loading Firebase usage metrics…</p></div>
+      </div>
+      <div class="usage-actions">
+        <a class="usage-button" href="index.html"><span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>Dashboard</a>
+        <button class="usage-button primary" id="refreshUsage" type="button" disabled><span class="material-symbols-rounded" aria-hidden="true">refresh</span>Refresh</button>
+      </div>
+    </header>
+
+    <p class="usage-notice">Metrics come from Google Cloud Monitoring for the default Firestore database. Operation totals are grouped by Pacific calendar day; today is partial and updates can take up to four minutes to appear. Free-tier limits shown here are reference values, not billing alerts. Outbound network transfer is not included.</p>
+    <div id="usageStatus" class="usage-state" role="status" aria-live="polite"><span class="material-symbols-rounded" aria-hidden="true">hourglass_top</span>Checking administrator access…</div>
+    <section id="usageDashboard" hidden>
+      <div class="usage-summary" id="usageSummary"></div>
+      <div class="usage-charts" id="usageCharts"></div>
+      <footer class="usage-footer"><span id="usageUpdated"></span><span>Free-tier daily quotas reset around midnight Pacific time.</span></footer>
+    </section>
+  </main>
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js';
+    import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+    import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-functions.js';
+
+    const statusElement = document.getElementById('usageStatus');
+    const dashboard = document.getElementById('usageDashboard');
+    const refreshButton = document.getElementById('refreshUsage');
+    const functions = getFunctions(undefined, 'us-central1');
+    const loadUsage = httpsCallable(functions, 'getFirestoreUsage');
+    const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
+    const bytesFormat = value => {
+      if (value < 1024) return `${numberFormat.format(value)} B`;
+      const units = ['KiB', 'MiB', 'GiB', 'TiB'];
+      let size = value, unit = -1;
+      do { size /= 1024; unit += 1; } while (size >= 1024 && unit < units.length - 1);
+      return `${numberFormat.format(size)} ${units[unit]}`;
+    };
+    const formatDate = value => new Intl.DateTimeFormat('en-US', {
+      month: 'short', day: 'numeric', timeZone: 'America/Los_Angeles'
+    }).format(new Date(`${value}T12:00:00-07:00`));
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+    }[char]));
+
+    function renderSummary(data) {
+      const cards = [
+        { key: 'reads', label: 'Document reads today', quota: data.quotas.reads, icon: 'visibility', format: numberFormat.format },
+        { key: 'writes', label: 'Document writes today', quota: data.quotas.writes, icon: 'edit', format: numberFormat.format },
+        { key: 'deletes', label: 'Document deletes today', quota: data.quotas.deletes, icon: 'delete', format: numberFormat.format },
+        { key: 'storageBytes', label: 'Database storage', quota: data.quotas.storageBytes, icon: 'database', format: bytesFormat }
+      ];
+      document.getElementById('usageSummary').innerHTML = cards.map(card => {
+        const value = Number(data.current[card.key]) || 0;
+        const percent = Math.min(100, value / card.quota * 100);
+        const progressClass = percent >= 90 ? 'danger' : percent >= 75 ? 'warn' : '';
+        const quotaLabel = card.key === 'storageBytes' ? bytesFormat(card.quota) : numberFormat.format(card.quota);
+        return `<article class="usage-card">
+          <div class="usage-card-top"><span class="usage-card-label">${card.label}</span><span class="usage-card-icon material-symbols-rounded" aria-hidden="true">${card.icon}</span></div>
+          <div class="usage-card-value">${card.format(value)}</div>
+          <div class="usage-card-caption">${card.key === 'storageBytes' ? 'Current stored database size' : 'Pacific calendar day · partial today'}</div>
+          <div class="usage-progress" role="progressbar" aria-label="${card.label} against free-tier reference quota" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent.toFixed(1)}"><span class="${progressClass}" style="width:${percent.toFixed(2)}%"></span></div>
+          <div class="usage-progress-label"><span>${percent.toFixed(1)}% of reference</span><span>${quotaLabel} ${card.key === 'storageBytes' ? '' : '/ day'}</span></div>
+        </article>`;
+      }).join('');
+    }
+
+    function renderChart(title, key, values, format, storage = false) {
+      const max = Math.max(1, ...values.map(day => Number(day[key]) || 0));
+      const bars = values.map(day => {
+        const value = Number(day[key]) || 0;
+        const height = value ? Math.max(3, value / max * 100) : 0;
+        const label = format(value);
+        return `<div class="usage-chart-day" title="${escapeHtml(`${formatDate(day.date)}: ${label}`)}">
+          <span class="usage-chart-value">${escapeHtml(label)}</span>
+          <span class="usage-chart-bar-wrap"><span class="usage-chart-bar${storage ? ' storage' : ''}" style="height:${height.toFixed(2)}%" aria-hidden="true"></span></span>
+          <span class="usage-chart-label">${escapeHtml(formatDate(day.date))}</span>
+        </div>`;
+      }).join('');
+      return `<article class="usage-chart-card"><h2>${title}</h2><p class="usage-chart-subtitle">Daily total · last 14 Pacific calendar days</p><div class="usage-chart" role="img" aria-label="${escapeHtml(`${title} daily chart for the last 14 days`)}">${bars}</div></article>`;
+    }
+
+    function renderCharts(data) {
+      const charts = [
+        renderChart('Document reads', 'reads', data.daily, numberFormat.format),
+        renderChart('Document writes', 'writes', data.daily, numberFormat.format),
+        renderChart('Document deletes', 'deletes', data.daily, numberFormat.format),
+        renderChart('Database storage', 'storageBytes', data.daily, bytesFormat, true)
+      ];
+      document.getElementById('usageCharts').innerHTML = charts.join('');
+    }
+
+    async function refresh() {
+      refreshButton.disabled = true;
+      statusElement.className = 'usage-state';
+      statusElement.innerHTML = '<span class="material-symbols-rounded" aria-hidden="true">sync</span>Loading Cloud Monitoring metrics…';
+      statusElement.hidden = false;
+      dashboard.hidden = true;
+      try {
+        const result = await loadUsage();
+        const data = result.data;
+        renderSummary(data);
+        renderCharts(data);
+        document.getElementById('usageSubtitle').textContent = `Default database · ${data.daily.length} days · ${data.timezone}`;
+        document.getElementById('usageUpdated').textContent = `Updated ${new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(data.lastUpdated))}`;
+        dashboard.hidden = false;
+        statusElement.hidden = true;
+      } catch (error) {
+        console.error('Unable to load Firestore usage metrics:', error);
+        statusElement.className = 'usage-state error';
+        const code = String(error.code || '').replace(/^functions\//, '');
+        const message = code === 'not-found'
+          ? 'The getFirestoreUsage backend is not deployed to us-central1 in this Firebase project. Sign in to Firebase CLI with "npx firebase-tools login", then deploy it with "npx firebase-tools deploy --only functions:getFirestoreUsage --project cmf001stra".'
+          : error.message || 'Usage metrics could not be loaded.';
+        statusElement.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">error</span>${escapeHtml(message)}`;
+      } finally {
+        refreshButton.disabled = false;
+      }
+    }
+
+    refreshButton.addEventListener('click', refresh);
+    onAuthStateChanged(auth, async user => {
+      if (!user) {
+        window.location.replace('login.html');
+        return;
+      }
+      try {
+        const email = user.email?.toLowerCase();
+        if (!email) throw new Error('Your signed-in account does not have an email address.');
+        const profile = await getDoc(doc(db, 'users', email));
+        if (!profile.exists() || profile.data().role !== 'admin') {
+          throw new Error('Firestore usage is available to administrators only.');
+        }
+        refreshButton.disabled = false;
+        await refresh();
+      } catch (error) {
+        console.error('Firestore usage access check failed:', error);
+        statusElement.className = 'usage-state error';
+        statusElement.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">lock</span>${escapeHtml(error.message || 'Unable to verify administrator access.')}`;
+      }
+    });
+  </script>
+</body>
+</html>

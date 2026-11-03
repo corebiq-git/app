@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ | Company Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"/>
+    <link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="company-module">
+    
+    <style>
+        #company-module {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            color: #1e293b;
+            font-family: Inter, sans-serif;
+        }
+        #company-module * { box-sizing: border-box; }
+        #company-module .company-page-header { display: flex; align-items: center; gap: 12px; }
+        #company-module .company-page-icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #eef0f4;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .06);
+            color: #0B1F4B;
+        }
+        #company-module .company-page-icon .material-symbols-rounded { font-size: 24px; }
+        #company-module .company-page-heading h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -.025em;
+            line-height: 1.2;
+        }
+        #company-module .company-page-heading p { margin: 4px 0 0; color: #64748b; font-size: 13px; line-height: 1.45; }
+        #company-module .company-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            min-height: 72px;
+            padding: 14px 16px;
+            border: 1px solid #eef0f4;
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .05);
+        }
+        #company-module .company-toolbar-copy { margin: 0; color: #64748b; font-size: 13px; }
+        #company-module .company-toolbar-actions,
+        #company-module .company-form-actions { display: flex; align-items: center; justify-content: flex-end; gap: 9px; }
+        #company-module .company-button {
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 18px;
+            border: 1px solid transparent;
+            border-radius: 22px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .18s ease, box-shadow .18s ease, transform .18s ease;
+        }
+        #company-module .company-button:active { transform: scale(.98); }
+        #company-module .company-button:focus-visible { outline: 3px solid rgba(11, 87, 208, .25); outline-offset: 2px; }
+        #company-module .company-button-primary { background: #0B1F4B; color: #fff; box-shadow: 0 2px 7px rgba(11, 87, 208, .18); }
+        #company-module .company-button-primary:hover { background: #071630; }
+        #company-module .company-button-secondary { border-color: #d7dce4; background: #fff; color: #475569; }
+        #company-module .company-button-secondary:hover { background: #f4f7fc; }
+        #company-module .company-button:disabled { cursor: wait; opacity: .65; }
+        #company-module .company-button[hidden] { display: none; }
+        #company-module .form-card {
+            overflow: hidden;
+            border: 1px solid #eef0f4;
+            border-radius: 24px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, .05);
+        }
+        #company-module .company-form-section { padding: 23px 24px 25px; border-bottom: 1px solid #f0f2f5; }
+        #company-module .company-form-section:last-of-type { border-bottom: 0; }
+        #company-module .section-header {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 17px;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        #company-module .section-header .material-symbols-rounded { color: #0B1F4B; font-size: 20px; }
+        #company-module .input-group { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
+        #company-module .input-group > div { min-width: 0; }
+        #company-module .input-group > div[style*="grid-column"] { grid-column: 1 / -1; }
+        #company-module .form-label { display: block; margin: 0 0 6px 2px; color: #475569; font-size: 12px; font-weight: 500; }
+        #company-module .form-input {
+            width: 100%;
+            min-height: 43px;
+            padding: 10px 14px;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            outline: none;
+            background: #f4f7fc;
+            color: #1e293b;
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.5;
+            transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+        }
+        #company-module textarea.form-input { min-height: 72px; resize: vertical; }
+        #company-module .form-input::placeholder { color: #94a3b8; }
+        #company-module .form-input:focus { border-color: #0B1F4B; background: #fff; box-shadow: 0 0 0 3px rgba(11, 87, 208, .12); }
+        #company-module .readonly-input { cursor: default; }
+        #company-module .readonly-input:not(.editable) { color: #334155; }
+        #company-module .readonly-input.editable { background: #f4f7fc; cursor: text; }
+        #company-module .readonly-input.editable:focus { background: #fff; }
+        #company-module .company-form-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 9px;
+            padding: 15px 24px;
+            border-top: 1px solid #f0f2f5;
+            background: #fff;
+        }
+        #company-module .company-form-footer[hidden] { display: none; }
+        @media (max-width: 600px) {
+            #company-module { gap: 15px; }
+            #company-module .company-page-icon { width: 44px; height: 44px; flex-basis: 44px; border-radius: 14px; }
+            #company-module .company-page-heading h1 { font-size: 21px; }
+            #company-module .company-toolbar { min-height: 0; padding: 13px; border-radius: 20px; }
+            #company-module .company-toolbar-copy { max-width: 56%; font-size: 12px; }
+            #company-module .company-form-section { padding: 19px 16px; }
+            #company-module .input-group { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+            #company-module .input-group > div[style*="grid-column"] { grid-column: auto; }
+            #company-module .company-form-footer { padding: 13px 16px; }
+        }
+        @media (max-width: 380px) {
+            #company-module .company-toolbar { align-items: flex-start; flex-direction: column; }
+            #company-module .company-toolbar-copy { max-width: none; }
+            #company-module .company-toolbar-actions { width: 100%; }
+            #company-module .company-toolbar-actions .company-button { flex: 1; }
+        }
+    </style>
+
+    <header class="company-page-header">
+        <div class="company-page-icon">
+            <span class="material-symbols-rounded" aria-hidden="true">business</span>
+        </div>
+        <div class="company-page-heading">
+            <h1>Company Overview</h1>
+            <p>Manage your organization's details, contact information, and bank account.</p>
+        </div>
+    </header>
+
+    <div class="company-toolbar">
+        <p class="company-toolbar-copy">Review your saved company profile and make updates when needed.</p>
+        <div class="company-toolbar-actions">
+            <button type="button" class="company-button company-button-primary" id="editCompanyBtn" onclick="window.toggleEditMode(true)">
+                <span class="material-symbols-rounded" aria-hidden="true">edit</span>
+                Edit details
+            </button>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form id="company-overview-form">
+            <section class="company-form-section" aria-labelledby="general-info-heading">
+                <h2 class="section-header" id="general-info-heading">
+                    <span class="material-symbols-rounded" aria-hidden="true">domain</span>
+                    General information
+                </h2>
+                <div class="input-group">
+                    <div>
+                        <label class="form-label" for="compName">Company name</label>
+                        <input type="text" id="compName" class="form-input readonly-input" value="STRA CARE" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compTagline">Tagline</label>
+                        <input type="text" id="compTagline" class="form-input readonly-input" value="Rebuild Your Health" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compFloor">Floor</label>
+                        <input type="text" id="compFloor" class="form-input readonly-input" value="1st Floor" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compBuildingNo">Building number</label>
+                        <input type="text" id="compBuildingNo" class="form-input readonly-input" value="" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compBuildingName">Building name</label>
+                        <input type="text" id="compBuildingName" class="form-input readonly-input" value="Shakthi Complex" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compArea">Area</label>
+                        <input type="text" id="compArea" class="form-input readonly-input" value="Chokli" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compDistrict">District</label>
+                        <input type="text" id="compDistrict" class="form-input readonly-input" value="Kannur" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compPostalCode">Postal / ZIP code</label>
+                        <input type="text" id="compPostalCode" class="form-input readonly-input" value="670672" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compState">State / region</label>
+                        <select id="compState" class="form-input readonly-input" disabled></select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compCountry">Country</label>
+                        <select id="compCountry" class="form-input readonly-input" disabled onchange="window.updateCompanyStates()">
+                            <option value="IN">India</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <option value="AU">Australia</option>
+                            <option value="SG">Singapore</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="QA">Qatar</option>
+                            <option value="KW">Kuwait</option>
+                            <option value="BH">Bahrain</option>
+                            <option value="OM">Oman</option>
+                            <option value="LK">Sri Lanka</option>
+                            <option value="NP">Nepal</option>
+                            <option value="BD">Bangladesh</option>
+                            <option value="PK">Pakistan</option>
+                            <option value="MY">Malaysia</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="JP">Japan</option>
+                            <option value="CN">China</option>
+                            <option value="NZ">New Zealand</option>
+                            <option value="IE">Ireland</option>
+                            <option value="CH">Switzerland</option>
+                            <option value="SE">Sweden</option>
+                            <option value="NO">Norway</option>
+                            <option value="DK">Denmark</option>
+                            <option value="TR">Türkiye</option>
+                            <option value="BR">Brazil</option>
+                            <option value="MX">Mexico</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compCurrency">Currency</label>
+                        <select id="compCurrency" class="form-input readonly-input" disabled>
+                            <option value="INR">INR — Indian Rupee</option>
+                            <option value="AED">AED — UAE Dirham</option>
+                            <option value="USD">USD — US Dollar</option>
+                            <option value="EUR">EUR — Euro</option>
+                            <option value="GBP">GBP — Pound Sterling</option>
+                            <option value="CAD">CAD — Canadian Dollar</option>
+                            <option value="AUD">AUD — Australian Dollar</option>
+                            <option value="SGD">SGD — Singapore Dollar</option>
+                            <option value="SAR">SAR — Saudi Riyal</option>
+                            <option value="QAR">QAR — Qatari Riyal</option>
+                            <option value="KWD">KWD — Kuwaiti Dinar</option>
+                            <option value="BHD">BHD — Bahraini Dinar</option>
+                            <option value="OMR">OMR — Omani Rial</option>
+                            <option value="LKR">LKR — Sri Lankan Rupee</option>
+                            <option value="NPR">NPR — Nepalese Rupee</option>
+                            <option value="BDT">BDT — Bangladeshi Taka</option>
+                            <option value="PKR">PKR — Pakistani Rupee</option>
+                            <option value="MYR">MYR — Malaysian Ringgit</option>
+                            <option value="ZAR">ZAR — South African Rand</option>
+                            <option value="JPY">JPY — Japanese Yen</option>
+                            <option value="CNY">CNY — Chinese Yuan</option>
+                            <option value="CHF">CHF — Swiss Franc</option>
+                            <option value="SEK">SEK — Swedish Krona</option>
+                            <option value="NOK">NOK — Norwegian Krone</option>
+                            <option value="DKK">DKK — Danish Krone</option>
+                            <option value="TRY">TRY — Turkish Lira</option>
+                            <option value="BRL">BRL — Brazilian Real</option>
+                            <option value="MXN">MXN — Mexican Peso</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compLanguage">Preferred language</label>
+                        <select id="compLanguage" class="form-input readonly-input" disabled>
+                            <option value="en">English</option>
+                            <option value="ar">العربية — Arabic</option>
+                            <option value="fr">Français — French</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="company-form-section" aria-labelledby="contact-details-heading">
+                <h2 class="section-header" id="contact-details-heading">
+                    <span class="material-symbols-rounded" aria-hidden="true">contact_mail</span>
+                    Contact details
+                </h2>
+                <div class="input-group">
+                    <div>
+                        <label class="form-label" for="compPhone1">Primary contact number</label>
+                        <input type="tel" id="compPhone1" class="form-input readonly-input" value="+91 97449 02555" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compPhone2">Secondary contact number</label>
+                        <input type="tel" id="compPhone2" class="form-input readonly-input" value="+91 90612 07871" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compEmail">Email address</label>
+                        <input type="email" id="compEmail" class="form-input readonly-input" value="info@stracares.in" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compWebsite">Website</label>
+                        <input type="text" id="compWebsite" class="form-input readonly-input" value="www.stracares.in" readonly>
+                    </div>
+                </div>
+            </section>
+
+            <section class="company-form-section" aria-labelledby="authorised-signatory-heading">
+                <h2 class="section-header" id="authorised-signatory-heading">
+                    <span class="material-symbols-rounded" aria-hidden="true">draw</span>
+                    Authorised signatory
+                </h2>
+                <div class="input-group">
+                    <div>
+                        <label class="form-label" for="compSignatoryName">Name</label>
+                        <input type="text" id="compSignatoryName" class="form-input readonly-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compSignatoryDesignation">Designation</label>
+                        <input type="text" id="compSignatoryDesignation" class="form-input readonly-input" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compSignatoryQualification">Qualification / Licence No.</label>
+                        <input type="text" id="compSignatoryQualification" class="form-input readonly-input" readonly>
+                    </div>
+                </div>
+            </section>
+
+            <section class="company-form-section" aria-labelledby="bank-details-heading">
+                <h2 class="section-header" id="bank-details-heading">
+                    <span class="material-symbols-rounded" aria-hidden="true">account_balance</span>
+                    Bank details
+                </h2>
+                <div class="input-group">
+                    <div>
+                        <label class="form-label" for="compAccName">Account name</label>
+                        <input type="text" id="compAccName" class="form-input readonly-input" value="STRA CARE" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compAccNo">Account number</label>
+                        <input type="text" id="compAccNo" class="form-input readonly-input" value="50200120597389" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compIfsc">IFSC code</label>
+                        <input type="text" id="compIfsc" class="form-input readonly-input" value="HDFC0000465" readonly>
+                    </div>
+                    <div>
+                        <label class="form-label" for="compUpi">UPI / Mobile</label>
+                        <input type="text" id="compUpi" class="form-input readonly-input" value="9744902555@hdfc" readonly>
+                    </div>
+                </div>
+            </section>
+
+            <footer id="save-actions" class="company-form-footer" hidden>
+                <button type="button" class="company-button company-button-secondary" onclick="window.cancelCompanyEdit()">Cancel</button>
+                <button type="button" id="saveCompanyBtn" class="company-button company-button-primary" onclick="window.saveCompanyDetails()">
+                    <span class="material-symbols-rounded" aria-hidden="true">save</span>
+                    <span id="save-company-label">Save changes</span>
+                </button>
+            </footer>
+        </form>
+    </div>
+
+    <script type="module">
+        import './corebiq-locale.js';
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
+        
+        // Target Document: A single document holding the global company configuration
+        const companyDocRef = doc(db, "settings", "company_profile");
+
+        const companyStates = {
+            IN: ['Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Puducherry'],
+            AE: ['Abu Dhabi', 'Ajman', 'Dubai', 'Fujairah', 'Ras Al Khaimah', 'Sharjah', 'Umm Al Quwain'],
+            US: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
+            CA: ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan', 'Yukon'],
+            AU: ['Australian Capital Territory', 'New South Wales', 'Northern Territory', 'Queensland', 'South Australia', 'Tasmania', 'Victoria', 'Western Australia'],
+            GB: ['England', 'Northern Ireland', 'Scotland', 'Wales']
+        };
+
+        function populateCompanyCurrencies() {
+            const currencySelect = document.getElementById('compCurrency');
+            if (typeof Intl.supportedValuesOf !== 'function') return;
+            const selected = currencySelect.value || 'INR';
+            let currencies;
+            let displayNames = null;
+            try {
+                currencies = Intl.supportedValuesOf('currency');
+                if (typeof Intl.DisplayNames === 'function') {
+                    displayNames = new Intl.DisplayNames(['en'], { type: 'currency' });
+                }
+            } catch (error) {
+                console.warn('Unable to load the full currency list:', error);
+                return;
+            }
+            currencySelect.replaceChildren();
+            currencies.forEach(code => {
+                const name = displayNames?.of(code) || code;
+                currencySelect.add(new Option(`${code} — ${name}`, code));
+            });
+            if (!currencies.includes(selected)) currencySelect.add(new Option(`${selected} — ${selected}`, selected));
+            currencySelect.value = selected;
+        }
+
+        populateCompanyCurrencies();
+
+        window.updateCompanyStates = function(selectedState = '') {
+            const stateSelect = document.getElementById('compState');
+            const country = document.getElementById('compCountry').value;
+            const states = companyStates[country] || ['Other / not listed'];
+            stateSelect.replaceChildren(new Option('Select state / region', ''));
+            states.forEach(state => stateSelect.add(new Option(state, state)));
+            if (selectedState && !states.includes(selectedState)) {
+                stateSelect.add(new Option(selectedState, selectedState));
+            }
+            stateSelect.value = selectedState;
+        };
+        window.updateCompanyStates('Kerala');
+
+        function parseLegacyAddress(address) {
+            const result = { floor: '', buildingNo: '', buildingName: '', area: '', district: '', postalCode: '', state: '', countryCode: 'IN' };
+            const parts = String(address || '').split(',').map(part => part.trim()).filter(Boolean);
+            if (!parts.length) return result;
+            result.postalCode = String(address).match(/\b\d{5,6}\b/)?.[0] || '';
+            const floorIndex = parts.findIndex(part => /\bfloor\b/i.test(part));
+            if (floorIndex >= 0) result.floor = parts.splice(floorIndex, 1)[0];
+            const buildingNoIndex = parts.findIndex(part => /(?:building\s*)?(?:no\.?|number)\s*[:#-]?\s*\w+/i.test(part));
+            if (buildingNoIndex >= 0) result.buildingNo = parts.splice(buildingNoIndex, 1)[0].replace(/^(?:building\s*)?(?:no\.?|number)\s*[:#-]?\s*/i, '');
+            const districtIndex = parts.findIndex(part => /\bdistrict\b|\bdist\.?\b/i.test(part));
+            if (districtIndex >= 0) result.district = parts.splice(districtIndex, 1)[0].replace(/\s*(?:district|dist\.?)\s*/ig, '').trim();
+            const stateIndex = parts.findIndex(part => /\b(kerala|karnataka|tamil nadu|maharashtra|goa|gujarat|delhi|punjab|rajasthan|uttar pradesh|telangana|andhra pradesh)\b/i.test(part));
+            if (stateIndex >= 0) result.state = parts.splice(stateIndex, 1)[0].replace(/[-\s]+\d{5,6}\s*$/, '').trim();
+            if (parts.length) result.buildingName = parts.shift();
+            if (parts.length) result.area = parts.shift();
+            if (result.state || /india/i.test(address)) result.countryCode = 'IN';
+            return result;
+        }
+
+        function getCompanyAddress() {
+            return [
+                document.getElementById('compFloor').value.trim(),
+                document.getElementById('compBuildingNo').value.trim(),
+                document.getElementById('compBuildingName').value.trim(),
+                document.getElementById('compArea').value.trim(),
+                document.getElementById('compDistrict').value.trim(),
+                document.getElementById('compState').value.trim(),
+                document.getElementById('compPostalCode').value.trim(),
+                document.getElementById('compCountry').selectedOptions[0]?.textContent.trim()
+            ].filter(Boolean).join(', ');
+        }
+
+        // --- 1. LOAD DATA ON MOUNT ---
+        window.loadCompanyData = async function() {
+            try {
+                const docSnap = await getDoc(companyDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const legacyAddress = parseLegacyAddress(data.address);
+                    document.getElementById('compFloor').value = data.floor || legacyAddress.floor || '';
+                    document.getElementById('compBuildingNo').value = data.buildingNo || legacyAddress.buildingNo || '';
+                    document.getElementById('compBuildingName').value = data.buildingName || legacyAddress.buildingName || '';
+                    document.getElementById('compArea').value = data.area || legacyAddress.area || '';
+                    document.getElementById('compDistrict').value = data.district || legacyAddress.district || '';
+                    document.getElementById('compPostalCode').value = data.postalCode || legacyAddress.postalCode || '';
+                    const countryCode = data.countryCode || legacyAddress.countryCode || 'IN';
+                    const countrySelect = document.getElementById('compCountry');
+                    if (!Array.from(countrySelect.options).some(option => option.value === countryCode)) {
+                        countrySelect.add(new Option(data.country || countryCode, countryCode));
+                    }
+                    countrySelect.value = countryCode;
+                    window.updateCompanyStates(data.state || legacyAddress.state || '');
+                    const currencyCode = String(data.currencyCode || data.currency || 'INR').toUpperCase();
+                    const currencySelect = document.getElementById('compCurrency');
+                    if (!Array.from(currencySelect.options).some(option => option.value === currencyCode)) {
+                        currencySelect.add(new Option(`${currencyCode} — ${currencyCode}`, currencyCode));
+                    }
+                    currencySelect.value = currencyCode;
+                    document.getElementById('compLanguage').value = data.preferredLanguage || 'en';
+                    window.applyCorebiqSettings?.({
+                        currencyCode: document.getElementById('compCurrency').value,
+                        countryCode,
+                        preferredLanguage: document.getElementById('compLanguage').value
+                    });
+                    if(typeof data.name === 'string' && data.name.trim()) {
+                        const companyName = data.name.trim();
+                        document.getElementById('compName').value = companyName;
+                        try {
+                            localStorage.setItem('corebiq-company-name', companyName);
+                        } catch (storageError) {
+                            console.warn('Unable to cache the company name:', storageError);
+                        }
+                    }
+                    if(data.tagline) document.getElementById('compTagline').value = data.tagline;
+                    if(data.phone1) document.getElementById('compPhone1').value = data.phone1;
+                    if(data.phone2) document.getElementById('compPhone2').value = data.phone2;
+                    if(data.email) document.getElementById('compEmail').value = data.email;
+                    if(data.website) document.getElementById('compWebsite').value = data.website;
+                    document.getElementById('compSignatoryName').value = data.authorisedSignatoryName || '';
+                    document.getElementById('compSignatoryDesignation').value = data.authorisedSignatoryDesignation || '';
+                    document.getElementById('compSignatoryQualification').value = data.authorisedSignatoryQualificationLicence || '';
+
+                    if(data.accName) document.getElementById('compAccName').value = data.accName;
+                    if(data.accNo) document.getElementById('compAccNo').value = data.accNo;
+                    if(data.ifsc) document.getElementById('compIfsc').value = data.ifsc;
+                    if(data.upi) document.getElementById('compUpi').value = data.upi;
+                }
+            } catch (error) {
+                console.error("Error fetching company details:", error);
+            }
+
+            // ROLE-BASED ACCESS CONTROL (RBAC)
+            // If the user is NOT an admin, hide the edit button so they cannot modify the profile
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const editBtn = document.getElementById('editCompanyBtn');
+                if(editBtn) editBtn.style.display = 'none';
+            }
+        };
+
+        window.loadCompanyData();
+
+        // --- 2. TOGGLE EDIT MODE ---
+        window.companyOriginalValues = null;
+
+        window.toggleEditMode = function(editing) {
+            const inputs = document.querySelectorAll('#company-overview-form .readonly-input');
+            const saveActions = document.getElementById('save-actions');
+            const editButton = document.getElementById('editCompanyBtn');
+            const isEditing = typeof editing === 'boolean'
+                ? editing
+                : inputs.length > 0 && inputs[0].hasAttribute('readonly');
+
+            if (isEditing) {
+                window.companyOriginalValues = Array.from(inputs, input => [input.id, input.value]);
+            }
+
+            inputs.forEach(input => {
+                input.classList.toggle('editable', isEditing);
+                if (input instanceof HTMLSelectElement) input.disabled = !isEditing;
+                else input.toggleAttribute('readonly', !isEditing);
+            });
+
+            saveActions.hidden = !isEditing;
+            editButton.hidden = isEditing;
+        };
+
+        window.cancelCompanyEdit = function() {
+            if (window.companyOriginalValues) {
+                const originalValues = Object.fromEntries(window.companyOriginalValues);
+                window.companyOriginalValues.forEach(([id, value]) => {
+                    if (id === 'compState') return;
+                    const input = document.getElementById(id);
+                    if (input) input.value = value;
+                });
+                window.updateCompanyStates(originalValues.compState || '');
+            }
+            window.toggleEditMode(false);
+        };
+
+        // --- 3. SAVE DATA TO FIREBASE ---
+        window.saveCompanyDetails = async function() {
+            const btn = document.getElementById('saveCompanyBtn');
+            const saveLabel = document.getElementById('save-company-label');
+            saveLabel.innerText = "Saving...";
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('compName').value.trim(),
+                tagline: document.getElementById('compTagline').value,
+                floor: document.getElementById('compFloor').value.trim(),
+                buildingNo: document.getElementById('compBuildingNo').value.trim(),
+                buildingName: document.getElementById('compBuildingName').value.trim(),
+                area: document.getElementById('compArea').value.trim(),
+                district: document.getElementById('compDistrict').value.trim(),
+                postalCode: document.getElementById('compPostalCode').value.trim(),
+                state: document.getElementById('compState').value,
+                countryCode: document.getElementById('compCountry').value,
+                country: document.getElementById('compCountry').selectedOptions[0]?.textContent.trim() || '',
+                currencyCode: document.getElementById('compCurrency').value,
+                preferredLanguage: document.getElementById('compLanguage').value,
+                address: getCompanyAddress(),
+                phone1: document.getElementById('compPhone1').value,
+                phone2: document.getElementById('compPhone2').value,
+                email: document.getElementById('compEmail').value,
+                website: document.getElementById('compWebsite').value,
+                authorisedSignatoryName: document.getElementById('compSignatoryName').value.trim(),
+                authorisedSignatoryDesignation: document.getElementById('compSignatoryDesignation').value.trim(),
+                authorisedSignatoryQualificationLicence: document.getElementById('compSignatoryQualification').value.trim(),
+                accName: document.getElementById('compAccName').value,
+                accNo: document.getElementById('compAccNo').value,
+                ifsc: document.getElementById('compIfsc').value,
+                upi: document.getElementById('compUpi').value,
+                updatedAt: new Date()
+            };
+
+            try {
+                // Using merge: true so it creates the document if it doesn't exist, or updates it if it does
+                await setDoc(companyDocRef, payload, { merge: true });
+                window.applyCorebiqSettings?.(payload);
+                try {
+                    localStorage.setItem('corebiq-company-name', payload.name.trim());
+                } catch (storageError) {
+                    console.warn('Unable to cache the updated company name:', storageError);
+                }
+                alert("Company details updated successfully!");
+                window.toggleEditMode(false);
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to save changes. Please check your connection or database rules.");
+            }
+
+            saveLabel.innerText = "Save changes";
+            btn.disabled = false;
+        };
+
+    </script>
+</div>
+
+</body>
+</html>
