@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ | Bank Details Card</title>
+    <link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+    <main class="module-container" id="bank-card-module">
+        <link rel="stylesheet" href="css/template-bank-card.css">
+        <h1 class="bank-card-title"><span class="material-symbols-rounded" aria-hidden="true">account_balance</span>Bank Details Card</h1>
+        <div class="bank-card-layout">
+            <section class="bank-card-panel" aria-labelledby="bank-card-details-title">
+                <h2 id="bank-card-details-title">Payment details</h2>
+                <div class="bank-card-fields">
+                    <div class="bank-card-field"><label for="bankCardClinicName">Company name</label><input id="bankCardClinicName" type="text" autocomplete="organization" placeholder="Company name"></div>
+                    <div class="bank-card-field"><label for="bankCardAccountName">Account holder</label><input id="bankCardAccountName" type="text" autocomplete="name" placeholder="Account holder name"></div>
+                    <div class="bank-card-field"><label for="bankCardBankName">Bank name</label><input id="bankCardBankName" type="text" placeholder="Bank name"></div>
+                    <div class="bank-card-field"><label for="bankCardAccountNumber">Account number</label><input id="bankCardAccountNumber" type="text" inputmode="numeric" autocomplete="off" placeholder="Account number"></div>
+                    <div class="bank-card-field"><label for="bankCardIfsc">IFSC code</label><input id="bankCardIfsc" type="text" autocomplete="off" placeholder="IFSC code"></div>
+                    <div class="bank-card-field"><label for="bankCardUpi">UPI ID (QR generated from this ID)</label><input id="bankCardUpi" type="text" inputmode="email" autocomplete="off" placeholder="name@bank"></div>
+                    <div class="bank-card-field"><label for="bankCardPhone">Contact number</label><input id="bankCardPhone" type="tel" autocomplete="tel" placeholder="Phone number"></div>
+                </div>
+                <div class="bank-card-actions">
+                    <button type="button" class="bank-card-generate" id="bankCardGenerate"><span class="material-symbols-rounded" aria-hidden="true">credit_card</span>Generate Card</button>
+                    <button type="button" id="bankCardDownload"><span class="material-symbols-rounded" aria-hidden="true">download</span>Download JPEG</button>
+                    <button type="button" class="bank-card-whatsapp" id="bankCardWhatsApp"><span class="material-symbols-rounded" aria-hidden="true">chat</span>WhatsApp</button>
+                    <button type="button" class="bank-card-email" id="bankCardEmail"><span class="material-symbols-rounded" aria-hidden="true">mail</span>Email</button>
+                </div>
+                <p class="bank-card-status" id="bankCardStatus" role="status" aria-live="polite"></p>
+            </section>
+            <section class="bank-card-panel bank-card-preview-wrap" aria-label="Bank details card preview">
+                <h2>JPEG card preview</h2>
+                <canvas class="bank-card-preview" id="bankCardCanvas" width="1200" height="700" aria-label="Bank details and UPI QR card preview"></canvas>
+                <canvas class="bank-card-hidden-qr" id="bankCardQrCanvas" width="1" height="1" aria-hidden="true"></canvas>
+                <p class="bank-card-preview-note">The UPI QR opens a payment app for this UPI ID; no amount is prefilled.</p>
+            </section>
+        </div>
+        <script src="js/template-bank-card.js"></script>
+    </main>
+</body>
+</html>

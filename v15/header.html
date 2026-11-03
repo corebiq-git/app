@@ -1,0 +1,929 @@
+<style>
+    .dashboard-header {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 10px 24px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--outline-soft);
+        box-shadow: 0 2px 8px rgba(31, 35, 40, .04);
+        position: relative;
+        z-index: 60;
+    }
+
+    .sidebar-toggle-button {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        flex: 0 0 42px;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+        transition: color .18s ease;
+    }
+
+    .sidebar-toggle-button:hover,
+    .sidebar-toggle-button[aria-expanded="true"] {
+        background: transparent;
+        color: #0B1F4B;
+    }
+
+    .sidebar-toggle-button:focus-visible,
+    .module-search-toggle:focus-visible,
+    .support-button:focus-visible,
+    .notification-button:focus-visible,
+    .profile-button:focus-visible {
+        outline: 2px solid #0B1F4B;
+        outline-offset: 2px;
+    }
+
+    .sidebar-toggle-button .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+    .module-search {
+        position: relative;
+        width: 42px;
+        flex: 0 0 42px;
+        margin: 0 0 0 auto;
+    }
+
+    .module-search.open {
+        z-index: 105;
+    }
+
+    .module-search-box {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 22px;
+        color: var(--muted);
+        transition: width .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .module-search-toggle {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        flex: 0 0 42px;
+        place-items: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+    }
+
+    .module-search-toggle:hover,
+    .module-search-toggle[aria-expanded="true"] {
+        background: #F1F3F8;
+    }
+
+    .module-search.open .module-search-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 105;
+        width: min(360px, calc(100vw - 24px));
+        justify-content: flex-start;
+        padding: 0 8px 0 0;
+        background: var(--surface);
+        border-color: var(--primary-soft);
+        box-shadow: 0 8px 24px rgba(31, 35, 40, .14);
+    }
+
+    .module-search.open .module-search-box:focus-within {
+        background: var(--surface);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-soft);
+    }
+
+    .module-search-input {
+        display: none;
+        width: 100%;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+        font-size: 14px;
+    }
+
+    .module-search.open .module-search-input {
+        display: block;
+    }
+
+    .module-search.open .module-search-toggle {
+        width: 34px;
+        flex-basis: 34px;
+    }
+
+    .module-search-toggle .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+    .module-search-input::placeholder {
+        color: var(--muted);
+    }
+
+    .module-search-clear {
+        width: 30px;
+        height: 30px;
+        display: none;
+        flex: 0 0 30px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+    }
+
+    .module-search-clear:hover {
+        background: #E9EAEC;
+        color: var(--primary);
+    }
+
+    .module-search-input:not(:placeholder-shown) ~ .module-search-clear {
+        display: flex;
+    }
+
+    .module-search-clear .material-symbols-rounded {
+        font-size: 19px;
+    }
+
+    .module-search-results {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        display: none;
+        width: min(360px, calc(100vw - 24px));
+        max-height: min(60vh, 420px);
+        overflow-y: auto;
+        padding: 6px;
+        background: var(--surface);
+        border: 1px solid var(--outline-soft);
+        border-radius: 14px;
+        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        z-index: 100;
+    }
+
+    .module-search-results.open {
+        display: block;
+    }
+
+    .module-search-result {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 0;
+        border-radius: 9px;
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+    }
+
+    .module-search-result:hover,
+    .module-search-result:focus-visible {
+        outline: 0;
+        background: #F8F9FA;
+        color: var(--primary);
+    }
+
+    .module-search-result .material-symbols-rounded {
+        color: var(--primary);
+        font-size: 20px;
+    }
+
+    .module-search-empty {
+        padding: 14px 12px;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .header-actions {
+        position: relative;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .install-app-button {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        flex: 0 0 42px;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #126B4A;
+        cursor: pointer;
+        transition: background-color .18s ease, color .18s ease;
+    }
+
+    .install-app-button:hover {
+        background: #EAF5EF;
+    }
+
+    .install-app-button:focus-visible { outline: 2px solid #0F7A52; outline-offset: 2px; }
+    .install-app-button .material-symbols-rounded { font-size: 22px; }
+
+    .support-actions {
+        position: relative;
+    }
+
+    .support-button {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+        transition: background-color .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .support-button:hover,
+    .support-button[aria-expanded="true"] {
+        outline: 0;
+        background: #F1F3F8;
+        color: #0B1F4B;
+    }
+
+    .support-button:focus-visible {
+        box-shadow: 0 0 0 2px #0B1F4B;
+    }
+
+    .support-button .material-symbols-rounded {
+        font-size: 23px;
+    }
+
+    .support-menu {
+        position: absolute;
+        z-index: 120;
+        top: calc(100% + 9px);
+        right: 0;
+        display: none;
+        width: 214px;
+        padding: 7px;
+        border: 1px solid var(--outline-soft);
+        border-radius: 14px;
+        background: var(--surface);
+        box-shadow: 0 12px 30px rgba(31, 35, 40, .16);
+    }
+
+    .support-menu.open {
+        display: block;
+        animation: support-menu-enter .16s ease-out;
+    }
+
+    @keyframes support-menu-enter {
+        from { opacity: 0; transform: translateY(-4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .support-menu-title {
+        margin: 4px 9px 6px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 650;
+    }
+
+    .support-menu-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 42px;
+        padding: 0 10px;
+        border-radius: 9px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color .16s ease;
+    }
+
+    .support-menu-link:hover,
+    .support-menu-link:focus-visible {
+        outline: 0;
+        background: #F4F5F9;
+    }
+
+    .support-menu-link .material-symbols-rounded {
+        color: #0B1F4B;
+        font-size: 20px;
+    }
+
+    .support-menu-link svg {
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        color: #0B1F4B;
+    }
+
+    .notification-button {
+        position: relative;
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+    }
+
+    .notification-button.has-unread .material-symbols-rounded {
+        transform-origin: 50% 10%;
+        animation: notification-ring 1.8s ease-in-out infinite;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        width: 10px;
+        height: 10px;
+        border: 2px solid var(--surface);
+        border-radius: 50%;
+        background: #D93025;
+        box-shadow: 0 0 0 0 rgba(217,48,37,.45);
+    }
+
+    .notification-button.has-unread .notification-badge {
+        animation: notification-pulse 1.8s ease-out infinite;
+    }
+
+    @keyframes notification-ring {
+        0%, 56%, 100% { transform: rotate(0); }
+        8%, 24%, 40% { transform: rotate(13deg); }
+        16%, 32%, 48% { transform: rotate(-13deg); }
+    }
+
+    @keyframes notification-pulse {
+        0% { box-shadow: 0 0 0 0 rgba(217,48,37,.42); }
+        70%, 100% { box-shadow: 0 0 0 7px rgba(217,48,37,0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .notification-button.has-unread .material-symbols-rounded,
+        .notification-button.has-unread .notification-badge { animation: none; }
+    }
+
+    .notification-button:hover {
+        background: transparent;
+        color: #0B1F4B;
+    }
+
+    .notification-button .material-symbols-rounded {
+        font-size: 22px;
+    }
+
+    .profile-button {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: #0B1F4B;
+        cursor: pointer;
+    }
+
+    .profile-button:hover,
+    .profile-button[aria-expanded="true"] {
+        background: transparent;
+        color: #0B1F4B;
+    }
+
+    .profile-button .material-symbols-rounded {
+        font-size: 23px;
+    }
+
+    .profile-menu {
+        position: absolute;
+        top: calc(100% + 9px);
+        right: 0;
+        display: none;
+        width: min(290px, calc(100vw - 24px));
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--outline-soft);
+        border-radius: 14px;
+        box-shadow: 0 12px 32px rgba(31, 35, 40, .16);
+        z-index: 110;
+    }
+
+    .profile-menu.open {
+        display: block;
+    }
+
+    .profile-name {
+        margin: 0;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-email {
+        margin: 4px 0 12px;
+        color: var(--muted);
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-details {
+        display: grid;
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 7px 10px;
+        padding: 12px 0;
+        border-top: 1px solid var(--outline-soft);
+        border-bottom: 1px solid var(--outline-soft);
+        font-size: 12px;
+    }
+
+    .profile-detail-label {
+        color: var(--muted);
+    }
+
+    .profile-detail-value {
+        color: var(--text);
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .profile-signout {
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 9px;
+        margin-top: 12px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 9px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .profile-signout:hover {
+        background: var(--primary);
+        color: var(--surface);
+    }
+
+    .top-module-nav {
+        display: flex;
+        flex: 1 1 auto;
+        align-items: center;
+        gap: 2px;
+        min-width: 0;
+        margin-left: 4px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .top-module-nav::-webkit-scrollbar { display: none; }
+    .top-nav-group { position: relative; flex: 0 0 auto; }
+    .top-nav-trigger {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0 10px;
+        border: 1px solid transparent;
+        border-radius: 9px;
+        background: transparent;
+        color: #6B7280;
+        font: 500 16px Outfit, "Google Sans", sans-serif;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .top-nav-trigger:hover,
+    .top-nav-trigger:active {
+        border-color: #0B1F4B;
+        background: transparent;
+        color: #6B7280;
+    }
+    .top-nav-trigger[aria-expanded="true"],
+    .top-nav-trigger.active,
+    .top-nav-trigger[aria-current="page"] {
+        border-color: #0B1F4B;
+        background: #0B1F4B;
+        color: #FFFFFF;
+    }
+    .top-nav-group[data-category="Email"] .top-nav-trigger[aria-current="page"],
+    .top-nav-group[data-category="Email"] .top-nav-trigger.active {
+        border-color: #0B1F4B !important;
+        background: #0B1F4B !important;
+        color: #FFFFFF !important;
+    }
+    .top-nav-trigger.top-nav-dashboard {
+        min-height: 40px;
+        margin-right: 4px;
+        padding: 0 10px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: #6B7280;
+    }
+    .top-nav-trigger.top-nav-dashboard:hover,
+    .top-nav-trigger.top-nav-dashboard:active {
+        border-color: #0B1F4B;
+        background: transparent;
+        color: #6B7280;
+    }
+    .top-nav-trigger.top-nav-dashboard.active,
+    .top-nav-trigger.top-nav-dashboard[aria-current="page"] {
+        border-color: #0B1F4B;
+        background: #0B1F4B;
+        color: #FFFFFF;
+    }
+    .top-nav-trigger:focus-visible { outline: 2px solid #1A73E8; outline-offset: 1px; }
+    .top-nav-trigger .material-symbols-rounded { font-size: 18px; color: #5F6368; }
+    .top-nav-trigger:hover .material-symbols-rounded,
+    .top-nav-trigger:active .material-symbols-rounded,
+    .top-nav-trigger[aria-expanded="true"] .material-symbols-rounded,
+    .top-nav-trigger.active .material-symbols-rounded,
+    .top-nav-trigger[aria-current="page"] .material-symbols-rounded { color: #FFFFFF; }
+    .top-nav-trigger .top-nav-category-icon { font-size: 18px; }
+    .top-nav-group[data-category="Dashboard"] .top-nav-category-icon { color: #4285F4; }
+    .top-nav-group[data-category="CRM"] .top-nav-category-icon { color: #34A853; }
+    .top-nav-group[data-category="Accounts"] .top-nav-category-icon { color: #F9AB00; }
+    .top-nav-group[data-category="HR"] .top-nav-category-icon { color: #A142F4; }
+    .top-nav-group[data-category="Templates"] .top-nav-category-icon { color: #EA4335; }
+    .top-nav-group[data-category="Email"] .top-nav-category-icon { color: #1A73E8; }
+    .top-nav-group[data-category="More"] .top-nav-category-icon { color: #80868B; }
+    .top-nav-trigger .top-nav-chevron { font-size: 17px; transition: transform .16s ease; }
+    .top-nav-trigger[aria-expanded="true"] .top-nav-chevron { transform: rotate(180deg); }
+    .top-nav-menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 130;
+        display: none;
+        width: max-content;
+        min-width: 220px;
+        max-width: min(300px, calc(100vw - 24px));
+        max-height: min(70vh, 480px);
+        overflow-y: auto;
+        padding: 6px;
+        border: 1px solid #DADCE0;
+        border-radius: 12px;
+        background: #FFFFFF;
+        box-shadow: 0 8px 24px rgba(60,64,67,.18);
+    }
+
+    .top-nav-menu.open { display: grid; gap: 2px; }
+    .top-nav-menu .top-nav-link {
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #80868B;
+        font: 400 14px Outfit, "Google Sans", sans-serif;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .top-nav-menu .top-nav-link:hover,
+    .top-nav-menu .top-nav-link:focus-visible,
+    .top-nav-menu .top-nav-link:active,
+    .top-nav-menu .top-nav-link.active,
+    .top-nav-menu .top-nav-link[aria-current="page"] {
+        outline: 0;
+        background: #EEF0F4;
+        color: #80868B;
+    }
+    .top-nav-menu .top-nav-link .material-symbols-rounded { font-size: 19px; color: #80868B !important; }
+    .top-nav-menu .top-nav-link:hover .material-symbols-rounded,
+    .top-nav-menu .top-nav-link:focus-visible .material-symbols-rounded,
+    .top-nav-menu .top-nav-link:active .material-symbols-rounded,
+    .top-nav-menu .top-nav-link.active .material-symbols-rounded,
+    .top-nav-menu .top-nav-link[aria-current="page"] .material-symbols-rounded { color: #80868B !important; }
+    .top-nav-submenu-group { display: grid; gap: 2px; }
+    .top-nav-submenu-group[hidden] { display: none; }
+    .top-nav-submenu-trigger {
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #80868B;
+        font: 400 14px Outfit, "Google Sans", sans-serif;
+        text-align: left;
+        cursor: pointer;
+    }
+    .top-nav-submenu-trigger:hover,
+    .top-nav-submenu-trigger:focus-visible,
+    .top-nav-submenu-trigger:active,
+    .top-nav-submenu-trigger[aria-expanded="true"] {
+        outline: 0;
+        background: #EEF0F4;
+        color: #80868B;
+    }
+    .top-nav-submenu-trigger .material-symbols-rounded { font-size: 19px; color: #80868B !important; }
+    .top-nav-submenu-trigger:hover .material-symbols-rounded,
+    .top-nav-submenu-trigger:focus-visible .material-symbols-rounded,
+    .top-nav-submenu-trigger[aria-expanded="true"] .material-symbols-rounded { color: #80868B !important; }
+    .top-nav-submenu-chevron { margin-left: auto; transition: transform .16s ease; }
+    .top-nav-submenu-trigger[aria-expanded="true"] .top-nav-submenu-chevron { transform: rotate(180deg); }
+    .top-nav-submenu-menu { display: none; gap: 2px; padding-left: 12px; }
+    .top-nav-submenu-menu.open { display: grid; }
+    .top-nav-menu .top-nav-menu-action {
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: #80868B;
+        font: 400 14px Outfit, "Google Sans", sans-serif;
+        text-align: left;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .top-nav-menu .top-nav-menu-action[hidden] { display: none; }
+    .top-nav-menu .top-nav-menu-action:hover,
+    .top-nav-menu .top-nav-menu-action:focus-visible,
+    .top-nav-menu .top-nav-menu-action:active {
+        outline: 0;
+        background: #EEF0F4;
+        color: #80868B;
+    }
+    .top-nav-menu .top-nav-menu-action > .material-symbols-rounded { color: #80868B !important; font-size: 19px; }
+    .top-nav-menu .top-nav-menu-action .notification-badge { margin-left: auto; }
+    .top-nav-menu .more-support-actions { position: static; }
+    .top-nav-menu .more-support-actions .support-button { width: 100%; height: 40px; display: flex; justify-content: flex-start; gap: 10px; padding: 0 10px; border-radius: 8px; background: transparent; color: #80868B; font: 400 14px Outfit, "Google Sans", sans-serif; text-align: left; }
+    .top-nav-menu .more-support-actions .support-button:hover,
+    .top-nav-menu .more-support-actions .support-button[aria-expanded="true"] { background: #EEF0F4; color: #80868B; }
+    .top-nav-menu .more-support-actions .support-button .material-symbols-rounded { color: #80868B; font-size: 19px; }
+    .top-nav-menu .more-support-actions .support-menu { position: static; display: none; width: auto; margin: 0 0 4px; padding: 4px; border: 0; border-radius: 8px; background: #F8F9FA; box-shadow: none; }
+    .top-nav-menu .more-support-actions .support-menu.open { display: block; }
+    .top-nav-menu .more-support-actions .support-menu-link { min-height: 36px; color: #80868B; font-size: 12px; }
+    .top-nav-menu .more-support-actions .support-menu-link .material-symbols-rounded,
+    .top-nav-menu .more-support-actions .support-menu-link svg { color: #80868B; }
+    .top-nav-menu .more-support-actions .support-menu-title { color: #80868B; }
+
+    @media (max-width: 768px) {
+        .dashboard-header {
+            min-height: 64px;
+            gap: 6px;
+            padding: 7px 8px;
+            overflow: visible;
+        }
+
+        .sidebar-toggle-button { display: none; }
+        .top-module-nav { display: none; }
+        .top-nav-trigger { min-height: 38px; gap: 2px; padding: 0 7px; font-size: 13px; }
+        .top-nav-trigger .top-nav-chevron { font-size: 15px; }
+        .top-nav-menu { max-width: calc(100vw - 16px); }
+
+        .module-search {
+            width: auto;
+            min-width: 0;
+            flex: 1 1 auto;
+            margin: 0;
+        }
+
+        .module-search-box,
+        .module-search.open .module-search-box {
+            position: relative;
+            top: auto;
+            left: auto;
+            width: 100%;
+            height: 40px;
+            justify-content: flex-start;
+            padding: 0 8px 0 2px;
+            border: 1px solid var(--outline-soft);
+            border-radius: 12px;
+            background: #FFFFFF;
+            box-shadow: none;
+        }
+
+        .module-search-box:focus-within,
+        .module-search.open .module-search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-soft);
+        }
+
+        .module-search-toggle,
+        .module-search.open .module-search-toggle {
+            width: 34px;
+            height: 38px;
+            flex: 0 0 34px;
+            border-radius: 10px;
+        }
+
+        .module-search-input,
+        .module-search.open .module-search-input {
+            display: block;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .module-search-results { top: 46px; }
+
+        .header-actions {
+            position: relative;
+            gap: 6px;
+            flex: 0 0 auto;
+        }
+
+        .support-button {
+            width: 38px;
+            height: 38px;
+        }
+
+        .notification-button,
+        .profile-button {
+            width: 38px;
+            height: 38px;
+        }
+    }
+</style>
+
+<header class="dashboard-header">
+    <nav class="top-module-nav" id="top-module-nav" aria-label="Main navigation">
+        <div class="top-nav-group" data-category="Dashboard">
+            <button class="top-nav-trigger top-nav-dashboard top-nav-link active" type="button" data-target="view-dashboard" aria-current="page" onclick="window.switchView('view-dashboard', this)">
+                <span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">dashboard</span>Dashboard
+            </button>
+        </div>
+        <div class="top-nav-group" data-category="CRM">
+            <button class="top-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavMenu('CRM', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">groups</span>CRM<span class="material-symbols-rounded top-nav-chevron" aria-hidden="true">expand_more</span></button>
+            <div class="top-nav-menu" role="menu" aria-label="CRM modules"></div>
+        </div>
+        <div class="top-nav-group" data-category="Accounts">
+            <button class="top-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavMenu('Accounts', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">account_balance_wallet</span>Accounts<span class="material-symbols-rounded top-nav-chevron" aria-hidden="true">expand_more</span></button>
+            <div class="top-nav-menu" role="menu" aria-label="Accounts modules"></div>
+        </div>
+        <div class="top-nav-group" data-category="HR">
+            <button class="top-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavMenu('HR', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">badge</span>HR<span class="material-symbols-rounded top-nav-chevron" aria-hidden="true">expand_more</span></button>
+            <div class="top-nav-menu" role="menu" aria-label="HR modules"></div>
+        </div>
+        <div class="top-nav-group" data-category="Templates">
+            <button class="top-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavMenu('Templates', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">description</span>Templates<span class="material-symbols-rounded top-nav-chevron" aria-hidden="true">expand_more</span></button>
+            <div class="top-nav-menu" role="menu" aria-label="Templates modules"></div>
+        </div>
+        <div class="top-nav-group" data-category="Email">
+            <button class="top-nav-trigger top-nav-link" type="button" data-target="view-email" aria-label="Open Email module" onclick="window.switchView('view-email', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">mail</span>Email</button>
+        </div>
+        <div class="top-nav-group" data-category="More">
+            <button class="top-nav-trigger" type="button" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavMenu('More', this)"><span class="material-symbols-rounded top-nav-category-icon" aria-hidden="true">more_horiz</span>More<span class="material-symbols-rounded top-nav-chevron" aria-hidden="true">expand_more</span></button>
+            <div class="top-nav-menu" role="menu" aria-label="More modules">
+                <div class="top-nav-submenu-group" data-subcategory="Tools">
+                    <button class="top-nav-submenu-trigger" type="button" role="menuitem" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavSubmenu(this)"><span class="material-symbols-rounded" aria-hidden="true">build</span>Tools<span class="material-symbols-rounded top-nav-submenu-chevron" aria-hidden="true">expand_more</span></button>
+                    <div class="top-nav-submenu-menu" role="menu" aria-label="Tools modules"></div>
+                </div>
+                <div class="top-nav-submenu-group" data-subcategory="Settings">
+                    <button class="top-nav-submenu-trigger" type="button" role="menuitem" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavSubmenu(this)"><span class="material-symbols-rounded" aria-hidden="true">settings</span>Settings<span class="material-symbols-rounded top-nav-submenu-chevron" aria-hidden="true">expand_more</span></button>
+                    <div class="top-nav-submenu-menu" role="menu" aria-label="Settings modules"></div>
+                </div>
+                <div class="top-nav-submenu-group" data-subcategory="App Info">
+                    <button class="top-nav-submenu-trigger" type="button" role="menuitem" aria-haspopup="true" aria-expanded="false" onclick="window.toggleTopNavSubmenu(this)"><span class="material-symbols-rounded" aria-hidden="true">info</span>App Info<span class="material-symbols-rounded top-nav-submenu-chevron" aria-hidden="true">expand_more</span></button>
+                    <div class="top-nav-submenu-menu" role="menu" aria-label="App information modules"></div>
+                </div>
+                <div class="top-nav-submenu-group" data-subcategory="More">
+                    <div class="top-nav-submenu-menu" role="menu" aria-label="More modules"></div>
+                </div>
+                <button class="top-nav-menu-action notification-button" id="notification-button" type="button" aria-label="App updates" title="App updates" onclick="window.openAppUpdates()">
+                    <span class="material-symbols-rounded" id="bell-icon" aria-hidden="true">notifications</span>
+                    <span>App Updates</span>
+                    <span class="notification-badge" id="notif-badge" aria-hidden="true" hidden></span>
+                </button>
+                <button class="top-nav-menu-action install-app-button" id="install-app-button" type="button" aria-label="Install STRA CARE app" title="Install app" onclick="window.installApp()">
+                    <span class="material-symbols-rounded" aria-hidden="true">install_mobile</span>
+                    <span>Download App</span>
+                </button>
+                <div class="support-actions more-support-actions">
+                    <button class="top-nav-menu-action support-button" id="support-button" type="button" aria-label="Contact COREBIQ support" aria-expanded="false" aria-controls="support-menu" title="Contact support" onclick="window.toggleSupportMenu(event)">
+                        <span class="material-symbols-rounded" aria-hidden="true">support_agent</span>
+                        <span>Support</span>
+                    </button>
+                    <section class="support-menu" id="support-menu" aria-label="Contact COREBIQ support">
+                        <h2 class="support-menu-title">Contact support</h2>
+                        <a class="support-menu-link" href="https://wa.me/919946151111?text=Hello%20COREBIQ%20Support%2C%20I%20need%20help%20with%20the%20dashboard." target="_blank" rel="noopener noreferrer" aria-label="Contact COREBIQ support on WhatsApp">
+                            <span class="material-symbols-rounded" aria-hidden="true">chat</span>WhatsApp
+                        </a>
+                        <a class="support-menu-link" href="mailto:support@corebiq.com?subject=COREBIQ%20Support%20Request&amp;body=Hello%20COREBIQ%20Support%2C%0D%0A%0D%0AI%20need%20help%20with%20the%20dashboard.%0D%0A%0D%0A" aria-label="Email COREBIQ support">
+                            <span class="material-symbols-rounded" aria-hidden="true">mail</span>Email
+                        </a>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="module-search">
+        <div class="module-search-box">
+            <button
+                class="module-search-toggle"
+                id="module-search-toggle"
+                type="button"
+                aria-label="Search dashboard modules"
+                aria-expanded="false"
+                aria-controls="module-search-input"
+                title="Search modules"
+                onclick="window.toggleModuleSearch()">
+                <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            </button>
+            <input
+                class="module-search-input"
+                id="module-search-input"
+                type="text"
+                placeholder="Search modules..."
+                autocomplete="off"
+                aria-label="Search dashboard modules"
+                aria-controls="module-search-results"
+                aria-expanded="false"
+                oninput="window.searchModules(this.value)"
+                onkeydown="window.handleModuleSearchKeydown(event)">
+            <button
+                class="module-search-clear"
+                type="button"
+                aria-label="Clear module search"
+                title="Clear search"
+                onclick="window.clearModuleSearch()">
+                <span class="material-symbols-rounded" aria-hidden="true">close</span>
+            </button>
+        </div>
+        <div class="module-search-results" id="module-search-results" role="listbox"></div>
+    </div>
+
+    <div class="header-actions">
+        <button
+            class="profile-button"
+            id="profile-button"
+            type="button"
+            aria-label="View signed-in user profile"
+            aria-expanded="false"
+            aria-controls="profile-menu"
+            onclick="window.toggleProfileMenu()">
+            <span class="material-symbols-rounded" aria-hidden="true">account_circle</span>
+        </button>
+        <section class="profile-menu" id="profile-menu" aria-label="User profile">
+            <h2 class="profile-name" id="profile-name">Signed-in user</h2>
+            <p class="profile-email" id="profile-email"></p>
+            <div class="profile-details">
+                <span class="profile-detail-label">Role</span>
+                <span class="profile-detail-value" id="profile-role"></span>
+                <span class="profile-detail-label">Branch</span>
+                <span class="profile-detail-value" id="profile-branch"></span>
+            </div>
+            <button class="profile-signout" type="button" onclick="window.handleLogout()">
+                <span class="material-symbols-rounded" aria-hidden="true">logout</span>
+                Sign out
+            </button>
+        </section>
+    </div>
+</header>

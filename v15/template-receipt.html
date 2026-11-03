@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0B1F4B">
+    <title>COREBIQ | Receipt Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet" href="css/corebiq.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        :root { color-scheme: light; --ink: #172033; --muted: #64748B; --line: #DCE3ED; --brand: #0B1F4B; }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 24px; background: #F3F6FA; color: var(--ink); font-family: Inter, Arial, sans-serif; }
+        .page { width: min(100%, 1120px); margin: 0 auto; }
+        .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+        .heading h1 { margin: 0; color: var(--brand); font-size: 23px; }
+        .heading p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+        .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .action { min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font: 600 13px Inter, sans-serif; cursor: pointer; }
+        .action.primary { border-color: var(--brand); background: var(--brand); color: #fff; }
+        .layout { display: grid; grid-template-columns: minmax(250px, 1fr) minmax(280px, 420px); align-items: start; gap: 20px; }
+        .editor { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+        .editor h2 { grid-column: 1 / -1; margin: 0 0 2px; color: var(--brand); font-size: 15px; }
+        .field { min-width: 0; }
+        .field.wide { grid-column: 1 / -1; }
+        .field label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .3px; text-transform: uppercase; }
+        .field input, .field textarea { width: 100%; min-height: 40px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: 13px Inter, sans-serif; }
+        .field textarea { min-height: 70px; resize: vertical; }
+        .receipt-wrap { display: flex; justify-content: center; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: #E9EEF5; }
+        #receipt { width: 4in; max-width: 100%; padding: 24px 20px; background: #fff; color: #111827; box-shadow: 0 8px 26px rgba(15, 23, 42, .12); overflow-wrap: anywhere; }
+        #receipt .brand { margin: 0; color: var(--brand); font-size: 19px; font-weight: 800; text-align: center; }
+        #receipt .tagline { margin: 3px 0 0; color: #64748B; font-size: 10px; text-align: center; }
+        #receipt .business-details { margin: 5px 0 15px; color: #475569; font-size: 10px; line-height: 1.5; text-align: center; white-space: pre-line; }
+        #receipt .receipt-title { margin: 0; padding: 9px 0; border-top: 1px dashed #9AA5B5; border-bottom: 1px dashed #9AA5B5; font-size: 14px; letter-spacing: 1.2px; text-align: center; }
+        #receipt .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 0; font-size: 10px; }
+        #receipt .meta div:last-child { text-align: right; }
+        #receipt .row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #E5E7EB; font-size: 11px; }
+        #receipt .row span:first-child { color: #475569; }
+        #receipt .row strong { text-align: right; }
+        #receipt .amount { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; padding: 12px 0; border-top: 1px dashed #9AA5B5; border-bottom: 1px dashed #9AA5B5; font-size: 14px; font-weight: 800; }
+        #receipt .note { margin: 12px 0 0; color: #475569; font-size: 10px; white-space: pre-line; }
+        #receipt .thanks { margin: 20px 0 0; color: var(--brand); font-size: 11px; font-weight: 700; text-align: center; }
+        #receipt .footer { margin: 5px 0 0; color: #64748B; font-size: 9px; text-align: center; }
+        .status { min-height: 18px; margin: 10px 0 0; color: var(--muted); font-size: 12px; }
+        @media (max-width: 760px) {
+            body { padding: 14px; }
+            .layout { grid-template-columns: 1fr; }
+            .receipt-wrap { padding: 12px; }
+            .toolbar { align-items: flex-start; flex-direction: column; }
+            .actions { width: 100%; }
+            .action { flex: 1 1 auto; }
+        }
+        @media print {
+            @page { size: 4in 9in; margin: 0; }
+            html, body { width: 4in !important; min-width: 4in !important; margin: 0 !important; padding: 0 !important; background: #fff !important; }
+            body * { visibility: hidden !important; }
+            #receipt, #receipt * { visibility: visible !important; }
+            #receipt { position: absolute !important; inset: 0 auto auto 0 !important; width: 4in !important; max-width: none !important; min-height: 0 !important; padding: 0.18in !important; box-shadow: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="toolbar">
+            <div class="heading">
+                <h1>Receipt Template</h1>
+                <p>Editable 4-inch S4 receipt, ready to print or share.</p>
+            </div>
+            <div class="actions">
+                <button class="action" type="button" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+                <button class="action" type="button" id="download-button"><span class="material-symbols-rounded">download</span>Download PDF</button>
+                <button class="action primary" type="button" id="share-button"><span class="material-symbols-rounded">share</span>Send / Share</button>
+                <button class="action" type="button" id="email-button"><span class="material-symbols-rounded">mail</span>Email</button>
+            </div>
+        </header>
+        <div class="layout">
+            <section class="editor" aria-label="Receipt details">
+                <h2>Receipt details</h2>
+                <div class="field wide"><label for="business-name">Business / Clinic name</label><input id="business-name" value="Your Clinic Name" data-output="business-name"></div>
+                <div class="field wide"><label for="business-tagline">Company tagline</label><input id="business-tagline" data-output="business-tagline"></div>
+                <div class="field wide"><label for="business-details">Address and contact details</label><textarea id="business-details" data-output="business-details">Clinic address
+Phone: Add contact number</textarea></div>
+                <div class="field"><label for="receipt-number">Receipt number</label><input id="receipt-number" value="RC-001" data-output="receipt-number"></div>
+                <div class="field"><label for="receipt-date">Date</label><input id="receipt-date" type="date" data-output="receipt-date"></div>
+                <div class="field"><label for="patient-name">Received from</label><input id="patient-name" placeholder="Patient name" data-output="patient-name"></div>
+                <div class="field"><label for="patient-mobile">Mobile number</label><input id="patient-mobile" type="tel" placeholder="Mobile number" data-output="patient-mobile"></div>
+                <div class="field"><label for="amount">Amount received</label><input id="amount" type="number" min="0" step="0.01" value="0.00" data-output="amount"></div>
+                <div class="field"><label for="payment-method">Payment method</label><input id="payment-method" value="Cash" data-output="payment-method"></div>
+                <div class="field wide"><label for="purpose">Payment for</label><input id="purpose" placeholder="Consultation / service" data-output="purpose"></div>
+                <div class="field wide"><label for="notes">Notes</label><textarea id="notes" placeholder="Optional notes" data-output="notes"></textarea></div>
+                <p class="status field wide" id="status" role="status" aria-live="polite"></p>
+            </section>
+            <section class="receipt-wrap" aria-label="Receipt preview">
+                <article id="receipt">
+                    <h2 class="brand" data-value="business-name">Your Clinic Name</h2>
+                    <p class="tagline" data-value="business-tagline"></p>
+                    <p class="business-details" data-value="business-details">Clinic address
+Phone: Add contact number</p>
+                    <h3 class="receipt-title">PAYMENT RECEIPT</h3>
+                    <div class="meta"><div>Receipt #<br><strong data-value="receipt-number">RC-001</strong></div><div>Date<br><strong data-value="receipt-date"></strong></div></div>
+                    <div class="row"><span>Received from</span><strong data-value="patient-name">—</strong></div>
+                    <div class="row"><span>Mobile</span><strong data-value="patient-mobile">—</strong></div>
+                    <div class="row"><span>Payment for</span><strong data-value="purpose">—</strong></div>
+                    <div class="row"><span>Payment method</span><strong data-value="payment-method">Cash</strong></div>
+                    <div class="amount"><span>AMOUNT RECEIVED</span><span>₹<span data-value="amount">0.00</span></span></div>
+                    <p class="note" data-value="notes"></p>
+                    <p class="thanks">Thank you for your payment.</p>
+                    <p class="footer">This is a computer-generated receipt.</p>
+                </article>
+            </section>
+        </div>
+    </main>
+    <script>
+        const statusElement = document.getElementById('status');
+        const fieldElements = [...document.querySelectorAll('[data-output]')];
+        const valueElements = [...document.querySelectorAll('[data-value]')];
+        const readField = id => document.getElementById(id).value.trim();
+        const receiptText = () => [
+            readField('business-name'),
+            'Payment receipt ' + readField('receipt-number'),
+            'Date: ' + readField('receipt-date'),
+            'Received from: ' + readField('patient-name'),
+            'Amount received: ₹' + (readField('amount') || '0.00'),
+            'Payment method: ' + readField('payment-method'),
+            'Payment for: ' + readField('purpose')
+        ].join('\n');
+
+        document.getElementById('receipt-date').value = new Date().toISOString().slice(0, 10);
+        const updateReceipt = () => {
+            for (const element of valueElements) {
+                const field = document.getElementById(element.dataset.value);
+                let value = field.value.trim();
+                if (element.dataset.value === 'amount') value = Number(value || 0).toFixed(2);
+                element.textContent = value || (['patient-name', 'patient-mobile', 'purpose'].includes(element.dataset.value) ? '—' : '');
+            }
+        };
+        fieldElements.forEach(field => field.addEventListener('input', updateReceipt));
+        updateReceipt();
+
+        const applyTransactionReceipt = payload => {
+            const fields = {
+                'receipt-number': payload.receiptNumber,
+                'receipt-date': payload.date,
+                'patient-name': payload.name,
+                'patient-mobile': payload.mobile,
+                amount: payload.amount,
+                'payment-method': payload.paymentMethod,
+                purpose: payload.purpose,
+                notes: payload.notes
+            };
+            Object.entries(fields).forEach(([id, value]) => {
+                if (value == null) return;
+                document.getElementById(id).value = String(value);
+            });
+            fieldElements.forEach(field => field.dispatchEvent(new Event('input')));
+            statusElement.textContent = 'Transaction receipt loaded. Review the details before printing or sharing.';
+        };
+
+        window.addEventListener('message', event => {
+            if (
+                event.origin !== window.location.origin ||
+                event.source !== window.opener ||
+                event.data?.type !== 'corebiq:receipt:data' ||
+                !event.data.payload
+            ) return;
+            applyTransactionReceipt(event.data.payload);
+        });
+        if (window.opener) {
+            window.opener.postMessage({ type: 'corebiq:receipt:ready' }, window.location.origin);
+        }
+
+        const createPdf = async () => {
+            if (typeof html2pdf === 'undefined') throw new Error('PDF download is unavailable. Check your internet connection or use Print and choose Save as PDF.');
+            const options = {
+                margin: 0,
+                filename: `receipt-${readField('receipt-number') || 'payment'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'in', format: [4, Math.max(5, document.getElementById('receipt').scrollHeight / 96 + 0.4)], orientation: 'portrait' }
+            };
+            return html2pdf().set(options).from(document.getElementById('receipt')).outputPdf('blob');
+        };
+        document.getElementById('download-button').addEventListener('click', async () => {
+            try {
+                const blob = await createPdf();
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `receipt-${readField('receipt-number') || 'payment'}.pdf`;
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+                statusElement.textContent = 'Receipt PDF downloaded.';
+            } catch (error) {
+                statusElement.textContent = error.message;
+            }
+        });
+        document.getElementById('share-button').addEventListener('click', async () => {
+            try {
+                const blob = await createPdf();
+                const file = new File([blob], `receipt-${readField('receipt-number') || 'payment'}.pdf`, { type: 'application/pdf' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ title: 'Payment receipt', text: receiptText(), files: [file] });
+                    statusElement.textContent = 'Receipt shared.';
+                    return;
+                }
+                const mobile = readField('patient-mobile').replace(/\D/g, '');
+                const phone = mobile.length === 10 ? `91${mobile}` : mobile;
+                const url = `https://wa.me/${phone}?text=${encodeURIComponent(receiptText())}`;
+                const downloadUrl = URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = downloadUrl;
+                downloadLink.download = `receipt-${readField('receipt-number') || 'payment'}.pdf`;
+                downloadLink.click();
+                setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+                window.location.href = url;
+                statusElement.textContent = 'WhatsApp opened with receipt details. Attach the downloaded PDF if needed.';
+            } catch (error) {
+                if (error.name !== 'AbortError') statusElement.textContent = error.message;
+            }
+        });
+        document.getElementById('email-button').addEventListener('click', () => {
+            const subject = encodeURIComponent(`Payment receipt ${readField('receipt-number')}`);
+            const body = encodeURIComponent(receiptText() + '\n\nAttach the receipt PDF after downloading it.');
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        });
+    </script>
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+
+        const formatAddressParts = parts => parts
+            .filter(value => typeof value === 'string' && value.trim())
+            .map(value => value.trim());
+        const profileText = value => typeof value === 'string' ? value.trim() : '';
+
+        async function loadCompanyDetails() {
+            try {
+                const snapshot = await getDoc(doc(db, 'settings', 'company_profile'));
+                if (!snapshot.exists()) throw new Error('Company profile has not been configured.');
+
+                const profile = snapshot.data();
+                const addressLine1 = formatAddressParts([
+                    profileText(profile.floor),
+                    profileText(profile.buildingNo),
+                    profileText(profile.buildingName),
+                    profileText(profile.area)
+                ]).join(', ');
+                const addressLine2 = formatAddressParts([
+                    profileText(profile.district),
+                    profileText(profile.state),
+                    profileText(profile.country),
+                    profileText(profile.postalCode)
+                ]).join(', ');
+                const address = [addressLine1 || profileText(profile.address), addressLine2].filter(Boolean);
+                const contacts = [
+                    [profileText(profile.phone1), profileText(profile.phone2)].filter(Boolean).join(' | '),
+                    profileText(profile.email),
+                    profileText(profile.website)
+                ].filter(Boolean);
+                const businessDetails = [...address, ...contacts].join('\n');
+
+                if (profileText(profile.name)) document.getElementById('business-name').value = profileText(profile.name);
+                if (profileText(profile.tagline)) document.getElementById('business-tagline').value = profileText(profile.tagline);
+                if (businessDetails) document.getElementById('business-details').value = businessDetails;
+                document.querySelectorAll('[data-output]').forEach(field => field.dispatchEvent(new Event('input')));
+                document.getElementById('status').textContent = 'Company details loaded from the company profile.';
+            } catch (error) {
+                console.error('Could not load receipt company details:', error);
+                document.getElementById('status').textContent = `Company details could not be loaded: ${error.message}`;
+            }
+        }
+
+        loadCompanyDetails();
+    </script>
+</body>
+</html>

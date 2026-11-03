@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ | Patient Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="css/corebiq.css">
+</head>
+<body>
+
+<div class="module-container" id="patient-module">
+    
+    <style>
+    /* --- Core Theme Variables --- */
+    :root {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+
+        --border: #E2E8F0;
+        --grey-light: #F1F5F9;
+        --grey-med: #CBD5E1;
+
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+        --success: #10B981;
+        --danger: #EF4444;
+        --secondary: #64748B;
+    }
+
+        #patient-module { font-family: 'Inter', sans-serif; }
+        
+        /* --- UI Components --- */
+        #patient-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        #patient-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #patient-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #patient-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #patient-module .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { #patient-module .input-group.three-cols { grid-template-columns: 1fr 1fr 1fr; } }
+        @media (min-width: 1024px) { #patient-module .input-group.four-cols { grid-template-columns: 1fr 1fr 1fr 1fr; } }
+
+        #patient-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #patient-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #patient-module .form-input:disabled { background: #F0F0F0; color: #999; cursor: not-allowed; }
+        #patient-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 700; color: var(--text-main); pointer-events: none; }
+
+        #patient-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #patient-module .btn-primary:active { opacity: 0.8; }
+        #patient-module .btn-primary:disabled { background: var(--grey-med); cursor: not-allowed; }
+        #patient-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        #patient-module .btn-verify { background: var(--text-main); color: #fff; border: none; padding: 0 20px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 13px;}
+
+        #patient-module .validation-msg { font-size: 12px; font-weight: 600; margin-top: 6px; display: none; }
+        #patient-module .validation-msg.success { color: var(--success); display: block; }
+        #patient-module .validation-msg.error { color: var(--danger); display: block; }
+
+        /* --- Badges --- */
+        .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; white-space: nowrap; margin-bottom: 4px; }
+        .badge-normal { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+        .badge-regular { background: #E8EEF7; color: #0B1F4B; border: 1px solid #CCD5E3; }
+        .badge-both { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+
+        /* --- Table Styling --- */
+        #patient-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #patient-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+        #patient-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0; }
+        #patient-module .saas-table { width: 100%; border-collapse: collapse; text-align: left; }
+        #patient-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); }
+        #patient-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: top; }
+        #patient-module .saas-table tr:last-child td { border-bottom: none; }
+        #patient-module .patient-info { display: flex; flex-direction: column; }
+        #patient-module .patient-info .pid { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-weight: 700; }
+
+        /* --- CTA Links --- */
+        .cta-link { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #FAFAFA; border: 1px solid var(--border); transition: 0.2s; text-decoration: none; }
+        .cta-link:hover { background: var(--surface); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* --- Mobile Table Fix --- */
+        @media (max-width: 767px) {
+            #patient-module .saas-table thead { display: none; }
+            #patient-module .saas-table, #patient-module .saas-table tbody, #patient-module .saas-table tr, #patient-module .saas-table td { display: block; width: 100%; }
+            #patient-module .saas-table tr { padding: 16px; border-bottom: 1px solid var(--border); }
+            
+            #patient-module .saas-table td { 
+                padding: 8px 0; 
+                border: none; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: flex-start; 
+            }
+            
+            #patient-module .saas-table td::before { 
+                content: attr(data-label); 
+                font-size: 10px; 
+                color: var(--text-muted); 
+                font-weight: 700; 
+                text-transform: uppercase; 
+                margin-bottom: 4px; 
+                letter-spacing: 0.5px;
+            }
+            
+            #patient-module .saas-table td:nth-child(1) { 
+                padding-bottom: 16px; 
+                border-bottom: 1px dashed var(--border); 
+                margin-bottom: 8px;
+            }
+            
+            #patient-module .saas-table td:nth-child(1)::before { display: none; }
+            #patient-module .saas-table td:nth-child(1) .patient-info { flex-direction: row; align-items: center; gap: 8px; font-size: 16px; }
+
+            .mobile-cta-container {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-top: 6px;
+            }
+        }
+
+        /* --- Clean Print Styling for PDF Export --- */
+        @media print {
+            body { background: white; padding: 0; }
+            #sidebar-container, #header-container, #bottomnav-container, .form-card, .section-title, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0; overflow: visible; }
+            #patient-module .table-container { box-shadow: none; border: none; margin: 0; }
+            #patient-module .table-header { padding: 0 0 10px 0; border-bottom: 2px solid #000; }
+            #patient-module .saas-table th { background: white; color: black; border-bottom: 1px solid #000; }
+            #patient-module .saas-table td { border-bottom: 1px solid #E8E5E1; }
+        }
+
+        #patient-module{width:100%;max-width:1200px;margin:0 auto;color:#1F1F1F;font-family:Inter,sans-serif;font-size:14px;line-height:1.5}
+        #patient-module .patients-hero{display:flex;align-items:center;gap:13px;margin-bottom:20px}
+        #patient-module .patients-hero-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #EEF0F4;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+        #patient-module .patients-hero-icon .material-symbols-rounded{font-size:25px}
+        #patient-module .patients-hero h1{margin:0;color:#1F1F1F;font-size:25px;font-weight:600;letter-spacing:-.35px;line-height:1.2}
+        #patient-module .patients-hero p{margin:5px 0 0;color:#6B7280;font-size:13px}
+        #patient-module .patients-toolbar{display:flex;align-items:center;gap:11px;margin-bottom:22px;padding:16px 18px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+        #patient-module .patients-search{height:48px;display:flex;align-items:center;gap:9px;flex:1 1 250px;min-width:180px;padding:0 14px;border:1px solid transparent;border-radius:19px;background:#F4F7FC;color:#8290A2}
+        #patient-module .patients-search:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #patient-module .patients-search>.material-symbols-rounded{font-size:20px}
+        #patient-module .patients-search input{width:100%;height:100%;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;color:#1F1F1F;font:14px Inter,sans-serif}
+        #patient-module .patients-search input::placeholder{color:#718096}
+        #patient-module .patient-filter{position:relative;flex:0 0 160px;min-width:0}
+        #patient-module .patient-filter{position:relative}
+        #patient-module .patient-filter.sort-filter{flex-basis:170px}
+        #patient-module .patient-filter select{width:100%;height:48px;padding:0 38px 0 15px;border:1px solid transparent;border-radius:19px!important;background:#F4F7FC;color:#334155;font:500 13px Inter,sans-serif;appearance:none;outline:0;cursor:pointer}
+        #patient-module .patient-filter select:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #patient-module .patient-filter>.material-symbols-rounded{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:20px}
+        #patient-module .patient-toolbar-actions{display:flex;align-items:center;gap:8px}
+        #patient-module .patient-action-button{height:44px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:0 16px;border:1px solid #E1E4E2;border-radius:22px!important;background:#fff;color:#40454D;font:600 13px Inter,sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer}
+        #patient-module .patient-action-button:hover{background:#F7F9FC}
+        #patient-module .patient-action-button.primary{border-color:#0B1F4B!important;background:#0B1F4B!important;color:#fff!important;box-shadow:0 2px 8px rgba(11,31,75,.16)}
+        #patient-module .patient-action-button.primary:hover{background:#071630}
+        #patient-module .patient-action-button .material-symbols-rounded{font-size:19px}
+        #patient-module .patient-modal{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:18px;background:rgba(31,35,40,.42);backdrop-filter:blur(3px)}
+        #patient-module .patient-modal.show{display:flex}
+        #patient-module .patient-modal-content{width:min(880px,100%);max-height:94vh;overflow:auto;border:1px solid #E1E4E2;border-radius:24px;background:#fff;box-shadow:0 20px 50px rgba(31,35,40,.2)}
+        #patient-module .patient-modal-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid #E1E4E2;background:#fff}
+        #patient-module .patient-modal-heading h2{margin:0;color:#1F1F1F;font-size:18px;font-weight:600}
+        #patient-module .patient-modal-close{width:36px;height:36px;display:grid;place-items:center;border:1px solid #E1E4E2;border-radius:50%!important;background:#fff;color:#5E6672;cursor:pointer}
+        #patient-module .form-card{margin:0;padding:20px;border:0;border-radius:0;background:#fff;box-shadow:none}
+        #patient-module .form-card>h4{display:none}
+        #patient-module .form-label{color:#646A73;font-size:11px;letter-spacing:.35px}
+        #patient-module .form-input{min-height:44px;padding:10px 13px;border:1px solid #E1E4E2;border-radius:12px;background:#F4F7FC;color:#1F1F1F;font:13px Inter,sans-serif}
+        #patient-module textarea.form-input{min-height:72px}
+        #patient-module .form-input:focus{border-color:#0B1F4B;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #patient-module .btn-verify{min-height:44px;border-radius:22px;background:#0B1F4B;color:#fff;font:600 13px Inter,sans-serif}
+        #patient-module .btn-primary,#patient-module .btn-outline{min-height:42px;padding:0 17px;border-radius:22px;font:600 13px Inter,sans-serif}
+        #patient-module .btn-primary{background:#0B1F4B;box-shadow:0 2px 8px rgba(11,31,75,.14)}
+        #patient-module .btn-outline{border:1px solid #C4C7C5;color:#40454D}
+        #patient-module .patient-form-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:14px}
+        #patient-module .table-container{overflow:hidden;margin:0;border:1px solid #E1E4E2;border-radius:26px!important;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06),0 8px 25px rgba(31,35,40,.035)}
+        #patient-module .table-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;border-bottom:1px solid #F0F2F5}
+        #patient-module .table-header h4{margin:0;color:#1F1F1F;font-size:15px;font-weight:600}
+        #patient-module .patient-count{margin-left:7px;color:#7B8492;font-size:12px;font-weight:500}
+        #patient-module .table-header .btn-outline{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 14px}
+        #patient-module .patient-table-scroll{overflow-x:auto}
+        #patient-module .saas-table{width:100%;min-width:780px;border-collapse:collapse;text-align:left}
+        #patient-module .saas-table th{padding:14px 18px;border-bottom:1px solid #EEF0F4;background:#FAFBFC;color:#65748B;font-size:11px;font-weight:600;letter-spacing:.5px}
+        #patient-module .saas-table td{padding:15px 18px;border-bottom:1px solid #F0F2F5;color:#344054;font-size:13px;font-weight:400;vertical-align:middle}
+        #patient-module .saas-table tbody tr:nth-child(even){background:#FCFCFD}
+        #patient-module .saas-table tbody tr:hover{background:#F6F9FE}
+        #patient-module .saas-table tr:last-child td{border-bottom:0}
+        #patient-module .patient-info{display:grid;grid-template-columns:40px minmax(0,1fr);align-items:center;column-gap:11px;min-width:180px}
+        #patient-module .patient-avatar{grid-row:1/3;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#E8EEF7;color:#0B1F4B;font-size:14px;font-weight:600}
+        #patient-module .patient-info strong{overflow-wrap:anywhere;color:#1F1F1F;font-size:14px;font-weight:600}
+        #patient-module .patient-info .pid{grid-column:2;margin:2px 0 0;color:#6B7280;font-size:11px;font-weight:500}
+        #patient-module .badge{padding:4px 9px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.15px}
+        #patient-module .badge-normal{border:1px solid #E1E4E2;background:#F4F7FC;color:#536071}
+        #patient-module .badge-regular{border:1px solid #D2E3FC;background:#E8EEF7;color:#0B1F4B}
+        #patient-module .badge-both{border:1px solid #FAD2CF;background:#FCE8E6;color:#B3261E}
+        #patient-module .patient-mobile-number{color:#344054;font-weight:500}
+        #patient-module .patient-demographic{margin-top:5px;color:#65748B;font-size:12px}
+        #patient-module .patient-branch{display:inline-block;margin-top:5px;color:#0B1F4B;font-size:11px;font-weight:600}
+        #patient-module .patient-address{max-width:260px;color:#65748B;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+        #patient-module .mobile-cta-container{display:flex;gap:6px;margin-top:5px}
+        #patient-module .cta-link{width:30px;height:30px;border:1px solid #E1E4E2;border-radius:50%;background:#fff}
+        #patient-module .cta-link .material-symbols-rounded{font-size:16px}
+        #patient-module .patient-row-actions{display:flex;align-items:center;gap:6px}
+        #patient-module .patient-icon-action{width:34px;height:34px;display:grid;place-items:center;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672;cursor:pointer}
+        #patient-module .patient-icon-action:hover{background:#E8EEF7;color:#0B1F4B}
+        #patient-module .patient-icon-action .material-symbols-rounded{font-size:18px}
+        #patient-module .patient-icon-action{border-radius:50%!important}
+        #patient-module .patient-empty-row{padding:36px 16px!important;color:#6B7280!important;text-align:center}
+        @media(max-width:900px){
+          #patient-module .patients-toolbar{flex-wrap:wrap}
+          #patient-module .patients-search{flex:1 1 100%}
+          #patient-module .patient-filter{flex:1 1 145px}
+          #patient-module .patient-filter.sort-filter{flex:1 1 155px}
+          #patient-module .patient-toolbar-actions{margin-left:auto}
+        }
+        @media(max-width:767px){
+          #patient-module .patients-hero h1{font-size:21px}
+          #patient-module .patients-hero p{font-size:12px}
+          #patient-module .patients-toolbar{gap:8px;padding:12px;border-radius:20px}
+          #patient-module .patients-search{height:44px;flex-basis:100%}
+          #patient-module .patient-filter,#patient-module .patient-filter.sort-filter{flex:1 1 calc(50% - 4px)}
+          #patient-module .patient-filter select{height:42px;padding-left:11px;font-size:12px}
+          #patient-module .patient-toolbar-actions{width:100%;margin:0}
+          #patient-module .patient-toolbar-actions .patient-action-button{flex:1}
+          #patient-module .table-header{padding:13px 14px}
+          #patient-module .saas-table{min-width:0}
+          #patient-module .saas-table thead{display:none}
+          #patient-module .saas-table,#patient-module .saas-table tbody{display:block;width:100%}
+          #patient-module .saas-table tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:13px 15px;border-bottom:1px solid #EEF0F4}
+          #patient-module .saas-table tbody td{display:block;width:auto;padding:4px 0;border:0;font-size:12px}
+          #patient-module .saas-table tbody td::before{display:block;margin-bottom:3px;color:#87909D;content:attr(data-label);font-size:9px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+          #patient-module .saas-table tbody td:first-child{grid-column:1/-1}
+          #patient-module .saas-table tbody td:first-child::before{display:none}
+          #patient-module .saas-table tbody td:last-child{grid-column:1/-1}
+          #patient-module .patient-info{grid-template-columns:38px minmax(0,1fr);min-width:0}
+          #patient-module .patient-avatar{width:38px;height:38px}
+          #patient-module .patient-modal{padding:8px}
+          #patient-module .patient-modal-content{max-height:96dvh;border-radius:20px}
+          #patient-module .patient-modal-heading{padding:13px 15px}
+          #patient-module .form-card{padding:14px}
+          #patient-module .form-card .input-group{grid-template-columns:1fr}
+          #patient-module .form-card .input-group>div[style*="grid-column"]{grid-column:1/-1!important}
+          #patient-module .patient-form-actions{position:sticky;bottom:-14px;margin:0 -14px -14px;padding:12px 14px;border-top:1px solid #E1E4E2;background:#fff}
+        }
+        @media(max-width:380px){
+          #patient-module .patients-hero{align-items:flex-start}
+          #patient-module .patients-hero-icon{flex-basis:42px;width:42px;height:42px}
+          #patient-module .patients-hero h1{font-size:19px}
+          #patient-module .patient-action-button{padding:0 11px;font-size:12px}
+        }
+    </style>
+
+    <header class="patients-hero">
+        <div class="patients-hero-icon"><span class="material-symbols-rounded" aria-hidden="true">groups</span></div>
+        <div>
+            <h1>Patients</h1>
+            <p>Manage your patient records and view their details.</p>
+        </div>
+    </header>
+
+    <div class="patients-toolbar no-print">
+        <label class="patients-search" aria-label="Search patients">
+            <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            <input type="search" id="patientSearchInput" oninput="window.filterAndSortTable()" placeholder="Search name, mobile, or ID...">
+        </label>
+        <label class="patient-filter" aria-label="Filter by branch">
+            <select id="filterBranch" onchange="window.filterAndSortTable()">
+                <option value="">All Branches</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </label>
+        <label class="patient-filter" aria-label="Filter by category">
+            <select id="filterCategory" onchange="window.filterAndSortTable()">
+                <option value="">All Categories</option>
+                <option value="normal">Normal</option>
+                <option value="regular">Regular</option>
+                <option value="both">Both</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </label>
+        <label class="patient-filter sort-filter" aria-label="Sort patients">
+            <select id="sortOption" onchange="window.filterAndSortTable()">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name_asc">Name (A–Z)</option>
+                <option value="name_desc">Name (Z–A)</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">sort</span>
+        </label>
+        <div class="patient-toolbar-actions">
+            <button type="button" class="patient-action-button primary" onclick="window.togglePatientForm(true)">
+                <span class="material-symbols-rounded" aria-hidden="true">add</span>Add Patient
+            </button>
+        </div>
+    </div>
+
+    <div class="patient-modal" id="patientFormModal" aria-hidden="true">
+      <div class="patient-modal-content" role="dialog" aria-modal="true" aria-labelledby="patientFormTitle">
+        <div class="patient-modal-heading">
+            <h2 id="patientFormTitle">Register New Patient</h2>
+            <button type="button" class="patient-modal-close" aria-label="Close patient form" onclick="window.togglePatientForm(false)"><span class="material-symbols-rounded">close</span></button>
+        </div>
+    <div class="form-card">
+        <h4 style="color: var(--primary); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Register New Patient</h4>
+        
+        <form id="add-patient-form" onsubmit="event.preventDefault();">
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Patient ID</label>
+                    <input type="text" id="patientIdInput" class="form-input readonly-input" value="Auto-Generated" readonly tabindex="-1">
+                </div>
+
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Mobile Number (Search / Validate) *</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="tel" id="mobileInput" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required style="font-weight: 600; letter-spacing: 1px;">
+                        <button type="button" class="btn-verify" id="verifyBtn" onclick="window.verifyMobile()">Verify</button>
+                    </div>
+                    <div id="mobileValidationMsg" class="validation-msg"></div>
+                </div>
+            </div>
+
+            <fieldset id="patientDetailsFieldset" style="border: none; padding: 0; margin: 0;" disabled>
+                
+                <div class="input-group four-cols">
+                    <div style="grid-column: span 2;">
+                        <label class="form-label">Patient Name *</label>
+                        <input type="text" id="patientName" class="form-input" placeholder="Full Name" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Age</label>
+                        <input type="number" id="patientAge" class="form-input" placeholder="Years" min="1" max="120">
+                    </div>
+                    <div>
+                        <label class="form-label">Category *</label>
+                        <select id="patientCategory" class="form-input" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Both">Both (Admin Mark)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group three-cols">
+                    <div>
+                        <label class="form-label">Gender</label>
+                        <select id="patientGender" class="form-input">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label class="form-label">Preferred Branch</label>
+                        <select id="patientBranch" class="form-input">
+                            <option value="">Loading Branches...</option>
+                        </select>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Address</label>
+                        <textarea id="patientAddress" class="form-input" rows="2" placeholder="Full residential address..."></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Notes / Medical History</label>
+                        <textarea id="patientNotes" class="form-input" rows="3" placeholder="Any specific notes or initial observations..."></textarea>
+                    </div>
+                </div>
+
+                <div class="patient-form-actions">
+                    <button type="button" class="btn-outline no-print" onclick="window.resetForm()">Clear Form</button>
+                    <button type="button" class="btn-outline no-print" onclick="window.togglePatientForm(false)">Cancel</button>
+                    <button type="button" class="btn-primary no-print" id="saveBtn" onclick="window.savePatient()">Save Patient</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+        
+        <div class="table-header">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h4>Patient Directory <span id="patientCount" class="patient-count"></span></h4>
+                <button class="btn-outline no-print" onclick="window.exportPatientsPDF()">
+                    <span class="material-symbols-rounded" style="font-size: 16px; color: var(--primary);">picture_as_pdf</span> Export
+                </button>
+            </div>
+        </div>
+        
+        <div class="patient-table-scroll">
+        <table class="saas-table">
+            <thead>
+                <tr>
+                    <th>Patient Name & ID</th>
+                    <th>Mobile No.</th>
+                    <th>Demographics / Branch</th>
+                    <th>Address Details</th>
+                    <th class="no-print">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="patientTableBody">
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+            authDomain: "cmf001stra.firebaseapp.com",
+            projectId: "cmf001stra",
+            storageBucket: "cmf001stra.firebasestorage.app",
+            messagingSenderId: "763958641347",
+            appId: "1:763958641347:web:316876bc2340b26bd21876",
+            measurementId: "G-770FBR88LJ"
+        };
+
+        const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+        const db = getFirestore(app);
+
+        let patientFormPreviousOverflow;
+        window.togglePatientForm = function(open) {
+            const modal = document.getElementById('patientFormModal');
+            if (!modal) return;
+            if (open && !modal.classList.contains('show')) {
+                patientFormPreviousOverflow = document.body.style.overflow;
+            }
+            modal.classList.toggle('show', Boolean(open));
+            modal.setAttribute('aria-hidden', String(!open));
+            if (open) document.body.style.overflow = 'hidden';
+            else if (patientFormPreviousOverflow !== undefined) {
+                document.body.style.overflow = patientFormPreviousOverflow;
+                patientFormPreviousOverflow = undefined;
+            }
+            if (open) {
+                window.resetForm();
+                window.setTimeout(() => document.getElementById('mobileInput')?.focus(), 80);
+            }
+        };
+
+        document.getElementById('patientFormModal').addEventListener('click', event => {
+            if (event.target.id === 'patientFormModal') window.togglePatientForm(false);
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && document.getElementById('patientFormModal').classList.contains('show')) {
+                window.togglePatientForm(false);
+            }
+        });
+
+        const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        })[character]);
+
+        // --- 0. LOAD BRANCHES (UPDATED FOR ROLE BASED ACCESS) ---
+        window.loadBranchesForPatient = async function() {
+            const select = document.getElementById('patientBranch');
+            const filterSelect = document.getElementById('filterBranch');
+            
+            // SECURITY: If standard user, lock the dropdown to their branch only
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                const userBranch = window.currentUser.branch;
+                select.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                select.style.pointerEvents = 'none';
+                select.style.background = 'var(--grey-med)';
+                
+                filterSelect.innerHTML = `<option value="${userBranch}">${userBranch}</option>`;
+                filterSelect.style.pointerEvents = 'none';
+                filterSelect.style.background = 'var(--grey-med)';
+                return; // Stop executing
+            }
+
+            // Normal flow for Admin
+            try {
+                const snap = await getDocs(collection(db, "branches"));
+                let branchList = [];
+                
+                snap.forEach(doc => {
+                    const bName = doc.data().name;
+                    if(bName) branchList.push(bName);
+                });
+
+                branchList.sort();
+                select.innerHTML = '<option value="">Select Branch</option>';
+                filterSelect.innerHTML = '<option value="">All Branches</option>';
+                
+                branchList.forEach(bName => {
+                    select.appendChild(new Option(bName, bName));
+                    filterSelect.appendChild(new Option(bName, bName));
+                });
+            } catch(e) {
+                console.error("Error loading branches", e);
+                select.innerHTML = '<option value="">Select Branch</option><option value="Mahe">Mahe</option>';
+            }
+        };
+
+        window.loadBranchesForPatient();
+
+        // --- 1. FILTER AND SORT FUNCTION ---
+        window.filterAndSortTable = function() {
+            const branchQuery = document.getElementById("filterBranch").value.toLowerCase();
+            const categoryQuery = document.getElementById("filterCategory").value.toLowerCase();
+            const sortQuery = document.getElementById("sortOption").value;
+            const textQuery = document.getElementById("patientSearchInput").value.toLowerCase();
+
+            const tableBody = document.getElementById("patientTableBody");
+            const rows = Array.from(tableBody.getElementsByTagName("tr"));
+            
+            // 1. First, apply filters (display: '' or display: 'none')
+            rows.forEach(row => {
+                if (row.cells.length === 1) return; // Skip "loading/empty" status rows
+                
+                const rowBranch = (row.getAttribute("data-branch") || "").toLowerCase();
+                const rowCategory = (row.getAttribute("data-category") || "").toLowerCase();
+                const rowSearch = (row.getAttribute("data-search") || "").toLowerCase();
+
+                let show = true;
+                if (branchQuery && rowBranch !== branchQuery) show = false;
+                if (categoryQuery && rowCategory !== categoryQuery) show = false;
+                if (textQuery && rowSearch.indexOf(textQuery) === -1) show = false;
+
+                row.style.display = show ? "" : "none";
+            });
+
+            // 2. Second, execute sorting logic
+            rows.sort((a, b) => {
+                if (a.cells.length === 1 || b.cells.length === 1) return 0;
+
+                if (sortQuery === 'name_asc' || sortQuery === 'name_desc') {
+                    const nameA = a.getAttribute('data-name').toLowerCase();
+                    const nameB = b.getAttribute('data-name').toLowerCase();
+                    if (nameA < nameB) return sortQuery === 'name_asc' ? -1 : 1;
+                    if (nameA > nameB) return sortQuery === 'name_asc' ? 1 : -1;
+                    return 0;
+                } else {
+                    // Time based sorting
+                    const timeA = parseInt(a.getAttribute('data-time') || 0);
+                    const timeB = parseInt(b.getAttribute('data-time') || 0);
+                    return sortQuery === 'newest' ? timeB - timeA : timeA - timeB;
+                }
+            });
+
+            // 3. Re-append sorted rows to the DOM
+            rows.forEach(row => tableBody.appendChild(row));
+            const visibleCount = rows.filter(row => row.cells.length > 1 && row.style.display !== 'none').length;
+            const countLabel = document.getElementById('patientCount');
+            if (countLabel) countLabel.textContent = `${visibleCount} ${visibleCount === 1 ? 'patient' : 'patients'}`;
+        }
+
+        window.clearFilters = function() {
+            if (window.currentUser && window.currentUser.role === 'admin') {
+                document.getElementById("filterBranch").value = "";
+            }
+            document.getElementById("filterCategory").value = "";
+            document.getElementById("sortOption").value = "newest";
+            document.getElementById("patientSearchInput").value = "";
+            window.filterAndSortTable();
+        }
+
+        // --- 2. EXPORT PDF FUNCTION ---
+        window.exportPatientsPDF = function() {
+            window.print();
+        }
+
+        // --- 3. LOAD PATIENTS (UPDATED FOR ROLE BASED ACCESS) ---
+        window.loadPatients = async function() {
+            const tableBody = document.getElementById('patientTableBody');
+            tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Loading patients...</td></tr>';
+
+            try {
+                let q;
+                // Admin gets all, Branch users get only their branch
+                if (window.currentUser && window.currentUser.role !== 'admin') {
+                    q = query(collection(db, "patients"), where("branch", "==", window.currentUser.branch));
+                } else {
+                    q = query(collection(db, "patients"));
+                }
+
+                const querySnapshot = await getDocs(q);
+                tableBody.innerHTML = ''; 
+                
+                if (querySnapshot.empty) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--text-muted);">No patients found.</td></tr>';
+                    return;
+                }
+
+                // Initial fetch array mapped so sorting can be done inside filterAndSortTable naturally.
+                let pList = [];
+                querySnapshot.forEach(doc => pList.push({ id: doc.id, data: doc.data() }));
+
+                pList.forEach((item) => {
+                    const data = item.data;
+                    const catLower = (data.category || 'Normal').toLowerCase();
+                    const createdAtTime = data.createdAt ? (data.createdAt.toMillis ? data.createdAt.toMillis() : new Date(data.createdAt).getTime()) : 0;
+                    
+                    let badgeClass = 'badge-normal';
+                    if(catLower === 'regular') badgeClass = 'badge-regular';
+                    if(catLower === 'both') badgeClass = 'badge-both';
+
+                    const tr = document.createElement('tr');
+                    tr.setAttribute("data-branch", data.branch || '');
+                    tr.setAttribute("data-category", data.category || 'Normal');
+                    tr.setAttribute("data-name", data.name || '');
+                    tr.setAttribute("data-time", createdAtTime);
+                    tr.setAttribute("data-search", `${data.name || ''} ${data.mobile || ''} ${data.patientId || ''}`.toLowerCase());
+
+                    tr.innerHTML = `
+                        <td data-label="Patient"><div class="patient-info"><span class="patient-avatar" aria-hidden="true">${escapeHtml((data.name || '?').trim().charAt(0).toUpperCase())}</span><strong>${escapeHtml(data.name || 'Unknown patient')}</strong><span class="pid">${escapeHtml(data.patientId || 'ID unavailable')}</span></div></td>
+                        <td data-label="Mobile">
+                            <span class="patient-mobile-number">${escapeHtml(data.mobile || '--')}</span>
+                            <div class="mobile-cta-container no-print">
+                                <a href="tel:${encodeURIComponent(data.mobile || '')}" class="cta-link" title="Call"><span class="material-symbols-rounded" style="color:var(--primary)">call</span></a>
+                                <a href="https://wa.me/91${encodeURIComponent(String(data.mobile || '').replace(/\D/g, ''))}" class="cta-link" target="_blank" rel="noopener noreferrer" title="WhatsApp"><span class="material-symbols-rounded" style="color:#188038">chat</span></a>
+                            </div>
+                        </td>
+                        <td data-label="Demographics">
+                            <span class="badge ${badgeClass}">${escapeHtml(data.category || 'Normal')}</span>
+                            <div class="patient-demographic">${escapeHtml(data.age || '--')} Yrs · ${escapeHtml(data.gender || '--')}</div>
+                            <span class="patient-branch">${escapeHtml(data.branch || 'Unassigned')}</span>
+                        </td>
+                        <td data-label="Address"><span class="patient-address">${escapeHtml(data.address || '--')}</span></td>
+                        <td class="no-print" data-label="Actions">
+                            <div class="patient-row-actions">
+                                <span class="patient-icon-action" title="View Notes"><span class="material-symbols-rounded">assignment</span></span>
+                                <span class="patient-icon-action" title="Edit"><span class="material-symbols-rounded">edit</span></span>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                // Apply default Sort (Newest) and current filter states on load
+                window.filterAndSortTable();
+
+            } catch (error) {
+                console.error("Firebase Read Error:", error);
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color: var(--danger);">Error loading data.</td></tr>';
+            }
+        };
+
+        window.loadPatients();
+
+        // --- 4. SMART VERIFY (CROSS-CHECKS DATABASE) ---
+        window.verifyMobile = async function() {
+            const mobileInput = document.getElementById('mobileInput').value;
+            const validationMsg = document.getElementById('mobileValidationMsg');
+            const fieldset = document.getElementById('patientDetailsFieldset');
+            const verifyBtn = document.getElementById('verifyBtn');
+            
+            validationMsg.className = 'validation-msg';
+
+            if (mobileInput.length !== 10) {
+                validationMsg.innerText = "Please enter a valid 10-digit mobile number.";
+                validationMsg.classList.add('error');
+                fieldset.disabled = true;
+                return;
+            }
+
+            verifyBtn.innerText = "Checking...";
+            verifyBtn.disabled = true;
+
+            try {
+                // Check if they are already in the PATIENTS database
+                const pSnap = await getDocs(query(collection(db, "patients"), where("mobile", "==", mobileInput)));
+
+                if (!pSnap.empty) {
+                    let existingName = pSnap.docs[0].data().name; 
+                    validationMsg.innerHTML = `Patient already registered as <strong>${existingName}</strong>! Directory filtered below.`;
+                    validationMsg.classList.add('error');
+                    fieldset.disabled = true;
+                    
+                    // Auto-search the table to show them the duplicate
+                    document.getElementById('patientSearchInput').value = mobileInput;
+                    window.filterAndSortTable();
+                } else {
+                    // Brand new number
+                    validationMsg.innerText = "Number is available. Please fill out the details.";
+                    validationMsg.classList.add('success');
+                    fieldset.disabled = false;
+                    document.getElementById('patientName').focus();
+                    
+                    // Clear search if it was previously active
+                    document.getElementById('patientSearchInput').value = "";
+                    window.filterAndSortTable();
+                }
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                validationMsg.innerText = "Error checking database.";
+                validationMsg.classList.add('error');
+            }
+
+            verifyBtn.innerText = "Verify";
+            verifyBtn.disabled = false;
+        }
+
+        // --- 5. SAVE PATIENT ---
+        window.savePatient = async function() {
+            const saveBtn = document.getElementById('saveBtn');
+            const mobile = document.getElementById('mobileInput').value;
+            const name = document.getElementById('patientName').value;
+            const age = document.getElementById('patientAge').value;
+            const category = document.getElementById('patientCategory').value;
+            const gender = document.getElementById('patientGender').value;
+            const branch = document.getElementById('patientBranch').value;
+            const address = document.getElementById('patientAddress').value;
+            const notes = document.getElementById('patientNotes').value;
+
+            if (!name || !mobile || !category) {
+                alert("Patient Name, Mobile Number, and Category are required!");
+                return;
+            }
+
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            try {
+                const generatedId = "P" + Math.floor(Math.random() * 90000 + 10000);
+                await addDoc(collection(db, "patients"), {
+                    patientId: generatedId,
+                    mobile: mobile,
+                    name: name,
+                    age: age,
+                    category: category,
+                    gender: gender,
+                    branch: branch,
+                    address: address,
+                    notes: notes,
+                    createdAt: new Date()
+                });
+
+                alert(`Success! Patient saved with ID: ${generatedId}`);
+                window.resetForm();
+                window.togglePatientForm(false);
+                window.loadPatients();
+
+            } catch (error) {
+                console.error("Firebase Save Error:", error);
+                alert("Failed to save patient.");
+            }
+
+            saveBtn.innerText = "Save Patient";
+            saveBtn.disabled = false;
+        }
+
+        // --- 6. RESET FORM ---
+        window.resetForm = function() {
+            // Hard reset the form HTML logic
+            document.getElementById('add-patient-form').reset();
+            
+            // UI specific reset overrides
+            document.getElementById('mobileValidationMsg').className = 'validation-msg';
+            document.getElementById('mobileValidationMsg').innerText = '';
+            document.getElementById('patientDetailsFieldset').disabled = true;
+            document.getElementById('patientCategory').value = 'Normal';
+            
+            // Ensure branch stays locked to standard user branch if applicable
+            if (window.currentUser && window.currentUser.role !== 'admin') {
+                document.getElementById('patientBranch').value = window.currentUser.branch;
+            } else {
+                document.getElementById('patientBranch').value = "";
+            }
+        }
+    </script>
+
+</div>
+</body>
+</html>
