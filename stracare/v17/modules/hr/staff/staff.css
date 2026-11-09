@@ -1,0 +1,53 @@
+:root {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+        --danger: #EF4444;
+    }
+
+        #staff-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; }
+        #staff-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #staff-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #staff-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #staff-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #staff-module .input-group { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #staff-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #staff-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #staff-module .readonly-input { background: #F4F4F4; color: var(--text-muted); font-weight: 600; pointer-events: none; }
+
+        #staff-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        #staff-module .btn-primary:active { opacity: 0.8; }
+        #staff-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+        
+        #staff-module .icon-action { color: var(--text-muted); cursor: pointer; font-size: 20px; transition: color 0.2s; }
+        #staff-module .icon-action:hover { color: var(--primary); }
+        #staff-module .icon-action.delete:hover { color: var(--danger); }
+
+        /* Google Sheet Style Horizontal Scroll Table */
+        #staff-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #staff-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        #staff-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0; }
+        
+        #staff-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #staff-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #staff-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #staff-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #staff-module .saas-table tr:last-child td { border-bottom: none; }
+        
+        #staff-module .t-id { font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 4px 8px; border-radius: 6px; }
+
+        /* REMOVED the restrictive mobile max-width card CSS */

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7fc">
+    <title>COREBIQ BUSINESS FLOW APP | Book an Appointment</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    
+    <link rel="stylesheet" href="./public-booking.css" data-module-style>
+</head>
+<body>
+    <main class="booking-shell">
+        <section class="card">
+            <header class="card-header">
+                <div class="heading-row">
+                    <span class="heading-icon"><span class="material-symbols-rounded" aria-hidden="true">event_available</span></span>
+                    <div>
+                        <div class="eyebrow">Request an appointment</div>
+                        <h1>Book your visit</h1>
+                        <p class="intro">Choose a branch and preferred date and time. Our team will contact you to confirm your appointment.</p>
+                    </div>
+                </div>
+            </header>
+            <form id="publicBookingForm">
+                <div class="fields">
+                    <div class="field full">
+                        <label for="bookingBranch">Branch *</label>
+                        <select id="bookingBranch" required>
+                            <option value="">Loading branches…</option>
+                        </select>
+                        <p class="hint" id="branchHint">Select the branch you would like to visit.</p>
+                    </div>
+                    <div class="field">
+                        <label for="bookingName">Patient name *</label>
+                        <input id="bookingName" name="name" type="text" autocomplete="name" maxlength="100" required placeholder="Full name">
+                    </div>
+                    <div class="field">
+                        <label for="bookingMobile">Mobile number *</label>
+                        <input id="bookingMobile" name="mobile" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="10" pattern="[0-9]{10}" required placeholder="10-digit mobile number">
+                        <p class="hint">Our team will verify whether this is an existing patient after receiving your request.</p>
+                    </div>
+                    <div class="field">
+                        <label for="bookingDate">Preferred date *</label>
+                        <input id="bookingDate" name="date" type="date" required>
+                    </div>
+                    <div class="field">
+                        <label for="bookingTime">Preferred time * (9:00 AM–9:00 PM)</label>
+                        <input id="bookingTime" name="time" type="time" min="09:00" max="21:00" required>
+                    </div>
+                    <div class="field full">
+                        <label for="bookingNotes">Message (optional)</label>
+                        <textarea id="bookingNotes" name="notes" maxlength="500" placeholder="Tell us briefly what you need help with."></textarea>
+                    </div>
+                </div>
+                <div class="privacy-note">
+                    <span class="material-symbols-rounded">lock</span>
+                    <span>Your details are sent securely to our booking team for review. This page does not reveal patient records or confirm an appointment automatically.</span>
+                </div>
+                <button id="submitBooking" class="submit" type="submit">
+                    <span class="material-symbols-rounded">event_available</span>
+                    Send booking request
+                </button>
+            </form>
+            <div id="bookingNotice" class="notice" role="status" aria-live="polite"></div>
+        </section>
+        <div class="footer">Your appointment is confirmed only after our team contacts you.</div>
+    </main>
+    <script type="module" src="./public-booking.js"></script>
+</body>
+</html>

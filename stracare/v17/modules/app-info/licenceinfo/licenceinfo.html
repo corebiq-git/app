@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F4F7FC">
+    <title>COREBIQ BUSINESS FLOW APP | Licence Information</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    
+    <link rel="stylesheet" href="./licenceinfo.css" data-module-style>
+</head>
+<body>
+<div class="module-container" id="licence-module">
+    <header class="licence-header">
+        <span class="licence-heading-icon"><span class="material-symbols-rounded" aria-hidden="true">workspace_premium</span></span>
+        <div>
+            <h1>Licence Information</h1>
+            <p class="licence-subtitle">View your plan, purchase date, and current licence validity.</p>
+        </div>
+    </header>
+
+    <section class="licence-card" aria-labelledby="licencePlanName">
+        <div class="licence-card-top">
+            <div>
+                <div class="plan-eyebrow"><span class="material-symbols-rounded" aria-hidden="true">verified</span>Subscription plan</div>
+                <h2 class="plan-name" id="licencePlanName">Base Plan</h2>
+                <p class="plan-caption">COREBIQ clinic management licence</p>
+            </div>
+            <div class="licence-status" id="licenceStatus" role="status">
+                <span class="material-symbols-rounded" aria-hidden="true">check_circle</span>
+                <span id="licenceStatusText">Active</span>
+            </div>
+        </div>
+
+        <div class="licence-details">
+            <article class="licence-detail">
+                <span class="detail-label"><span class="material-symbols-rounded" aria-hidden="true">schedule</span>Validity</span>
+                <strong class="detail-value">1 Year</strong>
+                <span class="detail-hint">Annual subscription</span>
+            </article>
+            <article class="licence-detail">
+                <span class="detail-label"><span class="material-symbols-rounded" aria-hidden="true">shopping_bag</span>Date of Purchase</span>
+                <strong class="detail-value" id="licencePurchaseDate">01 Aug 2026</strong>
+                <span class="detail-hint">Licence start date</span>
+            </article>
+            <article class="licence-detail">
+                <span class="detail-label"><span class="material-symbols-rounded" aria-hidden="true">event</span>Valid Till</span>
+                <strong class="detail-value" id="licenceValidTill">01 Aug 2027</strong>
+                <span class="detail-hint">End of one-year validity</span>
+            </article>
+            <article class="licence-detail">
+                <span class="detail-label"><span class="material-symbols-rounded" aria-hidden="true">hourglass_top</span>Days of Validity Left</span>
+                <strong class="detail-value days" id="licenceDaysRemaining">—</strong>
+                <span class="detail-hint" id="licenceDaysHint">Calculated from today</span>
+            </article>
+        </div>
+
+        <div class="validity-progress" aria-label="Licence validity progress">
+            <span class="progress-icon"><span class="material-symbols-rounded" aria-hidden="true">monitoring</span></span>
+            <div class="progress-copy">
+                <strong id="licenceProgressTitle">Your licence is active</strong>
+                <span id="licenceProgressCopy">Validity is calculated automatically using today's date.</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Licence validity elapsed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill" id="licenceProgressFill"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="./licenceinfo.js"></script>
+</div>
+</body>
+</html>
