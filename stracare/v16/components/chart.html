@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income & Expenses Chart Component</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            /* Material 3 / Gemini Colors */
+            --bg-color: #F0F4F9;
+            --surface-color: #FFFFFF;
+            --text-main: #1F1F1F;
+            --text-muted: #444746;
+            --border-color: #E1E3E8;
+            
+            /* Gemini Blue for Header */
+            --gemini-blue: #1A73E8;
+            
+            /* Chart & Metric Colors */
+            --income-color: #108043; /* Green */
+            --expense-color: #D72C0D; /* Red */
+            --profit-bg: #E6F4EA;
+            --loss-bg: #FCE8E6;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        /* Standard Card Container */
+        .chart-card {
+            background-color: var(--surface-color);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevents edge clipping */
+        }
+
+        /* Filter Toggle (Updated to Square Type) */
+        .filter-container {
+            display: inline-flex;
+            background-color: #F0F4F9;
+            border-radius: 8px; /* Square layout with soft corners */
+            padding: 4px;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border-radius: 6px; /* Matches container */
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 640px) {
+            .filter-btn {
+                padding: 6px 16px;
+                font-size: 13px;
+            }
+        }
+
+        .filter-btn.active {
+            background-color: #FFFFFF;
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Chart Wrapper */
+        .chart-wrapper {
+            position: relative;
+            height: 220px; 
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .chart-wrapper {
+                height: 400px; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Direct Chart Card -->
+    <div class="chart-card p-5 md:p-8">
+        
+        <!-- Header & P&L Indicator -->
+        <div class="flex justify-between items-start mb-5 sm:mb-6 flex-wrap gap-3">
+            <div>
+                <h2 class="text-xl md:text-2xl font-semibold font-['Outfit']" style="color: var(--gemini-blue);">Financial Overview</h2>
+                <p class="text-sm mt-1 font-medium text-gray-500">Track your income and expenses</p>
+            </div>
+            
+            <!-- Dynamic Profit / Loss Badge (Initialized to Loss state for "This Month") -->
+            <div id="metricBadge" class="flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full transition-colors duration-300" style="background-color: var(--loss-bg); color: var(--expense-color);">
+                <span id="metricIcon" class="material-symbols-rounded transition-transform duration-300" style="font-size: 18px;">trending_down</span>
+                <span id="metricText" class="text-sm sm:text-base font-semibold">-12.5%</span>
+            </div>
+        </div>
+
+        <!-- Filter Controls & Legend -->
+        <div class="flex flex-row justify-between items-center flex-wrap gap-y-3 mb-6 w-full">
+            
+            <!-- This Month / This Year Toggle (Square style) -->
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="month">This Month</button>
+                <button class="filter-btn" data-filter="year">This Year</button>
+            </div>
+
+            <!-- Custom Legend -->
+            <div class="flex gap-2 sm:gap-4 text-[11px] sm:text-sm font-medium ml-1">
+                <div class="flex items-center gap-1 sm:gap-1.5">
+                    <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0" style="background-color: var(--income-color);"></div>
+                    <span class="text-gray-700">Income</span>
+                </div>
+                <div class="flex items-center gap-1 sm:gap-1.5">
+                    <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full flex-shrink-0" style="background-color: var(--expense-color);"></div>
+                    <span class="text-gray-700">Expenses</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Canvas Wrapper -->
+        <div class="chart-wrapper">
+            <canvas id="financialChart"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Data & Logic ---
+        const chartData = {
+            month: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+                income: [12000, 14000, 13000, 15000, 12000],   
+                expenses: [14000, 18000, 15000, 19000, 16000], 
+                ratio: '-12.5%', 
+                isProfit: false  
+            },
+            year: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                income: [140000, 160000, 150000, 180000, 175000, 210000, 190000, 220000, 240000, 210000, 260000, 290000],
+                expenses: [90000, 110000, 105000, 120000, 115000, 140000, 125000, 150000, 160000, 145000, 170000, 190000],
+                ratio: '+24.2%', 
+                isProfit: true   
+            }
+        };
+
+        const ctx = document.getElementById('financialChart').getContext('2d');
+        
+        const incomeColor = '#108043';
+        const expenseColor = '#D72C0D';
+        const profitBg = '#E6F4EA';
+        const lossBg = '#FCE8E6';
+
+        // Initialize Chart 
+        let financialChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.month.labels,
+                datasets: [
+                    {
+                        label: 'Income',
+                        data: chartData.month.income,
+                        borderColor: incomeColor,
+                        backgroundColor: incomeColor + '1A', 
+                        borderWidth: 2,
+                        pointBackgroundColor: '#FFF',
+                        pointBorderColor: incomeColor,
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4 
+                    },
+                    {
+                        label: 'Expenses',
+                        data: chartData.month.expenses,
+                        borderColor: expenseColor,
+                        backgroundColor: expenseColor + '1A', 
+                        borderWidth: 2,
+                        pointBackgroundColor: '#FFF',
+                        pointBorderColor: expenseColor,
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4 
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                layout: {
+                    padding: 0
+                },
+                plugins: {
+                    legend: {
+                        display: false 
+                    },
+                    tooltip: {
+                        backgroundColor: '#1F1F1F',
+                        padding: 12,
+                        titleFont: { family: 'Inter', size: 13 },
+                        bodyFont: { family: 'Inter', size: 14, weight: 'bold' },
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 12 },
+                            color: '#71717A'
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#E4E4E7',
+                            borderDash: [5, 5],
+                            drawBorder: false
+                        },
+                        ticks: {
+                            font: { family: 'Inter', size: 12 },
+                            color: '#71717A',
+                            callback: function(value) {
+                                if (value >= 1000) return '₹' + (value / 1000) + 'k';
+                                return '₹' + value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // --- Filter Toggle Logic ---
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const metricBadge = document.getElementById('metricBadge');
+        const metricIcon = document.getElementById('metricIcon');
+        const metricText = document.getElementById('metricText');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Update Button Active State
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+
+                const timeframe = e.target.getAttribute('data-filter');
+                const selectedData = chartData[timeframe];
+                
+                // Update Chart Data
+                financialChart.data.labels = selectedData.labels;
+                financialChart.data.datasets[0].data = selectedData.income;
+                financialChart.data.datasets[1].data = selectedData.expenses;
+                financialChart.update();
+
+                // Update Metric Badge (Ratio % and Colors)
+                metricText.textContent = selectedData.ratio;
+                
+                if (selectedData.isProfit) {
+                    metricBadge.style.backgroundColor = profitBg;
+                    metricBadge.style.color = incomeColor;
+                    metricIcon.textContent = 'trending_up';
+                } else {
+                    metricBadge.style.backgroundColor = lossBg;
+                    metricBadge.style.color = expenseColor;
+                    metricIcon.textContent = 'trending_down';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

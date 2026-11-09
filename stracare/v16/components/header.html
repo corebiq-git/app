@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Layout - Header Only</title>
+  
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0..1,0" rel="stylesheet" />
+  
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --md-sys-color-surface: #FFFFFF;
+      --md-sys-color-on-surface-variant: #444746;
+      --md-sys-color-secondary-container: #E8EAED; /* Light Grey */
+      --md-sys-color-on-secondary-container: #1F1F1F; /* Dark Grey/Black */
+      --md-sys-color-outline-variant: #C4C7C5;
+      --md-sys-color-surface-container: #F3F4F9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--md-sys-color-surface-container); 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    /* ---------------------------------
+       HEADER COMPONENT
+       --------------------------------- */
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 72px;
+      background-color: var(--md-sys-color-surface);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      z-index: 100;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); 
+    }
+
+    /* Search Bar */
+    .search-bar {
+      flex: 1;
+      height: 48px;
+      background-color: var(--md-sys-color-surface-container);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-bar:focus-within {
+      background-color: var(--md-sys-color-surface);
+      box-shadow: 0 0 0 1px var(--md-sys-color-outline-variant);
+    }
+
+    .search-bar .material-symbols-rounded {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .search-input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      width: 100%;
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .search-input::placeholder {
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* Header Action Icons (Notification, Profile) */
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-icon-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      color: var(--md-sys-color-on-surface-variant);
+      transition: background-color 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    /* Shared Icon Settings */
+    .material-symbols-rounded {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-size: 24px;
+      transition: color 0.2s cubic-bezier(0.2, 0, 0, 1), font-variation-settings 0.2s ease;
+    }
+
+    /* Header Active State Behaviors */
+    .header-icon-btn.active {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+    }
+
+    .header-icon-btn.active .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .profile-icon {
+      font-size: 28px;
+    }
+
+    /* Main Content Area */
+    main {
+      padding-top: 88px; /* Header height + spacing */
+      padding-bottom: 24px;
+      padding-inline: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="search-bar">
+      <span class="material-symbols-rounded">search</span>
+      <input type="text" class="search-input" placeholder="Search...">
+    </div>
+    
+    <div class="header-actions">
+      <div class="header-icon-btn" id="btn-notifications">
+        <span class="material-symbols-rounded">notifications</span>
+      </div>
+      <div class="header-icon-btn" id="btn-profile">
+        <span class="material-symbols-rounded profile-icon">account_circle</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dummy Main Content Area -->
+  <main>
+    <!-- Add your scrollable page content here -->
+  </main>
+
+  <script>
+    // Header Icons Animated Toggle Logic
+    const headerBtns = document.querySelectorAll('.header-icon-btn');
+    headerBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Toggle the active class to trigger the FILL animation and grey background
+        btn.classList.toggle('active');
+      });
+    });
+  </script>
+</body>
+</html>

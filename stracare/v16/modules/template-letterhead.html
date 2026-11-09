@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CM Letterhead Generator</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        :root {
+            /* Material 3 / Gemini Inspired Tonal Palette */
+            --md-sys-color-primary: #0A56D9;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #D3E3FD;
+            --md-sys-color-on-primary-container: #041E49;
+            
+            --md-sys-color-secondary-container: #E1E3E8;
+            --md-sys-color-on-secondary-container: #1F1F1F;
+            
+            --md-sys-color-surface: #F8F9FA;
+            --md-sys-color-surface-container: #EDEEF0;
+            --md-sys-color-on-surface: #1F1F1F;
+            --md-sys-color-on-surface-variant: #444746;
+            
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-full: 9999px;
+            --md-sys-shape-corner-extra-large: 28px;
+        }
+
+        body {
+            background-color: var(--md-sys-color-surface-container);
+            font-family: 'Inter', sans-serif;
+            color: var(--md-sys-color-on-surface);
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+        }
+
+        .font-brand { font-family: 'Outfit', sans-serif; }
+
+        /* Form Styles */
+        .form-container {
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--md-sys-shape-corner-extra-large);
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 0.5rem;
+        }
+
+        .md3-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--md-sys-color-secondary-container);
+            border-radius: var(--md-sys-shape-corner-small);
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .md3-input:focus {
+            outline: none;
+            border-color: var(--md-sys-color-primary);
+            box-shadow: 0 0 0 2px var(--md-sys-color-primary-container);
+        }
+        
+        textarea.md3-input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Material 3 Buttons */
+        .md3-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: var(--md-sys-shape-corner-full);
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
+            border: none;
+        }
+
+        .md3-btn-primary {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+        }
+        
+        .md3-btn-primary:hover {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            opacity: 0.95;
+        }
+
+        .md3-btn-tonal {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+        }
+
+        .md3-btn-tonal:hover {
+            background-color: #c2d7fc;
+        }
+
+        .md3-btn-icon {
+            padding: 10px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .md3-btn-icon:hover {
+            background-color: #d5d7dc;
+        }
+
+        /* Floating Action Bar */
+        .action-bar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--md-sys-shape-corner-extra-large);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: none; /* Hidden initially */
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            width: 95%;
+            max-width: 42rem;
+        }
+        
+        .action-bar.visible {
+            display: flex;
+        }
+
+        /* Paper Styles */
+        .paper-wrapper {
+            display: none; /* Hidden initially */
+            padding: 1rem;
+            padding-bottom: 100px; /* Space for action bar */
+        }
+        
+        .paper-wrapper.visible {
+            display: block;
+        }
+
+        .paper-container {
+            width: 100%;
+            max-width: 210mm;
+            min-height: 297mm;
+            background-color: #ffffff;
+            margin: 0 auto;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border-radius: var(--md-sys-shape-corner-medium);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #4285F4, #9B72CB, #D96570);
+        }
+
+        /* Print Specific Styles */
+        @media print {
+            body { background: none !important; background-color: white !important; }
+            .no-print { display: none !important; }
+            .form-section { display: none !important; }
+            .paper-wrapper { padding: 0 !important; display: block !important;}
+            .paper-container {
+                box-shadow: none !important; margin: 0 !important; border-radius: 0 !important;
+                width: 100% !important; max-width: none !important; min-height: auto !important;
+                padding: 0 !important;
+            }
+            @page { size: A4; margin: 15mm; }
+        }
+        
+        /* Material Icon setup */
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+        
+        .view-transition {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: Form Input -->
+    <div id="form-section" class="form-section view-transition opacity-100 p-4">
+        <div class="form-container">
+            <div class="flex items-center gap-3 mb-8">
+                <span class="material-symbols-rounded text-blue-600 text-3xl">edit_document</span>
+                <h1 class="text-2xl font-brand font-semibold">Letterhead Details</h1>
+            </div>
+            
+            <form id="letterhead-form" onsubmit="generateLetterhead(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                    <!-- Company Info -->
+                    <div class="col-span-1 md:col-span-2"><h2 class="text-lg font-medium text-gray-800 border-b pb-2 mb-4">Company Details</h2></div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="companyName">Company Name</label>
+                        <input type="text" id="companyName" class="md3-input" required value="Nexus Innovations">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="tagline">Tagline</label>
+                        <input type="text" id="tagline" class="md3-input" value="Technology & Design">
+                    </div>
+                    <div class="input-group col-span-1 md:col-span-2">
+                        <label class="input-label" for="companyAddress">Company Address</label>
+                        <textarea id="companyAddress" class="md3-input h-24" style="min-height: 80px;" required>Headquarters
+1280 Infinite Loop
+Silicon Valley, CA 94025</textarea>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="companyEmail">Contact Email</label>
+                        <input type="email" id="companyEmail" class="md3-input" value="contact@nexus-innovations.demo">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="companyPhone">Contact Phone</label>
+                        <input type="text" id="companyPhone" class="md3-input" value="+1 (555) 019-8273">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="companyWebsite">Website</label>
+                        <input type="text" id="companyWebsite" class="md3-input" value="www.nexus-innovations.demo">
+                    </div>
+                    
+                    <!-- Letter Details -->
+                    <div class="col-span-1 md:col-span-2 mt-4"><h2 class="text-lg font-medium text-gray-800 border-b pb-2 mb-4">Letter Content</h2></div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="referenceNo">Reference Number</label>
+                        <input type="text" id="referenceNo" class="md3-input" value="NX/2026/10-A1">
+                    </div>
+                    <div class="input-group col-span-1 md:col-span-2">
+                        <label class="input-label" for="recipientDetails">To (Recipient Details)</label>
+                        <textarea id="recipientDetails" class="md3-input h-24" style="min-height: 80px;" required>Strategic Partners & Associates,
+Global Operations Division.</textarea>
+                    </div>
+                    <div class="input-group col-span-1 md:col-span-2">
+                        <label class="input-label" for="letterSubject">Subject</label>
+                        <input type="text" id="letterSubject" class="md3-input" required value="Official Communication & Document Verification">
+                    </div>
+                    <div class="input-group col-span-1 md:col-span-2">
+                        <label class="input-label" for="letterBody">Letter Body</label>
+                        <textarea id="letterBody" class="md3-input" required>Dear Valued Partner,
+
+We are writing to formally share the updated protocols for our upcoming Q4 integration phase. This document serves as a verified communication channel designed utilizing our latest Material Design 3 specifications.
+
+As we transition into the new operational framework, please ensure that all department leads review the enclosed guidelines.
+
+Should you require further clarification, please do not hesitate to reach out.
+
+Thank you for your continued dedication and collaboration.</textarea>
+                    </div>
+                    
+                    <!-- Signatory -->
+                    <div class="col-span-1 md:col-span-2 mt-4"><h2 class="text-lg font-medium text-gray-800 border-b pb-2 mb-4">Signatory Details</h2></div>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="signatoryName">Signatory Name</label>
+                        <input type="text" id="signatoryName" class="md3-input" required value="Sarah Jenkins">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="signatoryTitle">Signatory Title</label>
+                        <input type="text" id="signatoryTitle" class="md3-input" value="Director of Operations">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="submit" class="md3-btn md3-btn-primary w-full md:w-auto">
+                        <span class="material-symbols-rounded">visibility</span>
+                        Generate & Preview Letterhead
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Action Toolbar (Visible only in preview mode) -->
+    <div id="action-bar" class="no-print action-bar">
+        <button onclick="backToForm()" class="md3-btn md3-btn-icon mr-auto" title="Back to Edit">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+
+        <button onclick="window.print()" class="md3-btn md3-btn-tonal" title="Preview and Print">
+            <span class="material-symbols-rounded">print</span>
+            <span class="hidden sm:inline">Print</span>
+        </button>
+
+        <button onclick="downloadPDF()" class="md3-btn md3-btn-primary" title="Download as PDF">
+            <span class="material-symbols-rounded">download</span>
+            <span class="hidden sm:inline">Download</span>
+        </button>
+
+        <div class="w-px h-8 bg-gray-300 mx-1 hidden sm:block"></div>
+
+        <button onclick="shareWhatsApp()" class="md3-btn md3-btn-icon" title="Send via WhatsApp">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+            </svg>
+        </button>
+
+        <button onclick="shareEmail()" class="md3-btn md3-btn-icon" title="Send via Email">
+            <span class="material-symbols-rounded">mail</span>
+        </button>
+    </div>
+
+    <!-- SECTION 2: Generated Letterhead Preview -->
+    <div id="preview-section" class="paper-wrapper view-transition opacity-0 absolute top-0 w-full pointer-events-none">
+        <div id="document-content" class="paper-container p-10 md:p-16 lg:p-20">
+            <div class="header-accent"></div>
+
+            <header class="flex justify-between items-start border-b border-gray-200 pb-8 mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-sm">
+                        <span class="material-symbols-rounded text-white" style="font-size: 28px;">stream</span>
+                    </div>
+                    <div>
+                        <h1 id="out-companyName" class="font-brand text-2xl font-bold tracking-tight text-gray-900" style="color: var(--md-sys-color-on-surface)"></h1>
+                        <p id="out-tagline" class="text-sm font-medium text-gray-500 tracking-wider uppercase"></p>
+                    </div>
+                </div>
+                
+                <div class="text-right text-sm" style="color: var(--md-sys-color-on-surface-variant)">
+                    <div id="out-companyAddress" class="font-medium text-gray-900 whitespace-pre-line"></div>
+                    <p id="out-companyEmail" class="mt-2 text-blue-600"></p>
+                    <p id="out-companyPhone"></p>
+                </div>
+            </header>
+
+            <main class="flex-grow text-base leading-relaxed text-gray-700">
+                <div class="mb-8 flex justify-between">
+                    <p class="font-medium text-gray-900">Date: <span id="out-date"></span></p>
+                    <p class="font-medium text-gray-900">Ref: <span id="out-referenceNo"></span></p>
+                </div>
+
+                <div class="mb-6">
+                    <p class="font-semibold text-gray-900">To,</p>
+                    <div id="out-recipientDetails" class="whitespace-pre-line"></div>
+                </div>
+
+                <div class="mb-6 font-semibold text-gray-900">
+                    <p>Subject: <span id="out-letterSubject"></span></p>
+                </div>
+
+                <div id="out-letterBody" class="space-y-4 text-gray-700 whitespace-pre-line">
+                    <!-- Letter body injected here -->
+                </div>
+
+                <div class="mt-12">
+                    <p>Sincerely,</p>
+                    <div class="mt-4 mb-2">
+                        <span id="out-signatorySignature" class="font-brand text-3xl text-blue-900 opacity-80" style="font-family: 'Outfit', cursive; font-style: italic;"></span>
+                    </div>
+                    <p id="out-signatoryName" class="font-semibold text-gray-900"></p>
+                    <p id="out-signatoryTitle" class="text-sm text-gray-500"></p>
+                    <p id="out-signatoryCompany" class="text-sm text-gray-500"></p>
+                </div>
+            </main>
+
+            <footer class="mt-12 pt-6 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-400 gap-4 text-center sm:text-left">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">public</span>
+                    <span id="out-companyWebsite"></span>
+                </div>
+                <div>
+                    <p>Official Business Communication</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span>Confidential Document</span>
+                    <span class="material-symbols-rounded" style="font-size: 16px;">lock</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Set dynamic date
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('out-date').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+        // Global variables for sharing
+        let currentSubject = "";
+        let currentCompanyName = "";
+
+        function generateLetterhead(event) {
+            event.preventDefault();
+
+            // 1. Gather Data
+            const data = {
+                companyName: document.getElementById('companyName').value,
+                tagline: document.getElementById('tagline').value,
+                companyAddress: document.getElementById('companyAddress').value,
+                companyEmail: document.getElementById('companyEmail').value,
+                companyPhone: document.getElementById('companyPhone').value,
+                companyWebsite: document.getElementById('companyWebsite').value,
+                
+                referenceNo: document.getElementById('referenceNo').value,
+                recipientDetails: document.getElementById('recipientDetails').value,
+                letterSubject: document.getElementById('letterSubject').value,
+                letterBody: document.getElementById('letterBody').value,
+                
+                signatoryName: document.getElementById('signatoryName').value,
+                signatoryTitle: document.getElementById('signatoryTitle').value
+            };
+
+            // Save for share functions
+            currentSubject = data.letterSubject;
+            currentCompanyName = data.companyName;
+
+            // 2. Populate Preview
+            document.getElementById('out-companyName').textContent = data.companyName;
+            document.getElementById('out-tagline').textContent = data.tagline;
+            document.getElementById('out-companyAddress').textContent = data.companyAddress;
+            document.getElementById('out-companyEmail').textContent = data.companyEmail;
+            document.getElementById('out-companyPhone').textContent = data.companyPhone;
+            document.getElementById('out-companyWebsite').textContent = data.companyWebsite;
+
+            document.getElementById('out-referenceNo').textContent = data.referenceNo;
+            document.getElementById('out-recipientDetails').textContent = data.recipientDetails;
+            document.getElementById('out-letterSubject').textContent = data.letterSubject;
+            
+            // Format body text with paragraphs
+            const formattedBody = data.letterBody.split('\n').map(para => `<p>${para}</p>`).join('');
+            document.getElementById('out-letterBody').innerHTML = formattedBody;
+
+            document.getElementById('out-signatorySignature').textContent = data.signatoryName;
+            document.getElementById('out-signatoryName').textContent = data.signatoryName;
+            document.getElementById('out-signatoryTitle').textContent = data.signatoryTitle;
+            document.getElementById('out-signatoryCompany').textContent = data.companyName;
+
+            // 3. Switch Views (Hide Form, Show Preview & Action Bar)
+            const formSection = document.getElementById('form-section');
+            const previewSection = document.getElementById('preview-section');
+            const actionBar = document.getElementById('action-bar');
+
+            formSection.classList.remove('opacity-100');
+            formSection.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                formSection.style.display = 'none';
+                
+                previewSection.classList.add('visible');
+                previewSection.style.position = 'relative'; // Remove absolute positioning
+                previewSection.classList.remove('pointer-events-none');
+                
+                // Small delay to allow display:block to render before opacity transition
+                setTimeout(() => {
+                    previewSection.classList.remove('opacity-0');
+                    previewSection.classList.add('opacity-100');
+                    actionBar.classList.add('visible');
+                    window.scrollTo(0,0);
+                }, 50);
+            }, 300);
+        }
+
+        function backToForm() {
+            const formSection = document.getElementById('form-section');
+            const previewSection = document.getElementById('preview-section');
+            const actionBar = document.getElementById('action-bar');
+
+            previewSection.classList.remove('opacity-100');
+            previewSection.classList.add('opacity-0');
+            actionBar.classList.remove('visible');
+
+            setTimeout(() => {
+                previewSection.classList.remove('visible');
+                previewSection.style.position = 'absolute';
+                previewSection.classList.add('pointer-events-none');
+                
+                formSection.style.display = 'block';
+                
+                setTimeout(() => {
+                    formSection.classList.remove('opacity-0');
+                    formSection.classList.add('opacity-100');
+                    window.scrollTo(0,0);
+                }, 50);
+            }, 300);
+        }
+
+        // Sharing logic
+        function getShareMessage() {
+            return `Hello,\n\nPlease find attached the official document regarding: "${currentSubject}" from ${currentCompanyName}.\n\nLet us know if you require any further information.\n\nBest regards,\n${currentCompanyName}`;
+        }
+
+        function shareWhatsApp() {
+            const text = encodeURIComponent(getShareMessage());
+            const url = `https://wa.me/?text=${text}`;
+            window.open(url, '_blank');
+        }
+
+        function shareEmail() {
+            const subject = encodeURIComponent(`Document from ${currentCompanyName}: ${currentSubject}`);
+            const body = encodeURIComponent(getShareMessage());
+            const url = `mailto:?subject=${subject}&body=${body}`;
+            window.location.href = url;
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('document-content');
+            
+            // Temporary styles for cleaner PDF generation
+            const originalRadius = element.style.borderRadius;
+            const originalShadow = element.style.boxShadow;
+            element.style.borderRadius = '0';
+            element.style.boxShadow = 'none';
+
+            const opt = {
+                margin:       [10, 0, 10, 0],
+                filename:     `${currentCompanyName.replace(/\s+/g, '_')}_Document.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Restore styles
+                element.style.borderRadius = originalRadius;
+                element.style.boxShadow = originalShadow;
+            });
+        }
+    </script>
+</body>
+</html>

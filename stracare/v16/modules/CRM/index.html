@@ -1,0 +1,396 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f4f9">
+  <title>CM ERP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <script>if (new URLSearchParams(location.search).has("embed")) document.documentElement.classList.add("embedded");</script>
+  <script src="../../assets/loading.js" defer></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --surface: #fff;
+      --canvas: #fafaf9;
+      --text: #1f1f1f;
+      --muted: #5f6368;
+      --line: #e3e6eb;
+      --selected: #e5edff;
+      --accent: #2056c9;
+      --green: #137333;
+      --amber: #9a6700;
+      --red: #b3261e;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; color: var(--text); background: var(--canvas); }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    .icon { font-family: "Material Symbols Rounded"; font-weight: normal; font-style: normal; font-size: 22px; line-height: 1; font-feature-settings: "liga"; -webkit-font-feature-settings: "liga"; }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 20; display: flex; width: 252px; flex-direction: column;
+      border-right: 1px solid var(--line); background: var(--surface); transition: transform .2s ease;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 22px 20px; font-size: 19px; font-weight: 700; }
+    .brand .icon { font-size: 28px; }
+    .nav { flex: 1; overflow: auto; padding: 0 12px 20px; }
+    .nav a { display: flex; align-items: center; gap: 12px; min-height: 42px; margin: 3px 0; padding: 0 12px; border-radius: 9px; color: var(--muted); text-decoration: none; font-size: 14px; }
+    .nav a:hover { background: #f5f8ff; }
+    .nav a .icon { transition: transform .18s ease, color .18s ease; }
+    .nav a:hover .icon { transform: translateX(2px); }
+    .nav a.active { color: var(--accent); background: var(--selected); font-weight: 600; }
+    .nav a.active .icon { font-variation-settings: "FILL" 1; animation: nav-icon-pop .38s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes nav-icon-pop { 0% { transform: scale(.78); } 55% { transform: scale(1.16); } 100% { transform: scale(1); } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+    .nav-divider { height: 1px; margin: 12px 8px; background: var(--line); }
+    .mobile-bar { display: none; }
+    .backdrop { display: none; }
+    .app { min-height: 100vh; margin-left: 252px; }
+    .topbar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 16px; height: 72px; padding: 0 28px; border-bottom: 1px solid var(--line); background: rgb(255 255 255 / 94%); backdrop-filter: blur(10px); }
+    .search { display: flex; align-items: center; gap: 10px; width: min(460px, 100%); height: 42px; padding: 0 14px; border: 1px solid transparent; border-radius: 24px; background: var(--canvas); color: var(--muted); }
+    .search:focus-within { border-color: #b6c4dc; background: var(--surface); }
+    .search input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); }
+    .top-actions { display: flex; gap: 8px; margin-left: auto; }
+    .icon-button { display: inline-grid; width: 40px; height: 40px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--muted); }
+    .icon-button:hover { background: var(--canvas); color: var(--text); }
+    main { max-width: 1440px; margin: 0 auto; padding: 30px 32px 56px; }
+    .page-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
+    h1 { margin: 0 0 7px; font-size: clamp(24px, 3vw, 30px); letter-spacing: -.7px; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .heading-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .button { display: inline-flex; min-height: 40px; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); color: var(--text); font-size: 13px; font-weight: 600; text-decoration: none; }
+    .button:hover { background: #f7f8fa; }
+    .button.primary { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .button.primary:hover { border-color: #1948ad; background: #1948ad; }
+    .button .icon { font-size: 19px; }
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-bottom: 20px; }
+    .metric { display: flex; min-height: 128px; flex-direction: column; justify-content: space-between; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 13px; font-weight: 500; }
+    .metric-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--canvas); color: var(--accent); }
+    .metric-value { margin-top: 12px; font-size: 25px; font-weight: 650; letter-spacing: -.5px; }
+    .metric-note { margin-top: 4px; color: var(--muted); font-size: 12px; }
+    .insight { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 20px; padding: 15px 17px; border: 1px solid #dfe5ef; border-radius: 13px; background: #f7f9fc; color: #39475b; font-size: 13px; line-height: 1.5; }
+    .insight .icon { flex: 0 0 auto; color: var(--accent); }
+    .panel { overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+    .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; }
+    .panel-heading h2 { margin: 0; font-size: 16px; font-weight: 650; }
+    .panel-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+    .filters { display: flex; align-items: center; gap: 8px; padding: 0 20px 14px; }
+    .filter-select { min-height: 36px; padding: 0 32px 0 11px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); font-size: 12px; }
+    .result-count { margin-left: auto; color: var(--muted); font-size: 12px; }
+    .table-wrap { overflow-x: auto; border-top: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
+    th { padding: 12px 18px; background: #fafbfc; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+    td { padding: 14px 18px; border-top: 1px solid #eef0f3; font-size: 13px; }
+    tbody tr:hover { background: #fafbfc; }
+    .status { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 20px; background: #f0f2f5; color: #50545a; font-size: 11px; font-weight: 600; }
+    .status::before { width: 6px; height: 6px; border-radius: 50%; background: currentColor; content: ""; }
+    .status.good { background: #e9f4ec; color: var(--green); }
+    .status.wait { background: #fff4d6; color: var(--amber); }
+    .status.alert { background: #fcebea; color: var(--red); }
+    .row-action { display: inline-grid; width: 32px; height: 32px; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--muted); }
+    .row-action:hover { background: var(--canvas); color: var(--red); }
+    .empty { padding: 34px 16px; color: var(--muted); text-align: center; font-size: 13px; }
+    .footnote { margin: 13px 2px 0; color: var(--muted); font-size: 11px; }
+    dialog { width: min(520px, calc(100vw - 32px)); max-height: 85vh; padding: 0; border: 0; border-radius: 16px; box-shadow: 0 18px 60px rgb(25 34 48 / 25%); }
+    dialog::backdrop { background: rgb(24 29 38 / 42%); }
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+    .dialog-head h2 { margin: 0; font-size: 17px; }
+    .dialog-body { display: grid; gap: 13px; max-height: calc(85vh - 140px); overflow: auto; padding: 18px 20px; }
+    .field { display: grid; gap: 6px; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .field input, .field select { min-height: 40px; padding: 0 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--text); font-size: 13px; font-weight: 400; }
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 9px; padding: 14px 20px; border-top: 1px solid var(--line); }
+    .toast { position: fixed; right: 24px; bottom: 24px; z-index: 50; max-width: min(380px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 10px; background: #24272b; color: #fff; box-shadow: 0 5px 20px rgb(0 0 0 / 18%); font-size: 13px; }
+    .toast[hidden] { display: none; }
+    @media (max-width: 1000px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 700px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .backdrop.show { position: fixed; inset: 0; z-index: 19; display: block; background: rgb(0 0 0 / 38%); }
+      .app { margin-left: 0; }
+      .mobile-bar { position: sticky; top: 0; z-index: 11; display: flex; height: 58px; align-items: center; gap: 10px; padding: 0 14px; border-bottom: 1px solid var(--line); background: var(--surface); }
+      .mobile-bar strong { font-size: 15px; }
+      .topbar { height: 62px; padding: 0 14px; }
+      main { padding: 22px 15px 40px; }
+      .page-heading { flex-direction: column; }
+      .heading-actions { width: 100%; }
+      .heading-actions .button { flex: 1; }
+      .panel-heading { padding: 16px; }
+      .filters { padding: 0 16px 13px; }
+      th, td { padding-right: 13px; padding-left: 13px; }
+    }
+    @media (max-width: 420px) { .metrics { gap: 9px; } .metric { min-height: 116px; padding: 13px; } .metric-value { font-size: 22px; } .metric-top { font-size: 12px; } }
+    html.embedded .sidebar, html.embedded .topbar, html.embedded .mobile-bar, html.embedded .backdrop { display: none !important; }
+    html.embedded .app { margin-left: 0; }
+    html.embedded main { padding: 24px 24px 36px; }
+    @media (max-width: 700px) { html.embedded main { padding: 20px 15px 32px; } }
+  </style>
+</head>
+<body>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="brand"><span class="icon">layers</span><span>CM ERP</span></div>
+    <nav class="nav">
+      <a data-module="Overview" href="../Overview/"><span class="icon">dashboard</span>Overview</a>
+      <a data-module="CRM" href="../CRM/"><span class="icon">handshake</span>CRM</a>
+      <a data-module="Inventory" href="../Inventory/"><span class="icon">inventory_2</span>Inventory</a>
+      <a data-module="Accounts" href="../Accounts/"><span class="icon">account_balance_wallet</span>Accounts</a>
+      <a data-module="HR" href="../HR/"><span class="icon">badge</span>HR</a>
+      <a data-module="Tax" href="../Tax/"><span class="icon">request_quote</span>Tax</a>
+      <a data-module="Reports" href="../Reports/"><span class="icon">bar_chart</span>Reports</a>
+      <a data-module="Data" href="../Data/"><span class="icon">database</span>Data</a>
+      <a data-module="Templates" href="../Templates/"><span class="icon">file_copy</span>Templates</a>
+      <a data-module="Tools" href="../tools/"><span class="icon">handyman</span>Tools</a>
+      <a data-module="AI" href="../AI/"><span class="icon">auto_awesome</span>AI</a>
+      <div class="nav-divider"></div>
+      <a data-module="Settings" href="../Settings/"><span class="icon">settings</span>Settings</a>
+      <a data-module="More" href="../More/"><span class="icon">more_horiz</span>More</a>
+    </nav>
+  </aside>
+  <div class="app">
+    <div class="mobile-bar">
+      <button class="icon-button" id="menu-button" aria-label="Open navigation"><span class="icon">menu</span></button>
+      <strong id="mobile-title">CM ERP</strong>
+    </div>
+    <header class="topbar">
+      <label class="search"><span class="icon">search</span><input id="search-input" type="search" placeholder="Search this module..." aria-label="Search records"></label>
+      <div class="top-actions">
+        <button class="icon-button" id="help-button" aria-label="Help"><span class="icon">help</span></button>
+        <button class="icon-button" aria-label="Profile"><span class="icon">account_circle</span></button>
+      </div>
+    </header>
+    <main>
+      <section class="page-heading">
+        <div><h1 id="page-title"></h1><p class="subtitle" id="page-description"></p></div>
+        <div class="heading-actions">
+          <button class="button" id="export-button"><span class="icon">download</span>Export CSV</button>
+          <button class="button primary" id="add-button"><span class="icon">add</span><span id="add-label">New item</span></button>
+        </div>
+      </section>
+      <section class="metrics" id="metrics" aria-label="Module summary"></section>
+      <aside class="insight"><span class="icon">info</span><span id="insight-text"></span></aside>
+      <section class="panel">
+        <div class="panel-heading">
+          <div><h2 id="table-title"></h2><p>Review and manage records in this module.</p></div>
+        </div>
+        <div class="filters">
+          <select class="filter-select" id="status-filter" aria-label="Filter by status"><option value="">All statuses</option></select>
+          <span class="result-count" id="result-count"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="table-head"></tr></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+          <div class="empty" id="empty-state" hidden>No matching records. Try changing your search or add a new record.</div>
+        </div>
+      </section>
+      <p class="footnote">This module page is self-contained. Sample records are held in this page until you refresh.</p>
+    </main>
+  </div>
+  <dialog id="record-dialog" aria-labelledby="dialog-title">
+    <form id="record-form">
+      <div class="dialog-head"><h2 id="dialog-title">Add record</h2><button class="icon-button" type="button" id="close-dialog" aria-label="Close"><span class="icon">close</span></button></div>
+      <div class="dialog-body" id="form-fields"></div>
+      <div class="dialog-actions"><button class="button" type="button" id="cancel-button">Cancel</button><button class="button primary" type="submit">Add record</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script>
+    const config = {"name":"CRM","description":"Keep client relationships, follow-ups, and account details organized.","entity":"client","tableTitle":"Client directory","insight":"Track active relationships and follow-up status. Contact details shown here are sample records.","metrics":[{"label":"Total clients","value":"248","icon":"groups","note":"All client records"},{"label":"Active","value":"216","icon":"check_circle","note":"Currently engaged"},{"label":"Follow-ups","value":"18","icon":"event","note":"Need a next action"},{"label":"New this month","value":"14","icon":"person_add","note":"Recently onboarded"}],"columns":[{"key":"client","label":"Client"},{"key":"contact","label":"Contact"},{"key":"type","label":"Type"},{"key":"status","label":"Status"},{"key":"updated","label":"Last activity"}],"rows":[{"client":"Aarav Traders","contact":"hello@aarav.example","type":"Business","status":"Active","updated":"Today"},{"client":"Meera Shah","contact":"meera@example.test","type":"Individual","status":"Pending","updated":"Yesterday"},{"client":"Northstar Foods","contact":"accounts@northstar.example","type":"Business","status":"Active","updated":"Nov 06"},{"client":"Devika Rao","contact":"devika@example.test","type":"Individual","status":"Inactive","updated":"Nov 04"}]};
+    const records = config.rows.map((row) => ({ ...row }));
+    const sidebar = document.getElementById("sidebar");
+    const backdrop = document.getElementById("backdrop");
+    const dialog = document.getElementById("record-dialog");
+    const searchInput = document.getElementById("search-input");
+    const statusFilter = document.getElementById("status-filter");
+    const tableBody = document.getElementById("table-body");
+    const emptyState = document.getElementById("empty-state");
+    const resultCount = document.getElementById("result-count");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    document.title = `${config.name} | CM ERP`;
+    document.getElementById("page-title").textContent = config.name;
+    document.getElementById("mobile-title").textContent = config.name;
+    document.getElementById("page-description").textContent = config.description;
+    document.getElementById("insight-text").textContent = config.insight;
+    document.getElementById("table-title").textContent = config.tableTitle;
+    document.getElementById("add-label").textContent = `New ${config.entity}`;
+    document.querySelector(`[data-module="${config.name}"]`)?.classList.add("active");
+
+    const metrics = document.getElementById("metrics");
+    config.metrics.forEach((metric) => {
+      const card = document.createElement("article");
+      card.className = "metric";
+      const top = document.createElement("div");
+      top.className = "metric-top";
+      const label = document.createElement("span");
+      label.textContent = metric.label;
+      const icon = document.createElement("span");
+      icon.className = "metric-icon icon";
+      icon.textContent = metric.icon;
+      top.append(label, icon);
+      const value = document.createElement("div");
+      value.className = "metric-value";
+      value.textContent = metric.value;
+      const note = document.createElement("div");
+      note.className = "metric-note";
+      note.textContent = metric.note;
+      card.append(top, value, note);
+      metrics.append(card);
+    });
+
+    const columns = [...config.columns];
+    const head = document.getElementById("table-head");
+    columns.forEach((column) => {
+      const cell = document.createElement("th");
+      cell.scope = "col";
+      cell.textContent = column.label;
+      head.append(cell);
+    });
+    const actionHead = document.createElement("th");
+    actionHead.scope = "col";
+    actionHead.textContent = "Actions";
+    head.append(actionHead);
+
+    const statuses = [...new Set(records.map((row) => row.status).filter(Boolean))].sort();
+    statuses.forEach((status) => {
+      const option = document.createElement("option");
+      option.value = status;
+      option.textContent = status;
+      statusFilter.append(option);
+    });
+
+    function statusClass(status) {
+      const normalized = String(status).toLowerCase();
+      if (/active|complete|paid|in stock|approved|healthy|ready|enabled|success/.test(normalized)) return "good";
+      if (/pending|due|draft|review|low|scheduled|processing/.test(normalized)) return "wait";
+      if (/overdue|inactive|out of stock|failed|blocked|expired|attention/.test(normalized)) return "alert";
+      return "";
+    }
+
+    function renderRows() {
+      const query = searchInput.value.trim().toLowerCase();
+      const selectedStatus = statusFilter.value;
+      const visible = records.map((row, index) => ({ row, index })).filter(({ row }) => {
+        const matchesSearch = Object.values(row).some((value) => String(value).toLowerCase().includes(query));
+        return matchesSearch && (!selectedStatus || row.status === selectedStatus);
+      });
+      tableBody.replaceChildren();
+      visible.forEach(({ row, index }) => {
+        const tr = document.createElement("tr");
+        columns.forEach((column) => {
+          const td = document.createElement("td");
+          const value = row[column.key] == null ? "" : String(row[column.key]);
+          if (column.key === "status") {
+            const badge = document.createElement("span");
+            badge.className = `status ${statusClass(value)}`;
+            badge.textContent = value || "Not set";
+            td.append(badge);
+          } else {
+            td.textContent = value;
+          }
+          tr.append(td);
+        });
+        const actions = document.createElement("td");
+        const remove = document.createElement("button");
+        remove.className = "row-action";
+        remove.type = "button";
+        remove.setAttribute("aria-label", `Remove ${config.entity}`);
+        const removeIcon = document.createElement("span");
+        removeIcon.className = "icon";
+        removeIcon.textContent = "delete";
+        remove.append(removeIcon);
+        remove.addEventListener("click", () => {
+          records.splice(index, 1);
+          renderRows();
+          showToast(`${config.entity[0].toUpperCase()}${config.entity.slice(1)} removed.`);
+        });
+        actions.append(remove);
+        tr.append(actions);
+        tableBody.append(tr);
+      });
+      emptyState.hidden = visible.length > 0;
+      resultCount.textContent = `${visible.length} ${visible.length === 1 ? "record" : "records"}`;
+    }
+
+    function showToast(message) {
+      window.clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.hidden = false;
+      toastTimer = window.setTimeout(() => { toast.hidden = true; }, 2800);
+    }
+
+    const fields = document.getElementById("form-fields");
+    columns.forEach((column) => {
+      const label = document.createElement("label");
+      label.className = "field";
+      label.textContent = column.label;
+      const input = column.key === "status" ? document.createElement("select") : document.createElement("input");
+      input.name = column.key;
+      input.required = true;
+      if (column.key === "status") {
+        const options = [...new Set([...statuses, "Active", "Pending", "Completed"])];
+        options.forEach((status) => {
+          const option = document.createElement("option");
+          option.value = status;
+          option.textContent = status;
+          input.append(option);
+        });
+      } else {
+        input.type = "text";
+        input.autocomplete = "off";
+      }
+      label.append(input);
+      fields.append(label);
+    });
+
+    document.getElementById("add-button").addEventListener("click", () => dialog.showModal());
+    document.getElementById("close-dialog").addEventListener("click", () => dialog.close());
+    document.getElementById("cancel-button").addEventListener("click", () => dialog.close());
+    document.getElementById("record-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const record = {};
+      columns.forEach((column) => { record[column.key] = String(formData.get(column.key) || "").trim(); });
+      records.unshift(record);
+      event.currentTarget.reset();
+      dialog.close();
+      renderRows();
+      showToast(`${config.entity[0].toUpperCase()}${config.entity.slice(1)} added.`);
+    });
+    searchInput.addEventListener("input", renderRows);
+    statusFilter.addEventListener("change", renderRows);
+    document.getElementById("export-button").addEventListener("click", () => {
+      const csvRows = [columns.map((column) => column.label), ...records.map((row) => columns.map((column) => row[column.key] || ""))];
+      const csv = csvRows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\r\n");
+      const link = document.createElement("a");
+      const downloadUrl = URL.createObjectURL(new Blob(["\ufeff", csv], { type: "text/csv;charset=utf-8" }));
+      link.href = downloadUrl;
+      link.download = `${config.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-records.csv`;
+      link.click();
+      window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+      showToast("CSV export downloaded.");
+    });
+    document.getElementById("help-button").addEventListener("click", () => showToast(`${config.name}: ${config.description}`));
+    document.getElementById("menu-button").addEventListener("click", () => {
+      sidebar.classList.add("open");
+      backdrop.classList.add("show");
+    });
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      backdrop.classList.remove("show");
+    }
+    backdrop.addEventListener("click", closeSidebar);
+    document.querySelectorAll(".nav a").forEach((link) => link.addEventListener("click", closeSidebar));
+    renderRows();
+  </script>
+</body>
+</html>

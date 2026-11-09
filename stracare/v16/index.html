@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f4f9">
+  <meta name="description" content="CM ERP workspace dashboard and module directory.">
+  <title>CM ERP | Workspace</title>
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <script src="./assets/loading.js" defer></script>
+  <script src="./js/index.js" defer></script>
+  <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="./"><img class="brand-logo" src="./assets/logo.png" alt=""><img class="brand-name" src="./assets/name.png" alt="COREBIQ"></a>
+    <nav class="nav">
+      <a class="active" data-module="Overview" href="./" aria-current="page"><span class="icon">dashboard</span>Overview</a>
+      <a data-module="CRM" href="./modules/CRM/"><span class="icon">handshake</span>CRM</a>
+      <a data-module="Inventory" href="./modules/Inventory/"><span class="icon">inventory_2</span>Inventory</a>
+      <a data-module="Accounts" href="./modules/Accounts/"><span class="icon">account_balance_wallet</span>Accounts</a>
+      <a data-module="HR" href="./modules/HR/"><span class="icon">badge</span>HR</a>
+      <a data-module="Tax" href="./modules/Tax/"><span class="icon">request_quote</span>Tax</a>
+      <a data-module="Reports" href="./modules/Reports/"><span class="icon">bar_chart</span>Reports</a>
+      <a data-module="Data" href="./modules/Data/"><span class="icon">database</span>Data</a>
+      <a data-module="Templates" href="./modules/Templates/"><span class="icon">file_copy</span>Templates</a>
+      <a data-module="Tools" href="./modules/tools/"><span class="icon">handyman</span>Tools</a>
+      <a data-module="AI" href="./modules/AI/"><span class="icon">auto_awesome</span>AI</a>
+      <div class="nav-divider"></div>
+      <a data-module="Settings" href="./modules/Settings/"><span class="icon">settings</span>Settings</a>
+      <a data-module="More" href="./modules/More/"><span class="icon">more_horiz</span>More</a>
+    </nav>
+  </aside>
+  <div class="app">
+    <div class="mobile-bar">
+      <button class="icon-button" id="menu-button" aria-label="Open navigation"><span class="icon">menu</span></button>
+      <img class="brand-logo" src="./assets/logo.png" alt="">
+      <img class="brand-name" src="./assets/name.png" alt="COREBIQ">
+    </div>
+    <header class="topbar">
+      <label class="search"><span class="icon">search</span><input id="module-search" type="search" placeholder="Find a module..." aria-label="Find a module"></label>
+      <div class="top-actions">
+        <button class="icon-button" id="help-button" aria-label="Help"><span class="icon">help</span></button>
+        <button class="icon-button" aria-label="Profile"><span class="icon">account_circle</span></button>
+      </div>
+    </header>
+    <main>
+      <div class="overview-content" id="overview-content">
+      <section class="welcome">
+        <div><h1>Welcome to your workspace</h1><p class="subtitle">Your business overview and shortcuts to every module.</p></div>
+        <div class="date-label" id="today-label"></div>
+      </section>
+      <section aria-label="Workspace summary">
+        <div class="metrics">
+          <article class="metric"><div class="metric-top"><span>Active clients</span><span class="metric-icon icon">groups</span></div><div><div class="metric-value">248</div><div class="metric-note">Across client accounts</div></div></article>
+          <article class="metric"><div class="metric-top"><span>Open tasks</span><span class="metric-icon icon">task_alt</span></div><div><div class="metric-value">36</div><div class="metric-note">Requiring attention</div></div></article>
+          <article class="metric"><div class="metric-top"><span>Monthly revenue</span><span class="metric-icon icon">trending_up</span></div><div><div class="metric-value">₹8.42L</div><div class="metric-note">Current month sample</div></div></article>
+          <article class="metric"><div class="metric-top"><span>Upcoming deadlines</span><span class="metric-icon icon">event_upcoming</span></div><div><div class="metric-value">12</div><div class="metric-note">Next 14 days</div></div></article>
+        </div>
+      </section>
+      <section aria-labelledby="modules-title">
+        <div class="section-heading"><div><h2 id="modules-title">Modules</h2><p>Choose an area to get started.</p></div></div>
+        <div class="module-grid" id="module-grid">
+          <a class="module-card" href="./modules/Overview/" data-search="overview dashboard workspace summary">
+            <div class="module-top"><span class="module-icon icon">dashboard</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Overview</div><div class="module-description">Workspace activity and priorities</div></div>
+          </a>
+          <a class="module-card" href="./modules/CRM/" data-search="crm clients customer relationships follow-ups">
+            <div class="module-top"><span class="module-icon icon">handshake</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">CRM</div><div class="module-description">Clients, relationships, and follow-ups</div></div>
+          </a>
+          <a class="module-card" href="./modules/Inventory/" data-search="inventory products stock items">
+            <div class="module-top"><span class="module-icon icon">inventory_2</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Inventory</div><div class="module-description">Products, stock levels, and locations</div></div>
+          </a>
+          <a class="module-card" href="./modules/Accounts/" data-search="accounts finance ledger transactions">
+            <div class="module-top"><span class="module-icon icon">account_balance_wallet</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Accounts</div><div class="module-description">Balances, transactions, and ledger</div></div>
+          </a>
+          <a class="module-card" href="./modules/HR/" data-search="hr human resources employees people">
+            <div class="module-top"><span class="module-icon icon">badge</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">HR</div><div class="module-description">Team members and people operations</div></div>
+          </a>
+          <a class="module-card" href="./modules/Tax/" data-search="tax filing compliance gst">
+            <div class="module-top"><span class="module-icon icon">request_quote</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Tax</div><div class="module-description">Filings, due dates, and compliance</div></div>
+          </a>
+          <a class="module-card" href="./modules/Reports/" data-search="reports analytics summaries">
+            <div class="module-top"><span class="module-icon icon">bar_chart</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Reports</div><div class="module-description">Operational and financial summaries</div></div>
+          </a>
+          <a class="module-card" href="./modules/Data/" data-search="data sources datasets imports">
+            <div class="module-top"><span class="module-icon icon">database</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Data</div><div class="module-description">Datasets, sources, and imports</div></div>
+          </a>
+          <a class="module-card" href="./modules/Templates/" data-search="templates documents letters">
+            <div class="module-top"><span class="module-icon icon">file_copy</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Templates</div><div class="module-description">Reusable business documents</div></div>
+          </a>
+          <a class="module-card" href="./modules/tools/" data-search="tools utilities productivity">
+            <div class="module-top"><span class="module-icon icon">handyman</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Tools</div><div class="module-description">Quick utilities for daily workflows</div></div>
+          </a>
+          <a class="module-card" href="./modules/AI/" data-search="ai assistant workflows prompts">
+            <div class="module-top"><span class="module-icon icon">auto_awesome</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">AI</div><div class="module-description">Assisted workflows and saved prompts</div></div>
+          </a>
+          <a class="module-card" href="./modules/Settings/" data-search="settings preferences workspace">
+            <div class="module-top"><span class="module-icon icon">settings</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">Settings</div><div class="module-description">Workspace preferences and defaults</div></div>
+          </a>
+          <a class="module-card" href="./modules/More/" data-search="more workspace directory">
+            <div class="module-top"><span class="module-icon icon">more_horiz</span><span class="module-arrow icon">arrow_outward</span></div><div><div class="module-name">More</div><div class="module-description">Additional workspace areas</div></div>
+          </a>
+          <div class="empty" id="no-modules" hidden>No modules match your search.</div>
+        </div>
+      </section>
+      <section aria-labelledby="activity-title">
+        <div class="section-heading"><div><h2 id="activity-title">Recent activity</h2><p>A quick look at work across your modules.</p></div></div>
+        <div class="activity-panel">
+          <div class="activity-heading"><h2>Latest updates</h2><p>Sample workspace activity</p></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Activity</th><th scope="col">Module</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th></tr></thead>
+              <tbody>
+                <tr><td>Quarterly return review</td><td><a class="row-link" href="./modules/Tax/">Tax</a></td><td>A. Sharma</td><td><span class="status">Pending</span></td><td>Today</td></tr>
+                <tr><td>New client onboarding</td><td><a class="row-link" href="./modules/CRM/">CRM</a></td><td>R. Patel</td><td><span class="status good">Active</span></td><td>Today</td></tr>
+                <tr><td>Stock reconciliation</td><td><a class="row-link" href="./modules/Inventory/">Inventory</a></td><td>M. Das</td><td><span class="status good">Completed</span></td><td>Yesterday</td></tr>
+                <tr><td>Payroll approval</td><td><a class="row-link" href="./modules/HR/">HR</a></td><td>S. Iyer</td><td><span class="status">Pending</span></td><td>Yesterday</td></tr>
+                <tr><td>Bank reconciliation</td><td><a class="row-link" href="./modules/Accounts/">Accounts</a></td><td>N. Rao</td><td><span class="status good">Completed</span></td><td>Nov 05</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <p class="footer">Figures and activity on this overview are sample workspace data.</p>
+      </div>
+      <section class="module-view" id="module-view" aria-label="Selected module" hidden>
+        <div class="module-view-heading">
+          <button class="button" type="button" id="back-to-overview"><span class="icon">arrow_back</span>Overview</button>
+          <h1 id="module-view-title"></h1>
+        </div>
+        <iframe class="module-frame" id="module-frame" title="Module dashboard" loading="eager"></iframe>
+      </section>
+    </main>
+  </div>
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+    <a class="mobile-nav-item active" data-module="Overview" href="./" aria-current="page">
+      <span class="mobile-nav-icon"><span class="icon">home</span></span>
+      <span class="mobile-nav-label">Home</span>
+    </a>
+    <a class="mobile-nav-item" data-module="CRM" href="./modules/CRM/">
+      <span class="mobile-nav-icon"><span class="icon">contacts</span></span>
+      <span class="mobile-nav-label">CRM</span>
+    </a>
+    <a class="mobile-nav-item" data-module="Reports" href="./modules/Reports/">
+      <span class="mobile-nav-icon"><span class="icon">bar_chart</span></span>
+      <span class="mobile-nav-label">Reports</span>
+    </a>
+    <button class="mobile-nav-item" id="bottom-menu-button" type="button" aria-label="Open module menu" aria-expanded="false">
+      <span class="mobile-nav-icon"><span class="icon">grid_view</span></span>
+      <span class="mobile-nav-label">Menu</span>
+    </button>
+  </nav>
+</body>
+</html>

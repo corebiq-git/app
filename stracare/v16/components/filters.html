@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 p-4">
+
+  <div class="relative w-full">
+    
+    <!-- White Background Container -->
+    <div class="w-full bg-white border-y border-[#e3e3e3]">
+      <div class="flex items-center px-2 py-2 w-full">
+        
+        <!-- Filter Icon (Left Sticky) -->
+        <div class="text-[#444746] mr-3 ml-2 shrink-0">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z"/></svg>
+        </div>
+        
+        <!-- Scrolling Filter Container -->
+        <div id="filter-container" class="flex overflow-x-auto hide-scrollbar gap-2 items-center flex-1">
+          <!-- Filter buttons injected via JS -->
+        </div>
+
+        <!-- Sticky Right Clear Filter (X Icon with light grey outline) -->
+        <button id="clear-filters" class="hidden shrink-0 ml-3 p-1.5 rounded-lg border border-[#e3e3e3] text-[#444746] bg-white hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-[#0b57d0] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Date Range Popup (Hidden by default) -->
+    <div id="date-popup" class="hidden absolute top-[110%] left-4 md:left-[20%] bg-white border border-[#e3e3e3] shadow-lg rounded-xl p-4 z-50 flex-col gap-4 min-w-[280px]">
+      <div class="text-[14px] font-medium text-[#1f1f1f]">Select Date Range</div>
+      
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-3">
+          <label class="text-[13px] text-[#444746] w-10">From</label>
+          <input type="date" id="from-date" class="flex-1 border border-[#e3e3e3] rounded-md px-2 py-1.5 text-[14px] text-[#1f1f1f] focus:outline-none focus:border-[#0b57d0] focus:ring-1 focus:ring-[#0b57d0]">
+        </div>
+        <div class="flex items-center justify-between gap-3">
+          <label class="text-[13px] text-[#444746] w-10">To</label>
+          <input type="date" id="to-date" class="flex-1 border border-[#e3e3e3] rounded-md px-2 py-1.5 text-[14px] text-[#1f1f1f] focus:outline-none focus:border-[#0b57d0] focus:ring-1 focus:ring-[#0b57d0]">
+        </div>
+      </div>
+      
+      <div class="flex justify-end gap-2 mt-2">
+        <button id="cancel-date" class="px-4 py-1.5 rounded-lg text-[14px] font-medium text-[#444746] hover:bg-black/5 transition-colors focus:outline-none">Cancel</button>
+        <!-- Updated Apply Button: Light Grey Filled -->
+        <button id="apply-date" class="px-4 py-1.5 rounded-lg text-[14px] font-medium bg-[#e1e5ea] text-[#1f1f1f] hover:bg-[#d5d9de] shadow-sm transition-colors focus:outline-none">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const filters = [
+      'Today', 'Current Month', 'Current FY', 
+      'Active', 'Non Active', 'Due', 
+      'Pending', 'Completed', 'By Date'
+    ];
+    let activeFilter = 'Today'; // Set to null if you want no filter selected by default
+    
+    const filterContainer = document.getElementById('filter-container');
+    const datePopup = document.getElementById('date-popup');
+    const fromDateInput = document.getElementById('from-date');
+    const toDateInput = document.getElementById('to-date');
+    const clearFiltersBtn = document.getElementById('clear-filters');
+
+    // Helper to format HTML date (YYYY-MM-DD) to YYYY-Mmm-DD
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      const [year, month, day] = dateString.split('-');
+      const date = new Date(year, month - 1, day);
+      const shortMonth = date.toLocaleString('en-US', { month: 'short' });
+      const formattedMonth = shortMonth.charAt(0).toUpperCase() + shortMonth.slice(1);
+      return `${year}-${formattedMonth}-${day}`;
+    }
+
+    function renderFilters() {
+      filterContainer.innerHTML = '';
+      
+      const isCustomDate = activeFilter && activeFilter.includes(' to ');
+
+      filters.forEach(filter => {
+        const button = document.createElement('button');
+        
+        let isActive = activeFilter === filter;
+        
+        // Handle "By Date" text replacement if a custom date is applied
+        if (filter === 'By Date' && isCustomDate) {
+            button.innerText = activeFilter;
+            isActive = true;
+        } else {
+            button.innerText = filter;
+        }
+        
+        let classes = 'whitespace-nowrap px-4 py-1.5 rounded-lg text-[14px] leading-[20px] font-medium transition-all duration-200 ease-in-out select-none focus:outline-none focus:ring-2 focus:ring-[#0b57d0] focus:ring-offset-1 focus:ring-offset-white border ';
+        
+        if (isActive) {
+          // Standard light grey active style for all tabs (no blue lines)
+          classes += 'bg-[#e1e5ea] text-[#1f1f1f] border-transparent shadow-sm';
+        } else {
+          // Inactive style
+          classes += 'text-[#444746] bg-transparent border-[#e3e3e3] hover:bg-black/5 hover:text-[#1f1f1f] active:bg-black/10';
+        }
+        
+        button.className = classes;
+        
+        button.onclick = () => {
+          if (filter === 'By Date' || isCustomDate && button.innerText.includes('to')) {
+            datePopup.classList.toggle('hidden');
+          } else {
+            activeFilter = filter;
+            datePopup.classList.add('hidden');
+            renderFilters();
+          }
+        };
+        
+        filterContainer.appendChild(button);
+      });
+
+      // Show/Hide sticky clear filters "X" button
+      if (activeFilter !== null) {
+        clearFiltersBtn.classList.remove('hidden');
+      } else {
+        clearFiltersBtn.classList.add('hidden');
+      }
+    }
+
+    // Apply Date Range
+    document.getElementById('apply-date').onclick = () => {
+      const from = fromDateInput.value;
+      const to = toDateInput.value;
+      
+      if (from && to) {
+        activeFilter = `${formatDate(from)} to ${formatDate(to)}`;
+      } else {
+        activeFilter = 'By Date';
+      }
+      
+      datePopup.classList.add('hidden');
+      renderFilters();
+    };
+
+    // Cancel Date Selection
+    document.getElementById('cancel-date').onclick = () => {
+      datePopup.classList.add('hidden');
+    };
+
+    // Clear Filters Logic attached to the static X button
+    clearFiltersBtn.onclick = () => {
+      activeFilter = null; // Clears all selection
+      fromDateInput.value = '';
+      toDateInput.value = '';
+      datePopup.classList.add('hidden');
+      renderFilters();
+    };
+
+    // Initialize
+    renderFilters();
+  </script>
+
+</body>
+</html>

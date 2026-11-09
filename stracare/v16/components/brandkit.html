@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ DEVELOPERS | Brand Kit</title>
+    
+    <!-- Fonts: Google Sans (via Outfit fallback), Roboto, Roboto Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Material Symbols Rounded -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Google Sans isn't officially on Google Fonts, Outfit is the closest modern geometric alternative
+                        brand: ['"Outfit"', 'sans-serif'], 
+                        body: ['"Roboto"', 'sans-serif'],
+                        mono: ['"Roboto Mono"', 'monospace'],
+                    },
+                    colors: {
+                        md3: {
+                            primary: '#0B57D0',
+                            onPrimary: '#FFFFFF',
+                            primaryContainer: '#D3E3FD',
+                            onPrimaryContainer: '#041E49',
+                            
+                            secondary: '#00639B',
+                            onSecondary: '#FFFFFF',
+                            secondaryContainer: '#C2E7FF',
+                            onSecondaryContainer: '#001D35',
+                            
+                            tertiary: '#725B2E',
+                            onTertiary: '#FFFFFF',
+                            tertiaryContainer: '#FFDEA4',
+                            onTertiaryContainer: '#261900',
+                            
+                            error: '#B3261E',
+                            onError: '#FFFFFF',
+                            errorContainer: '#F9DEDC',
+                            onErrorContainer: '#410E0B',
+                            
+                            surface: '#F8F9FA',
+                            onSurface: '#1F1F1F',
+                            onSurfaceVariant: '#444746',
+                            
+                            surfaceContainerLowest: '#FFFFFF',
+                            surfaceContainerLow: '#F3F4F6',
+                            surfaceContainer: '#EDEDED',
+                            surfaceContainerHigh: '#E8EAED',
+                            surfaceContainerHighest: '#E3E3E3',
+                            
+                            outline: '#747775',
+                            outlineVariant: '#C4C7C5',
+                        },
+                        gemini: {
+                            blue: '#4285F4',
+                            purple: '#9b72cb',
+                            red: '#d96570',
+                        }
+                    },
+                    boxShadow: {
+                        'md3-1': '0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)',
+                        'md3-2': '0px 1px 2px 0px rgba(0, 0, 0, 0.30), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)',
+                        'md3-3': '0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)',
+                        'md3-4': '0px 2px 3px 0px rgba(0, 0, 0, 0.30), 0px 6px 10px 4px rgba(0, 0, 0, 0.15)',
+                        'md3-5': '0px 4px 4px 0px rgba(0, 0, 0, 0.30), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base styles matching MD3 */
+        body {
+            background-color: #F8F9FA;
+            color: #1F1F1F;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography Utilities */
+        .text-gradient-gemini {
+            background: linear-gradient(90deg, #4285F4 0%, #9b72cb 50%, #d96570 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        /* Material Ripple Effect */
+        .ripple {
+            position: relative;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+        }
+        
+        .ripple::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        .ripple-light::after {
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+        }
+
+        .ripple:active::after {
+            transform: scale(0, 0);
+            opacity: .2;
+            transition: 0s;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3F4F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C4C7C5;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #747775;
+        }
+
+        /* Code Block */
+        pre {
+            background-color: #1F1F1F !important;
+            color: #E8EAED !important;
+            border-radius: 16px;
+            padding: 16px;
+            overflow-x: auto;
+        }
+
+        /* Smooth Anchor Scrolling offset */
+        section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-md3-primaryContainer selection:text-md3-onPrimaryContainer flex flex-col md:flex-row min-h-screen">
+
+    <!-- Toast Notification (Hidden by default) -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-md3-onSurface text-md3-surface px-4 py-3 rounded-md shadow-md3-3 font-body text-sm flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none">
+        <span class="material-symbols-rounded text-[20px]">content_copy</span>
+        <span id="toast-msg">Copied to clipboard</span>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-full md:w-72 bg-md3-surfaceContainerLowest md:h-screen md:sticky top-0 border-b md:border-b-0 md:border-r border-md3-outlineVariant overflow-y-auto flex-shrink-0 z-40 shadow-sm md:shadow-none">
+        <div class="p-6">
+            <div class="flex items-center gap-2 mb-8">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gemini-blue via-gemini-purple to-gemini-red flex items-center justify-center">
+                    <span class="material-symbols-rounded text-white text-[18px]">code_blocks</span>
+                </div>
+                <h1 class="font-brand font-bold text-xl tracking-tight text-md3-onSurface">COREBIQ</h1>
+            </div>
+            
+            <nav class="flex flex-col gap-1 font-body text-sm font-medium">
+                <a href="#intro" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Introduction</a>
+                <a href="#colors" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Color System</a>
+                <a href="#typography" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Typography</a>
+                <a href="#buttons" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Buttons</a>
+                <a href="#components" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Components & Cards</a>
+                <a href="#inputs" class="px-4 py-3 rounded-full text-md3-onSurfaceVariant hover:bg-md3-surfaceContainer hover:text-md3-onSurface transition-colors ripple">Forms & Inputs</a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 bg-md3-surface p-6 md:p-12 max-w-5xl overflow-x-hidden">
+        
+        <!-- SECTION: Intro -->
+        <section id="intro" class="mb-24 pt-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-md3-outlineVariant text-xs font-brand font-medium text-md3-onSurfaceVariant mb-6">
+                <span class="w-2 h-2 rounded-full bg-gradient-to-r from-gemini-blue via-gemini-purple to-gemini-red"></span>
+                Material Design 3 & Gemini Era
+            </div>
+            <h1 class="text-4xl md:text-6xl font-brand font-bold tracking-tight mb-6">
+                <span class="text-gradient-gemini">COREBIQ DEVELOPERS</span><br>
+                Brand Guidelines
+            </h1>
+            <p class="text-lg md:text-xl text-md3-onSurfaceVariant font-body max-w-3xl leading-relaxed mb-10">
+                This document outlines the visual identity for COREBIQ web applications. It leverages the dynamic, highly rounded, and accessible principles of Material Design 3, infused with the signature gradients and sparkle of the Google Gemini era.
+            </p>
+        </section>
+
+        <hr class="border-md3-outlineVariant mb-16">
+
+        <!-- SECTION: Colors -->
+        <section id="colors" class="mb-24">
+            <h2 class="text-3xl font-brand font-semibold mb-2">Color System</h2>
+            <p class="text-md3-onSurfaceVariant font-body mb-8">Click any color swatch to copy its HEX value. We use tonal palettes to ensure accessible contrast ratios.</p>
+            
+            <h3 class="text-xl font-brand font-medium mb-4 text-md3-onSurface">Gemini Signature</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <!-- Swatch Macro -->
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#4285F4">
+                    <div class="h-24 rounded-2xl bg-[#4285F4] shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#4285F4</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">gemini-blue</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#9b72cb">
+                    <div class="h-24 rounded-2xl bg-[#9b72cb] shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#9b72cb</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">gemini-purple</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#d96570">
+                    <div class="h-24 rounded-2xl bg-[#d96570] shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#d96570</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">gemini-red</div>
+                </div>
+                <div class="flex flex-col gap-2 group">
+                    <div class="h-24 rounded-2xl bg-gradient-to-r from-gemini-blue via-gemini-purple to-gemini-red shadow-md3-1"></div>
+                    <div class="font-mono text-sm font-medium">Gradient</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">Signature blend</div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-brand font-medium mb-4 text-md3-onSurface">MD3 Primary Tones</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#0B57D0">
+                    <div class="h-24 rounded-2xl bg-md3-primary shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#0B57D0</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">primary</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#FFFFFF">
+                    <div class="h-24 rounded-2xl bg-md3-onPrimary border border-md3-outlineVariant shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#FFFFFF</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">on-primary</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#D3E3FD">
+                    <div class="h-24 rounded-2xl bg-md3-primaryContainer shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#D3E3FD</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">primary-container</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#041E49">
+                    <div class="h-24 rounded-2xl bg-md3-onPrimaryContainer shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#041E49</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">on-primary-container</div>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-brand font-medium mb-4 text-md3-onSurface">Surfaces & Backgrounds</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#FFFFFF">
+                    <div class="h-24 rounded-2xl bg-md3-surfaceContainerLowest border border-md3-outlineVariant shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#FFFFFF</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">surface-lowest</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#F3F4F6">
+                    <div class="h-24 rounded-2xl bg-md3-surfaceContainerLow shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#F3F4F6</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">surface-low</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#E8EAED">
+                    <div class="h-24 rounded-2xl bg-md3-surfaceContainerHigh shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#E8EAED</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">surface-high</div>
+                </div>
+                <div class="flex flex-col gap-2 group cursor-pointer color-swatch" data-color="#1F1F1F">
+                    <div class="h-24 rounded-2xl bg-md3-onSurface shadow-md3-1 group-hover:shadow-md3-2 transition-shadow"></div>
+                    <div class="font-mono text-sm font-medium">#1F1F1F</div>
+                    <div class="font-body text-xs text-md3-onSurfaceVariant">on-surface (Text)</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-md3-outlineVariant mb-16">
+
+        <!-- SECTION: Typography -->
+        <section id="typography" class="mb-24">
+            <h2 class="text-3xl font-brand font-semibold mb-2">Typography</h2>
+            <p class="text-md3-onSurfaceVariant font-body mb-8">We use <span class="font-brand font-medium text-md3-primary">Google Sans (Outfit)</span> for display and headings, <span class="font-medium text-md3-primary">Roboto</span> for body text, and <span class="font-mono font-medium text-md3-primary">Roboto Mono</span> for code.</p>
+            
+            <div class="flex flex-col gap-8 bg-md3-surfaceContainerLowest p-8 rounded-3xl border border-md3-outlineVariant shadow-sm">
+                <!-- Display -->
+                <div>
+                    <div class="text-xs text-md3-onSurfaceVariant font-mono mb-1">Display Large • Google Sans (Outfit) Bold • 57px / 64px</div>
+                    <div class="font-brand text-[57px] leading-[64px] font-bold text-md3-onSurface tracking-tight">Design beautifully.</div>
+                </div>
+                <!-- Headline -->
+                <div>
+                    <div class="text-xs text-md3-onSurfaceVariant font-mono mb-1">Headline Medium • Google Sans (Outfit) SemiBold • 28px / 36px</div>
+                    <div class="font-brand text-[28px] leading-[36px] font-semibold text-md3-onSurface tracking-tight">Build responsive applications</div>
+                </div>
+                <!-- Title -->
+                <div>
+                    <div class="text-xs text-md3-onSurfaceVariant font-mono mb-1">Title Medium • Google Sans (Outfit) Medium • 16px / 24px</div>
+                    <div class="font-brand text-[16px] leading-[24px] font-medium text-md3-onSurface">Components that scale across platforms</div>
+                </div>
+                <!-- Body -->
+                <div>
+                    <div class="text-xs text-md3-onSurfaceVariant font-mono mb-1">Body Large • Roboto Regular • 16px / 24px</div>
+                    <div class="font-body text-[16px] leading-[24px] font-normal text-md3-onSurfaceVariant">Material Design 3 introduces a modernized color system, adapting dynamically to the user's wallpaper while ensuring accessibility and contrast ratios are strictly met.</div>
+                </div>
+                <!-- Code -->
+                <div>
+                    <div class="text-xs text-md3-onSurfaceVariant font-mono mb-1">Code / Label • Roboto Mono Medium • 14px / 20px</div>
+                    <div class="font-mono text-[14px] leading-[20px] font-medium text-md3-primary">&lt;button class="md3-btn-filled"&gt;Submit&lt;/button&gt;</div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-md3-outlineVariant mb-16">
+
+        <!-- SECTION: Buttons -->
+        <section id="buttons" class="mb-24">
+            <h2 class="text-3xl font-brand font-semibold mb-2">Buttons</h2>
+            <p class="text-md3-onSurfaceVariant font-body mb-8">Fully rounded pill shapes (radius: full). Padding is typically 10px vertically and 24px horizontally. Text is always medium weight.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                
+                <!-- Filled & Tonal -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-lg font-brand font-medium text-md3-onSurface">High Emphasis</h3>
+                    
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <!-- Filled Button -->
+                        <button class="h-10 px-6 rounded-full bg-md3-primary text-md3-onPrimary font-brand font-medium text-sm transition-all hover:shadow-md3-1 hover:bg-[#094bb3] active:bg-[#073c91] ripple ripple-light flex items-center gap-2">
+                            Filled Button
+                        </button>
+                        
+                        <!-- Filled with Icon -->
+                        <button class="h-10 px-6 rounded-full bg-md3-primary text-md3-onPrimary font-brand font-medium text-sm transition-all hover:shadow-md3-1 hover:bg-[#094bb3] active:bg-[#073c91] ripple ripple-light flex items-center gap-2 pr-5">
+                            <span class="material-symbols-rounded text-[18px]">add</span>
+                            Create New
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 items-center mt-2">
+                        <!-- Tonal Button -->
+                        <button class="h-10 px-6 rounded-full bg-md3-primaryContainer text-md3-onPrimaryContainer font-brand font-medium text-sm transition-all hover:bg-[#c2d8fc] active:bg-[#a9c7fa] ripple flex items-center gap-2">
+                            Tonal Button
+                        </button>
+                        
+                        <!-- AI Tonal Button -->
+                        <button class="h-10 px-6 rounded-full bg-gradient-to-r from-gemini-blue/10 via-gemini-purple/10 to-gemini-red/10 text-md3-primary font-brand font-medium text-sm transition-all hover:shadow-sm ripple flex items-center gap-2">
+                            <span class="material-symbols-rounded text-[18px] text-gemini-purple">temp_preferences_custom</span>
+                            Generate with AI
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Outlined & Text -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-lg font-brand font-medium text-md3-onSurface">Medium & Low Emphasis</h3>
+                    
+                    <div class="flex flex-wrap gap-4 items-center">
+                        <!-- Outlined Button -->
+                        <button class="h-10 px-6 rounded-full border border-md3-outline text-md3-primary font-brand font-medium text-sm transition-all hover:bg-md3-primary/5 active:bg-md3-primary/10 ripple flex items-center gap-2">
+                            Outlined Button
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4 items-center mt-2">
+                        <!-- Text Button -->
+                        <button class="h-10 px-4 rounded-full text-md3-primary font-brand font-medium text-sm transition-all hover:bg-md3-primary/5 active:bg-md3-primary/10 ripple flex items-center gap-2">
+                            Text Button
+                        </button>
+                        
+                        <!-- Icon Button -->
+                        <button class="w-10 h-10 rounded-full text-md3-onSurfaceVariant hover:bg-md3-onSurfaceVariant/10 active:bg-md3-onSurfaceVariant/20 transition-all ripple flex items-center justify-center" aria-label="Settings">
+                            <span class="material-symbols-rounded">settings</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- FABs -->
+            <div class="mt-12">
+                <h3 class="text-lg font-brand font-medium text-md3-onSurface mb-6">Floating Action Buttons (FAB)</h3>
+                <div class="flex gap-6 items-end">
+                    <!-- Standard FAB -->
+                    <button class="w-14 h-14 rounded-2xl bg-md3-primaryContainer text-md3-onPrimaryContainer shadow-md3-3 hover:shadow-md3-4 transition-all ripple flex items-center justify-center">
+                        <span class="material-symbols-rounded">edit</span>
+                    </button>
+                    
+                    <!-- Extended FAB -->
+                    <button class="h-14 px-5 rounded-2xl bg-md3-primaryContainer text-md3-onPrimaryContainer shadow-md3-3 hover:shadow-md3-4 transition-all ripple flex items-center justify-center gap-3">
+                        <span class="material-symbols-rounded">add</span>
+                        <span class="font-brand font-medium text-sm pr-2">New Project</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-md3-outlineVariant mb-16">
+
+        <!-- SECTION: Components -->
+        <section id="components" class="mb-24">
+            <h2 class="text-3xl font-brand font-semibold mb-2">Components & Cards</h2>
+            <p class="text-md3-onSurfaceVariant font-body mb-8">Cards use 16px to 24px border radii. Elevate surfaces to indicate depth and hierarchy.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Elevated Card -->
+                <div class="bg-md3-surfaceContainerLowest p-6 rounded-3xl shadow-md3-1 border border-md3-outlineVariant/50 flex flex-col gap-4 transition-shadow hover:shadow-md3-2">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-md3-primaryContainer text-md3-onPrimaryContainer flex items-center justify-center">
+                            <span class="material-symbols-rounded">analytics</span>
+                        </div>
+                        <div>
+                            <h3 class="font-brand font-medium text-lg text-md3-onSurface">Elevated Card</h3>
+                            <p class="font-body text-sm text-md3-onSurfaceVariant">Surface lowest with Level 1 shadow</p>
+                        </div>
+                    </div>
+                    <p class="font-body text-sm text-md3-onSurface mt-2">
+                        Used for interactive elements that need to pop off the background slightly.
+                    </p>
+                    <div class="mt-auto pt-4 flex justify-end">
+                        <button class="h-10 px-6 rounded-full border border-md3-outline text-md3-primary font-brand font-medium text-sm transition-all hover:bg-md3-primary/5 active:bg-md3-primary/10 ripple">
+                            Explore
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filled Card -->
+                <div class="bg-md3-surfaceContainerHighest p-6 rounded-3xl flex flex-col gap-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-brand font-medium text-lg text-md3-onSurface">Filled Card</h3>
+                        <button class="w-8 h-8 rounded-full text-md3-onSurfaceVariant hover:bg-md3-onSurfaceVariant/10 transition-all ripple flex items-center justify-center">
+                            <span class="material-symbols-rounded text-[20px]">more_vert</span>
+                        </button>
+                    </div>
+                    <p class="font-body text-sm text-md3-onSurfaceVariant leading-relaxed">
+                        No shadow, just a darker surface container background. Ideal for grouping static content without causing visual clutter.
+                    </p>
+                    
+                    <!-- Chips within Card -->
+                    <div class="flex flex-wrap gap-2 mt-auto pt-4">
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-lg bg-md3-surfaceContainerLowest border border-md3-outlineVariant text-xs font-brand font-medium text-md3-onSurfaceVariant">
+                            Design
+                        </span>
+                        <span class="inline-flex items-center px-3 py-1.5 rounded-lg bg-md3-surfaceContainerLowest border border-md3-outlineVariant text-xs font-brand font-medium text-md3-onSurfaceVariant">
+                            Code
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Spark Card -->
+            <div class="mt-6 relative overflow-hidden bg-md3-surfaceContainerLowest p-8 rounded-3xl shadow-md3-2 border border-gemini-purple/20">
+                <!-- Decorative Gradient Blur -->
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br from-gemini-blue via-gemini-purple to-gemini-red rounded-full opacity-10 blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row gap-6 items-start md:items-center justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-rounded text-gemini-purple text-[20px]">temp_preferences_custom</span>
+                            <h3 class="font-brand font-medium text-xl text-md3-onSurface">Gemini Inspired Component</h3>
+                        </div>
+                        <p class="font-body text-sm text-md3-onSurfaceVariant max-w-md leading-relaxed">
+                            Integrate intelligent features with subtle gradient borders and background blurs to signify AI capabilities.
+                        </p>
+                    </div>
+                    <button class="h-10 px-6 rounded-full bg-gradient-to-r from-gemini-blue via-gemini-purple to-gemini-red text-white font-brand font-medium text-sm transition-all hover:shadow-md3-2 hover:opacity-90 active:opacity-100 ripple ripple-light flex items-center gap-2 flex-shrink-0">
+                        Generate Code
+                        <span class="material-symbols-rounded text-[18px]">magic_button</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-md3-outlineVariant mb-16">
+
+        <!-- SECTION: Inputs -->
+        <section id="inputs" class="mb-24">
+            <h2 class="text-3xl font-brand font-semibold mb-2">Forms & Inputs</h2>
+            <p class="text-md3-onSurfaceVariant font-body mb-8">MD3 text fields have rounded corners, clear active states with primary color borders, and floating labels (simulated here).</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl">
+                
+                <!-- Outlined Input -->
+                <div class="flex flex-col gap-1">
+                    <label class="font-body text-xs font-medium text-md3-onSurfaceVariant ml-4">Email Address</label>
+                    <div class="relative flex items-center">
+                        <span class="material-symbols-rounded absolute left-4 text-md3-onSurfaceVariant pointer-events-none">mail</span>
+                        <input type="email" placeholder="Enter your email" class="w-full h-14 pl-12 pr-4 rounded-xl border-2 border-md3-outlineVariant bg-md3-surfaceContainerLowest text-md3-onSurface font-body focus:outline-none focus:border-md3-primary transition-colors placeholder:text-md3-onSurfaceVariant/60">
+                    </div>
+                    <span class="font-body text-xs text-md3-onSurfaceVariant ml-4 mt-1">We'll never share your email.</span>
+                </div>
+
+                <!-- Filled Input -->
+                <div class="flex flex-col gap-1">
+                    <label class="font-body text-xs font-medium text-md3-onSurfaceVariant ml-4">Workspace Name</label>
+                    <div class="relative flex items-center">
+                        <input type="text" placeholder="e.g. Project Alpha" class="w-full h-14 px-4 rounded-t-xl border-b-2 border-md3-onSurfaceVariant bg-md3-surfaceContainerHigh text-md3-onSurface font-body focus:outline-none focus:border-md3-primary focus:bg-md3-surfaceContainerLowest transition-colors placeholder:text-md3-onSurfaceVariant/60">
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="mt-32 pt-8 border-t border-md3-outlineVariant text-center flex flex-col items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-md3-surfaceContainerHigh flex items-center justify-center">
+                <span class="material-symbols-rounded text-md3-primary text-[20px]">code_blocks</span>
+            </div>
+            <p class="font-body text-sm text-md3-onSurfaceVariant">
+                © 2026 COREBIQ DEVELOPERS. Built with Material Design 3 principles.
+            </p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Toast Notification Logic ---
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            let toastTimeout;
+
+            function showToast(message) {
+                toastMsg.textContent = message;
+                toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                }, 2500);
+            }
+
+            // --- Copy Color to Clipboard ---
+            const swatches = document.querySelectorAll('.color-swatch');
+            swatches.forEach(swatch => {
+                swatch.addEventListener('click', () => {
+                    const color = swatch.getAttribute('data-color');
+                    
+                    // Use modern clipboard API if available, fallback for older browsers/iframes
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(color).then(() => {
+                            showToast(`Copied ${color}`);
+                        });
+                    } else {
+                        // Fallback using execCommand
+                        const textArea = document.createElement("textarea");
+                        textArea.value = color;
+                        textArea.style.position = "fixed";
+                        textArea.style.left = "-999999px";
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            showToast(`Copied ${color}`);
+                        } catch (err) {
+                            console.error('Unable to copy', err);
+                        }
+                        textArea.remove();
+                    }
+                });
+            });
+
+            // --- Material Ripple Effect Logic ---
+            const buttons = document.querySelectorAll('.ripple');
+            buttons.forEach(button => {
+                button.addEventListener('mousedown', function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Temporarily set background position to click coordinates
+                    this.style.setProperty('--ripple-x', `${x}px`);
+                    this.style.setProperty('--ripple-y', `${y}px`);
+                    
+                    // We handle the visual ripple via the CSS ::after pseudo-element
+                    // by setting the background position dynamically.
+                    const styleEl = document.createElement('style');
+                    // Create a unique class for this click instance
+                    const uniqueId = 'ripple-' + Date.now();
+                    styleEl.innerHTML = `
+                        .${uniqueId}::after {
+                            background-position: ${x}px ${y}px !important;
+                        }
+                    `;
+                    document.head.appendChild(styleEl);
+                    this.classList.add(uniqueId);
+                    
+                    // Clean up style tag after animation
+                    setTimeout(() => {
+                        this.classList.remove(uniqueId);
+                        styleEl.remove();
+                    }, 600);
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
