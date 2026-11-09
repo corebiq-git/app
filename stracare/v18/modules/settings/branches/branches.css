@@ -1,0 +1,122 @@
+/* --- Core Theme Variables --- */
+    :root {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+
+        --border: #E2E8F0;
+        --grey-light: #F1F5F9;
+        --grey-med: #CBD5E1;
+
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+        --danger: #EF4444;
+    }
+
+        #branches-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; margin: 0 auto; }
+
+        /* --- UI Components --- */
+        #branches-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #branches-module .icon-btn { background: var(--surface); border: 1px solid var(--border); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; box-shadow: var(--shadow-sm); transition: 0.2s; }
+        #branches-module .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
+
+        /* Form Card - Now takes full width */
+        #branches-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 32px; width: 100%; }
+        #branches-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #branches-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #branches-module .input-group { grid-template-columns: 1fr 1fr; } }
+        /* Allowing full width rows for long addresses */
+        #branches-module .full-width-field { grid-column: 1 / -1; }
+
+        #branches-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; }
+        
+        /* --- Read-Only vs Editable States --- */
+        #branches-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 600; color: var(--text-main); pointer-events: none; transition: all 0.3s ease; }
+        #branches-module .readonly-input.editable { background: #FAFAFA; border: 1px solid var(--border); padding-left: 16px; pointer-events: auto; font-weight: 500;}
+        #branches-module .readonly-input.editable:focus { border-color: var(--primary); background: var(--surface); }
+        #branches-module .locked-input { background: #F4F4F4 !important; color: #888 !important; pointer-events: none !important; border: 1px solid var(--border) !important; padding-left: 16px !important; }
+
+        #branches-module .btn-primary { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #branches-module .btn-primary:active { opacity: 0.8; }
+        #branches-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+
+        /* --- Google Sheet Style Horizontal Scroll Table --- */
+        #branches-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; width: 100%; }
+        #branches-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        #branches-module .table-header h4 { font-size: 16px; font-weight: 600; margin: 0;}
+        
+        #branches-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #branches-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #branches-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #branches-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #branches-module .saas-table tr:last-child td { border-bottom: none; }
+        
+        #branches-module .branch-info { display: flex; flex-direction: column; }
+        #branches-module .branch-info .bid { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 2px; }
+        #branches-module{--branch-blue:#0B1F4B;--branch-ink:#1f1f1f;--branch-muted:#6b7280;--branch-border:#e1e4e2;max-width:1200px;color:var(--branch-ink);font-size:14px;line-height:1.5}
+        #branches-module .branches-heading{display:flex;align-items:center;gap:12px;margin-bottom:19px}
+        #branches-module .branches-heading-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #eef0f4;border-radius:16px;background:#fff;color:var(--branch-blue);box-shadow:0 1px 3px rgba(31,35,40,.06)}
+        #branches-module .branches-heading-icon .material-symbols-rounded{font-size:24px}
+        #branches-module .section-title{margin:0;color:var(--branch-ink);font-size:25px;line-height:1.2;font-weight:600;letter-spacing:-.35px}
+        #branches-module .branches-subtitle{margin:4px 0 0;color:var(--branch-muted);font-size:13px}
+        #branches-module .form-card,#branches-module .table-container{border:1px solid var(--branch-border);border-radius:24px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06),0 8px 25px rgba(31,35,40,.035)}
+        #branches-module .form-card{padding:22px 24px;margin-bottom:20px}
+        #branches-module .branch-form-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:14px!important;margin-bottom:18px!important;border-bottom:1px solid #eef0f4!important}
+        #branches-module .branch-form-heading h3{margin:0;color:var(--branch-ink)!important;font-size:15px;font-weight:600}
+        #branches-module .icon-btn{width:38px;height:38px;border:1px solid #c4c7c5;border-radius:50%;box-shadow:none}
+        #branches-module .icon-btn:hover{background:#E8EEF7;border-color:#C8D2E1}
+        #branches-module .form-label{margin-bottom:7px;color:#4b5563;font-size:11px;font-weight:650}
+        #branches-module .form-input{min-height:46px;padding:11px 13px;border:1px solid #e1e4e2;border-radius:12px;background:#f8fafc;color:#1f2937;font:13px Inter,sans-serif;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}
+        #branches-module textarea.form-input{min-height:76px;resize:vertical}
+        #branches-module .form-input:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #branches-module .readonly-input{background:#f8fafc}
+        #branches-module .readonly-input.editable{background:#fff;border-color:#e1e4e2;padding-left:13px}
+        #branches-module .readonly-input.editable:focus{border-color:var(--branch-blue);box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #branches-module .locked-input{min-height:46px;padding-left:13px!important;border:1px solid #e1e4e2!important;border-radius:12px;background:#f1f4f8!important;color:#667085!important}
+        #branches-module .btn-primary,#branches-module .btn-outline{min-height:42px;padding:0 17px;border-radius:22px;font:600 12px Inter,sans-serif}
+        #branches-module .btn-primary{background:var(--branch-blue)}
+        #branches-module .btn-primary:hover{background:#071630}
+        #branches-module .btn-outline{border-color:#c4c7c5}
+        #branches-module #save-actions{display:flex;justify-content:flex-end;gap:8px}
+        #branches-module #save-actions .btn-outline{margin-right:0!important}
+        #branches-module .table-container{overflow:hidden}
+        #branches-module .table-header{padding:15px 18px;border-bottom:1px solid #eef0f4}
+        #branches-module .table-header h4{color:var(--branch-ink);font-size:15px;font-weight:600}
+        #branches-module .branch-search{height:42px;min-width:min(260px,100%);display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid transparent;border-radius:16px;background:#f4f7fc;color:#8290a2}
+        #branches-module .branch-search:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #branches-module .branch-search .material-symbols-rounded{font-size:18px}
+        #branches-module .branch-search input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#344054;font:13px Inter,sans-serif}
+        #branches-module .branch-search input::placeholder{color:#718096}
+        #branches-module .saas-table{min-width:760px}
+        #branches-module .saas-table th{padding:14px 16px;background:#fafbfc;color:#65748b;font-size:10px;font-weight:650;letter-spacing:.45px}
+        #branches-module .saas-table td{padding:14px 16px;border-bottom:1px solid #f0f2f5;color:#344054;font-size:12px;font-weight:400}
+        #branches-module .saas-table tbody tr:nth-child(even){background:#fcfcfd}
+        #branches-module .saas-table tbody tr:hover{background:#f6f9fe}
+        #branches-module .saas-table tr:last-child td{border-bottom:0}
+        #branches-module .branch-info .bid{color:#0B1F4B;font-size:10px;font-weight:650}
+        #branches-module .branch-map-link{display:inline-flex;align-items:center;gap:5px;color:#0B1F4B!important;font-size:12px;font-weight:600;text-decoration:none}
+        #branches-module .branch-map-link:hover{text-decoration:underline}
+        #branches-module .branch-row-action{width:34px;height:34px;display:inline-grid;place-items:center;border:1px solid #e1e4e2;border-radius:50%;background:#fff;color:#5e6672;cursor:pointer}
+        #branches-module .branch-row-action:hover{background:#E8EEF7;border-color:#C8D2E1;color:#0B1F4B}
+        #branches-module .branch-row-action .material-symbols-rounded{font-size:18px}
+        @media(max-width:700px){
+            #branches-module .branches-heading{align-items:flex-start}
+            #branches-module .branches-heading-icon{flex-basis:42px;width:42px;height:42px;border-radius:14px}
+            #branches-module .section-title{font-size:21px}
+            #branches-module .branches-subtitle{font-size:12px}
+            #branches-module .form-card{padding:16px;border-radius:20px;margin-bottom:15px}
+            #branches-module .input-group{gap:12px;margin-bottom:12px}
+            #branches-module .table-container{border-radius:20px}
+            #branches-module .table-header{align-items:stretch;padding:13px}
+            #branches-module .branch-search{width:100%;min-width:0}
+            #branches-module .branch-search input{font-size:12px}
+            #branches-module #save-actions{width:100%}
+            #branches-module #save-actions button{flex:1}
+        }

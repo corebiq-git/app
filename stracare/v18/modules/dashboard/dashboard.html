@@ -1,0 +1,354 @@
+<link rel="stylesheet" data-module-style href="dashboard.css">
+<div class="module-container dashboard-module">
+
+
+                <div id="dash-error-banner" class="dash-error">
+                    <span class="material-symbols-rounded">error</span>
+                    <span id="dash-error-text">Database connection failed.</span>
+                </div>
+
+                <section class="dash-welcome-card" aria-label="Dashboard welcome">
+                    <div class="dash-welcome-copy">
+                        <div class="dash-welcome-eyebrow">
+                            <span class="material-symbols-rounded" aria-hidden="true">auto_awesome</span>
+                            Welcome back,
+                        </div>
+                        <h2 class="dash-welcome-title" id="dash-company-name" data-no-translate>Loading company...</h2>
+                        <p class="dash-welcome-company">Run Your Clinic With Confidence</p>
+                    </div>
+                    <div class="dashboard-finance-summary">
+                        <div class="dashboard-as-of" aria-label="Current date and time">
+                            <span class="dashboard-clock-item">
+                                <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
+                                <time id="dashboard-as-of-date">Loading date...</time>
+                            </span>
+                            <span class="dashboard-clock-item dashboard-clock-time">
+                                <span class="material-symbols-rounded" aria-hidden="true">schedule</span>
+                                <time id="dashboard-as-of-time">--:--:--</time>
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-quick-tools" aria-labelledby="dashboard-quick-tools-title">
+                    <div class="dashboard-quick-tools-head">
+                        <h2 class="dashboard-quick-tools-title" id="dashboard-quick-tools-title">
+                            <span class="material-symbols-rounded" aria-hidden="true">grid_view</span>
+                            Quick Tools
+                        </h2>
+                        <div class="dashboard-quick-tools-controls" aria-label="Quick tools controls">
+                            <button class="dashboard-quick-tools-arrow" type="button" aria-label="Previous quick tools" aria-controls="dashboard-quick-tools-list" onclick="window.scrollDashboardQuickTools(-1)">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+                            </button>
+                            <button class="dashboard-quick-tools-arrow" type="button" aria-label="Next quick tools" aria-controls="dashboard-quick-tools-list" onclick="window.scrollDashboardQuickTools(1)">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="dashboard-quick-tools-viewport" id="dashboard-quick-tools-viewport">
+                    <div class="dashboard-quick-tools-grid" id="dashboard-quick-tools-list" role="group" aria-label="Quick tools">
+                        <button class="dashboard-quick-tool dashboard-quick-tool-transactions" type="button" onclick="window.switchView('view-transaction', null)" aria-label="Open Transactions">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">receipt_long</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Transactions</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-letterhead', null)" aria-label="Open Letter Head">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">description</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Letter Head</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-report', null)" aria-label="Open Report Template">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">article</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Report Template</span></span>
+                        </button>
+                        <button class="dashboard-quick-tool" type="button" onclick="window.switchView('view-email', null)" aria-label="Open Email module">
+                            <span class="dashboard-quick-tool-icon"><span class="material-symbols-rounded" aria-hidden="true">mail</span></span>
+                            <span class="dashboard-quick-tool-copy"><span class="dashboard-quick-tool-name">Email</span></span>
+                        </button>
+                    </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-week-card" aria-label="Choose a day to view dashboard records">
+                    <div class="dashboard-week-header">
+                        <h2 class="dashboard-week-title">
+                            <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
+                            <span class="dashboard-week-title-copy">
+                                <span>Calendar</span>
+                                <span class="dashboard-week-range" id="dashboardWeekLabel">This week</span>
+                            </span>
+                        </h2>
+                        <div class="dashboard-week-days" id="dashboardWeekDays" role="group" aria-label="Days of the selected week"></div>
+                        <div class="dashboard-week-controls">
+                            <button class="dashboard-week-control" type="button" id="dashboardPreviousWeek" aria-label="Previous week">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_left</span>
+                            </button>
+                            <button class="dashboard-week-control" type="button" id="dashboardCurrentWeek">This week</button>
+                            <button class="dashboard-week-control" type="button" id="dashboardNextWeek" aria-label="Next week">
+                                <span class="material-symbols-rounded" aria-hidden="true">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-count-row" aria-label="Selected date attendance, appointments, and fees">
+                    <article class="dashboard-count-card attendance">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded dashboard-attendance-icon" aria-hidden="true">how_to_reg</span></span>
+                            <span class="dashboard-count-heading-copy">
+                                <span class="dashboard-count-heading-title">Attendance</span>
+                                <span class="dashboard-count-date-label" id="dashboardAttendanceCountHeading">Today</span>
+                            </span>
+                        </div>
+                        <div class="dashboard-count-total" id="dashboardAttendanceTotal">0</div>
+                        <div class="dashboard-count-caption">Attendance records</div>
+                        <div class="dashboard-count-chart-area">
+                            <div class="dashboard-attendance-chart" role="img" aria-label="Attendance by status">
+                                <div class="dashboard-attendance-bar" aria-hidden="true">
+                                    <span class="dashboard-attendance-segment present" id="dashboardAttendancePresentBar"></span>
+                                    <span class="dashboard-attendance-segment absent" id="dashboardAttendanceAbsentBar"></span>
+                                    <span class="dashboard-attendance-segment half-day" id="dashboardAttendanceHalfDayBar"></span>
+                                </div>
+                                <div class="dashboard-chart-legend">
+                                    <span class="dashboard-chart-legend-item"><i class="dashboard-chart-dot present"></i>Present<strong id="dashboardAttendancePresent">0</strong></span>
+                                    <span class="dashboard-chart-legend-item"><i class="dashboard-chart-dot absent"></i>Absent<strong id="dashboardAttendanceAbsent">0</strong></span>
+                                    <span class="dashboard-chart-legend-item"><i class="dashboard-chart-dot half-day"></i>Half-day<strong id="dashboardAttendanceHalfDay">0</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="dashboard-count-card appointments">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded dashboard-appointment-icon" aria-hidden="true">event_available</span></span>
+                            <span class="dashboard-count-heading-copy">
+                                <span class="dashboard-count-heading-title">Appointments</span>
+                                <span class="dashboard-count-date-label" id="dashboardAppointmentCountHeading">Today</span>
+                            </span>
+                        </div>
+                        <div class="dashboard-count-total" id="dashboardAppointmentTotal">0</div>
+                        <div class="dashboard-count-caption" id="dashboardAppointmentCountCaption">Scheduled for selected date</div>
+                        <div class="dashboard-count-chart-area">
+                            <div class="dashboard-appointment-donut" id="dashboardAppointmentDonut" role="img" aria-label="Appointment status chart">
+                                <span class="dashboard-appointment-donut-center" id="dashboardAppointmentDonutTotal">0</span>
+                            </div>
+                            <div class="dashboard-appointment-legend">
+                                <span class="dashboard-chart-legend-item"><i class="dashboard-chart-dot pending"></i>Pending<strong id="dashboardAppointmentPending">0</strong></span>
+                                <span class="dashboard-chart-legend-item"><i class="dashboard-chart-dot completed"></i>Completed<strong id="dashboardAppointmentCompleted">0</strong></span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="dashboard-count-card finance">
+                        <div class="dashboard-count-heading">
+                            <span class="dashboard-count-icon"><span class="material-symbols-rounded" aria-hidden="true">account_balance_wallet</span></span>
+                            <span class="dashboard-count-heading-copy">
+                                <span class="dashboard-count-heading-title">Fee Summary</span>
+                                <span class="dashboard-count-date-label" id="dashboardFeeSummaryHeading">Today</span>
+                            </span>
+                        </div>
+                        <div class="dashboard-count-total" id="dashboardFeeTotal">₹0.00</div>
+                        <div class="dashboard-count-caption">Total fee for selected date</div>
+                        <div class="dashboard-fee-rows" role="img" aria-label="Received and pending fee figures with proportional lines">
+                            <div class="dashboard-fee-row">
+                                <span class="dashboard-fee-row-copy">
+                                    <span class="dashboard-fee-row-label"><i class="dashboard-chart-dot received"></i>Received</span>
+                                    <strong id="dashboardFeeReceived">₹0.00</strong>
+                                </span>
+                                <svg class="dashboard-fee-row-chart" viewBox="0 0 120 22" preserveAspectRatio="none" aria-hidden="true">
+                                    <path class="dashboard-fee-row-track" d="M4 3 V18 H116"></path>
+                                    <path class="dashboard-fee-row-line received" id="dashboardFeeChartReceivedLine" d="M4 3 V18 H4"></path>
+                                </svg>
+                            </div>
+                            <div class="dashboard-fee-row">
+                                <span class="dashboard-fee-row-copy">
+                                    <span class="dashboard-fee-row-label"><i class="dashboard-chart-dot due"></i>Pending</span>
+                                    <strong id="dashboardFeeDue">₹0.00</strong>
+                                </span>
+                                <svg class="dashboard-fee-row-chart" viewBox="0 0 120 22" preserveAspectRatio="none" aria-hidden="true">
+                                    <path class="dashboard-fee-row-track" d="M4 3 V18 H116"></path>
+                                    <path class="dashboard-fee-row-line pending" id="dashboardFeeChartPendingLine" d="M4 3 V18 H4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="dashboard-entry-row" aria-label="Attendance and appointments for selected date">
+                    <article class="dashboard-entry-card attendance">
+                        <h2 class="dashboard-entry-heading">
+                            <span class="dashboard-entry-title">
+                                <span class="material-symbols-rounded dashboard-attendance-icon" aria-hidden="true">how_to_reg</span>
+                                <span class="dashboard-entry-title-copy">
+                                    <span class="dashboard-entry-title-text">Attendance</span>
+                                    <span class="dashboard-entry-date" id="dashboardAttendanceHeading">Today</span>
+                                </span>
+                            </span>
+                            <button class="dashboard-module-link" type="button" onclick="window.switchView('view-attendance', null)" aria-label="Open full attendance module" title="Open full attendance module">
+                                <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+                            </button>
+                        </h2>
+                        <div class="dashboard-record-list" id="dashboardAttendanceRecords" aria-live="polite">
+                            <div class="dashboard-record-empty">Loading today's attendance...</div>
+                        </div>
+                    </article>
+                    <article class="dashboard-entry-card appointments">
+                        <h2 class="dashboard-entry-heading">
+                            <span class="dashboard-entry-title">
+                                <span class="material-symbols-rounded dashboard-appointment-icon" aria-hidden="true">event_available</span>
+                                <span class="dashboard-entry-title-copy">
+                                    <span class="dashboard-entry-title-text">Appointment</span>
+                                    <span class="dashboard-entry-date" id="dashboardAppointmentHeading">Today</span>
+                                </span>
+                            </span>
+                            <button class="dashboard-module-link" type="button" onclick="window.switchView('view-appointments', null)" aria-label="Open full appointments module" title="Open full appointments module">
+                                <span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>
+                            </button>
+                        </h2>
+                        <div class="dashboard-record-list" id="dashboardAppointmentRecords" aria-live="polite">
+                            <div class="dashboard-record-empty">Loading today's appointments...</div>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="dash-top-row dashboard-hidden-legacy">
+
+                    <div class="dash-card attendance-overview">
+                        <div class="card-title">Today's Attendance Overview</div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Present / Half-Day</div>
+                                    <div class="fin-amount" id="dashPresent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">how_to_reg</span>
+                            </div>
+
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">On Leave / Absent</div>
+                                    <div class="fin-amount" id="dashAbsent">0</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon">event_busy</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">Schedule Breakdown</div>
+                        <div class="chart-container">
+                            <canvas id="apptDonutChart"></canvas>
+                        </div>
+
+                        <div class="mini-stats-grid">
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                    Pending
+                                </div>
+                                <div class="mini-stat-val" id="dashPending">0</div>
+                            </div>
+
+                            <div class="mini-stat schedule-status-stat">
+                                <div class="mini-stat-label">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                                    Completed
+                                </div>
+                                <div class="mini-stat-val" id="dashCompleted">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card">
+                        <div class="card-title">
+                            Financial Summary
+                            <span id="dashboard-finance-period-label" style="font-size:11px;font-weight:600;color:var(--text-muted)">Today</span>
+                        </div>
+                        <div class="fin-stat-container">
+                            <div class="fin-stat">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Revenue</div>
+                                    <div class="fin-amount" id="dashboard-revenue-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">payments</span>
+                            </div>
+                            <div class="fin-stat success-box">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Received</div>
+                                    <div class="fin-amount" id="dashboard-received-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">south_west</span>
+                            </div>
+                            <div class="fin-stat alert">
+                                <div class="fin-stat-info">
+                                    <div class="fin-label">Due</div>
+                                    <div class="fin-amount" id="dashboard-due-total">₹0.00</div>
+                                </div>
+                                <span class="material-symbols-rounded fin-icon" aria-hidden="true">account_balance_wallet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <section class="dash-card sales-trend-card dashboard-hidden-legacy" aria-label="Sales trend">
+                    <div class="sales-trend-heading">
+                        <div>
+                            <div class="card-title">Sales trend</div>
+                            <p class="sales-trend-caption" id="sales-trend-caption">Daily billed sales for today</p>
+                        </div>
+                        <div class="sales-trend-total">
+                            <span class="sales-trend-total-label">Sales · <span id="dashboard-sales-period-label">Today</span></span>
+                            <span class="sales-trend-total-value" id="dashboard-sales-total">₹0.00</span>
+                        </div>
+                    </div>
+                    <div class="sales-trend-chart">
+                        <canvas id="salesTrendChart" role="img" aria-label="Sales trend chart"></canvas>
+                    </div>
+                </section>
+
+                <section class="dash-card calendar-week-card dashboard-hidden-legacy" aria-label="Current week calendar">
+                    <div class="cal-header-row">
+                        <div class="cal-month-title" id="calMonthDisplay">This week</div>
+                        <button class="dashboard-view-all" type="button" onclick="window.setCalToToday()">
+                            <span class="material-symbols-rounded" style="font-size:16px">today</span> Today
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </section>
+
+                <div class="dash-table-wrapper dashboard-hidden-legacy">
+                    <div class="schedule-table-heading">
+                        <h4 style="font-size:14px;font-weight:700;margin:0;color:var(--text-main)">
+                            Schedule for:
+                            <span id="dashListTitle" style="color:var(--primary)">Today</span>
+                        </h4>
+
+                        <button class="dashboard-view-all"
+                                onclick="window.switchView('view-appointments',null)">
+                            View Full Module
+                            <span class="material-symbols-rounded" style="font-size:16px">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="saas-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Patient Details</th>
+                                    <th>Branch & Therapist</th>
+                                    <th>Financial Status</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashAptTableBody">
+                                <tr>
+                                    <td colspan="5" style="text-align:center;padding:30px;font-size:13px;color:var(--text-muted);display:block;width:100%">
+                                        Loading live schedule...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            
+    <script type="module" src="dashboard.js"></script>
+</div>

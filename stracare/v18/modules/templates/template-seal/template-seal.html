@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Digital Seals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./template-seal.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="seal-module">
+    
+    
+
+    <div class="section-title no-print">
+        <h2 style="margin: 0;">Digital Seals</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <h4 style="color: var(--primary); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Select Seal Template</h4>
+        
+        <div class="seal-selector-group">
+            <label class="seal-option active" id="opt-company" onclick="window.selectSeal('company')">
+                <input type="radio" name="sealType" checked>
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Company Seal</span>
+                    <span class="seal-option-desc">Company name / authorised signatory designation</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-doctor" onclick="window.selectSeal('doctor')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Doctor's Seal</span>
+                    <span class="seal-option-desc">Authorised signatory name / qualification or licence</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-sincerely" onclick="window.selectSeal('sincerely')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Sincerely</span>
+                    <span class="seal-option-desc">Administration and company name with space for a signature</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-payment" onclick="window.selectSeal('payment')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Payment Received</span>
+                    <span class="seal-option-desc">Red payment confirmation seal</span>
+                </div>
+            </label>
+
+            <label class="seal-option" id="opt-signature" onclick="window.selectSeal('signature')">
+                <input type="radio" name="sealType">
+                <div class="seal-option-details">
+                    <span class="seal-option-title">Signature</span>
+                    <span class="seal-option-desc">Print the signature image from assets/sign.png</span>
+                </div>
+            </label>
+        </div>
+
+        <div style="text-align: right;">
+            <button type="button" class="btn-outline" onclick="window.print()">
+                <span class="material-symbols-rounded">print</span> Print Active Seal
+            </button>
+        </div>
+    </div>
+
+    <!-- Canvas Area for Display/Printing -->
+    <div class="canvas-area">
+        
+        <!-- SEAL 1: COMPANY -->
+        <div class="seal-box-company" id="seal-company" style="display: block;">
+            <div class="seal-name" id="seal-company-name">FOR Company name not set</div>
+            <div class="signature-line"></div>
+            <div class="seal-role" id="seal-company-designation">Designation not set</div>
+        </div>
+
+        <!-- SEAL 2: DOCTOR -->
+        <div class="seal-box-doctor" id="seal-doctor">
+            <div class="doc-name" id="seal-signatory-name">Authorised signatory name not set</div>
+            <div class="doc-qual" id="seal-signatory-designation">Designation not set</div>
+            <div class="doc-reg" id="seal-signatory-qualification">Qualification / Licence No. not set</div>
+        </div>
+
+        <!-- SEAL 3: SINCERELY -->
+        <div class="seal-box-sincerely" id="seal-sincerely">
+            <div class="sincerely-title">Sincerely</div>
+            <div class="sincerely-signature-gap" aria-hidden="true"></div>
+            <div class="sincerely-administration">Administration</div>
+            <div class="sincerely-company" id="seal-sincerely-company">Company name not set</div>
+        </div>
+
+        <!-- SEAL 4: PAYMENT RECEIVED -->
+        <div class="seal-box-payment" id="seal-payment">Payment Received</div>
+
+        <!-- SEAL 5: SIGNATURE IMAGE -->
+        <div class="seal-box-signature" id="seal-signature">
+            <img src="../../../assets/sign.png" alt="Authorised signature">
+        </div>
+
+    </div>
+
+    <script type="module" src="./template-seal.js"></script>
+
+</div>
+</body>
+</html>

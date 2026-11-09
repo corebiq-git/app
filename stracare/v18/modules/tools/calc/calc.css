@@ -1,0 +1,32 @@
+body {
+            background-color: #f3f4f6; /* Light gray background for contrast against the app */
+            margin: 0;
+            font-family: Outfit, "Google Sans", sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Prevent double-tap zoom on mobile */
+        button { 
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Hide scrollbar for the calculation display */
+        ::-webkit-scrollbar { display: none; }
+        
+        .h-dvh { height: 100dvh; }
+
+        /* Custom soft shadow transitioning from dark to white */
+        .shadow-overlap {
+            box-shadow: 0 -25px 25px -10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Button click effect */
+        .btn-tap {
+            transition: background-color 0.15s ease;
+        }
+        .btn-tap:active {
+            background-color: rgba(0,0,0,0.05);
+            border-radius: 50px;
+        }

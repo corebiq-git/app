@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#F7F9FC">
+  <title>COREBIQ BUSINESS FLOW APP | Firestore Usage</title>
+  <link rel="stylesheet" href="../../../css/corebiq.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+  
+    <link rel="stylesheet" href="./usage.css" data-module-style>
+</head>
+<body>
+  <main class="usage-page">
+    <header class="usage-header">
+      <div class="usage-heading">
+        <span class="usage-heading-icon material-symbols-rounded" aria-hidden="true">monitoring</span>
+        <div><h1>Firestore Usage</h1><p id="usageSubtitle">Loading Firebase usage metrics…</p></div>
+      </div>
+      <div class="usage-actions">
+        <a class="usage-button" href="../../../index.html"><span class="material-symbols-rounded" aria-hidden="true">arrow_back</span>Dashboard</a>
+        <button class="usage-button primary" id="refreshUsage" type="button" disabled><span class="material-symbols-rounded" aria-hidden="true">refresh</span>Refresh</button>
+      </div>
+    </header>
+
+    <p class="usage-notice">Metrics come from Google Cloud Monitoring for the default Firestore database. Operation totals are grouped by Pacific calendar day; today is partial and updates can take up to four minutes to appear. Free-tier limits shown here are reference values, not billing alerts. Outbound network transfer is not included.</p>
+    <div id="usageStatus" class="usage-state" role="status" aria-live="polite"><span class="material-symbols-rounded" aria-hidden="true">hourglass_top</span>Checking administrator access…</div>
+    <section id="usageDashboard" hidden>
+      <div class="usage-summary" id="usageSummary"></div>
+      <div class="usage-charts" id="usageCharts"></div>
+      <footer class="usage-footer"><span id="usageUpdated"></span><span>Free-tier daily quotas reset around midnight Pacific time.</span></footer>
+    </section>
+  </main>
+  <script type="module" src="./usage.js"></script>
+</body>
+</html>
