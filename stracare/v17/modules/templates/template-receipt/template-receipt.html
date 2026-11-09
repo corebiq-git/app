@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0B1F4B">
+    <title>COREBIQ BUSINESS FLOW APP | Receipt Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <link rel="stylesheet" href="./template-receipt.css" data-module-style>
+</head>
+<body>
+    <main class="page">
+        <header class="toolbar">
+            <div class="heading">
+                <h1>Receipt Template</h1>
+                <p>Editable 4-inch S4 receipt, ready to print or share.</p>
+            </div>
+            <div class="actions">
+                <button class="action" type="button" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+                <button class="action" type="button" id="download-button"><span class="material-symbols-rounded">download</span>Download PDF</button>
+                <button class="action primary" type="button" id="share-button"><span class="material-symbols-rounded">share</span>Send / Share</button>
+                <button class="action" type="button" id="email-button"><span class="material-symbols-rounded">mail</span>Email</button>
+            </div>
+        </header>
+        <div class="layout">
+            <section class="editor" aria-label="Receipt details">
+                <h2>Receipt details</h2>
+                <div class="field wide"><label for="business-name">Business / Clinic name</label><input id="business-name" value="Your Clinic Name" data-output="business-name"></div>
+                <div class="field wide"><label for="business-tagline">Company tagline</label><input id="business-tagline" data-output="business-tagline"></div>
+                <div class="field wide"><label for="business-details">Address and contact details</label><textarea id="business-details" data-output="business-details">Clinic address
+Phone: Add contact number</textarea></div>
+                <div class="field"><label for="receipt-number">Receipt number</label><input id="receipt-number" value="RC-001" data-output="receipt-number"></div>
+                <div class="field"><label for="receipt-date">Date</label><input id="receipt-date" type="date" data-output="receipt-date"></div>
+                <div class="field"><label for="patient-name">Received from</label><input id="patient-name" placeholder="Patient name" data-output="patient-name"></div>
+                <div class="field"><label for="patient-mobile">Mobile number</label><input id="patient-mobile" type="tel" placeholder="Mobile number" data-output="patient-mobile"></div>
+                <div class="field"><label for="amount">Amount received</label><input id="amount" type="number" min="0" step="0.01" value="0.00" data-output="amount"></div>
+                <div class="field"><label for="payment-method">Payment method</label><input id="payment-method" value="Cash" data-output="payment-method"></div>
+                <div class="field wide"><label for="purpose">Payment for</label><input id="purpose" placeholder="Consultation / service" data-output="purpose"></div>
+                <div class="field wide"><label for="notes">Notes</label><textarea id="notes" placeholder="Optional notes" data-output="notes"></textarea></div>
+                <p class="status field wide" id="status" role="status" aria-live="polite"></p>
+            </section>
+            <section class="receipt-wrap" aria-label="Receipt preview">
+                <article id="receipt">
+                    <h2 class="brand" data-value="business-name">Your Clinic Name</h2>
+                    <p class="tagline" data-value="business-tagline"></p>
+                    <p class="business-details" data-value="business-details">Clinic address
+Phone: Add contact number</p>
+                    <h3 class="receipt-title">PAYMENT RECEIPT</h3>
+                    <div class="meta"><div>Receipt #<br><strong data-value="receipt-number">RC-001</strong></div><div>Date<br><strong data-value="receipt-date"></strong></div></div>
+                    <div class="row"><span>Received from</span><strong data-value="patient-name">—</strong></div>
+                    <div class="row"><span>Mobile</span><strong data-value="patient-mobile">—</strong></div>
+                    <div class="row"><span>Payment for</span><strong data-value="purpose">—</strong></div>
+                    <div class="row"><span>Payment method</span><strong data-value="payment-method">Cash</strong></div>
+                    <div class="amount"><span>AMOUNT RECEIVED</span><span>₹<span data-value="amount">0.00</span></span></div>
+                    <p class="note" data-value="notes"></p>
+                    <p class="thanks">Thank you for your payment.</p>
+                    <p class="footer">This is a computer-generated receipt.</p>
+                </article>
+            </section>
+        </div>
+    </main>
+    <script src="./template-receipt.js"></script>
+    <script type="module" src="./template-receipt-2.js"></script>
+</body>
+</html>
