@@ -1,0 +1,128 @@
+#main-content .form-view {
+  color: #1f1f1f;
+}
+
+#main-content .form-view :is(.form-card, .form-panel, .table-container, .table-wrapper, .table-wrap, .report-table-wrap, .dash-table-wrapper, .ledger-panel) {
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(31, 35, 40, .04);
+}
+
+#main-content .form-view :is(.form-card, .form-panel) {
+  padding: 20px;
+}
+
+#main-content .form-view :is(.form-section, .company-form-section) {
+  padding: 20px;
+  border-top: 1px solid #e3e3e3;
+}
+
+#main-content .form-view :is(.form-section, .company-form-section):first-child {
+  border-top: 0;
+}
+
+#main-content .form-view :is(.form-label, .form-group label) {
+  display: block;
+  margin-bottom: 6px;
+  color: #444746;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+#main-content .form-view :is(.form-input, .form-control, input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="hidden"]), select, textarea) {
+  min-height: 44px;
+  border: 1px solid #c4c7c5;
+  border-radius: 8px;
+  background: #fff;
+  color: #1f1f1f;
+  font: inherit;
+}
+
+#main-content .form-view :is(input, select, textarea):disabled {
+  background: #f3f4f6;
+  color: #6b7078;
+  cursor: not-allowed;
+}
+
+#main-content .form-view :is(input, select, textarea)[readonly] {
+  background: #f7f8fa;
+}
+
+#main-content .form-view textarea:not([type="hidden"]) {
+  min-height: 84px;
+  padding: 10px 12px;
+}
+
+#main-content .form-view :is(.form-input, .form-control, input, select, textarea):focus {
+  border-color: #1a1a1a;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(26, 26, 26, .12);
+}
+
+#main-content .form-view :is(.input-group, .form-grid) {
+  gap: 16px;
+}
+
+#main-content .form-view :is(.form-actions, .patient-form-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+  padding-top: 16px;
+}
+
+#main-content .form-view :is(.table-responsive, .table-wrap, .table-scroll, .patient-table-scroll) {
+  overflow-x: auto;
+}
+
+#main-content .form-view :is(.table-container, .table-wrapper, .table-wrap, .report-table-wrap, .dash-table-wrapper, .ledger-panel) :is(table, .saas-table) {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+#main-content .form-view :is(.table-container, .table-wrapper, .table-wrap, .report-table-wrap, .dash-table-wrapper, .ledger-panel) th {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e3e3e3;
+  background: #f0f4f9;
+  color: #444746;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-transform: none;
+}
+
+#main-content .form-view :is(.table-container, .table-wrapper, .table-wrap, .report-table-wrap, .dash-table-wrapper, .ledger-panel) td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e3e3e3;
+  color: #1f1f1f;
+}
+
+#main-content .form-view :is(.table-container, .table-wrapper, .table-wrap, .report-table-wrap, .dash-table-wrapper, .ledger-panel) tbody tr:hover {
+  background: #fafafa;
+}
+
+#main-content .form-view :is(.table-header, .table-container > header) {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e3e3e3;
+  background: #fff;
+}
+
+@media (max-width: 700px) {
+  #main-content .form-view :is(.form-card, .form-panel) {
+    padding: 15px;
+  }
+
+  #main-content .form-view :is(.input-group, .form-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #main-content .form-view :is(.input-group, .form-grid) > [style*="grid-column"] {
+    grid-column: 1 / -1 !important;
+  }
+
+  #main-content .form-view :is(.form-section, .company-form-section) {
+    padding: 15px;
+  }
+}

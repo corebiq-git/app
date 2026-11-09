@@ -1,0 +1,13 @@
+{
+  "name": "corebiq-firestore-usage-functions",
+  "private": true,
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.3.2",
+    "google-auth-library": "^9.15.1"
+  }
+}
