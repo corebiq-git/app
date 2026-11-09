@@ -1,0 +1,348 @@
+#my-task-module {
+            width: 100%;
+            max-width: 1120px;
+            margin: 0 auto;
+            color: var(--text);
+            font-family: Outfit, sans-serif;
+        }
+
+        #my-task-module * { box-sizing: border-box; }
+
+        #my-task-module .task-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        #my-task-module .task-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #my-task-module .task-title-icon {
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border-radius: 15px;
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        #my-task-module h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 650;
+        }
+
+        #my-task-module .task-heading p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        #my-task-module .task-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        #my-task-module .task-stat,
+        #my-task-module .task-panel,
+        #my-task-module .task-card {
+            background: var(--surface);
+            border: 1px solid var(--outline-soft);
+            box-shadow: var(--shadow);
+        }
+
+        #my-task-module .task-stat {
+            padding: 15px 17px;
+            border-radius: var(--radius-md);
+        }
+
+        #my-task-module .task-stat span {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #my-task-module .task-stat strong {
+            display: block;
+            margin-top: 5px;
+            color: var(--primary);
+            font-size: 25px;
+            line-height: 1;
+        }
+
+        #my-task-module .task-panel {
+            margin-bottom: 16px;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+        }
+
+        #my-task-module .task-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        #my-task-module h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 650;
+        }
+
+        #my-task-module .task-form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        #my-task-module .task-field {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        #my-task-module .task-field.wide { grid-column: span 2; }
+
+        #my-task-module .task-field label {
+            color: #4B5563;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #my-task-module .task-field input,
+        #my-task-module .task-field select,
+        #my-task-module .task-field textarea,
+        #my-task-module .task-filter {
+            width: 100%;
+            min-height: 42px;
+            padding: 9px 11px;
+            border: 1px solid var(--outline);
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+        }
+
+        #my-task-module .task-field textarea {
+            min-height: 42px;
+            resize: vertical;
+        }
+
+        #my-task-module .task-field :is(input, select, textarea):focus,
+        #my-task-module .task-filter:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        #my-task-module .task-form-actions {
+            display: flex;
+            grid-column: 1 / -1;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        #my-task-module .task-button {
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 0 15px;
+            border: 1px solid var(--outline-soft);
+            border-radius: 22px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        #my-task-module .task-button.primary {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        #my-task-module .task-button.primary:hover { background: var(--primary-hover); }
+        #my-task-module .task-button:disabled { cursor: wait; opacity: .65; }
+
+        #my-task-module .task-list-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        #my-task-module .task-filters {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        #my-task-module .task-filter { width: auto; min-width: 145px; }
+
+        #my-task-module .task-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        #my-task-module .task-card {
+            min-width: 0;
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        #my-task-module .task-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        #my-task-module .task-card-title {
+            min-width: 0;
+            margin: 0;
+            overflow-wrap: anywhere;
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+        #my-task-module .task-card.completed .task-card-title {
+            color: var(--muted);
+            text-decoration: line-through;
+        }
+
+        #my-task-module .task-badges {
+            display: flex;
+            flex: 0 0 auto;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 5px;
+        }
+
+        #my-task-module .task-badge {
+            padding: 4px 8px;
+            border: 1px solid var(--primary-soft);
+            border-radius: 99px;
+            background: #F4F8FF;
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        #my-task-module .task-badge.priority-high { border-color: #F5D5D3; background: #FFF1F0; color: #C5221F; }
+        #my-task-module .task-badge.priority-medium { border-color: #F5E5C8; background: #FFF8E7; color: #8A5A00; }
+        #my-task-module .task-badge.priority-low { border-color: #CFE0FF; background: #EDF4FF; color: #0B1F4B; }
+        #my-task-module .task-badge.status-completed { border-color: #B7DFBD; background: #E8F5E9; color: #188038; }
+
+        #my-task-module .task-description {
+            margin: 9px 0 12px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        #my-task-module .task-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid var(--outline-soft);
+        }
+
+        #my-task-module .task-due {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        #my-task-module .task-due.overdue { color: #C5221F; }
+
+        #my-task-module .task-card-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #my-task-module .task-status-select {
+            max-width: 130px;
+            min-height: 34px;
+            padding: 4px 7px;
+            border: 1px solid var(--outline-soft);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text);
+            font: inherit;
+            font-size: 11px;
+        }
+
+        #my-task-module .task-icon-button {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--outline-soft);
+            border-radius: 50%;
+            background: #fff;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        #my-task-module .task-icon-button.delete { color: var(--danger); }
+        #my-task-module .task-icon-button:hover { background: var(--surface-soft); }
+        #my-task-module .task-empty,
+        #my-task-module .task-message {
+            grid-column: 1 / -1;
+            padding: 28px 14px;
+            border: 1px dashed var(--outline);
+            border-radius: 14px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        #my-task-module .task-message.error {
+            border-color: #F5D5D3;
+            background: #FFF7F6;
+            color: var(--danger);
+        }
+
+        @media (max-width: 850px) {
+            #my-task-module .task-form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+
+        @media (max-width: 620px) {
+            #my-task-module .task-heading { align-items: flex-start; }
+            #my-task-module h1 { font-size: 22px; }
+            #my-task-module .task-stats { gap: 8px; }
+            #my-task-module .task-stat { padding: 12px; }
+            #my-task-module .task-stat strong { font-size: 22px; }
+            #my-task-module .task-panel { padding: 14px; border-radius: 17px; }
+            #my-task-module .task-form-grid,
+            #my-task-module .task-list { grid-template-columns: 1fr; }
+            #my-task-module .task-field.wide { grid-column: auto; }
+            #my-task-module .task-list-head { align-items: flex-start; flex-direction: column; }
+            #my-task-module .task-filters { width: 100%; }
+            #my-task-module .task-filter { flex: 1; min-width: 0; }
+            #my-task-module .task-card-top { flex-direction: column; }
+            #my-task-module .task-badges { justify-content: flex-start; }
+        }

@@ -1,0 +1,51 @@
+:root {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --success: #10B981;
+        --danger: #EF4444;
+        --secondary: #64748B;
+    }
+
+        #ledger-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; margin: 0 auto; padding-bottom: 40px; }
+        
+        #ledger-module .section-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        
+        #ledger-module .grid-layout { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 24px; }
+        @media (min-width: 992px) { #ledger-module .grid-layout { grid-template-columns: 300px 1fr; } }
+
+        #ledger-module .card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+        
+        #ledger-module .form-label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+        
+        #ledger-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #ledger-module .input-group.two-cols { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { #ledger-module .input-group.three-cols { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #ledger-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; margin-bottom: 16px;}
+        #ledger-module .form-input:focus { border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 3px var(--primary-light); }
+        #ledger-module .form-input:read-only { background: #E2E8F0; color: var(--text-muted); cursor: not-allowed; font-weight: 700; }
+        
+        #ledger-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;}
+        #ledger-module .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        
+        #ledger-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s;}
+        #ledger-module .btn-outline:hover { background: #FAFAFA; border-color: var(--primary); color: var(--primary); }
+
+        /* Table Styles */
+        #ledger-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #ledger-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #ledger-module .saas-table { width: 100%; min-width: 900px; border-collapse: collapse; text-align: left; }
+        #ledger-module .saas-table th { padding: 16px 20px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #ledger-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; white-space: nowrap; }
+        
+        .badge { padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .badge-dr { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .badge-cr { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-cat { background: var(--bg); border: 1px solid var(--border); color: var(--text-main); }

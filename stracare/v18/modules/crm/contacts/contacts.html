@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ BUSINESS FLOW APP | Contacts</title>
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./contacts.css" data-module-style>
+</head>
+<body>
+<div class="module-container" id="contacts-module">
+    
+
+    <header class="contacts-heading">
+        <div class="contacts-title">
+            <span class="material-symbols-rounded contacts-title-icon" aria-hidden="true">contacts</span>
+            <div>
+                <h1>Contacts</h1>
+                <p class="contacts-subtitle">Find and contact patients, staff, and therapists.</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="contacts-tabs" role="tablist" aria-label="Contact categories">
+        <button class="contacts-tab active" id="contacts-tab-patients" type="button" role="tab" aria-selected="true" aria-controls="contacts-list" data-contact-type="patients">
+            <span class="material-symbols-rounded" aria-hidden="true">groups</span>Patients
+        </button>
+        <button class="contacts-tab" id="contacts-tab-staff" type="button" role="tab" aria-selected="false" aria-controls="contacts-list" tabindex="-1" data-contact-type="staff">
+            <span class="material-symbols-rounded" aria-hidden="true">badge</span>Staff
+        </button>
+        <button class="contacts-tab" id="contacts-tab-therapists" type="button" role="tab" aria-selected="false" aria-controls="contacts-list" tabindex="-1" data-contact-type="therapists">
+            <span class="material-symbols-rounded" aria-hidden="true">medical_services</span>Therapists
+        </button>
+    </div>
+
+    <label class="contacts-search">
+        <span class="material-symbols-rounded" aria-hidden="true">search</span>
+        <input id="contacts-search-input" type="text" placeholder="Search name, mobile, or patient ID..." autocomplete="off">
+    </label>
+    <p class="contacts-count" id="contacts-count">Loading contacts...</p>
+    <div class="contacts-list" id="contacts-list" aria-live="polite">
+        <div class="contacts-state">Loading patient contacts...</div>
+    </div>
+
+    <script type="module" src="./contacts.js"></script>
+</div>
+</body>
+</html>

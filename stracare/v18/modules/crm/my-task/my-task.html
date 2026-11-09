@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ BUSINESS FLOW APP | My Task</title>
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./my-task.css" data-module-style>
+</head>
+<body>
+<div class="module-container" id="my-task-module">
+    
+
+    <header class="task-heading">
+        <div class="task-title-group">
+            <span class="task-title-icon material-symbols-rounded" aria-hidden="true">task_alt</span>
+            <div>
+                <h1>My Task</h1>
+                <p>Personal tasks are saved in this browser for your login.</p>
+            </div>
+        </div>
+        <button class="task-button primary" id="task-new-button" type="button">
+            <span class="material-symbols-rounded" aria-hidden="true">add</span>
+            New task
+        </button>
+    </header>
+
+    <section class="task-stats" aria-label="Task summary">
+        <div class="task-stat"><span>Open tasks</span><strong id="task-open-count">0</strong></div>
+        <div class="task-stat"><span>Due today</span><strong id="task-today-count">0</strong></div>
+        <div class="task-stat"><span>Completed</span><strong id="task-completed-count">0</strong></div>
+    </section>
+
+    <section class="task-panel" id="task-form-panel" hidden>
+        <div class="task-panel-head">
+            <h2 id="task-form-heading">Create task</h2>
+            <button class="task-icon-button" id="task-close-form" type="button" aria-label="Close task form">
+                <span class="material-symbols-rounded" aria-hidden="true">close</span>
+            </button>
+        </div>
+        <form id="task-form" class="task-form-grid">
+            <label class="task-field wide">
+                <span>Task title *</span>
+                <input id="task-title" name="title" maxlength="160" required>
+            </label>
+            <label class="task-field">
+                <span>Due date</span>
+                <input id="task-due-date" name="dueDate" type="date">
+            </label>
+            <label class="task-field">
+                <span>Priority</span>
+                <select id="task-priority" name="priority">
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                </select>
+            </label>
+            <label class="task-field">
+                <span>Status</span>
+                <select id="task-status" name="status">
+                    <option value="todo">To do</option>
+                    <option value="in-progress">In progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </label>
+            <label class="task-field wide">
+                <span>Notes</span>
+                <textarea id="task-description" name="description" rows="2" maxlength="2000"></textarea>
+            </label>
+            <div class="task-form-actions">
+                <button class="task-button" id="task-cancel-button" type="button">Cancel</button>
+                <button class="task-button primary" id="task-save-button" type="submit">Save task</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="task-panel">
+        <div class="task-list-head">
+            <h2>Your tasks</h2>
+            <div class="task-filters">
+                <input class="task-filter" id="task-search" type="text" placeholder="Search tasks..." aria-label="Search tasks">
+                <select class="task-filter" id="task-filter-status" aria-label="Filter task status">
+                    <option value="all">All statuses</option>
+                    <option value="todo">To do</option>
+                    <option value="in-progress">In progress</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+        </div>
+        <div class="task-list" id="task-list" aria-live="polite">
+            <div class="task-empty">Loading your tasks...</div>
+        </div>
+    </section>
+
+    <script type="module" src="./my-task.js"></script>
+</div>
+</body>
+</html>

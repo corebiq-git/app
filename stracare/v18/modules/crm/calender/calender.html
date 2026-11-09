@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COREBIQ BUSINESS FLOW APP | Calendar</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+  <link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./calender.css" data-module-style>
+</head>
+<body>
+<main class="module-container" id="calendar-module">
+  
+
+  <header class="calendar-hero">
+    <div class="hero-copy">
+      <span class="hero-icon"><span class="material-symbols-rounded" aria-hidden="true">calendar_month</span></span>
+      <div>
+        <h1>Calendar</h1>
+        <p>View your appointment schedule by date, with patient and visit details.</p>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <button class="cal-button" type="button" id="calendarTodayButton"><span class="material-symbols-rounded">today</span>Today</button>
+      <button class="cal-button primary" type="button" id="calendarRefreshButton"><span class="material-symbols-rounded">refresh</span>Refresh</button>
+    </div>
+  </header>
+
+  <section class="calendar-stats" aria-label="Appointment summary">
+    <article class="stat-card month"><div class="stat-label">Appointments this month</div><div class="stat-value" id="calendarMonthCount">—</div></article>
+    <article class="stat-card"><div class="stat-label">Selected day</div><div class="stat-value" id="calendarDayCount">—</div></article>
+    <article class="stat-card pending"><div class="stat-label">Pending · selected day</div><div class="stat-value" id="calendarPendingCount">—</div></article>
+    <article class="stat-card completed"><div class="stat-label">Completed · selected day</div><div class="stat-value" id="calendarCompletedCount">—</div></article>
+  </section>
+
+  <section class="calendar-layout" aria-label="Calendar and appointment details">
+    <article class="cal-card">
+      <header class="card-heading">
+        <h2>Appointment calendar</h2>
+        <div class="month-nav">
+          <button class="icon-button" type="button" id="calendarPrevMonth" aria-label="Previous month"><span class="material-symbols-rounded">chevron_left</span></button>
+          <div class="month-title" id="calendarMonthTitle" aria-live="polite">Loading…</div>
+          <button class="icon-button" type="button" id="calendarNextMonth" aria-label="Next month"><span class="material-symbols-rounded">chevron_right</span></button>
+        </div>
+      </header>
+      <div class="calendar-body">
+        <div class="weekday-grid" aria-hidden="true">
+          <div class="weekday">Sun</div><div class="weekday">Mon</div><div class="weekday">Tue</div><div class="weekday">Wed</div><div class="weekday">Thu</div><div class="weekday">Fri</div><div class="weekday">Sat</div>
+        </div>
+        <div class="day-grid" id="calendarDays" role="grid" aria-label="Appointment dates">
+          <div class="loading-state" style="grid-column:1/-1">Loading appointments…</div>
+        </div>
+        <div class="calendar-legend">
+          <span class="legend-item"><span class="legend-dot"></span>Appointments scheduled</span>
+          <span class="legend-item"><span class="legend-dot today-dot"></span>Today</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="cal-card">
+      <header class="card-heading">
+        <div>
+          <h2>Day details</h2>
+          <div class="agenda-date" id="calendarSelectedDate">Loading…</div>
+        </div>
+        <span class="agenda-count" id="calendarAgendaCount">0</span>
+      </header>
+      <div class="agenda-list" id="calendarAgenda">
+        <div class="loading-state">Loading appointments…</div>
+      </div>
+    </article>
+  </section>
+
+  <script type="module" src="./calender.js"></script>
+</main>
+</body>
+</html>
