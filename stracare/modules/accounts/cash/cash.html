@@ -1,0 +1,38 @@
+<div class="module-container" id="cash-ledger-module" data-ledger-kind="cash"><link rel="stylesheet" href="./cash.css" data-module-style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    
+    <header class="ledger-head">
+        <div class="ledger-title">
+            <span class="ledger-title-icon"><span class="material-symbols-rounded" aria-hidden="true">account_balance_wallet</span></span>
+            <div><h1>Cash Ledger</h1><div class="subtitle">Cash-mode transactions, receipts and payments in one ledger.</div></div>
+        </div>
+        <div class="head-actions no-print">
+            <button class="ledger-btn" type="button" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+            <button class="ledger-btn primary" type="button" onclick="window.openView('view-transaction')"><span class="material-symbols-rounded">add</span>Transactions</button>
+        </div>
+    </header>
+    <section class="ledger-cards" aria-label="Cash ledger totals">
+        <div class="ledger-card in"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">south_west</span>Cash In</span><strong id="cashLedgerIn">₹0.00</strong></div>
+        <div class="ledger-card out"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">north_east</span>Cash Out</span><strong id="cashLedgerOut">₹0.00</strong></div>
+        <div class="ledger-card"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">account_balance</span>Net Cash Movement</span><strong id="cashLedgerBalance">₹0.00</strong></div>
+    </section>
+    <section class="ledger-panel">
+        <header class="panel-head"><h2>Cash Transactions</h2><span id="cashLedgerCount" class="subtitle">0 records</span></header>
+        <div class="filters no-print">
+            <input id="cashLedgerFrom" type="date" title="From date">
+            <input id="cashLedgerTo" type="date" title="To date">
+            <select id="cashLedgerType" aria-label="Transaction type"><option value="">All types</option><option>Sales</option><option>Receipt</option><option>Payment</option><option>Expense</option></select>
+            <select id="cashLedgerBranch" aria-label="Branch"><option value="">All branches</option></select>
+            <input id="cashLedgerSearch" type="search" placeholder="Search name, mobile, ID, reference…">
+            <button class="ledger-btn" type="button" onclick="window.clearLedgerFilters('cash')"><span class="material-symbols-rounded">filter_alt_off</span>Clear filters</button>
+        </div>
+        <div class="table-wrap">
+            <table><thead><tr><th>Date / Voucher</th><th>Patient / Ledger</th><th>Branch</th><th>Type / Mode</th><th style="text-align:right">In (+)</th><th style="text-align:right">Out (−)</th><th>Reference / Notes</th></tr></thead>
+                <tbody id="cashLedgerRows"><tr><td colspan="7" class="empty">Loading cash transactions…</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+    <script type="module" src="./cash.js"></script>
+</div>

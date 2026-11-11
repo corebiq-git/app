@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ BUSINESS FLOW APP | Staff Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./staff.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="staff-module">
+    
+    
+
+    <div class="section-title">
+        <h2 style="margin: 0;">Manage Staff</h2>
+    </div>
+
+    <div class="form-card">
+        <form id="staff-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="staffDocId" value="">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Employee ID</label>
+                    <input type="text" id="staffIdDisplay" class="form-input readonly-input" value="Auto-Generated" readonly>
+                </div>
+                
+                <div>
+                    <label class="form-label">Full Name *</label>
+                    <input type="text" id="staffName" class="form-input" placeholder="e.g. Priya Sharma" required>
+                </div>
+
+                <div>
+                    <label class="form-label">Role / Position *</label>
+                    <select id="staffRole" class="form-input" required>
+                        <option value="">Select Role</option>
+                        <option value="Front Desk Admin">Front Desk Admin</option>
+                        <option value="Clinic Assistant">Clinic Assistant</option>
+                        <option value="Support Staff">Support Staff</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Driver">Driver</option>
+                        <option value="HR">HR</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Assign Branch *</label>
+                    <select id="staffBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="form-label">Contact No *</label>
+                    <input type="tel" id="staffContact" class="form-input" placeholder="10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                </div>
+
+                <div style="display: flex; gap: 12px; align-items: flex-end; margin-top: 21px;">
+                    <button type="button" class="btn-outline" onclick="window.clearStaffForm()">Clear</button>
+                    <button type="button" class="btn-primary" id="saveStaffBtn" onclick="window.saveStaff()">
+                        <span class="material-symbols-rounded">person_add</span> Save
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h4>Staff Directory</h4>
+            <div style="background: #FAFAFA; border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; display: flex; align-items: center; gap: 6px;">
+                <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                <input type="text" id="staffSearchInput" onkeyup="window.searchStaff()" placeholder="Search directory..." style="border: none; background: transparent; outline: none; font-size: 13px; width: 130px;">
+            </div>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Staff Name & ID</th>
+                        <th>Role</th>
+                        <th>Branch</th>
+                        <th>Contact Info</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="staffTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="./staff.js"></script>
+</div>
+
+</body>
+</html>

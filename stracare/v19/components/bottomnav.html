@@ -1,0 +1,147 @@
+<style>
+    .bottom-nav {
+        position: fixed;
+        z-index: 1100;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: stretch;
+        justify-content: space-around;
+        gap: 0;
+        padding: 0 8px;
+        background: rgba(255, 255, 255, .98);
+        box-shadow: 0 -4px 18px rgba(31, 35, 40, .10);
+        -webkit-backdrop-filter: blur(18px);
+        backdrop-filter: blur(18px);
+    }
+
+    .bottom-nav-item {
+        position: relative;
+        display: flex;
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 56px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 3px 1px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #0B1F4B;
+        font-family: Outfit, "Google Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.1;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .bottom-nav-item + .bottom-nav-item {
+        margin-left: 1px;
+    }
+
+    .bottom-nav-item + .bottom-nav-item::before {
+        position: absolute;
+        top: 12px;
+        bottom: 12px;
+        left: -1px;
+        width: 1px;
+        background: #E5E7EB;
+        content: "";
+        pointer-events: none;
+    }
+
+    .bottom-nav-item:active {
+        transform: scale(.97);
+    }
+
+    .bottom-nav-item:focus-visible {
+        outline: 2px solid var(--primary, #0B1F4B);
+        outline-offset: 1px;
+    }
+
+    .bottom-nav-item[aria-current="page"],
+    .bottom-nav-item[aria-pressed="true"],
+    .bottom-nav-item[aria-expanded="true"] {
+        background: #0B1F4B;
+        color: #FFFFFF;
+        font-weight: 600;
+    }
+    .bottom-nav-icon-wrap {
+        display: grid;
+        width: 38px;
+        height: 28px;
+        place-items: center;
+        border-radius: 12px;
+        color: currentColor;
+        transition: color .18s ease;
+    }
+
+    .bottom-nav-dashboard-icon,
+    .bottom-nav-appointment-icon,
+    .bottom-nav-attendance-icon,
+    .bottom-nav-menu-icon { color: rgba(11, 31, 75, .55); }
+
+    .bottom-nav-icon {
+        font-size: 24px;
+        line-height: 1;
+        stroke-width: 2.2;
+        font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
+        transition: font-variation-settings .18s ease, transform .18s ease;
+    }
+
+    .bottom-nav-item[aria-current="page"] .bottom-nav-icon,
+    .bottom-nav-item[aria-pressed="true"] .bottom-nav-icon,
+    .bottom-nav-item[aria-expanded="true"] .bottom-nav-icon {
+        font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
+    }
+
+    .bottom-nav-item[aria-current="page"] .bottom-nav-icon-wrap,
+    .bottom-nav-item[aria-pressed="true"] .bottom-nav-icon-wrap,
+    .bottom-nav-item[aria-expanded="true"] .bottom-nav-icon-wrap,
+    .bottom-nav-item[aria-current="page"] .bottom-nav-icon,
+    .bottom-nav-item[aria-pressed="true"] .bottom-nav-icon,
+    .bottom-nav-item[aria-expanded="true"] .bottom-nav-icon {
+        color: #FFFFFF !important;
+    }
+
+    @media (max-width: 420px) {
+        .bottom-nav { gap: 0; padding-right: 4px; padding-left: 4px; }
+        .bottom-nav-item { font-size: 12px; }
+        .bottom-nav-icon-wrap { width: 34px; }
+        .bottom-nav-icon { font-size: 23px; }
+    }
+
+    @media (min-width: 769px) {
+        .bottom-nav {
+            display: none;
+        }
+    }
+
+</style>
+
+<nav class="bottom-nav" aria-label="Mobile navigation">
+    <button class="bottom-nav-item active" type="button" aria-label="Dashboard" aria-current="page" data-icon-category="" onclick="window.switchView('view-dashboard', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon bottom-nav-dashboard-icon" aria-hidden="true">dashboard</span></span>
+        <span>Home</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="Appointments" data-icon-category="CRM" onclick="window.switchView('view-appointments', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon bottom-nav-appointment-icon" aria-hidden="true">event_available</span></span>
+        <span>Apt's</span>
+    </button>
+    <button class="bottom-nav-item" type="button" aria-label="Attendance" data-icon-category="HR" onclick="window.switchView('view-attendance', this)">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon bottom-nav-attendance-icon" aria-hidden="true">how_to_reg</span></span>
+        <span>Atnd</span>
+    </button>
+    <button class="bottom-nav-item bottom-nav-menu-button" type="button" aria-label="Open menu" aria-expanded="false" data-icon-category="" onclick="window.toggleMobileNavigationMenu()">
+        <span class="bottom-nav-icon-wrap"><span class="material-symbols-rounded bottom-nav-icon bottom-nav-menu-icon" aria-hidden="true">menu</span></span>
+        <span>Menu</span>
+    </button>
+</nav>

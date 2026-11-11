@@ -1,0 +1,18 @@
+{
+  "name": "COREBIQ BUSINESS FLOW APP",
+  "short_name": "COREBIQ",
+  "description": "COREBIQ business flow app for managing clinic operations.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAFAFB",
+  "theme_color": "#0F7A52",
+  "icons": [
+    {
+      "src": "assets/app-icon.png",
+      "sizes": "2000x2000",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

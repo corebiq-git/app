@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .md3-checkbox {
+      appearance: none;
+      background-color: transparent;
+      margin: 0;
+      font: inherit;
+      color: currentColor;
+      width: 1.15em;
+      height: 1.15em;
+      border: 1.5px solid #747775;
+      border-radius: 4px;
+      display: grid;
+      place-content: center;
+      transition: all 0.2s ease-in-out;
+    }
+    .md3-checkbox::before {
+      content: "";
+      width: 0.65em;
+      height: 0.65em;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1em 1em white;
+      background-color: white;
+      transform-origin: center;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+    .md3-checkbox:checked {
+      background-color: #1a1a1a;
+      border-color: #1a1a1a;
+    }
+    .md3-checkbox:checked::before {
+      transform: scale(1);
+    }
+    
+    /* Smooth popup transition classes */
+    .popup-enter {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+    .popup-active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 p-4">
+
+  <!-- Main Container -->
+  <div class="w-full bg-white border border-[#e3e3e3] rounded-xl shadow-sm relative pb-16 md:pb-0">
+    
+    <!-- DESKTOP VIEW -->
+    <div class="hidden md:block overflow-visible w-full rounded-xl">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-[#f0f4f9] border-b border-[#e3e3e3] text-[#444746] text-[13px] font-medium leading-[20px]">
+            <th class="py-3 px-4 w-12 text-center rounded-tl-xl">
+              <input type="checkbox" class="md3-checkbox cursor-pointer" id="selectAll">
+            </th>
+            <th class="py-3 px-4 whitespace-nowrap">Id</th>
+            <th class="py-3 px-4 whitespace-nowrap">Name</th>
+            <th class="py-3 px-4 whitespace-nowrap">Amount</th>
+            <th class="py-3 px-4 whitespace-nowrap">Status</th>
+            <th class="py-3 px-4 whitespace-nowrap">Narration</th>
+            <th class="py-3 px-4 whitespace-nowrap">Created At</th>
+            <th class="py-3 px-4 w-12 rounded-tr-xl"></th>
+          </tr>
+        </thead>
+        <tbody id="desktop-tbody" class="divide-y divide-[#e3e3e3]">
+          <!-- Desktop rows injected via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MOBILE VIEW -->
+    <div id="mobile-container" class="md:hidden flex flex-col w-full divide-y divide-[#e3e3e3]">
+      <!-- Mobile rows injected via JS -->
+    </div>
+
+  </div>
+
+  <script>
+    // Sample Data with varied statuses and Rupee symbols
+    const tableData = [
+      { id: 'INV-1001', name: 'Acme Corporation', amount: '₹4,500.00', status: 'Completed', narration: 'Q1 Service Retainer', createdAt: '2023-10-24' },
+      { id: 'INV-1002', name: 'Global Tech LLC', amount: '₹1,250.00', status: 'Pending', narration: 'Server Maintenance', createdAt: '2023-10-25' },
+      { id: 'INV-1003', name: 'Stark Industries', amount: '₹8,900.00', status: 'Due', narration: 'Consulting Fees', createdAt: '2023-10-26' },
+      { id: 'INV-1004', name: 'Wayne Enterprises', amount: '₹3,400.00', status: 'Active', narration: 'Software License', createdAt: '2023-10-27' }
+    ];
+
+    const desktopTbody = document.getElementById('desktop-tbody');
+    const mobileContainer = document.getElementById('mobile-container');
+
+    // Helper function for Semantic MD3 Status Colors
+    function getStatusBadge(status) {
+      let bgClass, textClass;
+      
+      switch(status.toLowerCase()) {
+        case 'completed':
+        case 'active':
+          bgClass = 'bg-[#c4eed0]';
+          textClass = 'text-[#0f5223]';
+          break;
+        case 'pending':
+          bgClass = 'bg-[#c2e7ff]';
+          textClass = 'text-[#001d35]';
+          break;
+        case 'due':
+        case 'non active':
+          bgClass = 'bg-[#f9dedc]';
+          textClass = 'text-[#410e0b]';
+          break;
+        default:
+          bgClass = 'bg-[#e1e5ea]';
+          textClass = 'text-[#1f1f1f]';
+      }
+
+      return `<span class="px-2.5 py-0.5 rounded-md text-[12px] font-medium ${bgClass} ${textClass} border border-transparent whitespace-nowrap">${status}</span>`;
+    }
+
+    // Icons
+    const icons = {
+      more: `<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor"><path d="M480-160q-33 0-56.5-23.5T400-240q0-33 23.5-56.5T480-320q33 0 56.5 23.5T560-240q0 33-23.5 56.5T480-160Zm0-240q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm0-240q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Z"/></svg>`,
+      edit: `<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="currentColor"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Z"/></svg>`,
+      delete: `<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="currentColor"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>`,
+      copy: `<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="currentColor"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg>`
+    };
+
+    // Shared Menu Template
+    function getActionMenuHTML(index, isMobile = false) {
+      const positionClass = isMobile ? 'right-4 top-10' : 'right-10 top-2 z-50';
+      
+      return `
+        <div id="menu-${index}-${isMobile ? 'mobile' : 'desktop'}" class="popup-enter absolute ${positionClass} w-48 bg-white border border-[#e3e3e3] rounded-xl shadow-lg py-1.5 transition-all duration-200 ease-out origin-top-right z-50 flex flex-col">
+          <button class="w-full flex items-center gap-3 px-4 py-2 text-[14px] text-[#444746] hover:bg-black/5 hover:text-[#1f1f1f] transition-colors text-left focus:outline-none">
+            ${icons.edit} Edit
+          </button>
+          <button class="w-full flex items-center gap-3 px-4 py-2 text-[14px] text-[#444746] hover:bg-black/5 hover:text-[#1f1f1f] transition-colors text-left focus:outline-none">
+            ${icons.copy} Copy to New Date
+          </button>
+          <div class="h-[1px] w-full bg-[#e3e3e3] my-1"></div>
+          <button class="w-full flex items-center gap-3 px-4 py-2 text-[14px] text-[#d93025] hover:bg-red-50 transition-colors text-left focus:outline-none">
+            ${icons.delete} Delete Selected
+          </button>
+        </div>
+      `;
+    }
+
+    function renderTable() {
+      desktopTbody.innerHTML = '';
+      mobileContainer.innerHTML = '';
+
+      tableData.forEach((row, index) => {
+        // --- DESKTOP ROW ---
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-black/[0.02] transition-colors group relative';
+        tr.innerHTML = `
+          <td class="py-3 px-4 text-center">
+            <input type="checkbox" class="md3-checkbox cursor-pointer">
+          </td>
+          <td class="py-3 px-4 text-[14px] text-[#747775] font-medium">${row.id}</td>
+          <td class="py-3 px-4 text-[14px] text-[#1f1f1f] font-medium">${row.name}</td>
+          <td class="py-3 px-4 text-[14px] text-[#1f1f1f]">${row.amount}</td>
+          <td class="py-3 px-4">${getStatusBadge(row.status)}</td>
+          <td class="py-3 px-4 text-[14px] text-[#444746] truncate max-w-[200px]">${row.narration}</td>
+          <td class="py-3 px-4 text-[14px] text-[#444746] whitespace-nowrap">${row.createdAt}</td>
+          <td class="py-3 px-4 relative">
+            <button onclick="toggleMenu('${index}-desktop', event)" class="action-btn p-1.5 rounded-full text-[#444746] hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-[#1a1a1a] transition-colors">
+              ${icons.more}
+            </button>
+            ${getActionMenuHTML(index, false)}
+          </td>
+        `;
+        desktopTbody.appendChild(tr);
+
+        // --- MOBILE ROW ---
+        const mobileDiv = document.createElement('div');
+        mobileDiv.className = 'p-4 flex flex-col gap-1 hover:bg-black/[0.02] transition-colors relative';
+        mobileDiv.innerHTML = `
+          <!-- Top Row: Checkbox, Name, Status, Action Icon -->
+          <div class="flex items-center justify-between w-full">
+            <div class="flex items-center gap-3 overflow-hidden pr-2">
+              <input type="checkbox" class="md3-checkbox cursor-pointer shrink-0">
+              <span class="text-[15px] leading-[20px] font-medium text-[#1f1f1f] truncate">${row.name}</span>
+            </div>
+            <div class="flex items-center shrink-0">
+              ${getStatusBadge(row.status)}
+              <button onclick="toggleMenu('${index}-mobile', event)" class="action-btn shrink-0 p-1 w-7 h-7 flex items-center justify-center rounded-full text-[#444746] hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-[#1a1a1a] transition-colors ml-1">
+                ${icons.more}
+              </button>
+              ${getActionMenuHTML(index, true)}
+            </div>
+          </div>
+          
+          <!-- Bottom Row: Id, Created Date, Amount -->
+          <div class="flex items-center justify-between pl-[34px] w-full mt-0.5">
+            <div class="flex items-center gap-2">
+              <span class="text-[13px] leading-[16px] text-[#747775] font-medium shrink-0">${row.id}</span>
+              <div class="h-1 w-1 rounded-full bg-[#e3e3e3] shrink-0"></div>
+              <span class="text-[13px] text-[#747775] shrink-0">${row.createdAt}</span>
+            </div>
+            <!-- pr-8 aligns the text exactly under the status pill by offsetting the width of the action icon -->
+            <span class="text-[13.5px] font-medium text-[#1f1f1f] text-right shrink-0 pr-8">${row.amount}</span>
+          </div>
+        `;
+        mobileContainer.appendChild(mobileDiv);
+      });
+    }
+
+    // Popup Logic
+    let activeMenuId = null;
+
+    window.toggleMenu = function(id, event) {
+      event.stopPropagation();
+      
+      const menu = document.getElementById(`menu-${id}`);
+      
+      if (activeMenuId === id) {
+        menu.classList.remove('popup-active');
+        menu.classList.add('popup-enter');
+        activeMenuId = null;
+        return;
+      }
+      
+      closeActiveMenu();
+
+      menu.classList.remove('popup-enter');
+      menu.classList.add('popup-active');
+      activeMenuId = id;
+    };
+
+    function closeActiveMenu() {
+      if (activeMenuId) {
+        const activeMenu = document.getElementById(`menu-${activeMenuId}`);
+        if (activeMenu) {
+          activeMenu.classList.remove('popup-active');
+          activeMenu.classList.add('popup-enter');
+        }
+        activeMenuId = null;
+      }
+    }
+
+    document.addEventListener('click', (event) => {
+      if (activeMenuId) {
+        const activeMenu = document.getElementById(`menu-${activeMenuId}`);
+        if (!activeMenu.contains(event.target)) {
+          closeActiveMenu();
+        }
+      }
+    });
+
+    renderTable();
+  </script>
+
+</body>
+</html>

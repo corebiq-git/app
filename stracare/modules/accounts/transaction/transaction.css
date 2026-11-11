@@ -1,0 +1,240 @@
+#transaction-module {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --success: #10B981;
+        --danger: #EF4444;
+        --secondary: #64748B;
+    }
+
+        #transaction-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; }
+        #transaction-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; }
+        
+        #transaction-module .form-card { background: var(--surface); border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 24px; }
+        #transaction-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #transaction-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #transaction-module .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { #transaction-module .input-group.three-cols { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #transaction-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #transaction-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+        #transaction-module .form-input:disabled { background: #F0F0F0; color: #999; cursor: not-allowed; }
+
+        #transaction-module .readonly-input { background: transparent; border: 1px dashed transparent; padding-left: 0; font-weight: 700; color: var(--text-main); pointer-events: none; }
+        
+        #transaction-module .btn-primary { background: var(--primary); color: white; border: none; padding: 14px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+        #transaction-module .btn-primary:active { opacity: 0.8; }
+        #transaction-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        #transaction-module .btn-verify { background: var(--text-main); color: #fff; border: none; padding: 0 20px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 13px;}
+        
+        /* Google Sheet Style Table (Horizontal Scroll) */
+        #transaction-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #transaction-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #transaction-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+        #transaction-module .saas-table { width: 100%; min-width: 900px; border-collapse: collapse; text-align: left; }
+        #transaction-module .saas-table th { padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #transaction-module .saas-table td { padding: 16px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; white-space: nowrap; }
+        
+        #transaction-module .badge { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        #transaction-module .badge-sales { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        #transaction-module .badge-expense { background: rgba(251, 146, 60, 0.1); color: var(--danger); }
+        #transaction-module .badge-receipt { background: rgba(100, 116, 139, 0.1); color: var(--secondary); }
+
+        #transaction-module .cta-link { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: #FAFAFA; border: 1px solid var(--border); transition: 0.2s; text-decoration: none; }
+        #transaction-module .cta-link:hover { background: var(--surface); transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* Patient Summary Dash */
+        #patientSummaryDash { display: none; background: #fef5e8; border: 1px dashed var(--primary); padding: 16px; border-radius: 12px; margin-bottom: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        #transaction-module .summary-metric { display: flex; flex-direction: column; }
+        #transaction-module .summary-metric span { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;}
+        #transaction-module .summary-metric strong { font-size: 18px; font-weight: 800; color: var(--text-main); }
+
+        #transaction-module .txn-topbar { display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:16px; }
+        #transaction-module .txn-heading h2 { margin:0;font-size:26px;line-height:1.15;font-weight:750;color:var(--text-main); }
+        #transaction-module .txn-heading p { margin:5px 0 0;color:var(--text-muted);font-size:13px; }
+        #transaction-module .txn-add-btn { display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 16px;border:0;border-radius:12px;background:#0B1F4B;color:#fff;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 2px 5px rgba(11,31,75,.2); }
+        #transaction-module .txn-add-btn:hover { background:#0B1F4B; }
+        #transaction-module .txn-modal { display:none;position:fixed;inset:0;z-index:10050;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.48);backdrop-filter:blur(3px); }
+        #transaction-module .txn-modal.show { display:flex; }
+        #transaction-module .txn-modal .form-card { width:min(920px,100%);max-height:92vh;overflow:auto;margin:0;border-radius:20px;padding:22px;box-shadow:0 24px 70px rgba(15,23,42,.24); }
+        #transaction-module .txn-modal-head { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px; }
+        #transaction-module .txn-modal-head h3 { margin:0;color:#0B1F4B;font-size:18px;font-weight:750; }
+        #transaction-module .txn-close-btn { width:38px;height:38px;border:1px solid var(--border);border-radius:12px;background:#fff;color:#475569;display:grid;place-items:center;cursor:pointer; }
+        #transaction-module .txn-close-btn:hover { background:#F8FAFC; }
+        #transaction-module .form-label { font-size:11px;letter-spacing:.45px; }
+        #transaction-module .form-input { min-height:44px;padding:11px 13px;border-radius:12px;background:#F8FAFC;transition:border-color .18s,box-shadow .18s,background .18s; }
+        #transaction-module .form-input:focus { border-color:#6750A4;box-shadow:0 0 0 3px rgba(103,80,164,.12);background:#fff; }
+        #transaction-module .btn-primary,#transaction-module .btn-outline,#transaction-module .btn-verify { min-height:42px;border-radius:12px; }
+        #transaction-module .btn-primary { padding:0 18px;background:#6750A4; }
+        #transaction-module .btn-primary:hover { background:#57418F; }
+        #transaction-module .btn-verify { background:#E8DEF8;color:#1D192B;padding:0 15px; }
+        #transaction-module .btn-verify:hover { background:#DDD0F1; }
+        #transaction-module .btn-outline { padding:0 14px; }
+        #transaction-module .txn-toolbar { display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding:12px;border:1px solid var(--border);border-radius:14px;background:#F8FAFC; }
+        #transaction-module .txn-toolbar .form-input { min-height:40px;padding:8px 10px;border-radius:10px;background:#fff;font-size:12px; }
+        #transaction-module .txn-search { display:flex;align-items:center;gap:7px;flex:1 1 210px;min-width:190px;padding:0 10px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text-muted); }
+        #transaction-module .txn-search input { width:100%;height:40px;border:0;outline:0;background:transparent;font-size:13px;color:var(--text-main); }
+        #transaction-module .txn-toolbar .txn-date-range { display:flex;align-items:center;gap:6px; }
+        #transaction-module .txn-toolbar .txn-date-range .form-input { width:142px; }
+        #transaction-module .table-header { gap:12px; }
+        #transaction-module .ledger-heading { display:flex;align-items:center;justify-content:space-between;gap:10px; }
+        #transaction-module .ledger-heading h4 { margin:0;font-size:15px;font-weight:750; }
+        #transaction-module .patient-report-modal { display:none;position:fixed;inset:0;z-index:10060;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.5);backdrop-filter:blur(3px); }
+        #transaction-module .patient-report-modal.show { display:flex; }
+        #transaction-module .patient-report-card { width:min(1080px,100%);max-height:92vh;overflow:auto;border:1px solid #E2E8F0;border-radius:20px;background:#fff;box-shadow:0 24px 70px rgba(15,23,42,.24); }
+        #transaction-module .patient-report-head { position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.96);backdrop-filter:blur(8px); }
+        #transaction-module .patient-report-head h3 { margin:0;font-size:18px;font-weight:750; }
+        #transaction-module .patient-report-body { padding:16px; }
+        #transaction-module .report-summary { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:14px; }
+        #transaction-module .report-metric { padding:12px 14px;border:1px solid var(--border);border-radius:13px;background:#F8FAFC; }
+        #transaction-module .report-metric span { display:block;color:var(--text-muted);font-size:11px;font-weight:650; }
+        #transaction-module .report-metric strong { display:block;margin-top:4px;font-size:18px;font-weight:800; }
+        #transaction-module .patient-report-search { display:flex;align-items:center;gap:8px;margin-bottom:12px;padding:0 12px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text-muted); }
+        #transaction-module .patient-report-search input { width:100%;height:42px;border:0;outline:0;background:transparent;font-size:13px; }
+        #transaction-module .report-table-wrap { overflow:auto;border:1px solid var(--border);border-radius:12px; }
+        #transaction-module .report-table { width:100%;min-width:700px;border-collapse:collapse;text-align:left; }
+        #transaction-module .report-table th { padding:11px 12px;background:#F8FAFC;border-bottom:1px solid var(--border);color:var(--text-muted);font-size:10px;font-weight:750;text-transform:uppercase;white-space:nowrap; }
+        #transaction-module .report-table td { padding:11px 12px;border-bottom:1px solid #EEF2F7;font-size:12px;vertical-align:middle; }
+        #transaction-module .report-actions { display:flex;justify-content:flex-end;gap:6px; }
+        #transaction-module .report-icon-btn { display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid var(--border);border-radius:10px;background:#fff;color:#475569;cursor:pointer; }
+        #transaction-module .report-icon-btn:hover { background:#F8FAFC; }
+        #transaction-module .report-icon-btn.whatsapp { color:#128C4A;background:#F0FDF4;border-color:#BBF7D0; }
+        #transaction-module .report-icon-btn.download { color:#0B1F4B;background:#E8EEF7;border-color:#CCD5E3; }
+        #transaction-module .report-detail { display:none;margin-top:14px;padding:14px;border:1px solid var(--border);border-radius:14px;background:#FCFCFD; }
+        #transaction-module .report-detail.show { display:block; }
+        #transaction-module .report-detail-head { display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px; }
+        #transaction-module .report-detail-head h4 { margin:0;font-size:14px; }
+        #transaction-module .report-detail-balance { color:#DC2626;font-weight:750; }
+        #transaction-module .report-empty { padding:24px 12px;text-align:center;color:var(--text-muted);font-size:13px; }
+
+        @media (max-width:700px) {
+            #transaction-module .txn-topbar { align-items:flex-start; }
+            #transaction-module .txn-heading h2 { font-size:22px; }
+            #transaction-module .txn-add-btn { min-height:40px;padding:0 11px; }
+            #transaction-module .txn-toolbar > * { flex:1 1 130px; }
+            #transaction-module .txn-toolbar .txn-date-range { flex:1 1 100%; }
+            #transaction-module .txn-toolbar .txn-date-range .form-input { width:100%;min-width:0; }
+            #transaction-module .txn-search { flex:1 1 100%; }
+            #transaction-module .txn-modal { padding:8px; }
+            #transaction-module .txn-modal .form-card { max-height:96vh;padding:16px;border-radius:16px; }
+            #transaction-module .input-group.three-cols { grid-template-columns:1fr; }
+            #transaction-module .patient-report-modal { padding:8px; }
+            #transaction-module .patient-report-card { max-height:96vh;border-radius:16px; }
+            #transaction-module .patient-report-body { padding:10px; }
+            #transaction-module .report-summary { gap:6px; }
+            #transaction-module .report-metric { padding:10px; }
+            #transaction-module .report-metric strong { font-size:15px; }
+        }
+
+        #transaction-module{width:100%;max-width:1200px;margin:0 auto;color:#1F1F1F;font-family:Inter,sans-serif;font-size:14px;line-height:1.5}
+        #transaction-module .txn-topbar{min-height:54px;align-items:center;margin-bottom:18px}
+        #transaction-module .txn-heading{display:flex;align-items:center;gap:12px}
+        #transaction-module .txn-heading::before{content:"payments";font-family:"Material Symbols Rounded";font-size:25px;font-weight:normal;font-style:normal;line-height:1;font-feature-settings:"liga";-webkit-font-feature-settings:"liga";display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border:1px solid #EEF0F4;border-radius:16px;background:#fff;color:#0B1F4B;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+        #transaction-module .txn-heading h2{font-size:25px;line-height:1.2;font-weight:600;letter-spacing:-.35px;color:#1F1F1F}
+        #transaction-module .txn-heading p{margin-top:4px;color:#6B7280;font-size:13px}
+        #transaction-module .txn-add-btn{min-height:44px;padding:0 19px;border:1px solid #0B1F4B;border-radius:22px;background:#0B1F4B;color:#fff;font:600 13px Inter,sans-serif;box-shadow:0 2px 8px rgba(11,31,75,.16)}
+        #transaction-module .txn-add-btn:hover{background:#071630}
+        #transaction-module .transactions-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px;padding:15px 16px;border:1px solid #EEF0F4;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06)}
+        #transaction-module .txn-search{height:46px;flex:1 1 215px;min-width:190px;padding:0 13px;border:1px solid transparent;border-radius:18px;background:#F4F7FC;color:#8290A2}
+        #transaction-module .txn-search:focus-within{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #transaction-module .txn-search input{height:44px;font:13px Inter,sans-serif}
+        #transaction-module .txn-search input::placeholder{color:#718096}
+        #transaction-module .txn-toolbar-control{position:relative;flex:0 1 150px;min-width:125px}
+        #transaction-module .txn-toolbar-control select,#transaction-module .txn-toolbar-control input{width:100%;height:44px;padding:0 32px 0 12px;border:1px solid transparent;border-radius:17px;background:#F4F7FC;color:#334155;font:500 12px Inter,sans-serif;outline:0;appearance:none}
+        #transaction-module .txn-toolbar-control input{padding-right:9px}
+        #transaction-module .txn-toolbar-control select:focus,#transaction-module .txn-toolbar-control input:focus{border-color:#C8D2E1;background:#fff;box-shadow:0 0 0 3px rgba(11,31,75,.1)}
+        #transaction-module .txn-toolbar-control .material-symbols-rounded{position:absolute;right:9px;top:50%;transform:translateY(-50%);pointer-events:none;color:#8290A2;font-size:18px}
+        #transaction-module .txn-date-control{flex:0 1 145px}
+        #transaction-module .txn-date-control input{padding-left:10px;font-size:11px}
+        #transaction-module .txn-toolbar-actions{display:flex;align-items:center;gap:7px;margin-left:auto}
+        #transaction-module .txn-toolbar-actions .btn-outline{min-height:42px;padding:0 13px;border:1px solid #C4C7C5;border-radius:22px;background:#fff;color:#40454D;font:600 12px Inter,sans-serif;white-space:nowrap}
+        #transaction-module .txn-toolbar-actions .btn-outline:hover{background:#F7F9FC}
+        #transaction-module .transactions-toolbar .clear-filters{width:42px;min-width:42px;height:42px;padding:0;display:grid;place-items:center;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672}
+        #transaction-module .transactions-toolbar .clear-filters:hover{background:#F0F4F9;color:#0B1F4B}
+        #transaction-module .table-container{overflow:hidden;margin:0;border:1px solid #E1E4E2;border-radius:26px;background:#fff;box-shadow:0 1px 3px rgba(31,35,40,.06),0 8px 25px rgba(31,35,40,.035)}
+        #transaction-module .table-header{padding:15px 20px;border-bottom:1px solid #F0F2F5}
+        #transaction-module .ledger-heading{min-height:30px}
+        #transaction-module .ledger-heading h4{color:#1F1F1F;font-size:15px;font-weight:600}
+        #transaction-module .saas-table{min-width:900px}
+        #transaction-module .saas-table th{padding:14px 16px;background:#FAFBFC;color:#65748B;font-size:11px;letter-spacing:.5px}
+        #transaction-module .saas-table td{padding:14px 16px;border-bottom-color:#F0F2F5;color:#344054;font-size:12px;font-weight:400}
+        #transaction-module .saas-table tbody tr:nth-child(even){background:#FCFCFD}
+        #transaction-module .saas-table tbody tr:hover{background:#F6F9FE}
+        #transaction-module .saas-table tr:last-child td{border-bottom:0}
+        #transaction-module .badge{padding:4px 9px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.15px}
+        #transaction-module .badge-sales{background:#E8F5E9;color:#188038}
+        #transaction-module .badge-expense{background:#FFF4E5;color:#8A4B08}
+        #transaction-module .badge-receipt{background:#E8EEF7;color:#0B1F4B}
+        #transaction-module .cta-link{width:30px;height:30px;border-radius:50%;background:#fff}
+        #transaction-module .transaction-row-actions{display:flex;align-items:center;justify-content:flex-end;gap:5px}
+        #transaction-module .transaction-row-action{width:33px;height:33px;display:grid;place-items:center;border:1px solid #E1E4E2;border-radius:50%;background:#fff;color:#5E6672;cursor:pointer}
+        #transaction-module .transaction-row-action:hover{background:#E8EEF7;color:#0B1F4B}
+        #transaction-module .transaction-row-action.danger{color:#B3261E}
+        #transaction-module .transaction-row-action.danger:hover{background:#FCE8E6}
+        #transaction-module #patientSummaryDash{border-color:#D2E3FC;border-radius:16px;background:#F4F7FC}
+        #transaction-module .summary-metric strong{font-size:17px;font-weight:600}
+        #transaction-module .txn-modal{background:rgba(31,35,40,.42)}
+        #transaction-module .txn-modal .form-card{border:1px solid #E1E4E2;border-radius:24px;box-shadow:0 20px 50px rgba(31,35,40,.2)}
+        #transaction-module .txn-modal-head h3{color:#1F1F1F;font-size:18px;font-weight:600}
+        #transaction-module .txn-modal .form-input{border:1px solid transparent;border-radius:12px;background:#F4F7FC}
+        #transaction-module .txn-modal .form-input:focus{border-color:#0B1F4B;box-shadow:0 0 0 3px rgba(11,31,75,.1);background:#fff}
+        #transaction-module .txn-modal .btn-primary{border-radius:22px;background:#0B1F4B;color:#fff}
+        #transaction-module .txn-modal .btn-primary:hover{background:#071630}
+        #transaction-module .txn-modal .btn-outline{border-radius:22px}
+        #transaction-module .btn-verify{background:#0B1F4B;color:#fff}
+        #transaction-module .btn-verify:hover{background:#071630}
+        #transaction-module .txn-close-btn{border-radius:50%}
+        #transaction-module .patient-report-card{border-color:#E1E4E2;border-radius:24px}
+        #transaction-module .patient-report-head h3{font-weight:600}
+        #transaction-module .report-metric{border-color:#E1E4E2;border-radius:15px;background:#F7F9FC}
+        #transaction-module .report-metric strong{font-weight:600}
+        #transaction-module .report-table-wrap{border-color:#E1E4E2;border-radius:14px}
+        #transaction-module .report-table th{background:#FAFBFC}
+        @media (max-width:1050px){
+            #transaction-module .txn-toolbar-control{flex:1 1 145px}
+            #transaction-module .txn-search{flex:1 1 260px}
+            #transaction-module .txn-toolbar-actions{width:100%;margin-left:0;justify-content:flex-end}
+        }
+        @media (max-width:700px){
+            #transaction-module .txn-topbar{align-items:flex-start}
+            #transaction-module .txn-heading{align-items:flex-start}
+            #transaction-module .txn-heading::before{flex-basis:42px;width:42px;height:42px;border-radius:14px;font-size:22px}
+            #transaction-module .txn-heading h2{font-size:21px}
+            #transaction-module .txn-heading p{font-size:12px}
+            #transaction-module .transactions-toolbar{gap:8px;padding:11px;border-radius:20px}
+            #transaction-module .txn-search{flex:1 1 100%;min-width:0}
+            #transaction-module .txn-toolbar-control{flex:1 1 calc(50% - 8px);min-width:0}
+            #transaction-module .txn-date-control{flex:1 1 calc(50% - 8px)}
+            #transaction-module .txn-toolbar-actions{display:grid;grid-template-columns:1fr 44px;gap:8px}
+            #transaction-module .txn-toolbar-actions .txn-add-btn{grid-column:1 / -1}
+            #transaction-module .txn-toolbar-actions .btn-outline{min-height:42px}
+            #transaction-module .transactions-toolbar .clear-filters{flex:0 0 42px}
+            #transaction-module .table-container{border-radius:20px}
+            #transaction-module .table-header{padding:13px 15px}
+            #transaction-module .txn-modal{padding:8px}
+            #transaction-module .txn-modal .form-card{max-height:96vh;padding:15px;border-radius:19px}
+            #transaction-module .patient-report-modal{padding:8px}
+            #transaction-module .patient-report-card{max-height:96vh;border-radius:19px}
+            #transaction-module .patient-report-body{padding:10px}
+            #transaction-module .report-summary{grid-template-columns:1fr;gap:7px}
+            #transaction-module .report-metric{padding:10px}
+            #transaction-module .report-metric strong{font-size:15px}
+        }
+
+        /* Print Override */
+        @media print {
+            body { background: white; padding: 0; }
+            #sidebar-container, #header-container, #bottomnav-container, .form-card, .section-title, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0; overflow: visible; }
+            #transaction-module .table-container { box-shadow: none; border: none; margin: 0; }
+            #transaction-module .saas-table th { background: white; color: black; border-bottom: 1px solid #000; }
+            #transaction-module .saas-table td { border-bottom: 1px solid #E8E5E1; }
+        }

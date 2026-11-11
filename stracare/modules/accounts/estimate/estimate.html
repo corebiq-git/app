@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Estimate Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./estimate.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="estimate-module">
+    
+    
+
+    <div class="section-title no-print">
+        <h2 style="margin: 0;">Estimate Generator</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <h4 style="color: var(--primary); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Estimate Details</h4>
+        
+        <div class="input-group three-cols">
+            <div>
+                <label class="form-label">Patient Name *</label>
+                <input type="text" id="estName" class="form-input" placeholder="Full Name" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Patient Mobile *</label>
+                <input type="tel" id="estMobile" class="form-input" placeholder="10-digit number" maxlength="10" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Date *</label>
+                <input type="date" id="estDate" class="form-input" onchange="window.syncPreview()">
+            </div>
+        </div>
+
+        <div class="input-group three-cols">
+            <div>
+                <label class="form-label">Branch *</label>
+                <select id="estBranch" class="form-input" onchange="window.syncPreview()">
+                    <option value="">Loading Branches...</option>
+                </select>
+            </div>
+            <div style="grid-column: span 2;">
+                <label class="form-label">Description of Service</label>
+                <input type="text" id="estDesc" class="form-input" placeholder="e.g. Consultation & Therapy Service" value="Consultation & Therapy Service" oninput="window.syncPreview()">
+            </div>
+        </div>
+
+        <div class="input-group three-cols" style="background: var(--bg); padding: 16px; border-radius: 12px;">
+            <div>
+                <label class="form-label">Total Fee (₹) *</label>
+                <input type="number" id="estFee" class="form-input" placeholder="0.00" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Advance Paid (₹)</label>
+                <input type="number" id="estAdvance" class="form-input" placeholder="0.00" oninput="window.syncPreview()">
+            </div>
+            <div>
+                <label class="form-label">Balance Pending (₹)</label>
+                <input type="number" id="estBalance" class="form-input" placeholder="0.00" readonly style="font-weight: 700; color: var(--danger); background: transparent; border: none; padding-left: 0;">
+            </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+            <button type="button" class="btn-primary" id="saveEstBtn" onclick="window.saveEstimate()">Save to Database & Export</button>
+        </div>
+
+        <div class="action-row" id="actionButtonsRow">
+            <button type="button" class="btn-action" onclick="window.printEstimate()">
+                <span class="material-symbols-rounded">print</span> Print
+            </button>
+            <button type="button" class="btn-action" onclick="window.downloadJPEG()">
+                <span class="material-symbols-rounded">image</span> Save JPG
+            </button>
+            <button type="button" class="btn-action" onclick="window.sendEstimateWA()" style="color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
+                <span class="material-symbols-rounded">chat</span> WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <div class="a4-wrapper no-print">
+        <div class="a4-paper" id="printable-estimate">
+            <div class="a4-header">
+                <div class="a4-logo-area">
+                    <!-- REPLACED TEXT WITH COMPANY LOGO -->
+                    <img src="../../../assets/name.png" alt="STRA CARE">
+                </div>
+                <div class="a4-company-info">
+                    <strong>+91 97449 02555 | +91 90612 07871</strong><br>
+                    info@stracares.in | www.stracares.in<br>
+                    Branches: Mahe | Chokli | Panoor | Koothuparamba
+                </div>
+            </div>
+            
+            <div class="a4-bill-to">
+                <div>
+                    <h3>Estimated For:</h3>
+                    <div style="font-size: 18px; font-weight: 700; margin-bottom: 4px;" id="prevName">---</div>
+                    <div style="color: #555;">Mobile: +91 <span id="prevMobile">----------</span></div>
+                </div>
+                <div style="text-align: right;">
+                    <h3>Estimate Details</h3>
+                    <div style="margin-bottom: 4px;"><strong>Date:</strong> <span id="prevDate">YYYY-MM-DD</span></div>
+                    <div style="color: #555;"><strong>Branch:</strong> <span id="prevBranch">---</span></div>
+                </div>
+            </div>
+
+            <table class="a4-table">
+                <tr>
+                    <th>Description of Services</th>
+                    <th style="text-align: right;">Amount (₹)</th>
+                </tr>
+                <tr>
+                    <td id="prevDesc">Consultation & Therapy Service</td>
+                    <td style="text-align: right;" id="prevFee">₹0.00</td>
+                </tr>
+            </table>
+
+            <div class="a4-totals">
+                <div class="a4-totals-row"><span>Advance Paid:</span> <span id="prevAdvance">₹0.00</span></div>
+                <div class="a4-totals-row balance"><span>Balance Due:</span> <span id="prevBalance">₹0.00</span></div>
+            </div>
+
+            <div class="a4-bank-details">
+                <h4>Bank Details for Payment Remittance</h4>
+                <strong>Account Name:</strong> STRA CARE <br>
+                <strong>Account No:</strong> 50200120597389 | <strong>IFSC:</strong> HDFC0000465<br>
+                <strong>UPI ID:</strong> 9744902555@hdfc
+            </div>
+
+            <div class="a4-footer-text">
+                Generated by COREBIQ
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./estimate.js"></script>
+
+</div>
+</body>
+</html>
