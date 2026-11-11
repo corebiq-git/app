@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>COREBIQ BUSINESS FLOW APP | APPOINTMENTS</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./appointments.css" data-module-style>
+</head>
+<body>
+<div class="module-container" id="appointment-module">
+
+
+<div class="appointment-page-header">
+  <div class="title"><span class="title-icon"><span class="material-symbols-rounded">calendar_month</span></span><div><h2>Appointments &amp; Scheduling</h2><p>Plan visits, review bookings, and manage your daily schedule. <span id="todayLabel"></span></p></div></div>
+  <button class="new-btn" onclick="window.openAppointmentForm()"><span class="material-symbols-rounded">add</span><span>New Appointment</span></button>
+</div>
+
+<section class="dashboard-week-card no-print" aria-label="Choose an appointment date">
+  <div class="dashboard-week-header">
+    <h3 class="dashboard-week-title">
+      <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
+      <span class="dashboard-week-title-copy">
+        <span>Calendar</span>
+        <span class="dashboard-week-range" id="appointmentWeekLabel">This week</span>
+      </span>
+    </h3>
+    <div class="dashboard-week-controls">
+      <button class="dashboard-week-control" type="button" id="appointmentPreviousWeek" aria-label="Previous week"><span class="material-symbols-rounded" aria-hidden="true">chevron_left</span></button>
+      <button class="dashboard-week-control" type="button" id="appointmentCurrentWeek">This week</button>
+      <button class="dashboard-week-control" type="button" id="appointmentNextWeek" aria-label="Next week"><span class="material-symbols-rounded" aria-hidden="true">chevron_right</span></button>
+    </div>
+  </div>
+  <div class="dashboard-week-days" id="appointmentWeekDays" role="group" aria-label="Days of the selected week"></div>
+</section>
+
+<div class="appointment-toolbar no-print">
+  <div class="searchbar" id="searchBar"><div class="searchbox"><span class="material-symbols-rounded">search</span><input id="aptSearchInput" placeholder="Search appointments..." oninput="window.filterTable()"><button class="close" style="width:28px;height:28px;border:0" aria-label="Clear search" onclick="document.getElementById('aptSearchInput').value='';window.filterTable()"><span class="material-symbols-rounded" style="font-size:17px">close</span></button></div></div>
+  <label class="appointment-filter-select" aria-label="Filter appointments by status">
+    <select id="filterStatus" onchange="window.filterTable()"><option value="">All Statuses</option><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select>
+    <span class="material-symbols-rounded">expand_more</span>
+  </label>
+  <label class="appointment-filter-select sort-select" aria-label="Sort appointments">
+    <select id="aptSortSelect" onchange="window.setSort(this.value)"><option value="dateDesc">Date: Newest first</option><option value="dateAsc">Date: Oldest first</option><option value="nameAsc">Patient: A–Z</option><option value="doctorAsc">Therapist: A–Z</option><option value="balanceDesc">Balance: High–Low</option><option value="balanceAsc">Balance: Low–High</option></select>
+    <span class="material-symbols-rounded">sort</span>
+  </label>
+  <div class="tool" id="moreTool">
+    <button class="icon-btn more-actions-btn" title="More Actions" aria-label="More Actions" onclick="window.toggleTool('moreTool')"><span class="material-symbols-rounded">more_vert</span></button>
+    <div class="dropdown">
+      <div class="drop-title">View &amp; Actions</div>
+      <button class="drop-item" onclick="window.showFilters()"><span class="material-symbols-rounded">tune</span>More Filters</button>
+      <button class="drop-item" onclick="window.setFilterToday()"><span class="material-symbols-rounded">today</span>Today</button>
+      <button class="drop-item" onclick="window.clearFilters();window.toggleTool('moreTool')"><span class="material-symbols-rounded">close</span>Clear All</button>
+      <button class="drop-item" onclick="document.getElementById('aptCsvInput').click()"><span class="material-symbols-rounded">upload</span>Import CSV</button>
+      <button class="drop-item" onclick="window.downloadAppointmentSampleCSV()"><span class="material-symbols-rounded">download</span>Sample Format CSV</button>
+      <button class="drop-item" onclick="window.exportAppointmentsCSV()"><span class="material-symbols-rounded">file_download</span>Export CSV</button>
+      <div class="drop-title">Selected Appointments</div>
+      <button class="drop-item" onclick="window.editSelectedAppointment()"><span class="material-symbols-rounded">edit</span>Edit Selected Appointment</button>
+      <button class="drop-item" onclick="window.openSelectedNew()"><span class="material-symbols-rounded">content_copy</span>New from Selected</button>
+      <button class="drop-item" onclick="window.executeBulkCopy()"><span class="material-symbols-rounded">content_copy</span>Copy Selected to Date</button>
+      <button class="drop-item" onclick="window.executeBulkDelete()"><span class="material-symbols-rounded">delete</span>Bulk Delete</button>
+      <div id="bulkDateArea" class="bulk-date-menu">
+        <input type="date" id="bulkDateInput" class="form-input" aria-label="New date for copied appointments">
+        <button class="btn small primary" onclick="window.confirmBulkCopy()">Copy Appointment</button>
+      </div>
+      <button class="drop-item" onclick="window.clearSelection();window.toggleTool('moreTool')"><span class="material-symbols-rounded">deselect</span>Clear Selection</button>
+      <div class="drop-title">Other</div>
+      <button class="drop-item" onclick="window.exportAptPDF()"><span class="material-symbols-rounded">picture_as_pdf</span>Print / PDF</button>
+    </div>
+  </div>
+</div>
+
+<section id="therapistWiseReport" class="therapist-report show" aria-label="Therapist-wise appointment report">
+  <header class="therapist-report-header">
+    <h2>Appointments by Doctor / Therapist</h2>
+    <div class="therapist-report-actions no-print">
+      <button class="btn small" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+    </div>
+  </header>
+  <div class="filters no-print" id="filtersBar">
+    <input type="date" id="filterDateFrom" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
+    <span style="font-size:12px;color:var(--muted)">to</span>
+    <input type="date" id="filterDateTo" class="form-input filter-input" onchange="window.appointmentDateFilterChanged()">
+    <button class="btn small" onclick="window.setFilterToday()">Today</button>
+    <select id="filterCategory" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Categories</option><option>Normal</option><option>Regular</option><option>Both</option></select>
+    <select id="filterPayment" class="form-input filter-input" onchange="window.filterTable()"><option value="">All Payments</option><option value="pending">Balance Pending</option><option value="paid">Fully Paid</option></select>
+    <select id="filterBranch" class="form-input filter-input" onchange="window.loadAppointments()"><option value="">All Branches</option></select>
+  </div>
+  <div class="bulkbar no-print" id="bulkBar"><strong><span id="selectedCount">0</span> selected</strong></div>
+  <input id="aptCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="window.importAppointmentsCSV(this.files[0])">
+  <div id="therapistWiseReportContent"></div>
+</section>
+
+<div class="kpis">
+  <div class="kpi today"><div class="label">Today's Appointment</div><div class="num" id="kpiToday">0</div></div>
+  <div class="kpi done"><div class="label">Completed</div><div class="num" id="kpiCompleted">0</div></div>
+  <div class="kpi pending"><div class="label">Pending</div><div class="num" id="kpiPending">0</div></div>
+</div>
+
+<section class="public-booking-panel">
+  <header class="public-booking-head">
+    <div class="public-booking-title">Public Booking Requests</div>
+    <span id="publicBookingCount" class="public-booking-count">0</span>
+  </header>
+  <div id="publicBookingList" class="public-booking-list"><div class="public-booking-empty">Loading public booking requests…</div></div>
+</section>
+
+<div class="modal" id="aptModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="formTitle">New Appointment</h3><button class="close" onclick="window.closeAppointmentForm()"><span class="material-symbols-rounded">close</span></button></div>
+    <div class="modal-body">
+      <form id="add-appointment-form" onsubmit="event.preventDefault();window.saveAppointment()">
+      <input type="hidden" id="aptDocId">
+      <div class="section"><h4>1. Patient Details</h4>
+        <div class="grid">
+          <div class="field span2"><label>Search Patient</label><input list="patients-datalist" id="aptPatientSearch" class="form-input" placeholder="Search by patient name or mobile" onchange="window.handlePatientSelect()" autocomplete="off"><datalist id="patients-datalist"></datalist></div>
+          <div class="field"><label>Patient Mobile *</label><input type="tel" id="aptMobile" class="form-input" maxlength="10" placeholder="10-digit number" required></div>
+          <div class="field"><label>Patient Name *</label><input id="aptName" class="form-input" placeholder="Full Name" required></div>
+          <div class="field"><label>Age</label><input type="number" id="aptAge" class="form-input" min="1" max="120"></div>
+          <div class="field"><label>Gender</label><select id="aptGender" class="form-input"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+          <div class="field"><label>Patient Category *</label><select id="aptCategory" class="form-input" required><option>Normal</option><option>Regular</option><option>Both</option></select></div>
+          <div class="field"><label>Location</label><div class="location-row"><button type="button" class="btn" onclick="window.getCurrentLocation(this)"><span class="material-symbols-rounded">my_location</span></button><input id="aptLocation" class="form-input" placeholder="Address or Maps URL"><button type="button" class="btn" onclick="window.openLocationMap()"><span class="material-symbols-rounded">map</span></button></div></div>
+          <div class="field span2"><label>Patient Medical History / Admin Notes</label><textarea id="aptPatientNotes" class="form-input" rows="2" placeholder="Pre-existing conditions, allergies, patient background..."></textarea></div>
+        </div>
+      </div>
+      <div class="section"><h4>2. Appointment & Therapy Details</h4>
+        <div class="grid three">
+          <div class="field"><label>Branch *</label><select id="aptBranch" class="form-input" required><option value="">Loading...</option></select></div>
+          <div class="field"><label>Scheduled Date *</label><input type="date" id="aptDate" class="form-input" required></div>
+          <div class="field"><label>Scheduled Time * (9:00 AM–9:00 PM)</label><input type="time" id="aptTime" class="form-input" min="09:00" max="21:00" required></div>
+          <div class="field"><label>Previous Visit Date</label><input type="date" id="aptPreviousDate" class="form-input"></div>
+          <div class="field"><label>Previous Visit Time</label><input type="time" id="aptPreviousTime" class="form-input"></div>
+          <div class="field"><label>Duration of Therapy</label><input id="aptDuration" class="form-input" placeholder="30 minutes / 2 weeks"></div>
+          <div class="field"><label>Sessions / Day</label><input type="number" id="aptSessionsPerDay" class="form-input" min="1" step="1"></div>
+          <div class="field"><label>Doctor / Therapist *</label><input list="therapists-datalist" id="aptTherapist" class="form-input" placeholder="Search / Select Therapist" required autocomplete="off"><datalist id="therapists-datalist"></datalist></div>
+          <div class="field"><label>Status *</label><select id="aptStatus" class="form-input" onchange="window.toggleReschedule(this)" required><option>Pending</option><option>Reported</option><option>Completed</option><option>Rescheduled</option><option>Cancelled</option></select></div>
+          <div class="field" id="reschedule-container" style="display:none"><label style="color:var(--danger)">New Reschedule Date</label><input type="date" id="aptRescheduleDate" class="form-input"></div>
+          <div class="field span2"><label>Diagnosis Report / Administrative Notes</label><textarea id="aptNotes" class="form-input" rows="3" placeholder="Diagnosis, symptoms, treatment findings, remarks..."></textarea></div>
+        </div>
+      </div>
+      <div class="section"><h4>3. Payment Details</h4>
+        <div class="grid three" style="margin-top:10px">
+          <div class="money-box field"><label>Fee (₹)</label><input type="number" id="aptFee" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="money-box field"><label>Receipt Received Today (₹)</label><input type="number" id="aptAdvance" class="form-input" step="0.01" oninput="window.calcBalance()"></div>
+          <div class="field" id="aptPaymentModeField" style="display:none"><label>Mode (Cash / Bank Ledger)</label><select id="aptPaymentMode" class="form-input"><option>Cash</option><optgroup label="Bank Ledger"><option>UPI</option><option>Card</option><option>Bank Transfer</option></optgroup><option>Mixed</option><option>Credit</option></select></div>
+          <div class="money-box field"><label>Previous O/S (₹)</label><input type="number" id="aptPrevDues" class="form-input readonly" readonly></div>
+          <div class="money-box field"><label>Net Balance</label><input type="text" id="aptBalance" class="form-input readonly" readonly><div id="aptBalanceState" style="font-size:12px;margin-top:5px;font-weight:700"></div></div>
+          <div class="field"><label>Payment Reference / UTR</label><input id="aptPaymentReference" class="form-input"></div>
+          <div class="field"><label>Payment Remarks</label><input id="aptPaymentRemarks" class="form-input"></div>
+        </div>
+      </div>
+      <div class="form-actions"><button type="button" class="btn" onclick="window.resetAptForm()">Clear Form</button><button type="submit" class="btn primary" id="saveAptBtn">Save Appointment</button></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="notesModal"><div class="modal-box" style="max-width:620px"><div class="modal-head"><h3>Patient Notes & Diagnosis</h3><button class="close" onclick="window.closeModal('notesModal')"><span class="material-symbols-rounded">close</span></button></div><div class="modal-body" id="printNotesArea"><h3 id="modalPatientName" style="margin:0 0 4px"></h3><div id="modalPatientMeta" class="sub" style="margin-bottom:12px"></div><div id="modalPatientNotesText" class="notes-content"></div><div class="form-actions no-print" style="margin-top:12px"><button class="btn primary" onclick="window.printModalNotes()"><span class="material-symbols-rounded">print</span>Print Notes</button></div></div></div></div>
+
+<div class="modal" id="confirmModal"><div class="modal-box confirm-box"><div class="modal-head"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="window.closeModal('confirmModal')"><span class="material-symbols-rounded">close</span></button></div><div class="confirm-message" id="confirmMessage"></div><div class="form-actions" style="padding:0 15px 15px"><button class="btn" onclick="window.closeModal('confirmModal')">Cancel</button><button class="btn primary" id="confirmOk">Confirm</button></div></div></div>
+
+<script type="module" src="./appointments.js"></script>
+</div>
+</body>
+</html>
