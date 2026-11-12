@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Export &amp; Backup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./backup.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="export-module">
+    
+    
+
+    <div class="section-title">
+        <span class="material-symbols-rounded" style="font-size: 28px; color: var(--primary);">download</span>
+        Export & Backup Data
+    </div>
+
+    <!-- 1. CSV EXPORT SECTION -->
+    <div class="card">
+        <h3 style="margin: 0 0 8px 0; color: var(--text-main);">Module Export (CSV/Excel)</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Download specific tables directly to your device. Staff accounts will only export data related to their assigned branch.</p>
+        
+        <form id="export-form" onsubmit="event.preventDefault(); window.executeExport();">
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Select Module *</label>
+                    <select id="exportModule" class="form-input" required>
+                        <option value="">-- Choose Module --</option>
+                        <option value="patients">Patient Data</option>
+                        <option value="appointments">Appointments</option>
+                        <option value="booking_requests">Booking Requests</option>
+                        <option value="transactions">Transactions</option>
+                        <option value="daily_attendance">Attendance</option>
+                        <option value="leave_requests">Leave Requests</option>
+                        <option value="therapists">Doctors/Therapists</option>
+                        <option value="staff">Staffs</option>
+                        <option value="branches">Branches</option>
+                        <option value="estimates">Estimates</option>
+                        <option value="ledger_categories">Ledger Categories</option>
+                        <option value="ledgers">Ledgers</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">From Date (Optional)</label>
+                    <input type="date" id="exportFromDate" class="form-input">
+                </div>
+                <div>
+                    <label class="form-label">To Date (Optional)</label>
+                    <input type="date" id="exportToDate" class="form-input">
+                </div>
+            </div>
+
+            <div class="info-box">
+                <span class="material-symbols-rounded">info</span>
+                <div>Leave the date fields empty to export <strong>all available records</strong> for the selected module. Date filters apply to the 'Date' or 'Creation Date' depending on the module.</div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="exportBtn">
+                <span class="material-symbols-rounded">table_view</span> Generate CSV Export
+            </button>
+            <div class="backup-actions" style="margin-top: 12px;">
+                <button type="button" class="btn-danger btn-secondary" id="moduleSampleBtn" onclick="window.downloadModuleSampleCSV()">
+                    <span class="material-symbols-rounded">download</span> Download Selected Module Sample
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card" id="admin-module-import-card" style="display: none;">
+        <h3 style="margin: 0 0 8px 0; color: var(--text-main);">Import Module CSV</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Import a CSV or tab-delimited file for the selected module. Blank IDs are assigned the module prefix and next available number (for example, APT-0001). Existing records are never overwritten.</p>
+        <div class="info-box warning">
+            <span class="material-symbols-rounded">warning</span>
+            <div>CSV imports are available to administrators only. Check the sample columns before importing. Records already present by ID are skipped. Import appointments from Appointments → More Actions → Import CSV to keep linked patient and transaction records in sync.</div>
+        </div>
+        <div class="input-group">
+            <div>
+                <label class="form-label" for="moduleImportFile">Module CSV *</label>
+                <input type="file" id="moduleImportFile" class="form-input" accept=".csv,.tsv,text/csv,text/tab-separated-values">
+            </div>
+        </div>
+        <div class="backup-actions">
+            <button type="button" class="btn-danger" id="moduleImportBtn" onclick="window.importModuleCSV()">
+                <span class="material-symbols-rounded">upload_file</span> Import Selected Module CSV
+            </button>
+            <button type="button" class="btn-danger btn-secondary" id="moduleImportReportBtn" hidden onclick="window.downloadModuleImportReport()">
+                <span class="material-symbols-rounded">download</span> Download Import Report
+            </button>
+        </div>
+        <p id="moduleImportStatus" role="status" aria-live="polite" style="margin: 16px 0 0; color: var(--text-muted);"></p>
+    </div>
+
+    <!-- 2. FULL SYSTEM BACKUP SECTION -->
+    <div class="card" id="admin-backup-card" style="display: none;">
+        <h3 style="margin: 0 0 8px 0; color: var(--text-main);">Full System Backup (JSON / ZIP / CSV)</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Download a complete JSON snapshot, or a ZIP containing one JSON or CSV file per collection and a backup manifest.</p>
+        
+        <div class="info-box warning">
+            <span class="material-symbols-rounded">warning</span>
+            <div>Leave both dates empty to include all available records from the beginning of each collection through today. Choose dates to limit the backup by each record's date or creation date. The backup includes all app modules across all branches.</div>
+        </div>
+
+        <div class="input-group">
+            <div>
+                <label class="form-label" for="backupFromDate">Start Date (Optional)</label>
+                <input type="date" id="backupFromDate" class="form-input">
+            </div>
+            <div>
+                <label class="form-label" for="backupToDate">End Date (Optional)</label>
+                <input type="date" id="backupToDate" class="form-input">
+            </div>
+        </div>
+
+        <div class="backup-actions">
+            <button type="button" class="btn-danger" id="backupBtn" onclick="window.executeFullBackup('json')">
+                <span class="material-symbols-rounded">data_object</span> Download Full Backup (.json)
+            </button>
+            <button type="button" class="btn-danger btn-secondary" id="backupZipBtn" onclick="window.executeFullBackup('zip')">
+                <span class="material-symbols-rounded">folder_zip</span> Download Full Backup (.zip)
+            </button>
+            <button type="button" class="btn-danger btn-secondary" id="backupCsvBtn" onclick="window.executeFullBackup('csv')">
+                <span class="material-symbols-rounded">table_view</span> Download Full Backup (CSV .zip)
+            </button>
+        </div>
+    </div>
+
+    <div class="card" id="admin-import-card" style="display: none;">
+        <h3 style="margin: 0 0 8px 0; color: var(--text-main);">Import Full System Backup (CSV ZIP)</h3>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">Import a CSV ZIP downloaded from this page. Only documents with new IDs are added; existing IDs are skipped and counted. No existing documents are overwritten or deleted.</p>
+
+        <div class="info-box warning">
+            <span class="material-symbols-rounded">warning</span>
+            <div>Import writes documents to Firestore and may incur usage charges. Use an unmodified backup ZIP from COREBIQ. If an error occurs, the report will show progress; records already added are not rolled back.</div>
+        </div>
+
+        <div class="input-group">
+            <div>
+                <label class="form-label" for="backupImportFile">CSV backup ZIP *</label>
+                <input type="file" id="backupImportFile" class="form-input" accept=".zip,application/zip" required>
+            </div>
+        </div>
+
+        <div class="backup-actions">
+            <button type="button" class="btn-danger" id="backupImportBtn" onclick="window.importFullCsvBackup()">
+                <span class="material-symbols-rounded">upload_file</span> Import CSV Backup
+            </button>
+            <button type="button" class="btn-danger btn-secondary" id="backupImportReportBtn" hidden onclick="window.downloadImportSkippedReport()">
+                <span class="material-symbols-rounded">download</span> Download Skipped IDs CSV
+            </button>
+        </div>
+        <p id="backupImportStatus" role="status" aria-live="polite" style="margin: 16px 0 0; color: var(--text-muted);"></p>
+    </div>
+
+    <script type="module" src="./backup.js"></script>
+    
+</div>
+</body>
+</html>

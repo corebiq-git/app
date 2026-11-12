@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COREBIQ BUSINESS FLOW APP | Invoice Template</title>
+    <meta name="theme-color" content="#0B1F4B">
+    <link rel="icon" type="image/png" href="../../../assets/favicon.png">
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter and Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <script type="module" src="../../../js/corebiq-locale.js"></script>
+
+    <!-- html2pdf.js for direct 1-click PDF download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    
+    <link rel="stylesheet" href="./template-invoice.css" data-module-style>
+</head>
+<body class="py-0 sm:py-6 px-0 sm:px-4">
+
+    <div id="invoice-container" class="shadow-2xl sm:rounded-[1.5rem] p-4 sm:p-8 flex flex-col mx-auto">
+        
+        <header id="invoice-letterhead" class="invoice-letterhead">
+            <div class="invoice-brand">
+                <img src="../../../assets/logo-client-display.png" alt="Company logo" class="invoice-logo">
+                <img src="../../../assets/name-client-display.png" alt="Company name" class="invoice-company-name">
+                <span id="company-name" class="sr-only" data-no-translate></span>
+                <span id="company-tagline" class="sr-only" data-no-translate></span>
+            </div>
+            <div class="invoice-company-info">
+                <div class="invoice-company-contact invoice-address-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">location_on</span>
+                    <div class="invoice-company-contact-value invoice-address-lines">
+                        <span id="company-address-line-1"></span>
+                        <span id="company-address-line-2"></span>
+                    </div>
+                </div>
+                <div class="invoice-company-contact invoice-phone-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">call</span>
+                    <div id="company-phone" class="invoice-company-contact-value"></div>
+                </div>
+                <div class="invoice-contact-row">
+                    <div class="invoice-company-contact invoice-email-contact">
+                        <span class="material-symbols-rounded" aria-hidden="true">mail</span>
+                        <div id="company-email" class="invoice-company-contact-value"></div>
+                    </div>
+                    <div class="invoice-company-contact invoice-website-contact">
+                        <span class="material-symbols-rounded" aria-hidden="true">language</span>
+                        <div id="company-website" class="invoice-company-contact-value"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="invoice-header-accent" aria-hidden="true"></div>
+
+        <!-- Main Content Area -->
+        <div class="flex-grow flex flex-col justify-between">
+            <h1 class="patient-report-title">Patient Report Cum Invoice</h1>
+            <div class="invoice-content-grid">
+                <div class="patient-panel">
+                <section class="patient-report-section mb-4 rounded-xl border border-gray-100 bg-white p-3">
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3">
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Patient Name</div>
+                            <div id="client-name" contenteditable="true" data-placeholder="Patient name" aria-label="Patient name" class="patient-report-value font-semibold"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Age &amp; Gender</div>
+                            <div id="client-meta" contenteditable="true" data-placeholder="Age and gender" aria-label="Patient age and gender" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Duration of Treatment</div>
+                            <div id="patient-duration" contenteditable="true" data-placeholder="Treatment duration" aria-label="Duration of treatment" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field">
+                            <div class="patient-report-label">Sessions Per Day</div>
+                            <div id="patient-sessions-per-day" contenteditable="true" data-placeholder="Number of sessions per day" aria-label="Number of sessions per day" class="patient-report-value"></div>
+                        </div>
+                        <div class="patient-report-field col-span-2 sm:col-span-4">
+                            <div class="patient-report-label">Report in Detail</div>
+                            <div id="patient-report-detail" contenteditable="true" data-placeholder="Enter patient report details" aria-label="Patient report details" class="patient-report-value patient-report-detail"></div>
+                        </div>
+                        <div class="patient-report-field col-span-2 sm:col-span-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-gray-100 pt-2">
+                            <div id="client-phone-row" class="flex items-center gap-1 text-[11px] text-gray-600">
+                                <span class="material-symbols-outlined text-[15px] text-blue-600">phone_iphone</span>
+                                <span id="client-phone" contenteditable="true" data-placeholder="Phone number" aria-label="Patient phone" class="font-medium text-blue-700"></span>
+                            </div>
+                            <div id="client-email-row" class="flex items-center gap-1 text-[11px] text-gray-600">
+                                <span class="material-symbols-outlined text-[15px] text-blue-600">mail</span>
+                                <span id="client-email" contenteditable="true" data-placeholder="Email address" aria-label="Patient email" class="font-medium text-blue-700"></span>
+                            </div>
+                            <div id="client-address" class="text-[11px] text-gray-600" contenteditable="true" data-placeholder="Patient address" aria-label="Patient address"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="appointment-details" class="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]" style="display:none">
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Appointment</div>
+                        <div id="appointment-schedule" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Branch</div>
+                        <div id="appointment-branch" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Therapist</div>
+                        <div id="appointment-therapist" class="font-semibold text-gray-700"></div>
+                    </div>
+                    <div class="rounded-lg border border-gray-100 bg-white px-2.5 py-2">
+                        <div class="text-[9px] font-bold uppercase text-gray-400">Category / Status</div>
+                        <div id="appointment-status" class="font-semibold text-gray-700"></div>
+                    </div>
+                </section>
+                </div>
+
+                <div class="invoice-panel">
+                    <div id="invoice-meta" class="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px]">
+                        <span>Invoice No:</span>
+                        <span id="invoice-no" contenteditable="true" data-placeholder="Invoice number" aria-label="Invoice number"></span>
+                        <span>Date:</span>
+                        <span id="invoice-date" contenteditable="true" data-placeholder="Invoice date" aria-label="Invoice date"></span>
+                    </div>
+                <!-- Table Section -->
+                <section class="invoice-items-section mb-4 overflow-x-auto">
+                    <table class="w-full text-left border-collapse" id="invoice-table">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Description</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-16">Qty</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-24">Rate (₹)</th>
+                                <th class="py-1.5 px-2 text-[10px] font-bold text-gray-500 uppercase tracking-wider text-right w-28">Amount (₹)</th>
+                                <th class="py-1.5 px-1 w-6 no-print"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="text-[12px] text-gray-800 divide-y divide-gray-100">
+                            <tr class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="py-1.5 px-2 align-top">
+                                    <input type="text" class="clean-input font-medium text-gray-900" placeholder="Item description">
+                                    <input type="text" class="clean-input text-[11px] text-gray-500" placeholder="Additional details (optional)">
+                                </td>
+                                <td class="py-1.5 px-2 text-right align-top">
+                                    <input type="number" class="clean-input text-right qty-input" value="1" min="0" step="1" onchange="calculateTotals()">
+                                </td>
+                                <td class="py-1.5 px-2 text-right align-top">
+                                    <input type="number" class="clean-input text-right rate-input" value="0" min="0" step="0.01" onchange="calculateTotals()">
+                                </td>
+                                <td class="py-1.5 px-2 text-right font-medium text-gray-900 amount-cell align-top pt-2">0.00</td>
+                                <td class="py-1.5 px-1 text-center align-top pt-1.5 no-print">
+                                    <button onclick="removeRow(this)" class="text-gray-300 hover:text-red-500 transition-colors p-0.5 rounded-full" title="Remove item">
+                                        <span class="material-symbols-outlined text-[15px]">close</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button onclick="addRow()" class="no-print mt-2 flex items-center gap-1 text-[12px] font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-full transition-colors">
+                        <span class="material-symbols-outlined text-[15px]">add</span>
+                        Add Line Item
+                    </button>
+                </section>
+
+                <section class="w-full max-w-sm ml-auto bg-white p-3 rounded-xl border border-gray-200 mb-4">
+                    <div class="fee-summary-title">Fee and Charges</div>
+                    <div class="flex justify-between items-center mb-1 text-[12px]">
+                        <span id="fee-label" class="text-gray-600 font-medium">Fee</span>
+                        <span id="subtotal-amount" class="text-gray-800 font-semibold">₹ 0.00</span>
+                    </div>
+                    <div id="advance-paid-row" class="hidden flex justify-between items-center mb-1.5 text-[12px]">
+                        <span class="text-gray-600 font-medium">Advance Received</span>
+                        <span id="advance-paid-amount" class="text-gray-800 font-semibold"></span>
+                    </div>
+                    <div id="previous-dues-row" class="hidden flex justify-between items-center mb-1 text-[12px]">
+                        <span class="text-gray-600 font-medium">Past Due</span>
+                        <span id="previous-dues-amount" class="text-gray-800 font-semibold"></span>
+                    </div>
+                    <div class="h-px bg-blue-200/80 w-full mb-1.5"></div>
+                    <div class="flex justify-between items-center">
+                        <span id="total-label" class="text-xs font-bold text-gray-900" style="color: var(--md-sys-color-primary);">Pending Due</span>
+                        <span id="total-amount" class="text-base font-bold text-gray-900" style="color: var(--md-sys-color-primary);">₹ 0.00</span>
+                    </div>
+                </section>
+                </div>
+            </div>
+
+            <!-- Footer Summary & Bank Details Section -->
+            <section class="invoice-signature-grid grid grid-cols-12 gap-4 items-end mt-2">
+                <!-- Left Column: Bank Details & UPI -->
+                <div class="col-span-12 sm:col-span-7 flex flex-col gap-2">
+                    <div id="bank-details-container" class="p-2.5 bg-transparent rounded-xl border border-gray-200 flex items-center justify-between gap-2">
+                        <div class="bank-details-copy flex-1 text-[11px] space-y-0.5">
+                            <h3 class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1">Bank Details</h3>
+                            <div id="account-name-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Name</span><span class="bank-detail-colon text-gray-500">:</span><span id="account-name" class="font-bold text-gray-800" data-no-translate></span></div>
+                            <div id="bank-name-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Bank</span><span class="bank-detail-colon text-gray-500">:</span><span id="bank-name" class="font-semibold text-gray-800"></span></div>
+                            <div id="account-number-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">Account No</span><span class="bank-detail-colon text-gray-500">:</span><span id="account-number" class="font-semibold text-gray-800"></span></div>
+                            <div id="ifsc-code-row" class="bank-detail-row"><span class="bank-detail-label text-gray-500">IFSC</span><span class="bank-detail-colon text-gray-500">:</span><span id="ifsc-code" class="font-semibold text-gray-800"></span></div>
+                            <div id="upi-detail-row" class="bank-detail-row mt-1 pt-0.5 border-t border-gray-200/60">
+                                <span class="bank-detail-label text-gray-500">UPI ID</span>
+                                <span class="bank-detail-colon text-gray-500">:</span>
+                                <span id="upi-id" class="font-bold text-green-700"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Auto-generated UPI QR Code Box -->
+                        <div id="upi-qr-container" class="w-20 h-20 bg-white p-1 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center flex-shrink-0">
+                            <img id="upi-qr" alt="UPI QR Code" class="w-full h-full object-contain" hidden>
+                            <span class="text-[7px] text-gray-400 uppercase tracking-wider font-bold">Scan to Pay</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-span-12 sm:col-span-5">
+                    <div class="text-right">
+                        <div class="w-32 ml-auto border-b border-gray-300 mb-1"></div>
+                        <span class="text-[9px] text-gray-500 font-bold uppercase tracking-wider block">Authorized Signature</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="invoice-seal-area" class="invoice-seal-area" aria-live="polite"></div>
+        <footer class="invoice-branch-footer" aria-label="Branch names">
+            <span class="invoice-branches-label">BRANCHES</span>
+            <span id="invoice-branches" class="invoice-branches"></span>
+        </footer>
+    </div>
+
+    <div class="invoice-seal-controls no-print" aria-label="Invoice footer seal options">
+        <label class="invoice-seal-control">
+            <span>Left Footer Seal</span>
+            <select aria-label="Left footer seal" onchange="window.selectInvoiceSeal('left', this.value)">
+                <option value="">None</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+                <option value="payment">Payment Received</option>
+            </select>
+        </label>
+        <label class="invoice-seal-control">
+            <span>Right Footer Seal</span>
+            <select aria-label="Right footer seal" onchange="window.selectInvoiceSeal('right', this.value)">
+                <option value="">None</option>
+                <option value="company">Company Seal</option>
+                <option value="doctor">Doctor's Seal</option>
+                <option value="payment">Payment Received</option>
+            </select>
+        </label>
+    </div>
+
+    <!-- Floating Action Toolbar -->
+    <div class="invoice-toolbar no-print fixed bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-2.5 py-2 rounded-full shadow-[0_8px_25px_rgba(0,0,0,0.15)] border border-gray-200 z-40" role="toolbar" aria-label="Invoice actions">
+        <button onclick="window.parent.postMessage({type:'corebiq:invoice:back'}, window.location.origin === 'null' ? '*' : window.location.origin)" class="m3-btn m3-btn-secondary" title="Back to appointments" aria-label="Back to appointments">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Appointments</span>
+        </button>
+        
+        <!-- View / Print Button -->
+        <button onclick="handlePrint()" class="m3-btn m3-btn-secondary" title="View / Print A4 PDF Layout" aria-label="View or print invoice">
+            <span class="material-symbols-outlined text-[18px]">visibility</span>
+            <span>View</span>
+        </button>
+
+        <!-- Direct Download PDF Button -->
+        <button id="download-invoice-btn" onclick="downloadPDF()" class="m3-btn m3-btn-secondary" title="Download invoice PDF" aria-label="Download invoice PDF">
+            <span class="material-symbols-outlined text-[18px]">download</span>
+            <span>Download PDF</span>
+        </button>
+
+        <button id="download-invoice-word-btn" onclick="downloadInvoiceWord()" class="m3-btn m3-btn-secondary" title="Download A4 Word document" aria-label="Download invoice as Word document">
+            <span class="material-symbols-outlined text-[18px]">description</span>
+            <span>Download Word</span>
+        </button>
+
+        <button id="download-invoice-jpeg-btn" onclick="downloadJPEG()" class="m3-btn m3-btn-secondary" title="Download invoice as JPEG image" aria-label="Download invoice as JPEG image">
+            <span class="material-symbols-outlined text-[18px]">image</span>
+            <span>Download JPEG</span>
+        </button>
+
+        <!-- Send Email Button -->
+        <button id="send-invoice-email-btn" onclick="sendEmail()" class="m3-btn m3-btn-secondary" title="Send Invoice via Email" aria-label="Send invoice by email">
+            <span class="material-symbols-outlined text-[18px]">mail</span>
+            <span>Email</span>
+        </button>
+
+        <!-- Send WhatsApp Button -->
+        <button id="send-invoice-whatsapp-btn" onclick="sendWhatsApp()" class="m3-btn m3-btn-primary bg-[#25D366] hover:bg-[#1ebe57] text-white" title="Send Invoice image via WhatsApp" aria-label="Send invoice image via WhatsApp">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path>
+            </svg>
+            <span>WhatsApp JPEG</span>
+        </button>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastMessage" class="toast">
+        <span class="material-symbols-outlined" id="toastIcon">info</span>
+        <span id="toastText">Action completed</span>
+    </div>
+
+    <script src="./template-invoice.js"></script>
+    <script type="module" src="./template-invoice-2.js"></script>
+</body>
+</html>

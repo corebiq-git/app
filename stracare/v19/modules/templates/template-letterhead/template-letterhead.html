@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>COREBIQ BUSINESS FLOW APP | Letterhead</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./template-letterhead.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="letterhead-module">
+    
+
+    <div class="studio-toolbar no-print">
+        <div class="studio-heading">
+            <span class="studio-icon"><span class="material-symbols-rounded" aria-hidden="true">description</span></span>
+            <div>
+                <h1>Letterhead Studio</h1>
+                <p>Compose a polished letter on your official A4 stationery.</p>
+            </div>
+        </div>
+        <div class="studio-actions">
+            <div class="action-dropdown">
+                <button class="action-button" type="button" aria-label="Seal menu" aria-haspopup="true" aria-expanded="false" onclick="window.toggleLetterheadMenu('seal')">
+                    <span class="material-symbols-rounded" aria-hidden="true">verified</span><span class="action-button-label">Seal</span><span class="material-symbols-rounded dropdown-caret" aria-hidden="true">arrow_drop_down</span>
+                </button>
+                <div class="action-menu" id="letterheadSealPicker" role="menu" aria-label="Available seals">
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSeal('company')"><span class="material-symbols-rounded">verified</span>Company Seal</button>
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSeal('doctor')"><span class="material-symbols-rounded">medical_services</span>Doctor's Seal</button>
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSeal('sincerely')"><span class="material-symbols-rounded">edit_note</span>Sincerely</button>
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSeal('payment')"><span class="material-symbols-rounded">payments</span>Payment Received</button>
+                </div>
+            </div>
+            <div class="action-dropdown">
+                <button class="action-button" type="button" aria-label="Sign menu" aria-haspopup="true" aria-expanded="false" onclick="window.toggleLetterheadMenu('sign')">
+                    <span class="material-symbols-rounded" aria-hidden="true">draw</span><span class="action-button-label">Sign</span><span class="material-symbols-rounded dropdown-caret" aria-hidden="true">arrow_drop_down</span>
+                </button>
+                <div class="action-menu" id="letterheadSignMenu" role="menu" aria-label="Available signatures">
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSignature('signature')"><span class="material-symbols-rounded">draw</span>Existing Signature</button>
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSignature('thejaswi')"><span class="material-symbols-rounded">draw</span>Thejaswi</button>
+                    <button type="button" role="menuitem" onclick="window.chooseLetterheadSignature('shyn')"><span class="material-symbols-rounded">draw</span>Shyn</button>
+                </div>
+            </div>
+            <div class="action-dropdown">
+                <button class="action-button" type="button" aria-label="Download menu" aria-haspopup="true" aria-expanded="false" onclick="window.toggleLetterheadMenu('download')">
+                    <span class="material-symbols-rounded" aria-hidden="true">download</span><span class="action-button-label">Download</span><span class="material-symbols-rounded dropdown-caret" aria-hidden="true">arrow_drop_down</span>
+                </button>
+                <div class="action-menu" id="letterheadDownloadMenu" role="menu" aria-label="Download format">
+                    <button type="button" role="menuitem" onclick="window.downloadLetterheadPdf()"><span class="material-symbols-rounded">picture_as_pdf</span>PDF</button>
+                    <button type="button" role="menuitem" onclick="window.downloadLetterheadWord()"><span class="material-symbols-rounded">description</span>Word</button>
+                </div>
+            </div>
+            <button class="action-button" type="button" aria-label="Print letter" title="Print" onclick="window.print()">
+                <span class="material-symbols-rounded" aria-hidden="true">print</span><span class="action-button-label">Print</span>
+            </button>
+        </div>
+    </div>
+    <div class="placement-modal no-print" id="letterheadPlacementModal" role="dialog" aria-modal="true" aria-labelledby="letterheadPlacementTitle">
+        <div class="placement-dialog">
+            <h3 id="letterheadPlacementTitle">Choose placement</h3>
+            <p id="letterheadPlacementMessage">Where should this appear?</p>
+            <div class="placement-actions">
+                <button class="placement-choice" type="button" onclick="window.placeLetterheadDocumentPart('left')"><span class="material-symbols-rounded">align_horizontal_left</span>Left</button>
+                <button class="placement-choice" type="button" onclick="window.placeLetterheadDocumentPart('right')"><span class="material-symbols-rounded">align_horizontal_right</span>Right</button>
+            </div>
+            <button class="placement-cancel" type="button" onclick="window.cancelLetterheadDocumentPart()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="a4-canvas">
+        <img src="../../../assets/logo-client-display.png" class="watermark" alt="">
+        
+        <div class="letter-header">
+            <div class="letterhead-brand">
+                <img src="../../../assets/logo-client-display.png" class="logo-img" alt="Company Logo">
+                <img src="../../../assets/name-client-display.png" class="company-name-img" alt="Company name">
+            </div>
+            
+            <div class="company-info">
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">location_on</span>
+                    <span class="company-contact-value address-lines">
+                        <span id="letterhead-address-line-1">Loading company address…</span>
+                        <span id="letterhead-address-line-2"></span>
+                    </span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">call</span>
+                    <span id="letterhead-phone" class="company-contact-value">Loading company phone…</span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">mail</span>
+                    <span id="letterhead-email" class="company-contact-value">Loading company email…</span>
+                </div>
+                <div class="company-contact">
+                    <span class="material-symbols-rounded" aria-hidden="true">language</span>
+                    <span id="letterhead-website" class="company-contact-value">Loading company website…</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-accent" aria-hidden="true"></div>
+
+        <div class="letter-body">
+            <textarea aria-label="Letter body" placeholder="Start typing your letter here..."></textarea>
+        </div>
+
+        <div id="letterhead-seal-area" class="letterhead-seal-area" aria-live="polite"></div>
+
+        <div class="footer-section" aria-label="Branch names">
+            <span class="footer-branches-heading">BRANCHES</span>
+            <span id="letterhead-branch-names" class="footer-branch-names"></span>
+        </div>
+    </div>
+
+    <script type="module" src="./template-letterhead.js"></script>
+</div>
+</body>
+</html>

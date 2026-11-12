@@ -1,0 +1,314 @@
+:root {
+            /* Matched to the provided logo colors */
+            --primary: #164683; 
+            --secondary: #61913C;
+            --text-main: #1F2937;
+            --text-muted: #4B5563;
+            --border: #E4E7EC;
+            --bg-light: #F4F7FC;
+            --stamp-green: #007B5E;
+            
+            /* Modern 50/50 horizontal split for the footer line */
+            --brand-split-gradient: linear-gradient(110deg, #61913C 50%, #164683 50%);
+        }
+
+        /* --- Global & Container --- */
+        body { background-color: #F8FAFC; margin: 0; }
+        #letterhead-module { 
+            font-family: 'Inter', sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            padding: 20px;
+            box-sizing: border-box;
+            color: var(--text-main); 
+        }
+
+        /* --- Studio Toolbar --- */
+        #letterhead-module .studio-toolbar { 
+            width: 100%; 
+            max-width: 210mm;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 16px; 
+            margin-bottom: 24px; 
+            padding: 16px 24px; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            background: #fff; 
+            box-shadow: 0 4px 12px rgba(16, 24, 40, 0.05); 
+            box-sizing: border-box;
+        }
+        #letterhead-module .studio-heading { display: flex; align-items: center; gap: 16px; }
+        #letterhead-module .studio-icon { 
+            width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; 
+            border-radius: 10px; background: var(--bg-light); color: var(--primary); 
+        }
+        #letterhead-module .studio-icon .material-symbols-rounded { font-size: 24px; }
+        #letterhead-module .studio-heading h1 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; }
+        #letterhead-module .studio-heading p { margin: 4px 0 0; color: #6B7280; font-size: 12px; }
+        
+        #letterhead-module .studio-actions {
+            display: flex; align-items: center; justify-content: flex-start; gap: 8px; flex-wrap: nowrap;
+            max-width: 100%; overflow-x: auto; padding: 2px 1px 6px; scrollbar-width: thin;
+        }
+        #letterhead-module .action-dropdown { position: relative; }
+        #letterhead-module .studio-actions button.action-button {
+            position: relative; flex: 0 0 auto; min-width: 92px; height: 46px; padding: 0 12px; display: inline-flex;
+            flex-direction: row; align-items: center; justify-content: center; gap: 7px; border: 1px solid #DADCE0;
+            border-radius: 10px !important; background: #FFFFFF; color: #202124; cursor: pointer; white-space: nowrap;
+            box-shadow: none; transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+        }
+        #letterhead-module .studio-actions button.action-button:hover,
+        #letterhead-module .studio-actions button.action-button[aria-expanded="true"] { border-color: #C4C7C5; background: #F8F9FA; box-shadow: 0 1px 2px rgba(60,64,67,.18); }
+        #letterhead-module .studio-actions button.action-button:focus-visible { outline: 3px solid rgba(26,115,232,.24); outline-offset: 2px; }
+        #letterhead-module .studio-actions button.action-button .material-symbols-rounded { font-size: 18px; color: #202124; }
+        #letterhead-module .studio-actions .action-button-label { color: #202124; font: 500 12px 'Inter', sans-serif; line-height: 1.1; }
+        #letterhead-module .studio-actions .dropdown-caret { margin-left: -5px; font-size: 18px !important; color: #5F6368; }
+        #letterhead-module .action-menu {
+            display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 20; min-width: 175px;
+            padding: 5px; border: 1px solid var(--border); border-radius: 10px; background: #fff;
+            box-shadow: 0 12px 28px rgba(15,23,42,.16);
+        }
+        #letterhead-module .action-menu.visible { display: grid; gap: 2px; }
+        #letterhead-module .action-menu button,
+        #letterhead-module .placement-choice {
+            min-height: 38px; padding: 8px 10px; border: 0; border-radius: 7px; background: #fff;
+            color: var(--text-main); font: 600 12px 'Inter', sans-serif; text-align: left; cursor: pointer;
+        }
+        #letterhead-module .action-menu button { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        #letterhead-module .action-menu button:hover,
+        #letterhead-module .placement-choice:hover { border-color: var(--primary); background: var(--primary-light); }
+        #letterhead-module .action-menu .material-symbols-rounded { font-size: 18px; color: var(--primary); }
+        #letterhead-module .placement-modal { display: none; position: fixed; inset: 0; z-index: 10000; align-items: center; justify-content: center; padding: 16px; background: rgba(15,23,42,.5); }
+        #letterhead-module .placement-modal.visible { display: flex; }
+        #letterhead-module .placement-dialog { width: min(100%, 360px); padding: 20px; border-radius: 14px; background: #fff; box-shadow: 0 16px 40px rgba(15,23,42,.2); }
+        #letterhead-module .placement-dialog h3 { margin: 0 0 8px; color: var(--primary); font-size: 17px; }
+        #letterhead-module .placement-dialog p { margin: 0 0 16px; color: var(--text-muted); font-size: 13px; }
+        #letterhead-module .placement-actions { display: flex; gap: 10px; }
+        #letterhead-module .placement-choice { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        #letterhead-module .placement-cancel { width: 100%; margin-top: 10px; min-height: 36px; border: 0; background: transparent; color: var(--text-muted); font: 600 13px 'Inter', sans-serif; cursor: pointer; }
+
+        /* --- A4 Screen Canvas (Mobile Responsive) --- */
+        #letterhead-module .a4-canvas {
+            width: 100%;
+            max-width: 210mm; 
+            min-height: 297mm; 
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* Forces children to stretch full width */
+            position: relative;
+            overflow: hidden; 
+            box-sizing: border-box;
+        }
+
+        /* --- Center Watermark --- */
+        #letterhead-module .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 55%; max-width: 350px;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* --- Header Section --- */
+        #letterhead-module .letter-header {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15mm 20mm 6mm 10mm; 
+            box-sizing: border-box;
+            width: 100%;
+        }
+        
+        #letterhead-module .letterhead-brand { display: flex; align-items: center; gap: 12px; }
+        #letterhead-module .logo-img { width: 18mm; height: 18mm; object-fit: contain; }
+        #letterhead-module .company-name-img { width: auto; max-width: 45mm; max-height: 14mm; object-fit: contain; }
+        
+        #letterhead-module .company-info {
+            display: flex; flex-direction: column; gap: 6px; 
+            max-width: 85mm; text-align: left;
+        }
+        #letterhead-module .company-contact {
+            display: flex; align-items: flex-start; gap: 8px;
+        }
+        #letterhead-module .company-contact .material-symbols-rounded { 
+            font-size: 15px; color: var(--primary); margin-top: 1px; flex-shrink: 0;
+        }
+        #letterhead-module .company-contact-value { 
+            font-size: 11px; line-height: 1.4; color: var(--text-muted); font-weight: 500;
+            word-break: break-word;
+        }
+        #letterhead-module .address-lines { display: flex; flex-direction: column; }
+
+        /* --- Full-width green and blue header lines --- */
+        #letterhead-module .header-accent {
+            width: 100% !important;
+            margin: 0 !important;
+            height: 10px;
+            background: linear-gradient(
+                to bottom,
+                #61913C 0 3px,
+                transparent 3px 7px,
+                #164683 7px 10px
+            ) !important;
+            border: 0 !important;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            z-index: 1;
+            position: relative;
+            display: block;
+        }
+
+        /* --- Letter Body --- */
+        #letterhead-module .letter-body { 
+            flex: 1; 
+            padding: 10mm 20mm; 
+            position: relative; 
+            z-index: 1; 
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        #letterhead-module .letter-body textarea { 
+            flex: 1; width: 100%; min-height: 250px;
+            padding: 0; border: none; outline: none; resize: none;
+            font-family: 'Inter', sans-serif; font-size: 11pt; line-height: 1.7; color: #1F2937;
+            background: transparent;
+        }
+        #letterhead-module .letter-body textarea::placeholder { color: #9CA3AF; }
+
+        /* --- Seal Area --- */
+        #letterhead-module .letterhead-seal-area {
+            position: relative; z-index: 1;
+            display: none; justify-content: space-between; align-items: flex-end; gap: 8mm;
+            padding: 0 20mm 10mm;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        #letterhead-module .letterhead-seal-area.visible { display: flex; }
+        #letterhead-module .letterhead-seal-slot { display: flex; flex: 1 1 50%; min-width: 0; flex-direction: column; gap: 2mm; }
+        #letterhead-module .letterhead-seal-slot-left { align-items: flex-start; }
+        #letterhead-module .letterhead-seal-slot-right { justify-content: flex-end; }
+        #letterhead-module .letterhead-seal-slot-right { align-items: flex-end; }
+        #letterhead-module .seal-box-company {
+            width: 65mm; height: 26mm; border: 2px solid var(--stamp-green); border-radius: 4px;
+            color: var(--stamp-green); position: relative; overflow: hidden; font-family: "Times New Roman", serif;
+        }
+        #letterhead-module .seal-box-company .seal-name {
+            text-align: center; font-size: 17px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; margin-top: 4mm;
+        }
+        #letterhead-module .seal-box-company .signature-line {
+            position: absolute; left: 5mm; right: 5mm; bottom: 8mm; border-top: 1.5px solid var(--stamp-green);
+        }
+        #letterhead-module .seal-box-company .seal-role {
+            position: absolute; right: 5mm; bottom: 2.5mm; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        #letterhead-module .seal-box-doctor {
+            display: flex; flex-direction: column; align-items: center; color: var(--stamp-green); font-family: Arial, sans-serif; line-height: 1.3;
+        }
+        #letterhead-module .seal-box-doctor .doc-name { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; }
+        #letterhead-module .seal-box-doctor .doc-qual { font-size: 14px; font-weight: 700; }
+        #letterhead-module .seal-box-doctor .doc-reg, #letterhead-module .seal-box-doctor .doc-role { font-size: 13px; font-weight: 700; }
+        #letterhead-module .seal-box-sincerely {
+            width: 63.5mm; color: #000; font-family: "Times New Roman", serif;
+            text-align: center; line-height: 1.3;
+        }
+        #letterhead-module .seal-box-sincerely .sincerely-title { font-size: 16px; font-weight: 700; }
+        #letterhead-module .seal-box-sincerely .sincerely-signature-gap { height: 14mm; }
+        #letterhead-module .seal-box-sincerely .sincerely-administration,
+        #letterhead-module .seal-box-sincerely .sincerely-company { font-size: 13px; font-weight: 700; }
+        #letterhead-module .seal-box-payment {
+            display: flex; width: 63.5mm; min-height: 25.4mm; align-items: center; justify-content: center;
+            color: #C62828; font-family: Arial, sans-serif; font-size: 18px; font-weight: 800;
+            letter-spacing: 1px; text-align: center; text-transform: uppercase;
+        }
+        #letterhead-module .seal-box-signature {
+            display: flex; width: 63.5mm; min-height: 25.4mm; align-items: center; justify-content: center;
+        }
+        #letterhead-module .seal-box-signature img { display: block; width: 25.4mm; height: 25.4mm; object-fit: contain; }
+
+        /* --- Footer Section (Transparent BG, Split Top Line) --- */
+        #letterhead-module .footer-section {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+            width: 100% !important; margin: 0 !important; margin-top: auto !important; 
+            min-height: 12mm; padding: 10px 20mm 12px 20mm;
+            background: transparent;
+            box-sizing: border-box;
+        }
+        
+        /* Modern split green/blue accent line across the top of the footer */
+        #letterhead-module .footer-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--brand-split-gradient);
+            -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        }
+
+        #letterhead-module .footer-branches-heading {
+            padding: 3px 12px; border: 1px solid var(--primary); border-radius: 12px;
+            color: var(--primary); font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+        }
+        
+        #letterhead-module .footer-branch-names {
+            color: #1F2937; /* Dark gray for readability on white */
+            font-size: 13px; 
+            font-weight: 600; 
+            text-align: center; 
+            line-height: 1.4;
+            letter-spacing: 0.5px; 
+            word-spacing: 4px; 
+        }
+
+        /* --- Responsive Screen --- */
+        @media (max-width: 768px) {
+            #letterhead-module { padding: 10px; }
+            #letterhead-module .studio-toolbar { flex-direction: column; align-items: stretch; padding: 16px; gap: 16px; }
+            #letterhead-module .studio-actions { justify-content: flex-start; }
+            #letterhead-module .letter-header { flex-direction: column; gap: 20px; padding: 20px; }
+            #letterhead-module .company-info { max-width: 100%; }
+            #letterhead-module .letter-body, #letterhead-module .letterhead-seal-area, #letterhead-module .footer-section { padding-left: 20px; padding-right: 20px; }
+            #letterhead-module .letterhead-seal-area { gap: 12px; }
+        }
+
+        /* --- Strict Print Media Queries --- */
+        @media print {
+            @page { size: 210mm 297mm; margin: 0; }
+            
+            body { background: #FFF !important; padding: 0 !important; display: block !important; margin: 0 !important; }
+            #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0 !important; overflow: visible !important; }
+            
+            #letterhead-module { padding: 0 !important; display: block !important; width: 210mm !important; margin: 0 !important; }
+            #letterhead-module .a4-canvas { 
+                box-shadow: none !important; border: 0 !important; border-radius: 0 !important; 
+                width: 210mm !important; min-height: 297mm !important; height: 297mm !important; max-height: 297mm !important;
+                margin: 0 !important; padding: 0 !important; break-after: avoid !important; overflow: hidden !important; 
+            }
+            #letterhead-module .letter-header { padding: 15mm 20mm 5mm 10mm !important; flex-direction: row !important; gap: 0 !important; }
+            #letterhead-module .company-info { max-width: 85mm !important; }
+            #letterhead-module .letter-body { padding: 8mm 20mm !important; flex-grow: 1 !important; }
+            #letterhead-module .letter-body textarea { min-height: 0 !important; }
+            
+            /* Hide the placeholder text when printing */
+            #letterhead-module .letter-body textarea::placeholder { color: transparent !important; }
+            
+            #letterhead-module .letterhead-seal-area { padding: 0 20mm 10mm !important; break-inside: avoid; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            #letterhead-module .footer-section { padding: 10px 20mm 12mm 20mm !important; margin-top: auto !important; width: 100% !important; }
+            #letterhead-module .header-accent { width: 100% !important; margin: 0 !important; }
+        }

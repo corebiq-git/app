@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Payment Voucher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./payments.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="transaction-module">
+    
+    
+
+    <div class="section-title">
+        <h2 style="margin: 0;">Payment Vouchers</h2>
+    </div>
+
+    <div class="form-card no-print">
+        <form id="transaction-form" onsubmit="event.preventDefault();">
+            <input type="hidden" id="txnDocId" value="">
+            
+            <h4 style="color: var(--danger); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Log Payment Out</h4>
+            
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Voucher ID</label>
+                    <input type="text" id="txnIdDisplay" class="form-input readonly-input" value="Auto-Generated" readonly tabindex="-1">
+                </div>
+                <div>
+                    <label class="form-label">Date *</label>
+                    <input type="date" class="form-input" id="txnDate" required>
+                </div>
+                <div>
+                    <label class="form-label">Voucher Type *</label>
+                    <select id="txnType" class="form-input" required>
+                        <option value="Payment">Payment (Vendor/Salary/Refund)</option>
+                        <option value="Expense">General Expense</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group three-cols">
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Payee / Vendor Name *</label>
+                    <input type="text" id="patientName" class="form-input" placeholder="Name of person/company receiving payment" required>
+                </div>
+                <div>
+                    <label class="form-label">Branch *</label>
+                    <select id="txnBranch" class="form-input" required>
+                        <option value="">Loading Branches...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Payment Mode</label>
+                    <select id="txnMode" class="form-input">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank/UPI">Bank (Card/UPI/Net)</option>
+                    </select>
+                </div>
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Reference / Cheque No.</label>
+                    <input type="text" id="txnRef" class="form-input" placeholder="Optional reference details">
+                </div>
+            </div>
+
+            <div class="input-group three-cols" style="background: #FEF2F2; padding: 16px; border-radius: 12px;">
+                <div>
+                    <label class="form-label" style="color: var(--danger);">Amount Paid Out (₹) *</label>
+                    <input type="number" id="txnCashOut" class="form-input" placeholder="0.00" style="color: var(--danger); font-weight: 700; border-color: #FCA5A5;" required>
+                </div>
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Particulars / Notes</label>
+                    <input type="text" id="txnNotes" class="form-input" placeholder="What is this payment for?">
+                </div>
+            </div>
+
+            <div style="text-align: right; margin-top: 24px;">
+                <button type="button" class="btn-outline" style="margin-right: 12px; padding: 14px 24px;" onclick="window.resetTxnForm()">Clear Form</button>
+                <button type="button" class="btn-primary" id="saveTxnBtn" onclick="window.saveTransaction()">Save Payment</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-container">
+        
+        <div class="ledger-summary-banner">
+            <div class="ledger-box">
+                <h5>Total Payments</h5>
+                <p id="ledgerTotalPayments" style="color: var(--warning);">₹0.00</p>
+            </div>
+            <div class="ledger-box">
+                <h5>Total Expenses</h5>
+                <p id="ledgerTotalExpenses" style="color: var(--danger);">₹0.00</p>
+            </div>
+            <div class="ledger-box" style="background: #FEF2F2; border-color: #FCA5A5;">
+                <h5>Total Outflow</h5>
+                <p id="ledgerTotalOut" style="color: var(--danger);">₹0.00</p>
+            </div>
+        </div>
+
+        <div class="table-header">
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h4>Payment & Expense Ledger</h4>
+                <button class="btn-outline no-print" onclick="window.print()" style="padding: 6px 12px; font-size: 12px;">
+                    <span class="material-symbols-rounded" style="font-size: 14px; color: var(--primary);">picture_as_pdf</span> Export Current View
+                </button>
+            </div>
+
+            <div class="no-print" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: #FAFAFA; padding: 12px; border-radius: 8px; border: 1px solid var(--border); width: 100%;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <input type="date" id="filterTxnDateFrom" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;" title="From Date">
+                    <span style="font-size: 12px; color: var(--text-muted);">to</span>
+                    <input type="date" id="filterTxnDateTo" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;" title="To Date">
+                </div>
+                <select id="filterTxnType" class="form-input" onchange="window.filterTxnTable()" style="padding: 8px; font-size: 12px; width: auto;">
+                    <option value="">All Payments & Expenses</option>
+                    <option value="payment">Payment</option>
+                    <option value="expense">Expense</option>
+                </select>
+                <div style="display: flex; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 4px 8px; flex: 1; min-width: 200px;">
+                    <span class="material-symbols-rounded" style="font-size: 16px; color: var(--text-muted);">search</span>
+                    <input type="text" id="txnSearchInput" onkeyup="window.filterTxnTable()" placeholder="Search Payee Name or Notes..." style="border: none; background: transparent; outline: none; font-size: 12px; width: 100%; margin-left: 6px;">
+                </div>
+                <button class="btn-outline" onclick="window.clearTxnFilters()" style="padding: 8px; font-size: 12px;" title="Clear Filters">
+                    <span class="material-symbols-rounded" style="font-size: 16px;">close</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Date & ID</th>
+                        <th>Payee Name</th>
+                        <th>Branch</th>
+                        <th>Type & Mode</th>
+                        <th>Ref & Notes</th>
+                        <th>Amount Paid</th>
+                        <th class="no-print" style="text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="txnTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="./payments.js"></script>
+</div>
+</body>
+</html>

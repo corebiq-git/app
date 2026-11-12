@@ -1,0 +1,145 @@
+#licence-module {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4px 0 36px;
+            color: #1F1F1F;
+            font-family: Inter, sans-serif;
+        }
+
+        #licence-module .licence-header {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 22px;
+        }
+
+        #licence-module .licence-heading-icon {
+            display: grid;
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            place-items: center;
+            border: 1px solid #E8EDF5;
+            border-radius: 16px;
+            background: #fff;
+            color: #0B1F4B;
+            box-shadow: 0 1px 3px rgba(31,35,40,.06);
+        }
+
+        #licence-module .licence-heading-icon .material-symbols-rounded { font-size: 25px; }
+        #licence-module h1 { margin: 0; color: #1F1F1F; font-size: 25px; font-weight: 600; letter-spacing: -.35px; }
+        #licence-module .licence-subtitle { margin: 4px 0 0; color: #6B7280; font-size: 13px; }
+
+        #licence-module .licence-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #E1E4E2;
+            border-radius: 26px;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(31,35,40,.06), 0 12px 34px rgba(31,35,40,.06);
+        }
+
+        #licence-module .licence-card::before {
+            position: absolute;
+            inset: 0 0 auto;
+            height: 5px;
+            background: linear-gradient(90deg,#0B1F4B,#274777 60%,#AAB9D0);
+            content: "";
+        }
+
+        #licence-module .licence-card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 30px 30px 25px;
+            border-bottom: 1px solid #F0F2F5;
+        }
+
+        #licence-module .plan-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 9px;
+            color: #0B1F4B;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+
+        #licence-module .plan-eyebrow .material-symbols-rounded { font-size: 17px; }
+        #licence-module .plan-name { margin: 0; color: #1F1F1F; font-size: 29px; font-weight: 600; letter-spacing: -.6px; }
+        #licence-module .plan-caption { margin: 7px 0 0; color: #6B7280; font-size: 13px; }
+
+        #licence-module .licence-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            flex: none;
+            padding: 8px 12px;
+            border: 1px solid #CDEAD5;
+            border-radius: 20px;
+            background: #E8F5E9;
+            color: #188038;
+            font-size: 11px;
+            font-weight: 650;
+        }
+
+        #licence-module .licence-status .material-symbols-rounded { font-size: 17px; }
+        #licence-module .licence-status.expired { border-color: #F3CBC8; background: #FCE8E6; color: #B3261E; }
+        #licence-module .licence-details { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; padding: 22px 30px 26px; }
+
+        #licence-module .licence-detail {
+            min-width: 0;
+            padding: 17px;
+            border: 1px solid #E8EDF5;
+            border-radius: 17px;
+            background: #F8FAFD;
+        }
+
+        #licence-module .detail-label { display: flex; align-items: center; gap: 7px; color: #667085; font-size: 11px; font-weight: 600; }
+        #licence-module .detail-label .material-symbols-rounded { color: #0B1F4B; font-size: 18px; }
+        #licence-module .detail-value { display: block; margin-top: 11px; color: #1F2937; font-size: 18px; font-weight: 650; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+        #licence-module .detail-value.days { color: #0B1F4B; font-size: 24px; }
+        #licence-module .detail-hint { display: block; margin-top: 4px; color: #8290A2; font-size: 10px; }
+
+        #licence-module .validity-progress {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 30px 26px;
+            padding: 14px 16px;
+            border: 1px solid #E8EDF5;
+            border-radius: 15px;
+            background: #fff;
+        }
+
+        #licence-module .progress-icon { display: grid; width: 36px; height: 36px; flex: 0 0 36px; place-items: center; border-radius: 12px; background: #E8EEF7; color: #0B1F4B; }
+        #licence-module .progress-icon .material-symbols-rounded { font-size: 19px; }
+        #licence-module .progress-copy { flex: 1; min-width: 0; }
+        #licence-module .progress-copy strong { display: block; color: #344054; font-size: 12px; font-weight: 600; }
+        #licence-module .progress-copy span { display: block; margin-top: 3px; color: #6B7280; font-size: 11px; line-height: 1.5; }
+        #licence-module .progress-track { width: 110px; height: 7px; flex: 0 0 110px; overflow: hidden; border-radius: 9px; background: #E8EDF5; }
+        #licence-module .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#0B1F4B,#8394B3); transition: width .3s ease; }
+
+        @media (max-width: 680px) {
+            #licence-module .licence-header { align-items: flex-start; }
+            #licence-module .licence-heading-icon { width: 42px; height: 42px; flex-basis: 42px; border-radius: 14px; }
+            #licence-module h1 { font-size: 21px; }
+            #licence-module .licence-subtitle { font-size: 12px; line-height: 1.5; }
+            #licence-module .licence-card { border-radius: 21px; }
+            #licence-module .licence-card-top { flex-direction: column; padding: 24px 18px 19px; }
+            #licence-module .plan-name { font-size: 25px; }
+            #licence-module .licence-details { grid-template-columns: 1fr; gap: 9px; padding: 15px 15px 18px; }
+            #licence-module .licence-detail { padding: 13px 14px; }
+            #licence-module .detail-value { margin-top: 7px; font-size: 17px; }
+            #licence-module .detail-value.days { font-size: 22px; }
+            #licence-module .validity-progress { align-items: flex-start; margin: 0 15px 17px; padding: 12px; }
+            #licence-module .progress-track { width: 62px; flex-basis: 62px; margin-top: 14px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #licence-module .progress-fill { transition: none; }
+        }

@@ -1,0 +1,38 @@
+<div class="module-container" id="bank-ledger-module" data-ledger-kind="bank"><link rel="stylesheet" href="./bank.css" data-module-style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    
+    <header class="ledger-head">
+        <div class="ledger-title">
+            <span class="ledger-title-icon"><span class="material-symbols-rounded" aria-hidden="true">account_balance</span></span>
+            <div><h1>Bank Ledger</h1><div class="subtitle">Bank, UPI, card, cheque and transfer transactions in one ledger.</div></div>
+        </div>
+        <div class="head-actions no-print">
+            <button class="ledger-btn" type="button" onclick="window.print()"><span class="material-symbols-rounded">print</span>Print</button>
+            <button class="ledger-btn primary" type="button" onclick="window.openView('view-transaction')"><span class="material-symbols-rounded">add</span>Transactions</button>
+        </div>
+    </header>
+    <section class="ledger-cards" aria-label="Bank ledger totals">
+        <div class="ledger-card in"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">south_west</span>Bank In</span><strong id="bankLedgerIn">₹0.00</strong></div>
+        <div class="ledger-card out"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">north_east</span>Bank Out</span><strong id="bankLedgerOut">₹0.00</strong></div>
+        <div class="ledger-card"><span class="ledger-card-label"><span class="material-symbols-rounded" aria-hidden="true">account_balance_wallet</span>Net Bank Movement</span><strong id="bankLedgerBalance">₹0.00</strong></div>
+    </section>
+    <section class="ledger-panel">
+        <header class="panel-head"><h2>Bank Transactions</h2><span id="bankLedgerCount" class="subtitle">0 records</span></header>
+        <div class="filters no-print">
+            <input id="bankLedgerFrom" type="date" title="From date">
+            <input id="bankLedgerTo" type="date" title="To date">
+            <select id="bankLedgerType" aria-label="Transaction type"><option value="">All types</option><option>Sales</option><option>Receipt</option><option>Payment</option><option>Expense</option></select>
+            <select id="bankLedgerBranch" aria-label="Branch"><option value="">All branches</option></select>
+            <input id="bankLedgerSearch" type="search" placeholder="Search name, mobile, ID, reference…">
+            <button class="ledger-btn" type="button" onclick="window.clearLedgerFilters('bank')"><span class="material-symbols-rounded">filter_alt_off</span>Clear filters</button>
+        </div>
+        <div class="table-wrap">
+            <table><thead><tr><th>Date / Voucher</th><th>Patient / Ledger</th><th>Branch</th><th>Type / Mode</th><th style="text-align:right">In (+)</th><th style="text-align:right">Out (−)</th><th>Reference / Notes</th></tr></thead>
+                <tbody id="bankLedgerRows"><tr><td colspan="7" class="empty">Loading bank transactions…</td></tr></tbody>
+            </table>
+        </div>
+    </section>
+    <script type="module" src="./bank.js"></script>
+</div>

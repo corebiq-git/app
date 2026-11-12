@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>COREBIQ BUSINESS FLOW APP | User Access Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/corebiq.css">
+    <style>
+        .users-page {
+            min-width: 0;
+            padding: 24px;
+        }
+
+        .users-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .users-table {
+            min-width: 640px;
+        }
+
+        .users-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .users-actions button {
+            display: inline-flex;
+            min-height: 40px;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 7px 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .users-actions [data-action="edit"] { color: var(--primary); }
+        .users-actions [data-action="delete"] { color: var(--danger); }
+        .users-actions .material-symbols-rounded { font-size: 18px; }
+
+        @media (max-width: 600px) {
+            .users-page {
+                padding: 12px !important;
+            }
+
+            .users-page > h2 {
+                margin-bottom: 16px !important;
+            }
+
+            .users-form-card {
+                padding: 16px !important;
+            }
+
+            .users-table-wrapper {
+                overflow: visible;
+                border: 0 !important;
+            }
+
+            .users-table {
+                min-width: 0;
+                border-collapse: separate !important;
+                border-spacing: 0 10px !important;
+            }
+
+            .users-table thead {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+            }
+
+            .users-table tbody tr {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                overflow: hidden;
+                border: 1px solid var(--border) !important;
+                border-radius: 12px;
+                background: #fff;
+            }
+
+            .users-table tbody td {
+                display: grid;
+                grid-template-columns: minmax(74px, 0.35fr) minmax(0, 1fr);
+                gap: 10px;
+                padding: 10px 12px !important;
+                border-bottom: 1px solid var(--border);
+                text-align: left !important;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+
+            .users-table tbody td::before {
+                content: attr(data-label);
+                color: var(--text-muted);
+                font-size: 12px;
+                font-weight: 600;
+            }
+
+            .users-table tbody td:last-child {
+                border-bottom: 0;
+            }
+
+            .users-table tbody td.users-actions-cell {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .users-table tbody td.users-actions-cell::before {
+                min-width: 74px;
+            }
+
+            .users-actions {
+                flex: 1;
+                justify-content: flex-start;
+            }
+
+            .users-actions button {
+                flex: 1;
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="module-container">
+    <div class="users-page">
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 24px;">User Access Management</h2>
+        
+        <div class="users-form-card" style="background: var(--surface); padding: 24px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 24px;">
+            <h3 id="userFormTitle" style="font-size: 16px; margin-bottom: 8px;">Add User</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+                Create accounts or update a user's email, password, role, and branch assignment.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Email</label>
+                    <input type="email" id="editUserEmail" placeholder="user@example.com" autocomplete="off" required style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;">
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Password</label>
+                    <input type="password" id="editUserPassword" placeholder="Required for new users" autocomplete="new-password" minlength="6" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;">
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Role</label>
+                    <select id="editUserRole" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;" onchange="window.toggleBranchInput()">
+                        <option value="user">Standard User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size: 12px; color: var(--text-muted); font-weight: bold;">Branch Assignment</label>
+                    <input type="text" id="editUserBranch" placeholder="e.g. Mahe" style="width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px;">
+                </div>
+            </div>
+
+            <button id="saveUserBtn" type="button" style="background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">Create User</button>
+            <button id="clearUserBtn" type="button" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-left: 8px;">Clear Form</button>
+            <div id="userMsg" role="status" aria-live="polite" style="margin-top: 12px; font-size: 13px; font-weight: bold;"></div>
+        </div>
+
+        <div class="dash-table-wrapper users-table-wrapper">
+            <table class="saas-table users-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: #FAFAFA; border-bottom: 1px solid var(--border);">
+                        <th style="padding: 12px;">Email</th>
+                        <th style="padding: 12px;">Role</th>
+                        <th style="padding: 12px;">Branch</th>
+                        <th style="padding: 12px; text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <tr><td colspan="4" style="text-align: center; padding: 20px;">Loading users...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="./users.js"></script>
+</div>
+</body>
+</html>

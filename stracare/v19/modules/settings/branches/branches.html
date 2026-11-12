@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Branch Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./branches.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="branches-module">
+    
+    
+
+    <!-- Header Section Properly Closed -->
+    <div class="branches-heading">
+        <span class="branches-heading-icon"><span class="material-symbols-rounded" aria-hidden="true">apartment</span></span>
+        <div>
+            <h1 class="section-title">Branch Management</h1>
+            <p class="branches-subtitle">Manage branch details, contact information, and locations.</p>
+        </div>
+    </div>
+
+    <!-- Top Full Length Form -->
+    <div class="form-card">
+        <div class="branch-form-heading">
+            <h3>Branch Details</h3>
+            <!-- SECURITY: Hidden for non-admins -->
+            <button type="button" class="icon-btn" id="editBranchBtnForm" onclick="window.toggleEditMode(true)" title="Edit Branch">
+                <span class="material-symbols-rounded" style="font-size: 18px;">edit</span>
+            </button>
+        </div>
+
+        <form id="branch-details-form">
+            <input type="hidden" id="branchDocId" value="">
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Branch ID</label>
+                    <input type="text" id="branchIdDisplay" class="form-input locked-input" value="Auto-Generated" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Branch Name *</label>
+                    <input type="text" id="branchName" class="form-input readonly-input" placeholder="e.g. Mahe" readonly required>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <div class="full-width-field">
+                    <label class="form-label">Complete Address *</label>
+                    <textarea id="branchAddress" class="form-input readonly-input" rows="2" placeholder="Full branch address..." readonly required></textarea>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div>
+                    <label class="form-label">Contact No</label>
+                    <input type="tel" id="branchContact" class="form-input readonly-input" placeholder="+91 00000 00000" readonly>
+                </div>
+                <div>
+                    <label class="form-label">Email Address</label>
+                    <input type="email" id="branchEmail" class="form-input readonly-input" placeholder="branch@stracares.in" readonly>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <div class="full-width-field">
+                    <label class="form-label">Google Navigation Link</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span class="material-symbols-rounded" style="color: var(--primary);">pin_drop</span>
+                        <input type="url" id="branchMap" class="form-input readonly-input" placeholder="http://googleusercontent.com/maps.google.com/..." readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div id="save-actions" style="display: none; margin-top: 24px; text-align: right;">
+                <button type="button" class="btn-outline" onclick="window.toggleEditMode(false)" style="margin-right: 12px;">Cancel</button>
+                <button type="button" class="btn-primary" id="saveBranchBtn" onclick="window.saveBranch()">Save Updates</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bottom Full Length Table -->
+    <div class="table-container">
+        <div class="table-header">
+            <h4>All Registered Branches</h4>
+            <label class="branch-search">
+                <span class="material-symbols-rounded" aria-hidden="true">search</span>
+                <input type="search" id="branchSearchInput" oninput="window.searchBranches()" placeholder="Search branches..." aria-label="Search branches">
+            </label>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="saas-table">
+                <thead>
+                    <tr>
+                        <th>Branch Name & ID</th>
+                        <th>Contact Info</th>
+                        <th>Email Address</th>
+                        <th>Maps Location</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="branchTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="./branches.js"></script>
+</div>
+
+</body>
+</html>

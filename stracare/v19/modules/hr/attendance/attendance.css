@@ -1,0 +1,94 @@
+:root {
+        --primary: #0B1F4B;
+        --primary-light: #E8EEF7;
+        --bg: #F8FAFC;
+        --surface: #FFFFFF;
+        --text-main: #0F172A;
+        --text-muted: #64748B;
+        --border: #E2E8F0;
+        --grey-med: #CBD5E1;
+        --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+        --success: #10B981;
+        --danger: #EF4444;
+        --warning: #F59E0B;
+    }
+        
+        #attendance-module { font-family: 'Inter', sans-serif; width: 100%; max-width: 1120px; margin: 0 auto;}
+        #attendance-module .section-title { font-size: 18px; font-weight: 700; margin-bottom: 24px; color: var(--text-main); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;}
+        
+        #attendance-module .form-label { display: block; font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        
+        #attendance-module .input-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+        @media (min-width: 768px) { #attendance-module .input-group { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 1024px) { #attendance-module .input-group.three-cols { grid-template-columns: 1fr 1fr 1fr; } }
+
+        #attendance-module .form-input { width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); font-size: 14px; color: var(--text-main); background: #FAFAFA; outline: none; transition: border 0.2s; appearance: auto; }
+        #attendance-module .form-input:focus { border-color: var(--primary); background: var(--surface); }
+
+        #attendance-module .btn-primary { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; display: inline-flex; align-items: center; gap: 6px;}
+        #attendance-module .btn-primary:active { opacity: 0.8; }
+        #attendance-module .btn-primary:disabled { background: var(--grey-med); cursor: not-allowed; }
+        #attendance-module .btn-outline { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+
+        /* Google Sheet Style Horizontal Scroll Table */
+        #attendance-module .table-container { background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); overflow: hidden; margin-bottom: 24px; }
+        #attendance-module .table-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+        #attendance-module .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #attendance-module .saas-table { width: 100%; min-width: 800px; border-collapse: collapse; text-align: left; }
+        #attendance-module .saas-table th { padding: 12px 20px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: #FAFAFA; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        #attendance-module .saas-table td { padding: 16px 20px; font-size: 14px; font-weight: 500; border-bottom: 1px solid var(--border); vertical-align: middle; white-space: nowrap; }
+        
+        /* Status Badges */
+        .badge { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .badge-present { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .badge-leave { background: rgba(251, 146, 60, 0.1); color: var(--warning); }
+        .badge-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .badge-rejected { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        /* Summary Dashboard */
+        .summary-dashboard { display: flex; gap: 12px; flex-wrap: wrap; background: #FAFAFA; padding: 12px; border-radius: 12px; border: 1px solid var(--border); }
+        .summary-card { flex: 1; min-width: 120px; padding: 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .summary-card span { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .summary-card strong { font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .summary-card.present strong { color: var(--success); }
+        .summary-card.leave strong { color: var(--warning); }
+
+        /* Monthly View Matrix Styling */
+        #monthTable { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 1100px; }
+        #monthTable th { background: #FAFAFA; color: var(--text-muted); text-transform: uppercase; font-size: 10px; padding: 8px 4px; border: 1px solid var(--border); text-align: center; }
+        #monthTable td { border: 1px solid var(--border); padding: 6px 4px; text-align: center; font-weight: 600; }
+        #monthTable td:nth-child(1), #monthTable td:nth-child(2), #monthTable td:nth-child(3) { text-align: left; padding-left: 10px; }
+        .m-st-P { color: var(--success); }
+        .m-st-L { color: var(--warning); }
+        .m-st-H { color: #274777; }
+        .m-st-none { color: #ddd; font-weight: normal; }
+
+        /* Modal Styles */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); z-index: 9999; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+        .modal-container { background: var(--surface); border-radius: 20px; width: 100%; max-width: 800px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-container.small { max-width: 500px; }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; font-size: 18px; color: var(--text-main); }
+        .modal-close { background: transparent; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; padding: 4px; border-radius: 6px; transition: 0.2s; }
+        .modal-close:hover { background: var(--grey-light); color: var(--danger); }
+        .modal-body { padding: 24px; overflow-y: auto; }
+
+        @media print {
+            @page { size: A4 landscape; margin: 10mm; }
+            body { background: white; padding: 0; }
+            #sidebar-container, #header-container, #bottomnav-container, .no-print { display: none !important; }
+            .main-wrapper { flex: 1; display: block; overflow: visible; }
+            #main-content { padding: 0; overflow: visible; }
+            
+            body.printing-monthly #daily-log-container,
+            body.printing-monthly #leave-requests-container { display: none !important; }
+            
+            body:not(.printing-monthly) #monthlyReportContainer { display: none !important; }
+
+            #attendance-module .table-container { box-shadow: none; border: none; margin: 0; }
+            #attendance-module .saas-table th { background: white; color: black; border-bottom: 1px solid #000; }
+            #attendance-module .saas-table td { border-bottom: 1px solid #E8E5E1; }
+            
+            #monthTable th, #monthTable td { border: 1px solid #000; font-size: 9px; padding: 3px; }
+            #monthTable th { background: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
