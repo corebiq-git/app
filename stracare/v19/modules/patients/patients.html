@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>COREBIQ BUSINESS FLOW APP | Patient Data</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0"/>
+<link rel="stylesheet" href="../../../css/corebiq.css">
+    <link rel="stylesheet" href="./patients.css" data-module-style>
+</head>
+<body>
+
+<div class="module-container" id="patient-module">
+    
+    
+
+    <header class="patients-hero">
+        <div class="patients-title-group">
+            <nav class="patients-breadcrumb" aria-label="Breadcrumb"><span>CRM</span><span aria-hidden="true">›</span><span aria-current="page">Patients</span></nav>
+            <h1><span class="material-symbols-rounded patients-title-icon" aria-hidden="true">groups</span>Patients</h1>
+        </div>
+        <div class="patient-hero-actions">
+            <button type="button" class="patient-refresh-button" onclick="window.refreshPatients(this)" aria-label="Refresh patients" title="Refresh patients">
+                <span class="material-symbols-rounded" aria-hidden="true">refresh</span>
+            </button>
+            <button type="button" class="patient-action-button primary patient-add-button" onclick="window.togglePatientForm(true)" aria-label="Add patient" title="Add patient">
+                <span class="material-symbols-rounded" aria-hidden="true">add</span>
+                <span>Add</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="patients-toolbar no-print">
+        <label class="patients-search" aria-label="Search patients">
+            <span class="material-symbols-rounded" aria-hidden="true">search</span>
+            <input type="search" id="patientSearchInput" oninput="window.filterAndSortTable()" placeholder="Search name, mobile, or ID...">
+        </label>
+        <label class="patient-filter" aria-label="Filter by branch">
+            <select id="filterBranch" onchange="window.filterAndSortTable()">
+                <option value="">All Branches</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </label>
+        <label class="patient-filter" aria-label="Filter by category">
+            <select id="filterCategory" onchange="window.filterAndSortTable()">
+                <option value="">All Categories</option>
+                <option value="normal">Normal</option>
+                <option value="regular">Regular</option>
+                <option value="both">Both</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </label>
+        <label class="patient-filter" aria-label="Filter by recently added patients">
+            <select id="filterRecentPatients" onchange="window.filterAndSortTable()">
+                <option value="10" selected>Last 10 added</option>
+                <option value="">All patients</option>
+            </select>
+            <span class="material-symbols-rounded" aria-hidden="true">expand_more</span>
+        </label>
+        <button type="button" class="patient-clear-filters" onclick="window.clearFilters()" aria-label="Clear all filters" title="Clear all filters">
+            <span class="material-symbols-rounded" aria-hidden="true">filter_alt_off</span>
+        </button>
+        <details class="patient-date-filter">
+            <summary aria-label="Filter by date" title="Filter by date">
+                <span class="material-symbols-rounded" aria-hidden="true">calendar_month</span>
+            </summary>
+            <div class="patient-date-filter-popup" aria-label="Filter patients by date">
+                <h2>Filter by date</h2>
+                <label>From<input type="date" id="patientDateFrom"></label>
+                <label>To<input type="date" id="patientDateTo"></label>
+                <p class="patient-date-filter-error" id="patientDateFilterError" aria-live="polite"></p>
+                <div class="patient-date-filter-actions">
+                    <button type="button" class="patient-date-clear" onclick="window.clearPatientDateFilter()">Clear</button>
+                    <button type="button" class="patient-date-apply" onclick="window.applyPatientDateFilter()">Apply</button>
+                </div>
+            </div>
+        </details>
+        <details class="patient-more-actions">
+            <summary aria-label="More patient actions" title="More actions">
+                <span class="material-symbols-rounded" aria-hidden="true">more_vert</span>
+            </summary>
+            <div class="patient-more-actions-menu">
+                <button type="button" onclick="window.exportPatientsPDF(); this.closest('details').open = false;">
+                    <span class="material-symbols-rounded" aria-hidden="true">picture_as_pdf</span>
+                    Export PDF
+                </button>
+            </div>
+        </details>
+    </div>
+
+    <div class="patient-view-modal" id="patientViewModal" aria-hidden="true">
+        <section class="patient-view-dialog" role="dialog" aria-modal="true" aria-labelledby="patientViewTitle">
+            <header>
+                <h2 id="patientViewTitle">Patient details</h2>
+                <button type="button" class="patient-view-close" aria-label="Close patient details" onclick="window.closePatientView()">
+                    <span class="material-symbols-rounded" aria-hidden="true">close</span>
+                </button>
+            </header>
+            <div class="patient-view-content" id="patientViewContent"></div>
+        </section>
+    </div>
+
+    <div class="patient-modal" id="patientFormModal" aria-hidden="true">
+      <div class="patient-modal-content" role="dialog" aria-modal="true" aria-labelledby="patientFormTitle">
+        <div class="patient-modal-heading">
+            <h2 id="patientFormTitle">Register New Patient</h2>
+            <button type="button" class="patient-modal-close" aria-label="Close patient form" onclick="window.togglePatientForm(false)"><span class="material-symbols-rounded">close</span></button>
+        </div>
+    <div class="form-card">
+        <h4 style="color: var(--primary); margin: 0 0 16px 0; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Register New Patient</h4>
+        
+        <form id="add-patient-form" onsubmit="event.preventDefault();">
+            <div class="input-group three-cols">
+                <div>
+                    <label class="form-label">Patient ID</label>
+                    <input type="text" id="patientIdInput" class="form-input readonly-input" value="Auto-Generated" readonly tabindex="-1">
+                </div>
+
+                <div style="grid-column: span 2;">
+                    <label class="form-label">Mobile Number (Search / Validate) *</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="tel" id="mobileInput" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required style="font-weight: 600; letter-spacing: 1px;">
+                        <button type="button" class="btn-verify" id="verifyBtn" onclick="window.verifyMobile()">Verify</button>
+                    </div>
+                    <div id="mobileValidationMsg" class="validation-msg"></div>
+                </div>
+            </div>
+
+            <fieldset id="patientDetailsFieldset" style="border: none; padding: 0; margin: 0;" disabled>
+                
+                <div class="input-group four-cols">
+                    <div style="grid-column: span 2;">
+                        <label class="form-label">Patient Name *</label>
+                        <input type="text" id="patientName" class="form-input" placeholder="Full Name" required>
+                    </div>
+                    <div>
+                        <label class="form-label">Age</label>
+                        <input type="number" id="patientAge" class="form-input" placeholder="Years" min="1" max="120">
+                    </div>
+                    <div>
+                        <label class="form-label">Category *</label>
+                        <select id="patientCategory" class="form-input" required>
+                            <option value="Normal">Normal</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Both">Both (Admin Mark)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-group three-cols">
+                    <div>
+                        <label class="form-label">Gender</label>
+                        <select id="patientGender" class="form-input">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div style="grid-column: span 2;">
+                        <label class="form-label">Preferred Branch</label>
+                        <select id="patientBranch" class="form-input">
+                            <option value="">Loading Branches...</option>
+                        </select>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Address</label>
+                        <textarea id="patientAddress" class="form-input" rows="2" placeholder="Full residential address..."></textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
+                        <label class="form-label">Notes / Medical History</label>
+                        <textarea id="patientNotes" class="form-input" rows="3" placeholder="Any specific notes or initial observations..."></textarea>
+                    </div>
+                </div>
+
+                <div class="patient-form-actions">
+                    <button type="button" class="btn-outline no-print" onclick="window.resetForm()">Clear Form</button>
+                    <button type="button" class="btn-outline no-print" onclick="window.togglePatientForm(false)">Cancel</button>
+                    <button type="button" class="btn-primary no-print" id="saveBtn" onclick="window.savePatient()">Save Patient</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+        <div class="patient-table-scroll">
+        <table class="saas-table">
+            <thead>
+                <tr>
+                    <th aria-sort="none"><button type="button" class="patient-sort-button" data-sort-key="name" aria-label="Sort by patient name">Patient Name &amp; ID<span class="material-symbols-rounded" aria-hidden="true">unfold_more</span></button></th>
+                    <th aria-sort="none"><button type="button" class="patient-sort-button" data-sort-key="mobile" aria-label="Sort by mobile number">Mobile No.<span class="material-symbols-rounded" aria-hidden="true">unfold_more</span></button></th>
+                    <th aria-sort="none"><button type="button" class="patient-sort-button" data-sort-key="demographics" aria-label="Sort by demographics and branch">Demographics / Branch<span class="material-symbols-rounded" aria-hidden="true">unfold_more</span></button></th>
+                    <th aria-sort="none"><button type="button" class="patient-sort-button" data-sort-key="address" aria-label="Sort by address">Address Details<span class="material-symbols-rounded" aria-hidden="true">unfold_more</span></button></th>
+                    <th class="no-print">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="patientTableBody">
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <script type="module" src="./patients.js"></script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+:root { color-scheme: light; font-family: Inter, sans-serif; color: #1F1F1F; background: #f4f7fc; }
+        * { box-sizing: border-box; }
+        body { min-height: 100vh; margin: 0; padding: 30px 16px; background: #f4f7fc; }
+        .booking-shell { width: min(760px,100%); margin: 0 auto; }
+        .card { overflow: hidden; border: 1px solid #E1E4E2; border-radius: 26px; background: #fff; box-shadow: 0 1px 3px rgba(31,35,40,.06),0 12px 32px rgba(31,35,40,.05); }
+        .card-header { padding: 25px 30px 22px; border-bottom: 1px solid #F0F2F5; background: #fff; }
+        .heading-row { display: flex; align-items: flex-start; gap: 13px; }
+        .heading-icon { display: grid; place-items: center; flex: 0 0 44px; width: 44px; height: 44px; border: 1px solid #EEF0F4; border-radius: 15px; background: #fff; color: #0B1F4B; box-shadow: 0 1px 3px rgba(31,35,40,.05); }
+        .heading-icon .material-symbols-rounded { font-size: 23px; }
+        .eyebrow { color: #0B1F4B; font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; }
+        h1 { margin: 5px 0 6px; color: #1F1F1F; font-size: clamp(23px,5vw,29px); font-weight: 600; letter-spacing: -.025em; line-height: 1.2; }
+        .intro { margin: 0; color: #6B7280; font-size: 13px; line-height: 1.6; }
+        form { padding: 24px 30px 28px; }
+        .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 17px 16px; }
+        .field { min-width: 0; }
+        .field.full { grid-column: 1/-1; }
+        label { display: block; margin-bottom: 7px; color: #4B5563; font-size: 12px; font-weight: 600; }
+        input, select, textarea { width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid transparent; border-radius: 14px; outline: none; background: #F4F7FC; color: #1F1F1F; font: inherit; font-size: 13px; transition: border-color .16s ease,box-shadow .16s ease,background .16s ease; }
+        textarea { min-height: 88px; resize: vertical; }
+        input::placeholder, textarea::placeholder { color: #8290A2; }
+        input:focus, select:focus, textarea:focus { border-color: #C8D2E1; box-shadow: 0 0 0 3px rgba(11,31,75,.1); background: #fff; }
+        input:disabled,select:disabled,textarea:disabled { cursor:not-allowed; opacity:.65; }
+        .hint { margin: 6px 0 0; color: #6B7280; font-size: 11px; line-height: 1.5; }
+        .mobile-status { display: none; margin-top: 7px; font-size: 12px; font-weight: 650; }
+        .mobile-status.show { display: block; }
+        .privacy-note { display: flex; gap: 9px; margin-top: 18px; padding: 13px; border: 1px solid #E8EEF7; border-radius: 14px; background: #F7F9FC; color: #5F6875; font-size: 11px; line-height: 1.55; }
+        .privacy-note .material-symbols-rounded { flex: none; color: #0B1F4B; font-size: 18px; }
+        .submit { display: inline-flex; width: 100%; min-height: 50px; align-items: center; justify-content: center; gap: 8px; margin-top: 18px; border: 0; border-radius: 25px; background: #0B1F4B; color: #fff; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 8px rgba(11,31,75,.16); transition: background .16s ease,transform .16s ease; }
+        .submit:hover { background: #071630; }
+        .submit:active { transform: scale(.99); }
+        .submit:disabled { cursor: wait; opacity: .65; }
+        .notice { display: none; margin: 0 30px 24px; padding: 14px; border: 1px solid transparent; border-radius: 14px; font-size: 13px; line-height: 1.5; }
+        .notice.show { display: block; }
+        .notice.success { border-color:#CDEAD5;background: #E8F5E9; color: #188038; }
+        .notice.error { border-color:#F3CBC8;background: #FCE8E6; color: #B3261E; }
+        .footer { padding: 16px 8px 0; color: #6B7280; font-size: 11px; text-align: center; }
+        @media (max-width:560px) {
+            body { padding: 18px 10px 24px; }
+            .booking-shell { width: min(100%,500px); }
+            .card { border-radius: 21px; }
+            .card-header { padding: 22px 17px 17px; }
+            .heading-row { gap:10px; }
+            .heading-icon { flex-basis:40px;width:40px;height:40px;border-radius:13px; }
+            form { padding: 18px 17px 20px; }
+            .fields { grid-template-columns: 1fr; gap: 14px; }
+            .field.full { grid-column: auto; }
+            .notice { margin: 0 17px 18px; }
+        }
