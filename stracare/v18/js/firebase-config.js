@@ -4,13 +4,13 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCVg-iDZZVmnV0eN_H44QcuJgoqdjeXhjo",
-  authDomain: "corebiq-stracare.firebaseapp.com",
-  projectId: "corebiq-stracare",
-  storageBucket: "corebiq-stracare.firebasestorage.app",
-  messagingSenderId: "978459924995",
-  appId: "1:978459924995:web:ee36c35d478c06c11a8c36",
-  measurementId: "G-WJN0QJC3R2"
+    apiKey: "AIzaSyAcO1L2Za7dzILxylmMkRTSx0FBVu_EEoM",
+    authDomain: "cmf001stra.firebaseapp.com",
+    projectId: "cmf001stra",
+    storageBucket: "cmf001stra.firebasestorage.app",
+    messagingSenderId: "763958641347",
+    appId: "1:763958641347:web:316876bc2340b26bd21876",
+    measurementId: "G-770FBR88LJ"
 };
 
 // Initialize Firebase only if it hasn't been initialized yet
